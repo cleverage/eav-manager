@@ -3,7 +3,7 @@ sidus_admin:
     configurations:
         media:
             controller: CleverAgeEAVManagerAdminBundle:Asset
-            entity: '%webactu_data_class%'
+            entity: '%sidus_data_class%'
             prefix: /medias
             default_form_type: sidus_data
             actions:

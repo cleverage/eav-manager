@@ -1,7 +1,7 @@
 sidus_eav_data_grid:
     configurations:
         data:
-            family: base
+            family: Base
             filter_config:
                 sortable:
                     - id

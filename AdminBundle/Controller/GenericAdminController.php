@@ -83,12 +83,12 @@ class GenericAdminController extends BaseAdminController
         if ($form->isValid()) {
             $this->deleteEntity($data);
             if ($request->isXmlHttpRequest()) {
-                return [
+                return $this->renderAction([
                     'dataId' => $dataId,
                     'isAjax' => 1,
                     'target' => $request->get('target'),
                     'success' => 1,
-                ];
+                ]);
             }
             return $this->redirectToAdmin($this->admin, 'list');
         }

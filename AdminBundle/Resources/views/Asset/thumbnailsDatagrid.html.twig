@@ -1,0 +1,41 @@
+{% macro table(datagrid, viewParameters) %}
+    {% use '@CleverAgeEAVManagerAdmin/Asset/media.preview.html.twig' %}
+    <div class="row thumbnail-row">
+        {% for result in datagrid.filterConfig.results %}
+            <div class="col-lg-2">
+                <a href="#" class="media-select" data-input-id="{{ viewParameters.inputId }}" data-media-id="{{ result.id }}"
+                   data-media-preview="{{ block('media_preview')|escape('html_attr') }}" title="{{ 'admin.media.select.title' | trans }}">
+                    <img src="{{ result.image | imagine_filter('thumbnail') }}" class="img-thumbnail" {{ image_size_attrs(result.image, 'thumbnail') }}>
+                </a>
+            </div>
+            {% if loop.index % 6 == 0 %}
+                </div><div class="row thumbnail-row">
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endmacro %}
+
+
+{# Recopy of macro from "parent" template, the only modification is the call to the "table" macro #}
+{% macro render(datagrid, viewParameters) %}
+    {% import "@SidusDataGrid/DataGrid/datagrid.html.twig" as parent %}
+    {% set form = datagrid.formView %}
+
+    {% form_theme form datagrid.formTheme %}
+    {{ form_start(form) }}
+    {% if form.filters|length > 0 %}
+        {{ form_widget(form.filters) }}
+        {{ parent.filter_actions(datagrid, viewParameters) }}
+        <hr class="clear">
+    {% endif %}
+    {% block datagrid_actions %}
+        {{ parent.actions(datagrid, viewParameters) }}
+    {% endblock %}
+
+    {{ _self.table(datagrid, viewParameters) }}
+
+    {% if datagrid.filterConfig.pager.count > 10 %}
+        {{ block('datagrid_actions') }}
+    {% endif %}
+    {{ form_end(form) }}
+{% endmacro %}

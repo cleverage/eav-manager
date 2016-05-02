@@ -1,0 +1,18 @@
+parameters:
+    oneup_uploader.controller.blueimp.class: CleverAge\EAVManager\AssetBundle\Controller\BlueimpController
+    web_actu_asset.form.media_browser.type.class: CleverAge\EAVManager\AssetBundle\Form\Type\MediaBrowser
+    sidus_file_upload.resource.manager.class: CleverAge\EAVManager\AssetBundle\Manager\ResourceManager
+    web_actu_asset.twig.media.extension.class: CleverAge\EAVManager\AssetBundle\Twig\MediaExtension
+
+services:
+    web_actu_asset.form.media_browser.type:
+        class: %web_actu_asset.form.media_browser.type.class%
+        tags:
+            - { name: form.type, alias: eavmanager_media_browser }
+
+    web_actu_asset.twig.media.extension:
+        class: %web_actu_asset.twig.media.extension.class%
+        arguments:
+            - @liip_imagine.filter.configuration
+        tags:
+            - { name: twig.extension }

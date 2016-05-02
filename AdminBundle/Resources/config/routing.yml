@@ -1,0 +1,13 @@
+# Routing is configured in app/config/model/admin.yml
+
+eavmanager_admin.wysiwyg.data_selector.link:
+    pattern: /wysiwyg/data-selector/link
+    defaults: { _controller: CleverAgeEAVManagerAdminBundle:Wysiwyg:selectData }
+    options:
+        expose: true
+
+eavmanager_admin.wysiwyg.data_selector.media:
+    pattern: /wysiwyg/data-selector/media
+    defaults: { _controller: CleverAgeEAVManagerAdminBundle:Wysiwyg:selectMedia }
+    options:
+        expose: true

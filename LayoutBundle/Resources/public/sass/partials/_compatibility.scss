@@ -1,0 +1,36 @@
+
+.browser-update {
+  display: block !important;
+  clear: both;
+  margin: 0 auto 40px;
+  position: static;
+  float: none !important;
+
+  .logos {
+    a:hover {
+      text-decoration: none;
+    }
+    width: 100%;
+    text-align: center;
+    margin: 10px 0;
+    td {
+      width: 25%;
+      &:hover {
+        outline: 1px solid #a98b8b;
+      }
+    }
+    img {
+      display:block;
+      margin: 5px auto;
+      border: none;
+    }
+    .bro {
+      display: block;
+      color: $alert-danger-text;
+      font-size: 1.3em;
+    }
+    .vendor {
+      color: #a98b8b;
+    }
+  }
+}

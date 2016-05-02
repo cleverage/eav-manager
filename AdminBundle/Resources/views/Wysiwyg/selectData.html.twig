@@ -1,0 +1,36 @@
+{% extends '@CleverAgeEAVManagerLayout/layout.html.twig' %}
+{% block body_class %}no-menu{% endblock %}
+{% block main_menu %}{% endblock %}
+{% block main_content %}
+    {{ utilities.flash_messages() }}
+    {{ form(form) }}
+    <div class="btn-group pull-right">
+        <button class="btn btn-default tinymce-close">Fermer</button>
+        <button class="btn btn-primary tinymce-submit">Valider</button>
+    </div>
+    <div class="clear"></div>
+{% endblock %}
+{% block additionnal_javascript %}
+    <script>
+        var editor = parent.tinymce.activeEditor;
+
+        $('.tinymce-close').on('click', function(e){
+            editor.windowManager.close();
+            e.preventDefault();
+            e.stopPropagation();
+        });
+    </script>
+
+    {% block tinymce_javascript %}
+        <script>
+            $('.tinymce-submit').on('click', function(e){
+                var dataId = $('.sidus-combo-selector input.select2').val();
+                var plugin = parent.tinymce.PluginManager.get('datalink')(editor);
+                plugin.createLink(dataId);
+                editor.windowManager.close();
+                e.preventDefault();
+                e.stopPropagation();
+            });
+        </script>
+    {% endblock %}
+{% endblock %}

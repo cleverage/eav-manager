@@ -1,0 +1,117 @@
+user:
+    profile:
+        menu:
+            title: Profil Utilisateur
+
+admin:
+    list_of: Liste des %family%
+    action:
+        create:
+            label: Ajouter
+        browseThumbnail:
+            label: Vue compacte
+        browse:
+            label: Vue en liste
+
+    family:
+        edit:
+            title: Modifier
+            close:
+                label: Fermer
+            back:
+                label: Retour
+            submit:
+                label: Enregistrer
+            publish:
+                label: Publier
+            master_mode:
+                    label: Mode Master
+        delete:
+            title: Supprimer
+            back:
+                label: Retour
+            submit:
+                label: Supprimer
+
+    user:
+        tab:
+            main:
+                label: Base
+            info:
+                label: Infos
+            groups:
+                label: Groupes
+            password:
+                label: Sécurité
+        delete:
+            back:
+                label: Annuler
+            submit:
+                label: Supprimer
+
+        form:
+            username:
+                label: Nom d'utilisateur
+            email:
+                label: Adresse e-mail
+                blank: Veuillez saisir votre adresse email
+                invalid: Veuillez saisir une adresse valide
+                already_used: Cette adresse email est déjà utilisée
+            password:
+                label: Mot de passe
+                blank: Veuillez saisir un mot de passe
+                pattern: Le mot de passe est invalide, il doit contenir au moins 8 caractères et avoir au moins un chiffre et une lettre.
+            repeat_password:
+                label: Vérification
+                blank: Veuillez saisir de nouveau votre mot de passe
+                mismatch: Les deux mots de passes doivent être identiques
+            enabled:
+                label: Activé
+            roles:
+                label: Rôles
+            familyPermissions:
+                label: Permissions par famille
+            groups:
+                label: Groupes
+
+    group:
+        delete:
+            back:
+                label: Annuler
+            submit:
+                    label: Supprimer
+
+        form:
+            name:
+                label: Nom du groupe
+            roles:
+                label: Rôles
+            familyPermissions:
+                label: Permissions par famille
+
+    variant:
+        select:
+            submit:
+                label: Créer une nouvelle variante
+        edit:
+            back:
+                label: Retour
+            submit:
+                label: Enregistrer
+        delete:
+            back:
+                label: Retour
+            submit:
+                label: Supprimer
+
+    media:
+        menu:
+            title: Médias
+        select:
+            label: Sélectionner
+            title: Sélectionner un média
+        detach:
+            label: Détacher
+form:
+    abandon_changes:
+        confirmation: Êtes-vous certain de vouloir annuler vos modifications ?

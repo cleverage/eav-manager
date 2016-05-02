@@ -1,0 +1,26 @@
+{% extends 'CleverAgeEAVManagerAdminBundle:Data:edit.html.twig' %}
+
+{% block tg_center %}
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            {{ form_start(form) }}
+            <div class="modal-body">
+                <div class="edit-form {% block edit_form_class %}{% endblock %}">
+                    {{ form_widget(form) }}
+                </div>
+            </div>
+            <div class="modal-footer">
+                {% block form_actions %}
+                    <div class="btn-group pull-right">
+                        <a href="{{ admin_path(admin, 'browse', {familyCode: family.code, inputId: inputId}) }}" class="btn btn-default" data-target="{{ target }}">
+                            {{ 'admin.family.edit.back.label'|trans }}
+                        </a>
+                        <button type="submit" class="btn btn-primary">{{ 'admin.family.edit.submit.label'|trans }}</button>
+                    </div>
+                    <div class="clear"></div>
+                {% endblock %}
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

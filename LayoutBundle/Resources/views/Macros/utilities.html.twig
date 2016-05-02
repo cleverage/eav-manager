@@ -1,0 +1,97 @@
+
+{% macro flash_messages() %}
+    {% for name in ['error', 'warning', 'success', 'info'] %}
+        {% for message in app.session.flashBag.get(name) %}
+            <div class="alert alert-{{ name }}">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {{ message|raw }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+{% endmacro %}
+
+{% macro menu_link(title, route, routes, parameters) %}
+    {% if routes is defined and routes %}
+        {% set routes = routes | merge([route]) %}
+    {% else %}
+        {% set routes = [route] %}
+    {% endif %}
+    <li {% if app.request.attributes.get('_route') in routes %}class="active"{% endif %}>
+        <a href="{{ path(route, parameters|default({})) }}">{{ title|raw }}</a>
+    </li>
+{% endmacro %}
+
+{% macro menu_icon_link(icon, title, route, routes, parameters) %}
+    {% set title = ('<i class="fa fa-' ~ icon ~ '"></i> ') ~ title %}
+    {{ _self.menu_link(title, route, routes, parameters) }}
+{% endmacro %}
+
+{% macro admin_menu_link(title, admin, action, parameters) %}
+    <li {% if admin(admin).hasRoute(app.request.attributes.get('_route')) %}class="active"{% endif %}>
+        <a href="{{ admin_path(admin, action, parameters|default({})) }}">{{ title|raw }}</a>
+    </li>
+{% endmacro %}
+
+{% macro admin_menu_icon_link(icon, title, admin, action, parameters) %}
+    {% set title = ('<i class="fa fa-' ~ icon ~ '"></i> ') ~ title %}
+    {{ _self.admin_menu_link(title, admin, action, parameters) }}
+{% endmacro %}
+
+{% macro update_datagrid_active_row(dataGridCode, data, id, success, target) %}
+    {% if target %}
+        <script>
+            // Launched only on ajax calls when jQuery is already defined: used to update datagrid's row
+            if (typeof $ != 'undefined') {
+                {% if data is defined and id %}
+                    // Current element reference in datagrid
+                    document.activeDataGridRowRef = '#datagrid_row_{{ dataGridCode }}__{{ id }}';
+                    {% if success and target != 'tg_center' %}
+                        // Update datagrid if form was successfully submitted
+                        var form = $('#tg_center').find('form[data-target]');
+                        if (form.length) {
+                            form.submit();
+                        }
+                    {% else %}
+                        // Select active element in datagrid if present
+                        $(document.activeDataGridRowRef).addClass('info').siblings().removeClass('info');
+                    {% endif %}
+                {% else %}
+                    // On creation, unselect active element in datagrid if any
+                    if (document.activeDataGridRowRef) {
+                        var a = $(document.activeDataGridRowRef);
+                        a.removeClass('info');
+                        document.activeDataGridRowRef = null;
+                    }
+                {% endif %}
+            }
+        </script>
+    {% endif %}
+{% endmacro %}
+
+{% macro lock_form(inputId, target) %}
+    <script>
+        // Launched only on ajax calls when jQuery is already defined: lock
+        if (typeof $ != 'undefined') {
+            {% if inputId %}
+                // Lock navigation if form is updated
+                lockNavigationOnChange('#{{ inputId }}', '{{ 'form.abandon_changes.confirmation'|trans }}'{% if target %}, '#{{ target }}'{% endif %});
+            {% endif %}
+        }
+    </script>
+{% endmacro %}
+
+{% macro family_menu(admin, families, activeFamily) %}
+    {% if families is defined and families | length > 0 %}
+        <ul class="nav nav-pills nav-stacked">
+            {% for f in families %}
+                {% set f = f.code is defined ? f : get_family(f) %}
+                {% if f.instantiable and (is_granted('list', f) or is_granted('ROLE_SUPER_ADMIN')) %}
+                    <li {% if activeFamily and activeFamily.code == f.code %}class="active"{% endif %}>
+                        <a href="{{ admin_path(admin, 'list', {familyCode: f.code}) }}">{{ f|capitalize }}</a>
+                        {{ _self.family_menu(admin, f.children, activeFamily) }}
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endmacro %}

@@ -1,0 +1,5 @@
+{% block media_preview %}
+    <a href="{{ result.get('image') | imagine_filter('large') }}" target="_blank">
+        <img src="{{ result.get('image') | imagine_filter('thumbnail') }}" class="img-thumbnail pull-left" {{ image_size_attrs(result.get('image'), 'thumbnail') }}>
+    </a>
+{% endblock %}

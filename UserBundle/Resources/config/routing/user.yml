@@ -1,0 +1,3 @@
+eavmanager_user.profile.edit:
+    path:     /
+    defaults: { _controller: CleverAgeEAVManagerUserBundle:UserProfile:edit }

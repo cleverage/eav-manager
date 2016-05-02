@@ -1,0 +1,21 @@
+{% use "CleverAgeEAVManagerSecurityBundle:Form:form.fields.html.twig" %}
+
+{% block sidus_wysiwyg_row %}
+    {{ form_row(form, {horizontal_input_wrapper_class: 'col-lg-12'}) }}
+{% endblock %}
+
+{% block family_permission_widget %}
+    <div class="row">
+        <div class="col-sm-12">
+            {{ form_widget(form.family) }}
+        </div>
+        {% for permission in form %}
+            {% if not permission.rendered %}
+                <div class="col-sm-4">
+                    {{ form_widget(permission) }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <hr class="clear">
+{% endblock %}

@@ -1,0 +1,6 @@
+{% spaceless %}
+    {% if result.get('image') %}
+        {% set image = result.get('image') %}
+        <img src="{{ image.fileName | imagine_filter('tiny') }}" class="img-thumbnail" {{ image_size_attrs(image, 'tiny') }}>
+    {% endif %}
+{% endspaceless %}

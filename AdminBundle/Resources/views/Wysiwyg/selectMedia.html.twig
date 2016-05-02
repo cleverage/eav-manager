@@ -1,0 +1,14 @@
+{% extends '@CleverAgeEAVManagerAdmin/Wysiwyg/selectData.html.twig' %}
+{% block tinymce_javascript %}
+    <script>
+        $('.tinymce-submit').on('click', function(e){
+            var dataId = $('#form_data').val();
+            var filter = $('#form_filter').val();
+            var plugin = parent.tinymce.PluginManager.get('datamedia')(editor);
+            plugin.createMedia(dataId, filter);
+            editor.windowManager.close();
+            e.preventDefault();
+            e.stopPropagation();
+        });
+    </script>
+{% endblock %}

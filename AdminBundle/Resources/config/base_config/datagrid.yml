@@ -1,0 +1,69 @@
+sidus_data_grid:
+    configurations:
+        user:
+            filter_config:
+                entity: CleverAgeEAVManagerUserBundle:User
+                sortable:
+                    - id
+                    - createdAt
+                    - username
+                    - email
+                fields:
+                    createdAt:
+                        type: date_range
+                        label: Création
+                    email: ~
+                    username: ~
+            columns:
+                id:
+                    label: "#"
+                username: ~
+                email: ~
+                lastName:
+                    property_path: data.lastName
+                firstName:
+                    property_path: data.firstName
+                roles: ~
+                createdAt: ~
+                actions:
+                    template: "CleverAgeEAVManagerAdminBundle:User:list.row.actions.html.twig"
+            actions:
+                create:
+                    form_type: admin_link
+                    label: admin.action.create.label
+                    action: create
+                    icon: plus
+                    attr:
+                        class: btn-primary
+                        data-target: tg_right
+
+        group:
+            filter_config:
+                entity: CleverAgeEAVManagerUserBundle:Group
+                sortable:
+                    - id
+                    - createdAt
+                    - name
+                    - roles
+                fields:
+                    createdAt:
+                        type: date_range
+                        label: Création
+                    name: ~
+            columns:
+                id:
+                    label: "#"
+                name: ~
+                roles: ~
+                createdAt: ~
+                actions:
+                    template: "CleverAgeEAVManagerAdminBundle:Base:list.row.actions.html.twig"
+            actions:
+                create:
+                    form_type: admin_link
+                    label: admin.action.create.label
+                    action: create
+                    icon: plus
+                    attr:
+                        class: btn-primary
+                        data-target: tg_right

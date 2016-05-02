@@ -1,0 +1,22 @@
+{% extends isAjax ? 'CleverAgeEAVManagerLayoutBundle::empty_layout.html.twig' : 'CleverAgeEAVManagerAdminBundle:Variant:index.html.twig' %}
+
+{% if isAjax and form is defined %}
+    {% form_theme form 'CleverAgeEAVManagerLayoutBundle:Form:ajax_theme.html.twig' %}
+{% endif %}
+
+{% block tg_center %}
+    <div class="edit-form">
+        {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {% block form_actions %}
+                <div class="btn-group pull-right">
+                    <a href="{{ entity_path(data, 'edit') }}" class="btn btn-default" data-target="{{ target }}">
+                        Retour
+                    </a>
+                    <button type="submit" class="btn btn-primary">{{ 'admin.variant.select.submit.label'|trans }}</button>
+                </div>
+                <div class="clear"></div>
+            {% endblock %}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

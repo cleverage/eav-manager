@@ -1,0 +1,37 @@
+{% extends 'CleverAgeEAVManagerAdminBundle:Base:edit.html.twig' %}
+
+{% block flash_messages %}
+    {{ not success ? utilities.flash_messages() }}
+{% endblock %}
+
+{% block tg_center %}
+    {% set admin_trans_key = 'admin.' ~ admin.code ~ '.' ~ admin.currentAction.code ~ '.' %}
+    {% if form is defined %}
+        <div class="edit-form">
+            <a href="{{ admin_path(admin, 'list') }}" data-close-target="{{ target }}" class="pull-right">
+                <i class="fa fa-close"></i>
+            </a>
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <div class="btn-group pull-right">
+                <a href="{{ admin_path(admin, 'list') }}" class="btn btn-default" data-close-target="{{ target }}">
+                    {{ (admin_trans_key ~ 'back.label')|trans }}
+                </a>
+                <button type="submit" class="btn btn-primary">{{ (admin_trans_key ~ 'submit.label')|trans }}</button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block additionnal_javascript %}
+    {{ utilities.update_datagrid_active_row(admin.code, data is defined ? data, dataId, success, target) }}
+    {% if target and success %}
+        <script>
+            // Launched only on ajax calls when jQuery is already defined: used to update datagrid's row
+            if (typeof $ != 'undefined') {
+                $('#{{ target }}').html('');
+            }
+        </script>
+    {% endif %}
+{% endblock %}

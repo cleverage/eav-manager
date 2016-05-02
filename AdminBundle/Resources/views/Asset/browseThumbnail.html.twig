@@ -1,0 +1,7 @@
+{% extends "@CleverAgeEAVManagerAdmin/Asset/browse.html.twig" %}
+
+{% import "@CleverAgeEAVManagerAdmin/Asset/thumbnailsDatagrid.html.twig" as CustomDataGridHelper %}
+
+{% block datagrid %}
+    {{ CustomDataGridHelper.render(datagrid, {inputId: inputId}) }}
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends 'CleverAgeEAVManagerLayoutBundle::layout.html.twig' %}
+
+{% block tg_left %}
+    <h3>{{ ('admin.user.menu.title')|trans }}</h3>
+    <ul class="nav nav-pills nav-stacked">
+        {{ utilities.admin_menu_icon_link('user', 'Utilisateurs', 'user', 'list') }}
+        {{ utilities.admin_menu_icon_link('group', 'Groupes', 'group', 'list') }}
+    </ul>
+{% endblock %}

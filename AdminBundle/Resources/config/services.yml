@@ -1,0 +1,21 @@
+parameters:
+    eavmanager_admin.form.link.type.class: CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink
+    eavmanager_admin.form.image.type.class: CleverAge\EAVManager\AdminBundle\Form\Type\ImageType
+    eavmanager_admin.form.variant_family_selector.type.class: CleverAge\EAVManager\AdminBundle\Form\Type\VariantFamilySelector
+
+services:
+    eavmanager_admin.form.link.type:
+        class: %eavmanager_admin.form.link.type.class%
+        arguments: [@sidus_admin.routing.admin_router]
+        tags:
+          - { name: form.type, alias: admin_link }
+
+    eavmanager_admin.form.image.type:
+        class: %eavmanager_admin.form.image.type.class%
+        tags:
+          - { name: form.type, alias: eavmanager_image }
+
+    eavmanager_admin.form.variant_family_selector.type:
+        class: %eavmanager_admin.form.variant_family_selector.type.class%
+        tags:
+          - { name: form.type, alias: eavmanager_variant_family_selector }

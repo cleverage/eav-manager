@@ -1,0 +1,115 @@
+{# Extended from Sidus/EAVVariantBundle/Resources/views/Form/fields.html.twig #}
+{% block sidus_variant_collection_widget %}
+    {% set target = target is defined ? target : app.request.query.get('target') %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            {% if data.id %}
+                {% if variant_families|length == 1 %}
+                    <a href="{{ admin_path('variant', 'create', base_route_parameters|merge({familyCode: variant_families|first.code})) }}" class="btn btn-primary"
+                       title="{{ 'sidus_eav_variant.link.create.title'|trans }}" data-target="{{ target }}">
+                        <i class="fa fa-plus"></i> {{ 'sidus_eav_variant.link.create.label'|trans }}
+                    </a>
+                {% else %}
+                    <a href="{{ admin_path('variant', 'select', base_route_parameters|merge({familyCode: variant_families|first.code})) }}" class="btn btn-primary"
+                       title="{{ 'sidus_eav_variant.link.select.title'|trans }}" data-target="{{ target }}">
+                        <i class="fa fa-plus"></i> {{ 'sidus_eav_variant.link.select.label'|trans }}
+                    </a>
+                {% endif %}
+                &nbsp;
+                {{ 'sidus_eav_variant.text.allowed_variants'|trans }}
+                {{ variant_families|join(', ') }}
+            {% else %}
+                {{ 'sidus_eav_variant.text.create_first'|trans }}
+            {% endif %}
+        </div>
+        <ul class="list-group">
+            {% for variant in variants %}
+                <li class="list-group-item">
+                    {{ variant }} <span class="text-muted">({{ variant.family }})</span>
+                    <div class="btn-group pull-right">
+                        <a href="{{ entity_path(variant, 'edit', base_route_parameters) }}"
+                           class="btn btn-default" title="{{ 'sidus_eav_variant.link.edit.title'|trans }}" data-target="{{ target }}">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                        <a href="{{ entity_path(variant, 'delete', base_route_parameters) }}"
+                           class="btn btn-danger" title="{{ 'sidus_eav_variant.link.delete.title'|trans }}" data-target="{{ target }}">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
+
+{% block eavmanager_image_widget %}
+    {# @var image \CleverAge\EAVManager\AssetBundle\Entity\Image #}
+    {% if form.vars.data %}
+        {% set image = form.vars.data %}
+        <img src="{{ image.fileName | imagine_filter('thumbnail') }}" class="pull-right img-thumbnail" {{ image_size_attrs(image, 'thumbnail') }}>
+    {% endif %}
+    <div class="well well-sm pull-left">
+        {{ block('sidus_resource_widget') }}
+        {% if image is defined and image %}
+            <hr class="hr-sm">
+            <dl class="no-margin-bottom">
+                <dt>Dernière modification :</dt><dd>{{ image.fileModifiedAt|date() }}</dd>
+                <dt>Taille du fichier :</dt><dd>{{ image.fileSize|file_size }}</dd>
+                <dt>Type de fichier :</dt><dd>{{ image.fileType }}</dd>
+            </dl>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{# Adding error translation #}
+{% block form_errors %}
+    {% spaceless %}
+        {% if error_delay %}
+            {% for child in form %}
+                {% if loop.index == 1 %}
+                    {% if child.set('errors', errors) %}{% endif %}
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            {% if errors|length > 0 %}
+                {% if form.parent == null %}
+                    {% from 'MopaBootstrapBundle::flash.html.twig' import flash %}
+                    {% for error in errors %}
+                        {{ flash('danger', error.message) }}
+                    {% endfor %}
+                {% else %}
+                    <span class="help-{{ block('error_type') }}">
+            {% for error in errors %}
+                {{ error.message|trans }} <br>
+            {% endfor %}
+            </span>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_errors %}
+
+{% use '@CleverAgeEAVManagerAdmin/Asset/media.preview.html.twig' %}
+{% block eavmanager_media_browser_widget %}
+    <div class="media-browser">
+        <input type="hidden" name="{{ full_name }}" id="{{ form.vars.id }}" {% if value is defined and value %} value="{{ value }}"{% endif %}>
+        {% if not form.vars.disabled %}
+            <div class="pull-left btn-group-vertical">
+                <a href="{{ admin_path('media', 'browse', {familyCode: form.vars.family, inputId: form.vars.id}) }}"
+                   type="button" class="btn btn-primary" data-target="tg_modal" title="{{ 'admin.media.select.title' | trans }}">
+                    <i class="fa fa-image"></i> {{ 'admin.media.select.label' | trans }}
+                </a>
+                <a href="javascript:void(0)" class="btn btn-warning media-detach">
+                    <i class="fa fa-close"></i> {{ 'admin.media.detach.label' | trans }}
+                </a>
+            </div>
+        {% endif %}
+        <div class="pull-left media-preview">
+            {% if form.vars.data %}
+                {% set result = form.vars.data %}
+                {{ block('media_preview') }}
+            {% endif %}
+        </div>
+        <div class="clear"></div>
+    </div>
+{% endblock %}

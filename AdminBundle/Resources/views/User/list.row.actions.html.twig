@@ -1,0 +1,11 @@
+{% extends '@CleverAgeEAVManagerAdmin/Base/list.row.actions.html.twig' %}
+
+{% block list_row_actions %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ entity_path(result, 'resetPassword') }}"
+           class="btn btn-warning" data-target="tg_right" title="{{ (admin.code ~ '.resetPassword.title')|trans }}">
+            <i class="fa fa-unlock"></i>
+        </a>
+    {% endif %}
+    {{ parent() }}
+{% endblock %}

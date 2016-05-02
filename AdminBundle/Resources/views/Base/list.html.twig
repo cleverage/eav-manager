@@ -1,0 +1,9 @@
+{% extends isAjax ? 'CleverAgeEAVManagerLayoutBundle::empty_layout.html.twig' : admin.baseTemplate %}
+
+{% import "@SidusDataGrid/DataGrid/datagrid.html.twig" as DataGridHelper %}
+
+{% block tg_center %}
+    <h3>{{ (admin.code ~ '.list')|trans }}</h3>
+    <hr>
+    {{ DataGridHelper.render(datagrid) }}
+{% endblock %}

@@ -1,0 +1,6 @@
+CleverAge\EAVManager\EAVModelBundle\Entity\Data:
+    properties:
+        createdAt:
+            - NotBlank: ~
+        updatedAt:
+            - NotBlank: ~

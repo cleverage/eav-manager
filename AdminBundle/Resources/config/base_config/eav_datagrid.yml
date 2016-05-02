@@ -1,0 +1,163 @@
+sidus_eav_data_grid:
+    configurations:
+        data:
+            family: base
+            filter_config:
+                sortable:
+                    - id
+                    - createdAt
+                    - updatedAt
+                fields: []
+            columns:
+                id:
+                    label: "#"
+                label:
+                    template: "CleverAgeEAVManagerAdminBundle:Base:clickable.column.html.twig"
+                createdAt: ~
+                updatedAt: ~
+                actions:
+                    template: "CleverAgeEAVManagerAdminBundle:Data:list.row.actions.html.twig"
+            actions:
+                create:
+                    form_type: admin_link
+                    label: admin.action.create.label
+                    action: create
+                    icon: plus
+                    attr:
+                        class: btn-primary
+                        data-target: tg_right
+            reset_button:
+                attr:
+                    data-target: tg_center
+
+        document:
+            family: Document
+            parent: data
+            filter_config:
+                sortable:
+                    - id
+                    - label
+                    - pages
+                    - fileSize
+                    - documentType
+                fields:
+                    label: ~
+                    documentType:
+                        type: choice
+            columns:
+                id:
+                    label: "#"
+                label:
+                    template: "CleverAgeEAVManagerAdminBundle:Base:clickable.column.html.twig"
+                pages: ~
+                fileSize: ~
+                documentType: ~
+                filename:
+                    property_path: file.originalFilename
+                actions:
+                    template: "CleverAgeEAVManagerAdminBundle:Data:list.row.actions.html.twig"
+
+        image:
+            family: Image
+            filter_config:
+                results_per_page: 5
+                sortable:
+                    - id
+                    - label
+                fields:
+                    label: ~
+                    tags: ~
+            columns:
+                id:
+                    label: "#"
+                thumbnail:
+                    template: "CleverAgeEAVManagerAdminBundle:Asset:browse.thumbnail.html.twig"
+                label:
+                    template: "CleverAgeEAVManagerAdminBundle:Base:clickable.column.html.twig"
+                tags: ~
+                filename:
+                    property_path: image.originalFilename
+                actions:
+                    template: "CleverAgeEAVManagerAdminBundle:Data:list.row.actions.html.twig"
+            actions:
+                create:
+                    form_type: admin_link
+                    label: admin.action.create.label
+                    action: create
+                    icon: plus
+                    attr:
+                        class: btn-primary
+                        data-target: tg_right
+            reset_button:
+                attr:
+                    data-target: tg_center
+
+        image_browser:
+            family: Image
+            filter_config:
+                results_per_page: 5
+                sortable:
+                    - id
+                    - label
+                fields:
+                    label: ~
+                    tags: ~
+            columns:
+                id:
+                    label: "#"
+                thumbnail:
+                    template: "CleverAgeEAVManagerAdminBundle:Asset:browse.thumbnail.html.twig"
+                label:
+                    template: "CleverAgeEAVManagerAdminBundle:Asset:browse.row.label.html.twig"
+                actions:
+                    template: "CleverAgeEAVManagerAdminBundle:Asset:browse.row.actions.html.twig"
+            actions:
+                create:
+                    form_type: admin_link
+                    label: admin.action.create.label
+                    action: createModal
+                    icon: plus
+                    attr:
+                        class: btn-primary
+                        data-target: tg_modal
+                browseThumbnail:
+                    form_type: admin_link
+                    label: admin.action.browseThumbnail.label
+                    action: browseThumbnail
+                    icon: th
+                    attr:
+                        class: btn-default
+                        data-target: tg_modal
+            reset_button:
+                attr:
+                    data-target: tg_modal
+
+        thumbnail_browser:
+            family: Image
+            filter_config:
+                results_per_page: 18
+                sortable: []
+                fields:
+                    label: ~
+                    tags: ~
+            columns: {}
+            actions:
+                create:
+                    form_type: admin_link
+                    label: admin.action.create.label
+                    action: createModal
+                    icon: plus
+                    attr:
+                        class: btn-primary
+                        data-target: tg_modal
+                browse:
+                    form_type: admin_link
+                    label: admin.action.browse.label
+                    action: browse
+                    icon: list
+                    attr:
+                        class: btn-default
+                        data-target: tg_modal
+            reset_button:
+                attr:
+                    data-target: tg_modal

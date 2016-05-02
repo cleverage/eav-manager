@@ -1,0 +1,65 @@
+sidus_admin:
+    fallback_template: CleverAgeEAVManagerAdminBundle:Base
+    configurations:
+        media:
+            controller: CleverAgeEAVManagerAdminBundle:Asset
+            entity: '%webactu_data_class%'
+            prefix: /medias
+            default_form_type: sidus_data
+            actions:
+                index:
+                    path:     /
+                list:
+                    path:     /{familyCode}/list
+                create:
+                    path:     /{familyCode}/create
+                edit:
+                    path:     /{familyCode}/{id}/edit
+                delete:
+                    path:     /{familyCode}/{id}/delete
+                browse:
+                    path:     /{familyCode}/browse/{inputId}
+                browseThumbnail:
+                    path:     /{familyCode}/browseThumbnail/{inputId}
+                createModal:
+                    path:     /{familyCode}/browse/create/{inputId}
+                editModal:
+                    path:     /{familyCode}/browse/{id}/edit/{inputId}
+            options:
+                families:
+                    - Image
+                    - Document
+
+        user:
+            controller: CleverAgeEAVManagerAdminBundle:User
+            entity: CleverAge\EAVManager\UserBundle\Entity\User
+            prefix: /users
+            default_form_type: eavmanager_user
+            base_template: CleverAgeEAVManagerAdminBundle:User:index.html.twig
+            actions:
+                list:
+                    path:     /
+                create:
+                    path:     /create
+                edit:
+                    path:     /{id}/edit
+                delete:
+                    path:     /{id}/delete
+                resetPassword:
+                    path:     /{id}/reset-password
+
+        group:
+            controller: CleverAgeEAVManagerAdminBundle:User
+            entity: CleverAge\EAVManager\UserBundle\Entity\Group
+            prefix: /groups
+            default_form_type: eavmanager_group
+            base_template: CleverAgeEAVManagerAdminBundle:User:index.html.twig
+            actions:
+                list:
+                    path:     /
+                create:
+                    path:     /create
+                edit:
+                    path:     /{id}/edit
+                delete:
+                    path:     /{id}/delete

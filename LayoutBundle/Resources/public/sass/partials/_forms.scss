@@ -1,0 +1,54 @@
+
+.edit-form {
+  min-width: 600px;
+}
+
+.form-horizontal .control-label {
+  margin-bottom: 5px;
+}
+
+/**
+ * Will not work on Firefox because of an old bug that does not allow pseudo elements on checkboxes and radios
+ */
+.checkbox, .radio {
+  $checkbox-size: 19px !default;
+  input[type="checkbox"], input[type="radio"] {
+    &::after {
+      content: "\a0";
+      //font: normal normal normal 14px/1 FontAwesome;
+      text-rendering: auto;
+      -webkit-font-smoothing: antialiased;
+      z-index: 1;
+      display: inline-block;
+      margin-left: -4px;
+      margin-top: -4px;
+      cursor: pointer;
+
+      width: $checkbox-size;
+      height: $checkbox-size;
+      padding: ($checkbox-size / 2 - 1) 1px;
+      font-size: $checkbox-size;
+      line-height: 0;
+      color: $input-color;
+      background-color: $input-bg;
+      border: 1px solid $input-border;
+      @include border-radius($input-border-radius);
+      @include box-shadow(inset 0 1px 1px rgba(0,0,0,.075));
+      @include transition(border-color ease-in-out .15s, box-shadow ease-in-out .15s);
+    }
+    &:checked::after {
+      content: "✔";
+    }
+  }
+  input[type="radio"] {
+    &::after {
+      font-size: $checkbox-size * 1.5;
+      padding-left: 0;
+      padding-top: $checkbox-size / 2.87;
+      @include border-radius($checkbox-size / 2);
+    }
+    &:checked::after {
+      content: "●";
+    }
+  }
+}

@@ -1,0 +1,5 @@
+eavmanager_asset.media.url:
+    pattern: /_asset/{id}/{filter}
+    defaults: { _controller: CleverAgeEAVManagerAssetBundle:Media:mediaUrl }
+    options:
+        expose: true

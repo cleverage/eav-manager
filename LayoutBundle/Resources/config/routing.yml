@@ -1,0 +1,3 @@
+eavmanager_layout.dashboard:
+    path:     /
+    defaults: { _controller: CleverAgeEAVManagerLayoutBundle:Dashboard:dashboard }

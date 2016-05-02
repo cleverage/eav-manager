@@ -1,0 +1,37 @@
+FOS\UserBundle\Model\User:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: 
+             fields: email
+             errorPath: email 
+             message: admin.user.form.email.already_used
+    properties:
+        email:
+            - NotBlank:
+                message: admin.user.form.email.blank
+            - Length:
+                min: 2
+                minMessage: admin.user.form.email.short
+                max: 255
+                maxMessage: admin.user.form.email.long
+            - Email:
+                message: admin.user.form.email.invalid
+        plainPassword:
+            - NotBlank:
+                message: admin.user.form.password.blank
+                groups: [ "Registration", "ResetPassword", "ChangePassword" ]
+            - Regex:
+                pattern: "/^((?=.*\d+)(?=.*[a-zA-Z]).{8,})$/"
+                match: true
+                message: admin.user.form.password.pattern
+                groups: [ "Registration", "ResetPassword", "ChangePassword"]
+
+FOS\UserBundle\Model\Group:
+    properties:
+        name:
+            - NotBlank:
+                message: admin.group.form.name.blank
+            - Length:
+                min: 2
+                minMessage: admin.group.form.name.short
+                max: 255
+                maxMessage: admin.group.form.name.long

@@ -1,0 +1,2 @@
+parameters:
+    sidus_admin.entity.matcher.class: CleverAge\EAVManager\AdminBundle\Entity\AdminEntityMatcher

@@ -1,0 +1,5 @@
+<h4>{{ result }}</h4>
+{% if result.get('tags')|length %}
+    <p class="text-muted">{{ render_object_value(result, 'tags') }}</p>
+{% endif %}
+<p>{{ result.get('image') ? result.get('image').originalFilename }}</p>

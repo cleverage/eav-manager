@@ -1,0 +1,28 @@
+{% extends isAjax ? 'CleverAgeEAVManagerLayoutBundle::empty_layout.html.twig' : 'CleverAgeEAVManagerAdminBundle:Data:index.html.twig' %}
+
+{% if isAjax and form is defined %}
+    {% form_theme form 'CleverAgeEAVManagerLayoutBundle:Form:ajax_theme.html.twig' %}
+{% endif %}
+
+{% block tg_center %}
+    <div class="edit-form {% block edit_form_class %}{% endblock %}">
+        {{ form_start(form) }}
+            {% block form_actions %}
+                <div class="btn-group pull-right">
+                    <a href="{{ admin_path(admin, 'list', {familyCode: family.code}) }}" class="btn btn-default" data-close-target="{{ target }}">
+                        {{ isAjax ? 'admin.family.edit.close.label'|trans : 'admin.family.edit.back.label'|trans }}
+                    </a>
+                    <button type="submit" class="btn btn-primary">{{ 'admin.family.edit.submit.label'|trans }}</button>
+                </div>
+                <div class="clear"></div>
+            {% endblock %}
+            {{ form_widget(form) }}
+            {{ block('form_actions') }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+
+{% block additionnal_javascript %}
+    {{ utilities.update_datagrid_active_row(family.code, data, data ? data.id, success, target) }}
+    {{ utilities.lock_form(form.vars.attr.id, target) }}
+{% endblock %}

@@ -1,0 +1,27 @@
+{% import "CleverAgeEAVManagerLayoutBundle:Macros:utilities.html.twig" as utilities %}
+
+{% if target is defined and target == 'tg_right' %}{# Only tg_right for now #}
+    <a href="#" class="btn btn-default btn-xs expand-target" data-target-selector="{{ target }}">
+        <i class="fa fa-expand"></i>
+        <i class="fa fa-compress"></i>
+    </a>
+{% endif %}
+{% block tg_left %}{% endblock %}
+{% block flash_messages %}{{ utilities.flash_messages() }}{% endblock %}
+{% block tg_center %}{% endblock %}
+{% block tg_right %}{% endblock %}
+{% block additionnal_javascript %}
+    {% if isAjax %}
+        <script>
+            // Launched only on ajax calls when jQuery is already defined: used to update datagrid's row
+            if (typeof $ != 'undefined') {
+                if (document.activeDataGridRowRef) {
+                    var a = $(document.activeDataGridRowRef);
+                    a.addClass('info');
+                    document.activeDataGridRowRef = null;
+                }
+                window.history.pushState('test', '{{ block('title')|escape }}', '{{ app.request.requestUri|raw }}');
+            }
+        </script>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,15 @@
+parameters:
+    web_actu_installer.import.eav_data_importer.class: CleverAge\EAVManager\InstallerBundle\Import\EAVDataImporter
+
+services:
+    web_actu_installer.import.eav_data_importer:
+        class: %web_actu_installer.import.eav_data_importer.class%
+        arguments:
+            - @sidus_eav_model.family_configuration.handler
+            - @validator
+            - @doctrine.orm.entity_manager
+            -
+                document: @oneup_uploader.controller.document
+                image: @oneup_uploader.controller.image
+            - %import_dir%
+            - %import_downloads_dir%

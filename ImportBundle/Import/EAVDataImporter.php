@@ -1,25 +1,38 @@
 <?php
 
-namespace CleverAge\EAVManager\InstallerBundle\Import;
+namespace CleverAge\EAVManager\ImportBundle\Import;
 
+use CleverAge\EAVManager\AssetBundle\Controller\BlueimpController;
+use CleverAge\EAVManager\ImportBundle\DataTransfer\ImportContext;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\MappingException;
+use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMInvalidArgumentException;
 use Exception;
 use Oneup\UploaderBundle\Uploader\Response\EmptyResponse;
-use Sidus\EAVModelBundle\Entity\DataInterface;
-use Symfony\Component\HttpFoundation\File\File as HttpFile;
-use CleverAge\EAVManager\AssetBundle\Controller\BlueimpController;
+use RuntimeException;
 use Sidus\EAVModelBundle\Configuration\FamilyConfigurationHandler;
+use Sidus\EAVModelBundle\Entity\DataInterface;
+use Sidus\EAVModelBundle\Entity\DataRepository;
 use Sidus\EAVModelBundle\Model\AttributeInterface;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
 use Sidus\FileUploadBundle\Entity\Resource as SidusResource;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\HttpFoundation\File\File as HttpFile;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use CleverAge\EAVManager\InstallerBundle\DataTransfer\ImportContext;
 
+/**
+ * Imports data in the EAV model from an array:
+ * $dump = [
+ *      '<FamilyCode>' => [
+ *          '<identifier>' => [
+ *              'attributeCode => '...',
+ *          ],
+ *      ],
+ * ];
+ */
 class EAVDataImporter
 {
     /** @var FamilyConfigurationHandler */
@@ -53,16 +66,16 @@ class EAVDataImporter
     protected $output;
 
     /** @var DataInterface[] */
-    protected $referencesToSave;
+    protected $referencesToSave = [];
 
     /**
      * @param FamilyConfigurationHandler $familyConfigurationHandler
-     * @param ValidatorInterface $validator
-     * @param EntityManager $manager
-     * @param array $uploadManagers
-     * @param string $baseDirectory
-     * @param string $downloadsDirectory
-     * @throws Exception
+     * @param ValidatorInterface         $validator
+     * @param EntityManager              $manager
+     * @param array                      $uploadManagers
+     * @param string                     $baseDirectory
+     * @param string                     $downloadsDirectory
+     * @throws RuntimeException
      */
     public function __construct(
         FamilyConfigurationHandler $familyConfigurationHandler,
@@ -78,13 +91,13 @@ class EAVDataImporter
         $this->uploadManagers = $uploadManagers;
         $this->baseDirectory = rtrim($baseDirectory, '/');
         $this->downloadsDirectory = rtrim($downloadsDirectory, '/');
-        $this->archiveDirectory = $this->baseDirectory . '/archives';
+        $this->archiveDirectory = $this->baseDirectory.'/archives';
 
         if (@mkdir($this->baseDirectory) && !is_dir($this->baseDirectory)) {
-            throw new Exception("Unable to create directory {$this->baseDirectory}");
+            throw new RuntimeException("Unable to create directory {$this->baseDirectory}");
         }
         if (@mkdir($this->archiveDirectory) && !is_dir($this->archiveDirectory)) {
-            throw new Exception("Unable to create directory {$this->archiveDirectory}");
+            throw new RuntimeException("Unable to create directory {$this->archiveDirectory}");
         }
         $this->lastImportPath = "{$this->baseDirectory}/current_import.json";
         if (file_exists($this->lastImportPath)) {
@@ -98,7 +111,7 @@ class EAVDataImporter
 
     /**
      * @param array $dump
-     * @param null $filename
+     * @param null  $filename
      * @return bool
      * @throws Exception
      */
@@ -119,6 +132,7 @@ class EAVDataImporter
                 $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% %memory:6s%');
             }
             foreach ($datas as $reference => $data) {
+                /** @noinspection DisconnectedForeachInstructionInspection */
                 if (isset($progress)) {
                     $progress->advance();
                 }
@@ -151,13 +165,34 @@ class EAVDataImporter
             $this->importContext->addProcessedFile($filename);
         }
         $this->saveContext();
+
         return true;
     }
 
     /**
+     * @throws RuntimeException
+     */
+    public function terminate()
+    {
+        $this->importContext->terminate();
+        $timestamp = $this->importContext->getEndedAt()->format(\DateTime::W3C);
+        if (!@rename($this->lastImportPath, $this->archiveDirectory.'/'.$timestamp.'.json')) {
+            throw new RuntimeException('Unable to archive current import');
+        }
+    }
+
+    /**
+     * @param OutputInterface $output
+     */
+    public function setOutput(OutputInterface $output)
+    {
+        $this->output = $output;
+    }
+
+    /**
      * @param FamilyInterface $family
-     * @param array $data
-     * @param string $reference
+     * @param array           $data
+     * @param string          $reference
      * @return DataInterface
      * @throws \Exception
      */
@@ -173,19 +208,22 @@ class EAVDataImporter
         }
         $violations = $this->validator->validate($entity);
         /** @var ConstraintViolationInterface $violation */
-        foreach ($violations as $violation) {
-//            dump(json_decode($this->container->get('serializer')->serialize($entity, 'json'), true));
-            throw new \UnexpectedValueException("Invalid fixtures data for family '{$family->getCode()}' (reference: ".
-                "{$reference}) and property '{$violation->getPropertyPath()}' : '{$violation->getMessage()}', given '{$violation->getInvalidValue()}'");
+        if ($violations->has(0)) {
+            $violation = $violations->get(0);
+            $message = "Invalid fixtures data for family '{$family->getCode()}' (reference: ";
+            $message .= "{$reference}) and property '{$violation->getPropertyPath()}' : '{$violation->getMessage()}'";
+            $message .= ", given '{$violation->getInvalidValue()}'";
+            throw new \UnexpectedValueException($message);
         }
         $this->persist($entity, $reference);
+
         return $entity;
     }
 
     /**
-     * @param DataInterface $entity
+     * @param DataInterface      $entity
      * @param AttributeInterface $attribute
-     * @param mixed $value
+     * @param mixed              $value
      * @throws \Exception
      */
     protected function setEntityValue(DataInterface $entity, AttributeInterface $attribute, $value)
@@ -201,9 +239,9 @@ class EAVDataImporter
     }
 
     /**
-     * @param DataInterface $data
+     * @param DataInterface      $data
      * @param AttributeInterface $attribute
-     * @param $values
+     * @param                    $values
      * @return array
      * @throws \Exception
      */
@@ -216,13 +254,14 @@ class EAVDataImporter
         foreach ($values as $value) {
             $resolvedValues[] = $this->resolveReference($data, $attribute, $value);
         }
+
         return $resolvedValues;
     }
 
     /**
-     * @param DataInterface $data
+     * @param DataInterface      $data
      * @param AttributeInterface $attribute
-     * @param $reference
+     * @param                    $reference
      * @return mixed
      * @throws \Exception
      */
@@ -238,6 +277,7 @@ class EAVDataImporter
             $familyCode = $attribute->getOption('family');
         } else {
             $class = $this->getTargetClass($data->getFamily(), $attribute);
+
             return $this->createEntity($class, $reference);
         }
         $family = $this->familyConfigurationHandler->getFamily($familyCode);
@@ -245,11 +285,12 @@ class EAVDataImporter
         if (is_array($reference)) {
             return $this->loadData($family, $reference);
         }
+
         return $this->getEntityByReference($family, $reference);
     }
 
     /**
-     * @param FamilyInterface $parentFamily
+     * @param FamilyInterface    $parentFamily
      * @param AttributeInterface $attribute
      * @throws MappingException|\UnexpectedValueException
      */
@@ -261,12 +302,13 @@ class EAVDataImporter
         if (empty($mapping['targetEntity'])) {
             throw new \UnexpectedValueException("Unable to find target class for attribute type: '{$attribute->getType()->getCode()}'");
         }
+
         return $mapping['targetEntity'];
     }
 
     /**
      * @param string $class
-     * @param mixed $value
+     * @param mixed  $value
      * @return mixed
      * @throws \Exception
      */
@@ -293,6 +335,7 @@ class EAVDataImporter
                 $this->output->writeln("\n<error>{$error}</error>");
             }
             $this->importContext->addError($error);
+
             return null;
         }
         $type = call_user_func([$class, 'getType']);
@@ -309,13 +352,14 @@ class EAVDataImporter
             throw new \UnexpectedValueException("Unexpected response from file upload, got: {$errorClass}");
         }
         $file->setOriginalFileName($value);
+
         return $file;
     }
 
 
     /**
      * @param DataInterface $entity
-     * @param string $reference
+     * @param string        $reference
      * @throws ORMInvalidArgumentException
      */
     protected function persist(DataInterface $entity, $reference = null)
@@ -327,7 +371,8 @@ class EAVDataImporter
     }
 
     /**
-     * @throws Exception
+     * @throws RuntimeException
+     * @throws OptimisticLockException
      */
     protected function saveContext()
     {
@@ -342,7 +387,7 @@ class EAVDataImporter
         }
 
         if (!@file_put_contents($this->lastImportPath, json_encode($this->importContext))) {
-            throw new Exception("Unable to save current context to {$this->lastImportPath}");
+            throw new RuntimeException("Unable to save current context to {$this->lastImportPath}");
         }
 
         // Optimize memory consumption
@@ -355,20 +400,8 @@ class EAVDataImporter
     }
 
     /**
-     * @throws Exception
-     */
-    public function terminate()
-    {
-        $this->importContext->terminate();
-        $timestamp = $this->importContext->getEndedAt()->format(\DateTime::W3C);
-        if (!@rename($this->lastImportPath, $this->archiveDirectory.'/'.$timestamp.'.json')) {
-            throw new Exception('Unable to archive current import');
-        }
-    }
-
-    /**
      * @param FamilyInterface $family
-     * @param string $reference
+     * @param string          $reference
      * @return DataInterface
      * @throws \Exception
      */
@@ -377,28 +410,32 @@ class EAVDataImporter
         if (!$this->importContext->hasReference($family->getCode(), $reference)) {
             throw new \UnexpectedValueException("Reference not found {$reference} for family {$family->getCode()}");
         }
-        return $this->manager->find($family->getDataClass(), $this->importContext->getReference($family->getCode(), $reference));
+
+        return $this->manager->find(
+            $family->getDataClass(),
+            $this->importContext->getReference($family->getCode(), $reference)
+        );
     }
 
     /**
      * @param FamilyInterface $family
-     * @param string $reference
+     * @param string          $reference
      * @return DataInterface
      * @throws \Exception
      */
     protected function getEntityOrCreate(FamilyInterface $family, $reference)
     {
-        if ($this->importContext->hasReference($family->getCode(), $reference)) {
-            return $this->getEntityByReference($family, $reference);
-        }
-        return $family->createData();
-    }
+//        if ($this->importContext->hasReference($family->getCode(), $reference)) {
+//            return $this->getEntityByReference($family, $reference);
+//        }
 
-    /**
-     * @param OutputInterface $output
-     */
-    public function setOutput(OutputInterface $output)
-    {
-        $this->output = $output;
+        /** @var DataRepository $repository */
+        $repository = $this->manager->getRepository($family->getDataClass());
+        $entity = $repository->findByIdentifier($family, $reference);
+        if ($entity) {
+            return $entity;
+        }
+
+        return $family->createData();
     }
 }

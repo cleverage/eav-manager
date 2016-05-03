@@ -27,7 +27,7 @@
     /**
      * Binds all required events when adding an element to a bootstrap collection
      */
-    $(document).on('click', '.media-detach', function(e){
+    $(document).on('click', '.media-detach', function (e) {
         detachMedia($(this));
         e.preventDefault();
         e.stopPropagation();
@@ -36,7 +36,7 @@
     /**
      * Binds all required events when adding an element to a bootstrap collection
      */
-    $(document).on('click', '.media-select', function(e){
+    $(document).on('click', '.media-select', function (e) {
         var t = $(this);
         var inputId = t.data('input-id');
         var mediaId = t.data('media-id');

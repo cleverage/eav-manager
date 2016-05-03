@@ -7,8 +7,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Sidus\AdminBundle\Admin\Action;
 use Sidus\AdminBundle\Admin\Admin;
-use Symfony\Component\Form\Form;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -34,8 +34,8 @@ trait AdminControllerTrait
 
     /**
      * @param Request $request
-     * @param mixed $data
-     * @param array $options
+     * @param mixed   $data
+     * @param array   $options
      * @return Form
      * @throws \InvalidArgumentException
      */
@@ -43,6 +43,7 @@ trait AdminControllerTrait
     {
         $action = $this->admin->getCurrentAction();
         $defaultOptions = $this->getDefaultFormOptions($request, $data ? $data->getId() : 'new');
+
         return $this->createForm($action->getFormType(), $data, array_merge($defaultOptions, $options));
     }
 
@@ -76,8 +77,8 @@ trait AdminControllerTrait
 
     /**
      * @param Request $request
-     * @param Form $form
-     * @param $data
+     * @param Form    $form
+     * @param         $data
      * @return array
      */
     protected function getViewParameters(Request $request, Form $form, $data)
@@ -92,8 +93,8 @@ trait AdminControllerTrait
     }
 
     /**
-     * @param Request $request
-     * @param string $dataId
+     * @param Request     $request
+     * @param string      $dataId
      * @param Action|null $action
      * @return array
      * @throws \InvalidArgumentException
@@ -103,6 +104,7 @@ trait AdminControllerTrait
         if (!$action) {
             $action = $this->admin->getCurrentAction();
         }
+
         return [
             'label' => "admin.{$this->admin->getCode()}.{$action->getCode()}.title",
             'action' => $this->getCurrentUri($request),
@@ -116,7 +118,7 @@ trait AdminControllerTrait
     }
 
     /**
-     * @param Admin $admin
+     * @param Admin  $admin
      * @param Action $action
      * @return \Twig_Template
      * @throws \Exception
@@ -127,8 +129,8 @@ trait AdminControllerTrait
     }
 
     /**
-     * @param array $parameters
-     * @param Admin|null $admin
+     * @param array       $parameters
+     * @param Admin|null  $admin
      * @param Action|null $action
      * @return Response
      * @throws \Exception
@@ -137,11 +139,12 @@ trait AdminControllerTrait
     {
         $response = new Response();
         $response->setContent($this->getTemplate($admin, $action)->render($parameters));
+
         return $response;
     }
 
     /**
-     * @param Request $request
+     * @param Request                       $request
      * @param array|ParamConverterInterface $configuration
      * @return mixed
      * @throws \Exception
@@ -157,6 +160,7 @@ trait AdminControllerTrait
             ];
         }
         $this->container->get('sensio_framework_extra.converter.manager')->apply($request, $configuration);
+
         return $request->attributes->get('data');
     }
 }

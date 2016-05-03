@@ -1,17 +1,20 @@
 {% macro table(datagrid, viewParameters) %}
     {% use '@CleverAgeEAVManagerAdmin/Asset/media.preview.html.twig' %}
     <div class="row thumbnail-row">
-        {% for result in datagrid.filterConfig.results %}
-            <div class="col-lg-2">
-                <a href="#" class="media-select" data-input-id="{{ viewParameters.inputId }}" data-media-id="{{ result.id }}"
-                   data-media-preview="{{ block('media_preview')|escape('html_attr') }}" title="{{ 'admin.media.select.title' | trans }}">
-                    <img src="{{ result.get('image') | imagine_filter('thumbnail') }}" class="img-thumbnail" {{ image_size_attrs(result.get('image'), 'thumbnail') }}>
-                </a>
-            </div>
-            {% if loop.index % 6 == 0 %}
-                </div><div class="row thumbnail-row">
-            {% endif %}
-        {% endfor %}
+    {% for result in datagrid.filterConfig.results %}
+        <div class="col-lg-2">
+            <a href="#" class="media-select" data-input-id="{{ viewParameters.inputId }}"
+               data-media-id="{{ result.id }}"
+               data-media-preview="{{ block('media_preview')|escape('html_attr') }}"
+               title="{{ 'admin.media.select.title' | trans }}">
+                <img src="{{ result.get('image') | imagine_filter('thumbnail') }}"
+                     class="img-thumbnail" {{ image_size_attrs(result.get('image'), 'thumbnail') }}>
+            </a>
+        </div>
+        {% if loop.index % 6 == 0 %}
+            </div><div class="row thumbnail-row">
+        {% endif %}
+    {% endfor %}
     </div>
 {% endmacro %}
 

@@ -17,7 +17,7 @@ class UserProfileType extends UserType
         $builder->get('__tab_password')
             ->add('plain_password', 'repeated', [
                 'type' => 'password',
-                'first_options'  => array('label' => 'admin.user.form.password.label'),
+                'first_options' => array('label' => 'admin.user.form.password.label'),
                 'second_options' => array('label' => 'admin.user.form.repeat_password.label'),
             ]);
     }

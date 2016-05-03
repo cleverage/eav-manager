@@ -12,10 +12,12 @@
             <div class="modal-footer">
                 {% block form_actions %}
                     <div class="btn-group pull-right">
-                        <a href="{{ admin_path(admin, 'browse', {familyCode: family.code, inputId: inputId}) }}" class="btn btn-default" data-target="{{ target }}">
+                        <a href="{{ admin_path(admin, 'browse', {familyCode: family.code, inputId: inputId}) }}"
+                           class="btn btn-default" data-target="{{ target }}">
                             {{ 'admin.family.edit.back.label'|trans }}
                         </a>
-                        <button type="submit" class="btn btn-primary">{{ 'admin.family.edit.submit.label'|trans }}</button>
+                        <button type="submit"
+                                class="btn btn-primary">{{ 'admin.family.edit.submit.label'|trans }}</button>
                     </div>
                     <div class="clear"></div>
                 {% endblock %}

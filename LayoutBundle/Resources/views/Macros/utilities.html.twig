@@ -1,4 +1,3 @@
-
 {% macro flash_messages() %}
     {% for name in ['error', 'warning', 'success', 'info'] %}
         {% for message in app.session.flashBag.get(name) %}
@@ -43,25 +42,25 @@
             // Launched only on ajax calls when jQuery is already defined: used to update datagrid's row
             if (typeof $ != 'undefined') {
                 {% if data is defined and id %}
-                    // Current element reference in datagrid
-                    document.activeDataGridRowRef = '#datagrid_row_{{ dataGridCode }}__{{ id }}';
-                    {% if success and target != 'tg_center' %}
-                        // Update datagrid if form was successfully submitted
-                        var form = $('#tg_center').find('form[data-target]');
-                        if (form.length) {
-                            form.submit();
-                        }
-                    {% else %}
-                        // Select active element in datagrid if present
-                        $(document.activeDataGridRowRef).addClass('info').siblings().removeClass('info');
-                    {% endif %}
+                // Current element reference in datagrid
+                document.activeDataGridRowRef = '#datagrid_row_{{ dataGridCode }}__{{ id }}';
+                {% if success and target != 'tg_center' %}
+                // Update datagrid if form was successfully submitted
+                var form = $('#tg_center').find('form[data-target]');
+                if (form.length) {
+                    form.submit();
+                }
                 {% else %}
-                    // On creation, unselect active element in datagrid if any
-                    if (document.activeDataGridRowRef) {
-                        var a = $(document.activeDataGridRowRef);
-                        a.removeClass('info');
-                        document.activeDataGridRowRef = null;
-                    }
+                // Select active element in datagrid if present
+                $(document.activeDataGridRowRef).addClass('info').siblings().removeClass('info');
+                {% endif %}
+                {% else %}
+                // On creation, unselect active element in datagrid if any
+                if (document.activeDataGridRowRef) {
+                    var a = $(document.activeDataGridRowRef);
+                    a.removeClass('info');
+                    document.activeDataGridRowRef = null;
+                }
                 {% endif %}
             }
         </script>
@@ -73,8 +72,8 @@
         // Launched only on ajax calls when jQuery is already defined: lock
         if (typeof $ != 'undefined') {
             {% if inputId %}
-                // Lock navigation if form is updated
-                lockNavigationOnChange('#{{ inputId }}', '{{ 'form.abandon_changes.confirmation'|trans }}'{% if target %}, '#{{ target }}'{% endif %});
+            // Lock navigation if form is updated
+            lockNavigationOnChange('#{{ inputId }}', '{{ 'form.abandon_changes.confirmation'|trans }}'{% if target %}, '#{{ target }}'{% endif %});
             {% endif %}
         }
     </script>

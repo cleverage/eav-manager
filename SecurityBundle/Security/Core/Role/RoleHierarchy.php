@@ -22,7 +22,7 @@ class RoleHierarchy extends BaseRoleHierarchy
         // Build proper tree hierarchy from security config
         foreach ($hierarchy as $rootRole => $roles) {
             if (!isset($flatRoles[$rootRole])) {
-                $flatRoles[$rootRole] =  new LeafRole($rootRole);
+                $flatRoles[$rootRole] = new LeafRole($rootRole);
             }
             foreach ($roles as $leafRole) {
                 if (!isset($flatRoles[$leafRole])) {

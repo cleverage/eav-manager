@@ -3,10 +3,10 @@
 namespace CleverAge\EAVManager\UserBundle\DataFixtures\ORM;
 
 
+use CleverAge\EAVManager\UserBundle\Entity\User;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use CleverAge\EAVManager\UserBundle\Entity\User;
 
 class UserFixtures extends AbstractFixture implements FixtureInterface
 {

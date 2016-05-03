@@ -2,6 +2,7 @@
 
 namespace CleverAge\EAVManager\Component\Controller;
 
+use CleverAge\EAVManager\UserBundle\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Exception;
 use LogicException;
@@ -10,7 +11,6 @@ use Sidus\EAVModelBundle\Model\FamilyInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use UnexpectedValueException;
-use CleverAge\EAVManager\UserBundle\Entity\User;
 
 /**
  * @method Registry getDoctrine
@@ -34,7 +34,7 @@ trait DataControllerTrait
     }
 
     /**
-     * @param $id
+     * @param                      $id
      * @param FamilyInterface|null $family
      * @return DataInterface
      * @throws Exception
@@ -58,12 +58,13 @@ trait DataControllerTrait
             $family = $data->getFamily();
         }
         $this->initDataFamily($family, $data);
+
         return $data;
     }
 
     /**
      * @param FamilyInterface $family
-     * @param DataInterface $data
+     * @param DataInterface   $data
      * @return FamilyInterface
      * @throws LogicException
      * @throws UnexpectedValueException

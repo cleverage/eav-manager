@@ -2,13 +2,13 @@
 
 namespace CleverAge\EAVManager\EAVModelBundle\Entity;
 
+use CleverAge\EAVManager\UserBundle\Entity\AuthorableInterface;
+use CleverAge\EAVManager\UserBundle\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 use Sidus\EAVModelBundle\Entity\Data as BaseData;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
 use Sidus\PublishingBundle\Entity\PublishableInterface;
-use CleverAge\EAVManager\UserBundle\Entity\AuthorableInterface;
-use CleverAge\EAVManager\UserBundle\Entity\User;
-use JMS\Serializer\Annotation as JMS;
 
 abstract class Data extends BaseData implements AuthorableInterface, PublishableInterface
 {
@@ -41,7 +41,7 @@ abstract class Data extends BaseData implements AuthorableInterface, Publishable
     public function __construct(FamilyInterface $family)
     {
         parent::__construct($family);
-        $this->mongoId = (string) new \MongoId();
+        $this->mongoId = (string)new \MongoId();
     }
 
     /**
@@ -50,8 +50,9 @@ abstract class Data extends BaseData implements AuthorableInterface, Publishable
     public function getMongoId()
     {
         if (!$this->mongoId) {
-            $this->mongoId = (string) new \MongoId();
+            $this->mongoId = (string)new \MongoId();
         }
+
         return $this->mongoId;
     }
 
@@ -78,6 +79,7 @@ abstract class Data extends BaseData implements AuthorableInterface, Publishable
     public function setCreatedBy(User $createdBy = null)
     {
         $this->createdBy = $createdBy;
+
         return $this;
     }
 
@@ -96,6 +98,7 @@ abstract class Data extends BaseData implements AuthorableInterface, Publishable
     public function setUpdatedBy(User $updatedBy = null)
     {
         $this->updatedBy = $updatedBy;
+
         return $this;
     }
 }

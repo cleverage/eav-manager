@@ -2,11 +2,11 @@
 
 namespace CleverAge\EAVManager\AssetBundle\Twig;
 
+use CleverAge\EAVManager\AssetBundle\Entity\Image;
 use Liip\ImagineBundle\Exception\Imagine\Filter\NonExistingFilterException;
 use Liip\ImagineBundle\Imagine\Filter\FilterConfiguration;
 use Sidus\FileUploadBundle\Utilities\BinarySizeUtility;
 use Twig_Extension;
-use CleverAge\EAVManager\AssetBundle\Entity\Image;
 
 class MediaExtension extends Twig_Extension
 {
@@ -37,7 +37,7 @@ class MediaExtension extends Twig_Extension
 
     /**
      * @param Image $image
-     * @param $filter
+     * @param       $filter
      * @return string
      * @throws NonExistingFilterException
      */

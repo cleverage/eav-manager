@@ -33,10 +33,12 @@ class AdminLink extends AbstractType
         $resolver->setDefaults([
             'admin' => null,
         ]);
-        $resolver->setNormalizer('uri', function(Options $options, $value) {
+        $resolver->setNormalizer('uri', function (Options $options, $value) {
             if (null === $value) {
-                return $this->adminRouter->generateAdminPath($options['admin'], $options['action'], $options['route_parameters']);
+                return $this->adminRouter->generateAdminPath($options['admin'], $options['action'],
+                    $options['route_parameters']);
             }
+
             return $value;
         });
     }

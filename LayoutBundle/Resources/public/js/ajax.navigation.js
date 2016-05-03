@@ -85,7 +85,7 @@
      * Handle clicks on links with a data-target and load the url in the target div if it exists.
      * Fallback to standard non-ajax navigation in case of error.
      */
-    $(document).on('click', 'a[data-target]', function(e){
+    $(document).on('click', 'a[data-target]', function (e) {
         var t = $(this);
         var tg = $('#' + t.data('target'));
         if (tg.length == 0) {
@@ -94,10 +94,10 @@
         if (checkOnBeforeLoad(e, tg)) {
             return;
         }
-        $.ajax(getUrl(t, 'href')).done(function(content){
+        $.ajax(getUrl(t, 'href')).done(function (content) {
             tg.html(content);
             bindGlobalEvents(tg);
-        }).fail(function(e){
+        }).fail(function (e) {
             tg.html(e.responseText);
         });
         finish(tg, e);
@@ -107,7 +107,7 @@
      * Handle form submission on form with a data-target and submit the form and load the content in the target div if it exists.
      * Fallback to standard non-ajax submission in case of error.
      */
-    $(document).on('submit', 'form[data-target]', function(e){
+    $(document).on('submit', 'form[data-target]', function (e) {
         var t = $(this);
         var tg = $('#' + t.data('target'));
         if (tg.length == 0) {
@@ -117,10 +117,10 @@
         $.ajax(getUrl(t, 'action'), {
             method: t.attr('method'),
             data: t.serialize()
-        }).done(function(content){
+        }).done(function (content) {
             tg.html(content);
             bindGlobalEvents(tg);
-        }).fail(function(e){
+        }).fail(function (e) {
             tg.html(e.responseText);
         });
         finish(tg, e);
@@ -129,7 +129,7 @@
     /**
      * Handle closing of targets (only empty the HTML inside)
      */
-    $(document).on('click', 'a[data-close-target],button[data-close-target]', function(e){
+    $(document).on('click', 'a[data-close-target],button[data-close-target]', function (e) {
         var t = $(this);
         var tg = $('#' + t.data('close-target'));
         if (checkOnBeforeLoad(e, tg)) {
@@ -151,7 +151,7 @@
     /**
      * Expand target
      */
-    $(document).on('click', '.expand-target', function(e){
+    $(document).on('click', '.expand-target', function (e) {
         var t = $(this);
         if (t.data('target-selector')) {
             $(document.body).toggleClass(t.data('target-selector') + '-expanded');
@@ -163,7 +163,7 @@
     /**
      * Special case for pagination: we don't want to inject data-target for each link
      */
-    $(document).on('click', '#tg_center ul.pagination a, #tg_modal ul.pagination a', function(e){
+    $(document).on('click', '#tg_center ul.pagination a, #tg_modal ul.pagination a', function (e) {
         var t = $(this);
         if (t.data('target')) {
             return;

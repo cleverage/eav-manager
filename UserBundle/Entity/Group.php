@@ -2,12 +2,12 @@
 
 namespace CleverAge\EAVManager\UserBundle\Entity;
 
-use FOS\UserBundle\Entity\Group as BaseGroup;
-use Doctrine\ORM\Mapping as ORM;
+use CleverAge\EAVManager\SecurityBundle\Entity\FamilyPermission;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use CleverAge\EAVManager\SecurityBundle\Entity\FamilyPermission;
+use Doctrine\ORM\Mapping as ORM;
+use FOS\UserBundle\Entity\Group as BaseGroup;
 use JMS\Serializer\Annotation as JMS;
 
 /**
@@ -81,6 +81,7 @@ class Group extends BaseGroup
     public function setUpdatedAt(DateTime $updatedAt = null)
     {
         $this->updatedAt = $updatedAt;
+
         return $this;
     }
 
@@ -99,6 +100,7 @@ class Group extends BaseGroup
     public function addFamilyPermission(FamilyPermission $familyPermission)
     {
         $familyPermission->setGroup($this);
+
         return $this;
     }
 
@@ -110,11 +112,12 @@ class Group extends BaseGroup
     {
         $this->familyPermissions->removeElement($familyPermission);
         $familyPermission->setGroup(null);
+
         return $this;
     }
 
     public function __toString()
     {
-        return (string) $this->getName();
+        return (string)$this->getName();
     }
 }

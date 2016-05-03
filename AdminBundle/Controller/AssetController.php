@@ -20,8 +20,8 @@ class AssetController extends DataController
     /**
      * @Template()
      * @param FamilyInterface $family
-     * @param Request $request
-     * @param string $inputId
+     * @param Request         $request
+     * @param string          $inputId
      * @return array
      * @throws \Exception
      */
@@ -45,8 +45,8 @@ class AssetController extends DataController
     /**
      * @Template()
      * @param FamilyInterface $family
-     * @param Request $request
-     * @param string $inputId
+     * @param Request         $request
+     * @param string          $inputId
      * @return array
      * @throws \Exception
      */
@@ -78,8 +78,8 @@ class AssetController extends DataController
     /**
      * @Template()
      * @param FamilyInterface $family
-     * @param Request $request
-     * @param string $inputId
+     * @param Request         $request
+     * @param string          $inputId
      * @return Response
      * @throws \Exception
      */
@@ -87,6 +87,7 @@ class AssetController extends DataController
     {
         /** @var DataInterface $data */
         $data = $family->createData();
+
         return $this->editModalAction($family, $data, $request, $inputId);
     }
 
@@ -94,9 +95,9 @@ class AssetController extends DataController
      * @Security("is_granted('edit', family) or is_granted('ROLE_SUPER_ADMIN')")
      * @Template()
      * @param FamilyInterface $family
-     * @param DataInterface $data
-     * @param Request $request
-     * @param string $inputId
+     * @param DataInterface   $data
+     * @param Request         $request
+     * @param string          $inputId
      * @return array|RedirectResponse
      * @throws \Exception
      */
@@ -118,12 +119,13 @@ class AssetController extends DataController
             if ($request->get('target')) {
                 $parameters['target'] = $request->get('target');
             }
+
             return $this->redirectToAdmin($this->admin->getCode(), 'browse', $parameters);
         }
 
         return $this->renderAction($this->getViewParameters($request, $form, $data) + [
-            'inputId' => $inputId,
-        ]);
+                'inputId' => $inputId,
+            ]);
     }
 
     /**
@@ -134,7 +136,8 @@ class AssetController extends DataController
         if ($this->admin->getCurrentAction()->getCode() === 'browseThumbnail') {
             return 'thumbnail_browser';
         }
-        return strtolower($this->family->getCode()) . ($this->browserMode ? '_browser' : '');
+
+        return strtolower($this->family->getCode()).($this->browserMode ? '_browser' : '');
     }
 
     /**

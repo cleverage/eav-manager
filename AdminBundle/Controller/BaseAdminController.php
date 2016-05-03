@@ -2,13 +2,13 @@
 
 namespace CleverAge\EAVManager\AdminBundle\Controller;
 
+use CleverAge\EAVManager\Component\Controller\AdminControllerTrait;
+use CleverAge\EAVManager\Component\Controller\BaseControllerTrait;
 use Elastica\Query;
 use Sidus\AdminBundle\Controller\AdminInjectable;
 use Sidus\DataGridBundle\Model\DataGrid;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use CleverAge\EAVManager\Component\Controller\AdminControllerTrait;
-use CleverAge\EAVManager\Component\Controller\BaseControllerTrait;
 
 abstract class BaseAdminController extends Controller implements AdminInjectable
 {

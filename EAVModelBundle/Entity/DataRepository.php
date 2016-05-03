@@ -2,9 +2,9 @@
 
 namespace CleverAge\EAVManager\EAVModelBundle\Entity;
 
+use CleverAge\EAVManager\UserBundle\Entity\User;
 use Doctrine\ORM\QueryBuilder;
 use Sidus\EAVModelBundle\Entity\DataRepository as BaseDataRepository;
-use CleverAge\EAVManager\UserBundle\Entity\User;
 
 class DataRepository extends BaseDataRepository
 {
@@ -21,12 +21,13 @@ class DataRepository extends BaseDataRepository
                 'user1' => $user,
                 'user2' => $user,
             ]);
+
         return $qb;
     }
 
     /**
-     * @param $alias
-     * @param null $indexBy
+     * @param                   $alias
+     * @param null              $indexBy
      * @param QueryBuilder|null $qb
      * @return QueryBuilder
      */
@@ -36,7 +37,8 @@ class DataRepository extends BaseDataRepository
             $qb = $this->createQueryBuilder($alias, $indexBy);
         }
         $qb->addSelect('values')
-            ->leftJoin($alias . '.values', 'values');
+            ->leftJoin($alias.'.values', 'values');
+
         return $qb;
     }
 }

@@ -14,7 +14,7 @@
     <script>
         var editor = parent.tinymce.activeEditor;
 
-        $('.tinymce-close').on('click', function(e){
+        $('.tinymce-close').on('click', function (e) {
             editor.windowManager.close();
             e.preventDefault();
             e.stopPropagation();
@@ -23,7 +23,7 @@
 
     {% block tinymce_javascript %}
         <script>
-            $('.tinymce-submit').on('click', function(e){
+            $('.tinymce-submit').on('click', function (e) {
                 var dataId = $('.sidus-combo-selector input.select2').val();
                 var plugin = parent.tinymce.PluginManager.get('datalink')(editor);
                 plugin.createLink(dataId);

@@ -2,6 +2,8 @@
 
 namespace CleverAge\EAVManager\SecurityBundle\Form\Type;
 
+use CleverAge\EAVManager\SecurityBundle\Security\Core\Role\LeafRole;
+use CleverAge\EAVManager\SecurityBundle\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -9,8 +11,6 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use CleverAge\EAVManager\SecurityBundle\Security\Core\Role\LeafRole;
-use CleverAge\EAVManager\SecurityBundle\Security\Core\Role\RoleHierarchy;
 
 class RoleHierarchyType extends AbstractType
 {
@@ -28,7 +28,7 @@ class RoleHierarchyType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $hierarchy = $options['hierarchy'];
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) use ($hierarchy) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($hierarchy) {
             $roles = $event->getData();
             $form = $event->getForm();
 
@@ -77,6 +77,7 @@ class RoleHierarchyType extends AbstractType
                         }
                     }
                 }
+
                 return $submittedData;
             }
         ));
@@ -88,7 +89,7 @@ class RoleHierarchyType extends AbstractType
             'hierarchy' => $this->roleHierarchy->getTreeHierarchy(),
             'required' => false,
         ]);
-        $resolver->setNormalizer('hierarchy', function(Options $options, $value){
+        $resolver->setNormalizer('hierarchy', function (Options $options, $value) {
             $error = "'hierarchy' option must be a LeafRole or an array of LeafRole";
             if (!$value instanceof \Traversable && !$value instanceof LeafRole) {
                 throw new \UnexpectedValueException($error);
@@ -100,6 +101,7 @@ class RoleHierarchyType extends AbstractType
                     }
                 }
             }
+
             return $value;
         });
     }

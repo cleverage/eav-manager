@@ -7,13 +7,15 @@
 {% block tg_center %}
     {% if form is defined %}
         <div class="edit-form">
-            <a href="{{ admin_path(admin, 'list', {familyCode: family.code}) }}" data-close-target="{{ target }}" class="pull-right">
+            <a href="{{ admin_path(admin, 'list', {familyCode: family.code}) }}" data-close-target="{{ target }}"
+               class="pull-right">
                 <i class="fa fa-close"></i>
             </a>
             {{ form_start(form) }}
             {{ form_widget(form) }}
             <div class="btn-group pull-right">
-                <a href="{{ admin_path(admin, 'list', {familyCode: family.code}) }}" class="btn btn-default" data-close-target="{{ target }}">
+                <a href="{{ admin_path(admin, 'list', {familyCode: family.code}) }}" class="btn btn-default"
+                   data-close-target="{{ target }}">
                     {{ 'admin.family.delete.back.label'|trans }}
                 </a>
                 <button type="submit" class="btn btn-danger">{{ 'admin.family.delete.submit.label'|trans }}</button>

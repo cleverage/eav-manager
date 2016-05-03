@@ -78,6 +78,7 @@ class WysiwygController extends Controller
             $data = $this->get('sidus_eav_model.doctrine.repository.data')
                 ->find($request->query->get('dataId'));
         }
+
         return $data;
     }
 }

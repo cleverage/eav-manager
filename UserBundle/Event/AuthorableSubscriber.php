@@ -3,12 +3,12 @@
 namespace CleverAge\EAVManager\UserBundle\Event;
 
 
+use CleverAge\EAVManager\UserBundle\Entity\AuthorableInterface;
+use CleverAge\EAVManager\UserBundle\Entity\User;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use CleverAge\EAVManager\UserBundle\Entity\AuthorableInterface;
-use CleverAge\EAVManager\UserBundle\Entity\User;
 
 class AuthorableSubscriber implements EventSubscriber
 {
@@ -17,6 +17,7 @@ class AuthorableSubscriber implements EventSubscriber
 
     /**
      * AuthorableSubscriber constructor.
+     *
      * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(TokenStorageInterface $tokenStorage)

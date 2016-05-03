@@ -3,13 +3,13 @@
 {% block tg_center %}
     <div class="edit-form">
         {{ form_start(form) }}
-            {{ form_widget(form) }}
-            {% block form_actions %}
-                <div class="btn-group pull-right">
-                    <button type="submit" class="btn btn-primary">Enregistrer</button>
-                </div>
-                <div class="clear"></div>
-            {% endblock %}
+        {{ form_widget(form) }}
+        {% block form_actions %}
+            <div class="btn-group pull-right">
+                <button type="submit" class="btn btn-primary">Enregistrer</button>
+            </div>
+            <div class="clear"></div>
+        {% endblock %}
         {{ form_end(form) }}
     </div>
 {% endblock %}

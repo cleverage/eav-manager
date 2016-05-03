@@ -2,6 +2,7 @@
 
 namespace CleverAge\EAVManager\AdminBundle\Controller;
 
+use CleverAge\EAVManager\Component\Controller\DataControllerTrait;
 use Elastica\Query;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -13,7 +14,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use UnexpectedValueException;
-use CleverAge\EAVManager\Component\Controller\DataControllerTrait;
 
 /**
  * @Security("is_granted('ROLE_DATA_MANAGER')")
@@ -25,9 +25,9 @@ class VariantController extends BaseAdminController
     /**
      * @Template()
      * @param AttributeInterface $attribute
-     * @param DataInterface $parentData
+     * @param DataInterface      $parentData
      * @ParamConverter("parentData", class="CleverAgeEAVManagerEAVModelBundle:Data", options={"id" = "parentId"})
-     * @param Request $request
+     * @param Request            $request
      * @return Response
      * @throws \Exception
      */
@@ -50,6 +50,7 @@ class VariantController extends BaseAdminController
             if ($request->get('target')) {
                 $parameters['target'] = $request->get('target');
             }
+
             return $this->redirectToAdmin($this->admin->getCode(), 'create', $parameters);
         }
 
@@ -59,35 +60,45 @@ class VariantController extends BaseAdminController
     /**
      * @Template()
      * @param AttributeInterface $attribute
-     * @param DataInterface $parentData
+     * @param DataInterface      $parentData
      * @ParamConverter("parentData", class="CleverAgeEAVManagerEAVModelBundle:Data", options={"id" = "parentId"})
-     * @param FamilyInterface $family
-     * @param Request $request
+     * @param FamilyInterface    $family
+     * @param Request            $request
      * @return Response
      * @throws \Exception
      */
-    public function createAction(AttributeInterface $attribute, DataInterface $parentData, FamilyInterface $family, Request $request)
-    {
+    public function createAction(
+        AttributeInterface $attribute,
+        DataInterface $parentData,
+        FamilyInterface $family,
+        Request $request
+    ) {
         if (!$parentData->getFamily()->hasAttribute($attribute->getCode())) {
             throw new UnexpectedValueException("Attribute does not belong to parent data's family");
         }
         /** @var DataInterface $data */
         $data = $family->createData();
+
         return $this->editAction($attribute, $parentData, $family, $data, $request);
     }
 
     /**
      * @Template()
      * @param AttributeInterface $attribute
-     * @param int|DataInterface $parentId
-     * @param FamilyInterface $family
-     * @param DataInterface $data
-     * @param Request $request
+     * @param int|DataInterface  $parentId
+     * @param FamilyInterface    $family
+     * @param DataInterface      $data
+     * @param Request            $request
      * @return array
      * @throws \Exception
      */
-    public function editAction(AttributeInterface $attribute, $parentId, FamilyInterface $family, DataInterface $data, Request $request)
-    {
+    public function editAction(
+        AttributeInterface $attribute,
+        $parentId,
+        FamilyInterface $family,
+        DataInterface $data,
+        Request $request
+    ) {
         $parentData = $this->getData($parentId);
         $this->checkAttributeFamily($parentData, $attribute);
         if ($data->getFamilyCode() !== $family->getCode()) {
@@ -112,6 +123,7 @@ class VariantController extends BaseAdminController
             if ($request->get('target')) {
                 $parameters['target'] = $request->get('target');
             }
+
             return $this->redirectToEntity($data, 'edit', $parameters);
         }
 
@@ -124,15 +136,20 @@ class VariantController extends BaseAdminController
      * @Security("is_granted('delete', family) or is_granted('ROLE_SUPER_ADMIN')")
      * @Template()
      * @param AttributeInterface $attribute
-     * @param int|DataInterface $parentId
-     * @param FamilyInterface $family
-     * @param DataInterface $data
-     * @param Request $request
+     * @param int|DataInterface  $parentId
+     * @param FamilyInterface    $family
+     * @param DataInterface      $data
+     * @param Request            $request
      * @return array|RedirectResponse
      * @throws \Exception
      */
-    public function deleteAction(AttributeInterface $attribute, $parentId, FamilyInterface $family, DataInterface $data, Request $request)
-    {
+    public function deleteAction(
+        AttributeInterface $attribute,
+        $parentId,
+        FamilyInterface $family,
+        DataInterface $data,
+        Request $request
+    ) {
         $parentData = $this->getData($parentId);
         $this->checkAttributeFamily($parentData, $attribute);
         if ($data->getFamilyCode() !== $family->getCode()) {
@@ -145,6 +162,7 @@ class VariantController extends BaseAdminController
         $form->handleRequest($request);
         if ($form->isValid()) {
             $this->deleteEntity($data);
+
             return $this->redirectToEntity($parentData, 'edit');
         }
 
@@ -156,9 +174,9 @@ class VariantController extends BaseAdminController
     /**
      * Attach variant to original parent data if not already attached
      *
-     * @param DataInterface $data
+     * @param DataInterface      $data
      * @param AttributeInterface $attribute
-     * @param DataInterface $parentData
+     * @param DataInterface      $parentData
      * @throws \Exception
      */
     protected function attachVariant(DataInterface $data, AttributeInterface $attribute, DataInterface $parentData)
@@ -175,7 +193,7 @@ class VariantController extends BaseAdminController
     }
 
     /**
-     * @param DataInterface $parentData
+     * @param DataInterface      $parentData
      * @param AttributeInterface $attribute
      * @throws UnexpectedValueException
      */

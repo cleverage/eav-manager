@@ -6,14 +6,11 @@
  * @param message
  * @param target
  */
-function lockNavigation(message, target)
-{
+function lockNavigation(message, target) {
     document.__lockedTarget = target;
-    window.onbeforeunload = function(e){
+    window.onbeforeunload = function (e) {
         if (e.target &&
-            document.__lockedTarget &&
-            !$(e.target).is(document) &&
-            !$(e.target).is(document.__lockedTarget)
+            document.__lockedTarget && !$(e.target).is(document) && !$(e.target).is(document.__lockedTarget)
         ) {
             return false;
         }
@@ -24,8 +21,7 @@ function lockNavigation(message, target)
 /**
  * Disable navigation lock
  */
-function unLockNavigation()
-{
+function unLockNavigation() {
     document.__lockedTarget = null;
     window.onbeforeunload = null;
 }
@@ -37,12 +33,11 @@ function unLockNavigation()
  * @param message
  * @param target
  */
-function lockNavigationOnChange(form, message, target)
-{
-    $(form).one('change keyup', ':input', function(){
+function lockNavigationOnChange(form, message, target) {
+    $(form).one('change keyup', ':input', function () {
         lockNavigation(message, target);
     });
-    $(form).on('submit', function(){
+    $(form).on('submit', function () {
         unLockNavigation();
     });
 }
@@ -52,7 +47,7 @@ function lockNavigationOnChange(form, message, target)
  * @param editor
  */
 function callback_tinymce_init(editor) {
-    editor.on('change', function(){
+    editor.on('change', function () {
         $(editor.targetElm).trigger('change');
     });
 }

@@ -5,12 +5,14 @@
         <div class="panel-heading">
             {% if data.id %}
                 {% if variant_families|length == 1 %}
-                    <a href="{{ admin_path('variant', 'create', base_route_parameters|merge({familyCode: variant_families|first.code})) }}" class="btn btn-primary"
+                    <a href="{{ admin_path('variant', 'create', base_route_parameters|merge({familyCode: variant_families|first.code})) }}"
+                       class="btn btn-primary"
                        title="{{ 'sidus_eav_variant.link.create.title'|trans }}" data-target="{{ target }}">
                         <i class="fa fa-plus"></i> {{ 'sidus_eav_variant.link.create.label'|trans }}
                     </a>
                 {% else %}
-                    <a href="{{ admin_path('variant', 'select', base_route_parameters|merge({familyCode: variant_families|first.code})) }}" class="btn btn-primary"
+                    <a href="{{ admin_path('variant', 'select', base_route_parameters|merge({familyCode: variant_families|first.code})) }}"
+                       class="btn btn-primary"
                        title="{{ 'sidus_eav_variant.link.select.title'|trans }}" data-target="{{ target }}">
                         <i class="fa fa-plus"></i> {{ 'sidus_eav_variant.link.select.label'|trans }}
                     </a>
@@ -28,11 +30,13 @@
                     {{ variant }} <span class="text-muted">({{ variant.family }})</span>
                     <div class="btn-group pull-right">
                         <a href="{{ entity_path(variant, 'edit', base_route_parameters) }}"
-                           class="btn btn-default" title="{{ 'sidus_eav_variant.link.edit.title'|trans }}" data-target="{{ target }}">
+                           class="btn btn-default" title="{{ 'sidus_eav_variant.link.edit.title'|trans }}"
+                           data-target="{{ target }}">
                             <i class="fa fa-edit"></i>
                         </a>
                         <a href="{{ entity_path(variant, 'delete', base_route_parameters) }}"
-                           class="btn btn-danger" title="{{ 'sidus_eav_variant.link.delete.title'|trans }}" data-target="{{ target }}">
+                           class="btn btn-danger" title="{{ 'sidus_eav_variant.link.delete.title'|trans }}"
+                           data-target="{{ target }}">
                             <i class="fa fa-trash"></i>
                         </a>
                     </div>
@@ -46,16 +50,20 @@
     {# @var image \CleverAge\EAVManager\AssetBundle\Entity\Image #}
     {% if form.vars.data %}
         {% set image = form.vars.data %}
-        <img src="{{ image.fileName | imagine_filter('thumbnail') }}" class="pull-right img-thumbnail" {{ image_size_attrs(image, 'thumbnail') }}>
+        <img src="{{ image.fileName | imagine_filter('thumbnail') }}"
+             class="pull-right img-thumbnail" {{ image_size_attrs(image, 'thumbnail') }}>
     {% endif %}
     <div class="well well-sm pull-left">
         {{ block('sidus_resource_widget') }}
         {% if image is defined and image %}
             <hr class="hr-sm">
             <dl class="no-margin-bottom">
-                <dt>Dernière modification :</dt><dd>{{ image.fileModifiedAt|date() }}</dd>
-                <dt>Taille du fichier :</dt><dd>{{ image.fileSize|file_size }}</dd>
-                <dt>Type de fichier :</dt><dd>{{ image.fileType }}</dd>
+                <dt>Dernière modification :</dt>
+                <dd>{{ image.fileModifiedAt|date() }}</dd>
+                <dt>Taille du fichier :</dt>
+                <dd>{{ image.fileSize|file_size }}</dd>
+                <dt>Type de fichier :</dt>
+                <dd>{{ image.fileType }}</dd>
             </dl>
         {% endif %}
     </div>
@@ -92,11 +100,13 @@
 {% use '@CleverAgeEAVManagerAdmin/Asset/media.preview.html.twig' %}
 {% block eavmanager_media_browser_widget %}
     <div class="media-browser">
-        <input type="hidden" name="{{ full_name }}" id="{{ form.vars.id }}" {% if value is defined and value %} value="{{ value }}"{% endif %}>
+        <input type="hidden" name="{{ full_name }}"
+               id="{{ form.vars.id }}" {% if value is defined and value %} value="{{ value }}"{% endif %}>
         {% if not form.vars.disabled %}
             <div class="pull-left btn-group-vertical">
                 <a href="{{ admin_path('media', 'browse', {familyCode: form.vars.family.code, inputId: form.vars.id}) }}"
-                   type="button" class="btn btn-primary" data-target="tg_modal" title="{{ 'admin.media.select.title' | trans }}">
+                   type="button" class="btn btn-primary" data-target="tg_modal"
+                   title="{{ 'admin.media.select.title' | trans }}">
                     <i class="fa fa-image"></i> {{ 'admin.media.select.label' | trans }}
                 </a>
                 <a href="javascript:void(0)" class="btn btn-warning media-detach">

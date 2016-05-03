@@ -2,9 +2,9 @@
 
 namespace CleverAge\EAVManager\AssetBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use Sidus\EAVModelBundle\Utilities\DateTimeUtility;
 use Sidus\FileUploadBundle\Entity\Resource;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="Sidus\FileUploadBundle\Entity\ResourceRepository")
@@ -19,6 +19,7 @@ class Document extends Resource
 
     /**
      * Mime type
+     *
      * @var string
      * @ORM\Column(type="string", length=128, nullable=true)
      */
@@ -26,11 +27,15 @@ class Document extends Resource
 
     /**
      * File's last modification date
+     *
      * @var \DateTime
      * @ORM\Column(name="file_modified_at", type="datetime", nullable=true)
      */
     protected $fileModifiedAt;
 
+    /**
+     * @return string
+     */
     public static function getType()
     {
         return 'document';
@@ -51,6 +56,7 @@ class Document extends Resource
     public function setFileSize($fileSize)
     {
         $this->fileSize = $fileSize;
+
         return $this;
     }
 
@@ -69,6 +75,7 @@ class Document extends Resource
     public function setFileType($fileType)
     {
         $this->fileType = $fileType;
+
         return $this;
     }
 
@@ -88,11 +95,13 @@ class Document extends Resource
     public function setFileModifiedAt($fileModifiedAt)
     {
         $this->fileModifiedAt = DateTimeUtility::parse($fileModifiedAt);
+
         return $this;
     }
 
     /**
      * Serialize automatically the entity when passed to json_encode
+     *
      * @return array
      */
     public function jsonSerialize()
@@ -102,6 +111,7 @@ class Document extends Resource
         $json['fileType'] = $this->getFileType();
         $json['fileModifiedAt'] = $this->getFileModifiedAt();
         $json['type'] = $this::getType();
+
         return $json;
     }
 }

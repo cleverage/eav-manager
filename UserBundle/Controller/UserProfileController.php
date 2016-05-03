@@ -2,11 +2,11 @@
 
 namespace CleverAge\EAVManager\UserBundle\Controller;
 
+use CleverAge\EAVManager\Component\Controller\BaseControllerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use CleverAge\EAVManager\Component\Controller\BaseControllerTrait;
 
 class UserProfileController extends Controller
 {
@@ -37,6 +37,7 @@ class UserProfileController extends Controller
             $em->flush();
 
             $this->addFlash('success', 'eavmanager.flash.edit.success');
+
             return $this->redirectToRoute('eavmanager_user.profile.edit', [
                 'id' => $user->getId(),
             ]);

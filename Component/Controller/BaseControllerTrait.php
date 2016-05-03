@@ -3,17 +3,17 @@
 namespace CleverAge\EAVManager\Component\Controller;
 
 
+use CleverAge\EAVManager\UserBundle\Entity\User;
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityManager;
+use Elastica\Exception\Connection\HttpException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Doctrine\Bundle\DoctrineBundle\Registry;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use CleverAge\EAVManager\UserBundle\Entity\User;
-use Elastica\Exception\Connection\HttpException;
 
 /**
  * @method string generateUrl($route, $parameters = [], $referenceType)
@@ -27,7 +27,7 @@ trait BaseControllerTrait
 {
     /**
      * @param Request $request
-     * @param array $parameters
+     * @param array   $parameters
      * @return string
      * @throws \InvalidArgumentException
      */
@@ -37,6 +37,7 @@ trait BaseControllerTrait
         if ($request->get('target')) {
             $params['target'] = $request->get('target');
         }
+
         return $this->generateUrl($request->attributes->get('_route'), array_merge($params, $parameters));
     }
 
@@ -71,10 +72,12 @@ trait BaseControllerTrait
     {
         try {
             $this->container->get('fos_elastica.client')->getStatus();
+
             return true;
         } catch (HttpException $e) {
             $this->addFlash('warning', 'Elastic search is down, some features will be locked');
         }
+
         return false;
     }
 
@@ -87,26 +90,38 @@ trait BaseControllerTrait
      * @return RedirectResponse
      * @throws \Exception
      */
-    protected function redirectToEntity($entity, $action, array $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH, $status = 302)
-    {
+    protected function redirectToEntity(
+        $entity,
+        $action,
+        array $parameters = [],
+        $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH,
+        $status = 302
+    ) {
         $url = $this->container->get('sidus_admin.routing.admin_router')
             ->generateEntityPath($entity, $action, $parameters, $referenceType);
+
         return new RedirectResponse($url, $status);
     }
 
     /**
      * @param string $admin
      * @param string $action
-     * @param array $parameters
-     * @param int $referenceType
-     * @param int $status
+     * @param array  $parameters
+     * @param int    $referenceType
+     * @param int    $status
      * @return RedirectResponse
      * @throws \Exception
      */
-    protected function redirectToAdmin($admin, $action, array $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH, $status = 302)
-    {
+    protected function redirectToAdmin(
+        $admin,
+        $action,
+        array $parameters = [],
+        $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH,
+        $status = 302
+    ) {
         $url = $this->container->get('sidus_admin.routing.admin_router')
             ->generateAdminPath($admin, $action, $parameters, $referenceType);
+
         return new RedirectResponse($url, $status);
     }
 }

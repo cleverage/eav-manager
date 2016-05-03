@@ -41,6 +41,7 @@ class LeafRole extends Role
             $parent->addChild($this);
         }
         $this->parent = $parent;
+
         return $this;
     }
 
@@ -60,6 +61,7 @@ class LeafRole extends Role
     {
         $this->children->add($child);
         $child->setParent($this);
+
         return $this;
     }
 
@@ -71,6 +73,7 @@ class LeafRole extends Role
     {
         $this->children->remove($child);
         $child->setParent(null);
+
         return $this;
     }
 
@@ -84,6 +87,7 @@ class LeafRole extends Role
         foreach ($children as $child) {
             $this->addChild($child);
         }
+
         return $this;
     }
 
@@ -95,6 +99,7 @@ class LeafRole extends Role
         foreach ($this->children as $child) {
             $this->removeChild($child);
         }
+
         return $this;
     }
 }

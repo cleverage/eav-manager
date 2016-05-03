@@ -2,12 +2,12 @@
 
 namespace CleverAge\EAVManager\UserBundle\Entity;
 
+use CleverAge\EAVManager\SecurityBundle\Entity\FamilyPermission;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Entity\User as BaseUser;
-use CleverAge\EAVManager\SecurityBundle\Entity\FamilyPermission;
 use JMS\Serializer\Annotation as JMS;
 use Sidus\EAVModelBundle\Entity\DataInterface;
 
@@ -93,6 +93,7 @@ class User extends BaseUser
     public function setUpdatedAt(DateTime $updatedAt = null)
     {
         $this->updatedAt = $updatedAt;
+
         return $this;
     }
 
@@ -108,6 +109,7 @@ class User extends BaseUser
                 $permissions->add($familyPermission);
             }
         }
+
         return $permissions;
     }
 
@@ -126,6 +128,7 @@ class User extends BaseUser
     public function addFamilyPermission(FamilyPermission $familyPermission)
     {
         $familyPermission->setUser($this);
+
         return $this;
     }
 
@@ -137,6 +140,7 @@ class User extends BaseUser
     {
         $this->familyPermissions->removeElement($familyPermission);
         $familyPermission->setUser(null);
+
         return $this;
     }
 
@@ -155,6 +159,7 @@ class User extends BaseUser
     public function setData(DataInterface $data = null)
     {
         $this->data = $data;
+
         return $this;
     }
 
@@ -177,6 +182,7 @@ class User extends BaseUser
     public function setRawRoles(array $roles)
     {
         $this->roles = $roles;
+
         return $this;
     }
 }

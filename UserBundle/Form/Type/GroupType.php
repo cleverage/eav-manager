@@ -2,13 +2,13 @@
 
 namespace CleverAge\EAVManager\UserBundle\Form\Type;
 
+use CleverAge\EAVManager\UserBundle\Entity\Group;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\Exception\AccessException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use CleverAge\EAVManager\UserBundle\Entity\Group;
 
 class GroupType extends AbstractType
 {
@@ -36,7 +36,7 @@ class GroupType extends AbstractType
                 'by_reference' => false,
             ]);
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event){
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             /** @var Group $group */
             $group = $event->getData();
             if ($group) {

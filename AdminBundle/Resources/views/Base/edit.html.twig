@@ -9,17 +9,17 @@
 {% block tg_center %}
     <div class="edit-form">
         {{ form_start(form) }}
-            {% block form_actions %}
-                <div class="btn-group pull-right">
-                    <a href="{{ admin_path(admin, 'list') }}" class="btn btn-default" data-close-target="{{ target }}">
-                        {{ isAjax ? 'Fermer' : 'Retour' }}
-                    </a>
-                    <button type="submit" class="btn btn-primary">Enregistrer</button>
-                </div>
-                <div class="clear"></div>
-            {% endblock %}
-            {{ form_widget(form) }}
-            {{ block('form_actions') }}
+        {% block form_actions %}
+            <div class="btn-group pull-right">
+                <a href="{{ admin_path(admin, 'list') }}" class="btn btn-default" data-close-target="{{ target }}">
+                    {{ isAjax ? 'Fermer' : 'Retour' }}
+                </a>
+                <button type="submit" class="btn btn-primary">Enregistrer</button>
+            </div>
+            <div class="clear"></div>
+        {% endblock %}
+        {{ form_widget(form) }}
+        {{ block('form_actions') }}
         {{ form_end(form) }}
     </div>
 {% endblock %}

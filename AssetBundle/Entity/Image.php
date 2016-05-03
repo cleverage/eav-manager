@@ -41,6 +41,7 @@ class Image extends Document
     public function setWidth($width)
     {
         $this->width = $width;
+
         return $this;
     }
 
@@ -59,11 +60,13 @@ class Image extends Document
     public function setHeight($height)
     {
         $this->height = $height;
+
         return $this;
     }
 
     /**
      * Serialize automatically the entity when passed to json_encode
+     *
      * @return array
      */
     public function jsonSerialize()
@@ -71,6 +74,7 @@ class Image extends Document
         $json = parent::jsonSerialize();
         $json['width'] = $this->getWidth();
         $json['height'] = $this->getHeight();
+
         return $json;
     }
 }

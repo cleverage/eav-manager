@@ -1,22 +1,28 @@
 {
-  "name": "cleverage/eav-manager",
-  "description": "Blazing fast data modeling and enrichment",
-  "keywords": [ "cleverage", "manager", "eav", "model" ],
-  "homepage": "https://git.clever-age.net/clever-age-practice-manager/eav-manager",
-  "type": "library",
-  "license": "proprietary",
-  "authors": [
-    {
-      "name": "Vincent Chalnot",
-      "email": "vchalnot@clever-age.com",
-      "homepage": "https://github.com/VincentChalnot",
-      "role": "Lead Developer"
+    "name": "cleverage/eav-manager",
+    "description": "Blazing fast data modeling and enrichment",
+    "keywords": [
+        "cleverage",
+        "manager",
+        "eav",
+        "model"
+    ],
+    "homepage": "https://git.clever-age.net/clever-age-practice-manager/eav-manager",
+    "type": "library",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Vincent Chalnot",
+            "email": "vchalnot@clever-age.com",
+            "homepage": "https://github.com/VincentChalnot",
+            "role": "Lead Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "CleverAge\\EAVManager\\": ""
+        }
+    },
+    "require": {
     }
-  ],
-  "autoload": {
-    "psr-4": { "CleverAge\\EAVManager\\": "" }
-  },
-  "require": {
-
-  }
 }

@@ -3,7 +3,6 @@
 namespace CleverAge\EAVManager\SecurityBundle\Voter;
 
 
-
 use Doctrine\Common\Collections\Collection;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -74,6 +73,7 @@ class FamilyVoter implements VoterInterface
         if (!$user instanceof User) {
             return [];
         }
+
         return $user->getCombinedFamilyPermissions();
     }
 }

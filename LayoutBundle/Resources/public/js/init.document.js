@@ -6,7 +6,7 @@
  */
 function bindGlobalEvents(target) {
     // Autocomplete
-    $(target).find('.select2').each(function(){
+    $(target).find('.select2').each(function () {
         $(this).samsonSelect2();
     });
 
@@ -25,7 +25,7 @@ function bindGlobalEvents(target) {
     }
 
     // File upload widget
-    $(target).find('.fileupload-widget').each(function(){
+    $(target).find('.fileupload-widget').each(function () {
         $(this).sidusFileUpload();
     });
 }
@@ -36,14 +36,14 @@ function bindGlobalEvents(target) {
     /**
      * Binds all required events when adding an element to a bootstrap collection
      */
-    $(document).on('collection.item.added', function(e, o){
+    $(document).on('collection.item.added', function (e, o) {
         bindGlobalEvents(o);
     });
 
     /**
      * Binds all events to the document on load
      */
-    $(document).ready(function() {
+    $(document).ready(function () {
         bindGlobalEvents(document);
     });
 

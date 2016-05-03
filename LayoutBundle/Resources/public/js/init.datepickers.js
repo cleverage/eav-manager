@@ -33,8 +33,8 @@ function initDatePickers(target) {
     });
 
     // Restore value from hidden input
-    $(target).find('.date').find('input[type=hidden]').each(function(){
-        if($(this).val()) {
+    $(target).find('.date').find('input[type=hidden]').each(function () {
+        if ($(this).val()) {
             $(this).parent().datetimepicker('setValue');
         }
     });

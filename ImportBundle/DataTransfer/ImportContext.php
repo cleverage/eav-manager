@@ -1,10 +1,13 @@
 <?php
 
-namespace CleverAge\EAVManager\InstallerBundle\DataTransfer;
+namespace CleverAge\EAVManager\ImportBundle\DataTransfer;
 
 
 use DateTime;
 
+/**
+ * Stores context information between each transaction during import
+ */
 class ImportContext implements \JsonSerializable
 {
     /** @var DateTime */
@@ -29,6 +32,20 @@ class ImportContext implements \JsonSerializable
     protected $errors = [];
 
     /**
+     * @param array $data
+     * @return ImportContext
+     */
+    public static function unserialize(array $data)
+    {
+        $object = new ImportContext();
+        foreach ($data as $property => $item) {
+            $object->$property = $item;
+        }
+
+        return $object;
+    }
+
+    /**
      * @param int $batchCount
      */
     public function __construct($batchCount = 30)
@@ -37,6 +54,9 @@ class ImportContext implements \JsonSerializable
         $this->startedAt = new DateTime();
     }
 
+    /**
+     * Called when import terminates
+     */
     public function terminate()
     {
         $this->endedAt = new DateTime();
@@ -87,6 +107,7 @@ class ImportContext implements \JsonSerializable
         if (!array_key_exists($namespace, $this->references)) {
             return false;
         }
+
         return array_key_exists($reference, $this->references[$namespace]);
     }
 
@@ -101,13 +122,14 @@ class ImportContext implements \JsonSerializable
         if (!$this->hasReference($namespace, $reference)) {
             throw new \UnexpectedValueException("Missing reference '{$namespace}/{$reference}'");
         }
+
         return $this->references[$namespace][$reference];
     }
 
     /**
      * @param string $namespace
      * @param string $reference
-     * @param int $objectId
+     * @param int    $objectId
      */
     public function addReference($namespace, $reference, $objectId)
     {
@@ -149,11 +171,11 @@ class ImportContext implements \JsonSerializable
     }
 
     /**
-     * @param $string
+     * @param string $message
      */
-    public function addError($string)
+    public function addError($message)
     {
-        $this->errors[time()] = $string;
+        $this->errors[time()] = $message;
     }
 
     /**
@@ -174,19 +196,7 @@ class ImportContext implements \JsonSerializable
         foreach ($class->getProperties() as $property) {
             $result[$property->getName()] = $this->{$property->getName()};
         }
-        return $result;
-    }
 
-    /**
-     * @param array $data
-     * @return ImportContext
-     */
-    public static function unserialize(array $data)
-    {
-        $object = new ImportContext();
-        foreach ($data as $property => $item) {
-            $object->$property = $item;
-        }
-        return $object;
+        return $result;
     }
 }

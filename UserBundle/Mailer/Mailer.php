@@ -2,13 +2,13 @@
 
 namespace CleverAge\EAVManager\UserBundle\Mailer;
 
+use CleverAge\EAVManager\UserBundle\Entity\User;
 use Exception;
 use Swift_Attachment;
 use Swift_Mailer;
 use Swift_Message;
 use Twig_Environment;
 use UnexpectedValueException;
-use CleverAge\EAVManager\UserBundle\Entity\User;
 
 class Mailer // implements \FOS\UserBundle\Mailer\MailerInterface
 {
@@ -40,9 +40,9 @@ class Mailer // implements \FOS\UserBundle\Mailer\MailerInterface
 
     /**
      * @param string $template
-     * @param mixed $recipients
-     * @param array $parameters
-     * @param array $attachments
+     * @param mixed  $recipients
+     * @param array  $parameters
+     * @param array  $attachments
      * @throws Exception
      */
     protected function sendMail($template, $recipients, array $parameters = [], array $attachments = [])
@@ -56,10 +56,10 @@ class Mailer // implements \FOS\UserBundle\Mailer\MailerInterface
 
     /**
      *
-     * @param string $templateName
-     * @param array $context
+     * @param string       $templateName
+     * @param array        $context
      * @param string|array $fromEmail
-     * @param string $toEmail
+     * @param string       $toEmail
      * @return Swift_Message
      * @throws UnexpectedValueException
      * @throws \Twig_Error_Loader

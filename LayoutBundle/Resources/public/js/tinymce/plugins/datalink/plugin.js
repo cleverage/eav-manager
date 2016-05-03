@@ -1,10 +1,9 @@
-
-tinymce.PluginManager.add('datalink', function(editor) {
+tinymce.PluginManager.add('datalink', function (editor) {
     var utilities = {
-        isDatalink: function(node){
+        isDatalink: function (node) {
             return node.tagName == 'A' && editor.dom.getAttrib(node, 'data-link-id');
         },
-        createLink: function(dataId) {
+        createLink: function (dataId) {
             var node = editor.selection.getNode();
             if (this.isDatalink(node)) {
                 $(node)

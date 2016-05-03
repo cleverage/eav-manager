@@ -2,16 +2,16 @@
 
 namespace CleverAge\EAVManager\SecurityBundle\Form\Type;
 
+use CleverAge\EAVManager\SecurityBundle\Entity\FamilyPermission;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use CleverAge\EAVManager\SecurityBundle\Entity\FamilyPermission;
 
 class FamilyPermissionType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -32,7 +32,7 @@ class FamilyPermissionType extends AbstractType
         $resolver->setDefaults([
             'data_class' => 'CleverAge\EAVManager\SecurityBundle\Entity\FamilyPermission',
             'required' => false,
-            'widget_type'  => 'inline',
+            'widget_type' => 'inline',
         ]);
     }
 

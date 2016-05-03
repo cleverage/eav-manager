@@ -12,9 +12,9 @@ class BlueimpController extends BaseBlueimpController
     protected $request;
 
     /**
-     * @param $file
+     * @param                   $file
      * @param ResponseInterface $response
-     * @param Request|null $request
+     * @param Request|null      $request
      * @return Resource
      * @throws \UnexpectedValueException
      */
@@ -29,6 +29,7 @@ class BlueimpController extends BaseBlueimpController
         if (0 === count($files)) {
             throw new \UnexpectedValueException('File upload returned empty response');
         }
+
         return array_pop($files);
     }
 
@@ -48,6 +49,7 @@ class BlueimpController extends BaseBlueimpController
         if ($this->request) {
             return $this->request;
         }
+
         return parent::getRequest();
     }
 }

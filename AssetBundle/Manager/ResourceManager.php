@@ -2,12 +2,12 @@
 
 namespace CleverAge\EAVManager\AssetBundle\Manager;
 
+use CleverAge\EAVManager\AssetBundle\Entity\Document;
+use CleverAge\EAVManager\AssetBundle\Entity\Image;
 use Gaufrette\Exception\FileNotFound;
 use Oneup\UploaderBundle\Uploader\File\GaufretteFile;
 use Sidus\FileUploadBundle\Manager\ResourceManager as BaseResourceManager;
 use Sidus\FileUploadBundle\Model\ResourceInterface;
-use CleverAge\EAVManager\AssetBundle\Entity\Document;
-use CleverAge\EAVManager\AssetBundle\Entity\Image;
 
 class ResourceManager extends BaseResourceManager
 {
@@ -15,8 +15,8 @@ class ResourceManager extends BaseResourceManager
      * Add an entry for Resource entity in database at each upload
      *
      * @param GaufretteFile $file
-     * @param string $originalFilename
-     * @param string $type
+     * @param string        $originalFilename
+     * @param string        $type
      * @return ResourceInterface
      * @throws \InvalidArgumentException|\UnexpectedValueException|FileNotFound
      */
@@ -37,7 +37,7 @@ class ResourceManager extends BaseResourceManager
 
     /**
      * @param ResourceInterface $resource
-     * @param GaufretteFile $file
+     * @param GaufretteFile     $file
      * @throws \InvalidArgumentException|\UnexpectedValueException|FileNotFound
      */
     public function updateResourceMetadata(ResourceInterface $resource, GaufretteFile $file)

@@ -2,12 +2,12 @@
 
 namespace CleverAge\EAVManager\AdminBundle\Controller;
 
+use CleverAge\EAVManager\UserBundle\Entity\User;
 use FOS\UserBundle\Model\UserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use CleverAge\EAVManager\UserBundle\Entity\User;
 
 /**
  * @Security("is_granted('ROLE_USER_MANAGER')")
@@ -18,7 +18,7 @@ class UserController extends GenericAdminController
      * @Security("is_granted('ROLE_ADMIN')")
      * @Template()
      * @param Request $request
-     * @param User $user
+     * @param User    $user
      * @return Response
      * @throws \Exception
      */
@@ -42,12 +42,13 @@ class UserController extends GenericAdminController
                     'success' => 1,
                 ];
             }
+
             return $this->redirectToAdmin($this->admin, 'list');
         }
 
         return $this->renderAction($this->getViewParameters($request, $form, $user) + [
-            'dataId' => $user->getId(),
-        ]);
+                'dataId' => $user->getId(),
+            ]);
     }
 
     /**
@@ -64,6 +65,7 @@ class UserController extends GenericAdminController
             $passwd .= $char;
             $i++;
         }
+
         return $passwd;
     }
 
@@ -75,6 +77,7 @@ class UserController extends GenericAdminController
     {
         if (!$data instanceof UserInterface) {
             parent::saveEntity($data);
+
             return;
         }
         $this->get('fos_user.user_manager')->updateUser($data);

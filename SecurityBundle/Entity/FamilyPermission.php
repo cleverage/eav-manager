@@ -2,12 +2,11 @@
 
 namespace CleverAge\EAVManager\SecurityBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
-use Sidus\EAVModelBundle\Model\Family;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use CleverAge\EAVManager\UserBundle\Entity\Group;
 use CleverAge\EAVManager\UserBundle\Entity\User;
+use Doctrine\ORM\Mapping as ORM;
+use Sidus\EAVModelBundle\Model\Family;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
  * @ORM\Entity(repositoryClass="FamilyPermissionRepository")
@@ -100,6 +99,7 @@ class FamilyPermission
             throw new \UnexpectedValueException("Permissions does not exists: {$permission}");
         }
         $accessor = PropertyAccess::createPropertyAccessor();
+
         return $accessor->getValue($this, $permission);
     }
 
@@ -126,6 +126,7 @@ class FamilyPermission
     public function setId($id)
     {
         $this->id = $id;
+
         return $this;
     }
 
@@ -147,6 +148,7 @@ class FamilyPermission
         if ($user && !$user->getFamilyPermissions()->contains($this)) {
             $user->getFamilyPermissions()->add($this);
         }
+
         return $this;
     }
 
@@ -168,6 +170,7 @@ class FamilyPermission
         if ($group && !$group->getFamilyPermissions()->contains($this)) {
             $group->getFamilyPermissions()->add($this);
         }
+
         return $this;
     }
 
@@ -186,6 +189,7 @@ class FamilyPermission
     public function setFamily($family)
     {
         $this->family = $family;
+
         return $this;
     }
 
@@ -204,6 +208,7 @@ class FamilyPermission
     public function setList($list)
     {
         $this->list = $list;
+
         return $this;
     }
 
@@ -222,6 +227,7 @@ class FamilyPermission
     public function setRead($read)
     {
         $this->read = $read;
+
         return $this;
     }
 
@@ -240,6 +246,7 @@ class FamilyPermission
     public function setCreate($create)
     {
         $this->create = $create;
+
         return $this;
     }
 
@@ -258,6 +265,7 @@ class FamilyPermission
     public function setEdit($edit)
     {
         $this->edit = $edit;
+
         return $this;
     }
 
@@ -276,6 +284,7 @@ class FamilyPermission
     public function setDelete($delete)
     {
         $this->delete = $delete;
+
         return $this;
     }
 
@@ -294,6 +303,7 @@ class FamilyPermission
     public function setPublish($publish)
     {
         $this->publish = $publish;
+
         return $this;
     }
 }

@@ -36,12 +36,13 @@ class GenericAdminController extends BaseAdminController
     {
         $class = $this->admin->getEntity();
         $data = new $class();
+
         return $this->editAction($request, $data);
     }
 
     /**
      * @param Request $request
-     * @param mixed $data
+     * @param mixed   $data
      * @return array|RedirectResponse
      * @throws \Exception
      */
@@ -61,6 +62,7 @@ class GenericAdminController extends BaseAdminController
             if ($request->get('target')) {
                 $parameters['target'] = $request->get('target');
             }
+
             return $this->redirectToEntity($data, 'edit', $parameters);
         }
 
@@ -90,11 +92,12 @@ class GenericAdminController extends BaseAdminController
                     'success' => 1,
                 ]);
             }
+
             return $this->redirectToAdmin($this->admin, 'list');
         }
 
         return $this->renderAction($this->getViewParameters($request, $form, $data) + [
-            'dataId' => $dataId,
-        ]);
+                'dataId' => $dataId,
+            ]);
     }
 }

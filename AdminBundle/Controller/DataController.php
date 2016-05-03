@@ -2,6 +2,7 @@
 
 namespace CleverAge\EAVManager\AdminBundle\Controller;
 
+use CleverAge\EAVManager\Component\Controller\DataControllerTrait;
 use Elastica\Query;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -14,7 +15,6 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use CleverAge\EAVManager\Component\Controller\DataControllerTrait;
 
 /**
  * @Security("is_granted('ROLE_DATA_MANAGER')")
@@ -29,6 +29,7 @@ class DataController extends BaseAdminController
         if ($this->get('sidus_data_grid.datagrid_configuration.handler')->hasDataGrid($code)) {
             return $code;
         }
+
         return 'data';
     }
 
@@ -41,6 +42,7 @@ class DataController extends BaseAdminController
         if ($datagrid instanceof DataGrid) {
             $datagrid->setFamily($this->family);
         }
+
         return $datagrid;
     }
 
@@ -57,7 +59,7 @@ class DataController extends BaseAdminController
      * @Security("is_granted('list', family) or is_granted('ROLE_SUPER_ADMIN')")
      * @Template()
      * @param FamilyInterface $family
-     * @param Request $request
+     * @param Request         $request
      * @return array
      * @throws \Exception
      */
@@ -92,7 +94,7 @@ class DataController extends BaseAdminController
      * @Security("is_granted('create', family) or is_granted('ROLE_SUPER_ADMIN')")
      * @Template()
      * @param FamilyInterface $family
-     * @param Request $request
+     * @param Request         $request
      * @return Response
      * @throws \Exception
      */
@@ -100,14 +102,15 @@ class DataController extends BaseAdminController
     {
         /** @var DataInterface $data */
         $data = $family->createData();
+
         return $this->editAction($family, $data, $request);
     }
 
     /**
      * @Template()
      * @param FamilyInterface $family
-     * @param DataInterface $data
-     * @param Request $request
+     * @param DataInterface   $data
+     * @param Request         $request
      * @return array|RedirectResponse
      * @throws \Exception
      */
@@ -132,6 +135,7 @@ class DataController extends BaseAdminController
             if ($request->get('target')) {
                 $parameters['target'] = $request->get('target');
             }
+
             return $this->redirectToEntity($data, 'edit', $parameters);
         }
 
@@ -142,8 +146,8 @@ class DataController extends BaseAdminController
      * @Security("is_granted('delete', family) or is_granted('ROLE_SUPER_ADMIN')")
      * @Template()
      * @param FamilyInterface $family
-     * @param DataInterface $data
-     * @param Request $request
+     * @param DataInterface   $data
+     * @param Request         $request
      * @return array|RedirectResponse
      * @throws \Exception
      */
@@ -168,19 +172,20 @@ class DataController extends BaseAdminController
                     'success' => 1,
                 ];
             }
+
             return $this->redirectToAdmin($this->admin, 'list', [
                 'familyCode' => $family->getCode(),
             ]);
         }
 
         return $this->renderAction($this->getViewParameters($request, $form, $data) + [
-            'dataId' => $dataId,
-        ]);
+                'dataId' => $dataId,
+            ]);
     }
 
     /**
-     * @param Request $request
-     * @param string $dataId
+     * @param Request     $request
+     * @param string      $dataId
      * @param Action|null $action
      * @return array
      * @throws \InvalidArgumentException
@@ -192,12 +197,13 @@ class DataController extends BaseAdminController
         }
         $options = parent::getDefaultFormOptions($request, $dataId, $action);
         $options['label'] = "admin.family.{$this->family->getCode()}.{$action->getCode()}.title";
+
         return $options;
     }
 
     /**
-     * @param Request $request
-     * @param Form $form
+     * @param Request       $request
+     * @param Form          $form
      * @param DataInterface $data
      * @return array
      */

@@ -53,7 +53,7 @@ sidus_eav_data_grid:
                 fileSize: ~
                 documentType: ~
                 filename:
-                    property_path: file.originalFilename
+                    property_path: document.originalFilename
                 actions:
                     template: "CleverAgeEAVManagerAdminBundle:Data:list.row.actions.html.twig"
 

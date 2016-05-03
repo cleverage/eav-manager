@@ -2,10 +2,10 @@
 
 namespace CleverAge\EAVManager\EAVModelBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Sidus\EAVModelBundle\Entity\Value as BaseValue;
 use CleverAge\EAVManager\AssetBundle\Entity\Document;
 use CleverAge\EAVManager\AssetBundle\Entity\Image;
+use Doctrine\ORM\Mapping as ORM;
+use Sidus\EAVModelBundle\Entity\Value as BaseValue;
 
 abstract class Value extends BaseValue
 {

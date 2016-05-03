@@ -2,18 +2,18 @@
 
 namespace CleverAge\EAVManager\AssetBundle\Controller;
 
+use CleverAge\EAVManager\AssetBundle\Entity\Image;
 use Sidus\EAVModelBundle\Entity\DataInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use CleverAge\EAVManager\AssetBundle\Entity\Image;
 
 class MediaController extends Controller
 {
     /**
-     * @param Request $request
+     * @param Request       $request
      * @param DataInterface $data
-     * @param string $filter
+     * @param string        $filter
      * @return Response
      * @throws \Exception
      */
@@ -27,6 +27,7 @@ class MediaController extends Controller
         if (!$image instanceof Image) {
             return $this->createNotFoundException("No actual media associated to image #{$data->getId()}");
         }
+
         return $this->get('liip_imagine.controller')->filterAction($request, $image->getFileName(), $filter);
     }
 }

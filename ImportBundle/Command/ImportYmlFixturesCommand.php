@@ -1,6 +1,6 @@
 <?php
 
-namespace CleverAge\EAVManager\InstallerBundle\Command;
+namespace CleverAge\EAVManager\ImportBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,12 +14,12 @@ class ImportYmlFixturesCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('eavmanager:installer:import-fixtures')
+            ->setName('eavmanager:import:import-fixtures')
             ->setDescription('Import Yml fixtures');
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
      * @return null|int null or 0 if everything went fine, or an error code
      * @throws \Exception
@@ -32,10 +32,10 @@ class ImportYmlFixturesCommand extends ContainerAwareCommand
         // Disable Doctrine's event listener for publishing
         $this->getContainer()->get('sidus_eav_publishing.doctrine_orm.subscriber')->setDisabled(true);
 
-        $eavDataImporter = $this->getContainer()->get('web_actu_installer.import.eav_data_importer');
+        $eavDataImporter = $this->getContainer()->get('eavmanager_import.eav_data_importer');
         $eavDataImporter->setOutput($output);
 
-        $fixturesPath = $this->getContainer()->get('file_locator')->locate('@CleverAgeEAVManagerInstallerBundle/Resources/fixtures');
+        $fixturesPath = $this->getContainer()->get('file_locator')->locate('@CleverAgeEAVManagerImportBundle/Resources/fixtures');
         $finder = new Finder();
         /** @var SplFileInfo[] $files */
         $files = $finder->in($fixturesPath)->name('*.yml')->sortByName()->files();
@@ -43,12 +43,14 @@ class ImportYmlFixturesCommand extends ContainerAwareCommand
         foreach ($files as $file) {
             if (!$eavDataImporter->loadDump(Yaml::parse($file->getContents(), true), $file->getFilename())) {
                 $output->writeln("\n<comment>Stopping...</comment>");
+
                 return 1;
             }
         }
 
         // Close import and archive context
         $eavDataImporter->terminate();
+
         return 0;
     }
 

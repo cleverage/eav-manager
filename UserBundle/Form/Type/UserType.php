@@ -2,6 +2,8 @@
 
 namespace CleverAge\EAVManager\UserBundle\Form\Type;
 
+use CleverAge\EAVManager\UserBundle\Entity\Group;
+use CleverAge\EAVManager\UserBundle\Entity\User;
 use Sidus\EAVModelBundle\Model\Family;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -11,8 +13,6 @@ use Symfony\Component\OptionsResolver\Exception\AccessException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use CleverAge\EAVManager\UserBundle\Entity\Group;
-use CleverAge\EAVManager\UserBundle\Entity\User;
 
 class UserType extends AbstractType
 {
@@ -26,12 +26,15 @@ class UserType extends AbstractType
     protected $authorizationChecker;
 
     /**
-     * @param Family $family
-     * @param TokenStorageInterface $tokenStorage
+     * @param Family                        $family
+     * @param TokenStorageInterface         $tokenStorage
      * @param AuthorizationCheckerInterface $authorizationChecker
      */
-    public function __construct(Family $family, TokenStorageInterface $tokenStorage, AuthorizationCheckerInterface $authorizationChecker)
-    {
+    public function __construct(
+        Family $family,
+        TokenStorageInterface $tokenStorage,
+        AuthorizationCheckerInterface $authorizationChecker
+    ) {
         $this->family = $family;
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
@@ -94,7 +97,7 @@ class UserType extends AbstractType
         // Add EAV data edition
         $this->buildDataForm($builder);
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event){
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             /** @var User $user */
             $user = $event->getData();
             if ($user) {
@@ -154,6 +157,7 @@ class UserType extends AbstractType
         if (!$this->tokenStorage->getToken()) {
             return null;
         }
+
         return $this->tokenStorage->getToken()->getUser();
     }
 }

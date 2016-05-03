@@ -12,7 +12,7 @@ class EAVManagerPublicationEvent extends PublicationEvent
 
     /**
      * @param PublishableInterface $data
-     * @param string $event
+     * @param string               $event
      */
     public function __construct(PublishableInterface $data, $event)
     {

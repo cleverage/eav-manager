@@ -425,9 +425,9 @@ class EAVDataImporter
      */
     protected function getEntityOrCreate(FamilyInterface $family, $reference)
     {
-//        if ($this->importContext->hasReference($family->getCode(), $reference)) {
-//            return $this->getEntityByReference($family, $reference);
-//        }
+        if ($this->importContext->hasReference($family->getCode(), $reference)) {
+            return $this->getEntityByReference($family, $reference);
+        }
 
         /** @var DataRepository $repository */
         $repository = $this->manager->getRepository($family->getDataClass());
@@ -436,6 +436,12 @@ class EAVDataImporter
             return $entity;
         }
 
-        return $family->createData();
+        $entity = $family->createData();
+        $attributeAsIdentifier = $family->getAttributeAsIdentifier();
+        if ($attributeAsIdentifier) {
+            $entity->setValueData($attributeAsIdentifier, $reference);
+        }
+
+        return $entity;
     }
 }

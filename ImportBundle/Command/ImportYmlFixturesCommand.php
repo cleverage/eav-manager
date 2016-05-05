@@ -3,6 +3,7 @@
 namespace CleverAge\EAVManager\ImportBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
@@ -14,7 +15,8 @@ class ImportYmlFixturesCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('eavmanager:import:import-fixtures')
+            ->setName('eavmanager:import:fixtures')
+            ->addArgument('bundle', InputArgument::REQUIRED, 'Full bundle name from which to import fixtures')
             ->setDescription('Import Yml fixtures');
     }
 
@@ -26,6 +28,8 @@ class ImportYmlFixturesCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $bundle = $input->getArgument('bundle');
+
         // Doctrine Optimization
         $this->getContainer()->get('doctrine')->getConnection()->getConfiguration()->setSQLLogger(null);
 
@@ -35,7 +39,7 @@ class ImportYmlFixturesCommand extends ContainerAwareCommand
         $eavDataImporter = $this->getContainer()->get('eavmanager_import.eav_data_importer');
         $eavDataImporter->setOutput($output);
 
-        $fixturesPath = $this->getContainer()->get('file_locator')->locate('@CleverAgeEAVManagerImportBundle/Resources/fixtures');
+        $fixturesPath = $this->getContainer()->get('file_locator')->locate("@{$bundle}/Resources/fixtures");
         $finder = new Finder();
         /** @var SplFileInfo[] $files */
         $files = $finder->in($fixturesPath)->name('*.yml')->sortByName()->files();

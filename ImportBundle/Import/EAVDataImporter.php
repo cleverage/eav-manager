@@ -247,8 +247,9 @@ class EAVDataImporter
         }
         $violations = $this->validator->validate($entity);
         /** @var ConstraintViolationInterface $violation */
-        if ($violations->has(0)) {
-            $violation = $violations->get(0);
+        /** @noinspection LoopWhichDoesNotLoopInspection */
+        foreach ($violations as $violation) {
+            /** @noinspection DisconnectedForeachInstructionInspection */
             $message = "Invalid fixtures data for family '{$family->getCode()}' (reference: ";
             $message .= "{$reference}) and property '{$violation->getPropertyPath()}' : '{$violation->getMessage()}'";
             $message .= ", given '{$violation->getInvalidValue()}'";
@@ -257,11 +258,6 @@ class EAVDataImporter
         $this->persist($entity, $reference);
 
         return $entity;
-    }
-
-    protected function doLoadData()
-    {
-
     }
 
     /**
@@ -372,9 +368,12 @@ class EAVDataImporter
      */
     protected function handleFileUpload($class, $value)
     {
+        if (!$value) {
+            return null;
+        }
         $filePath = $this->downloadsDirectory.'/'.$value;
         if (!file_exists($filePath)) {
-            $error = "Unable to find file {$value}";
+            $error = "Unable to find file {$filePath}";
             if ($this->output) {
                 $this->output->writeln("\n<error>{$error}</error>");
             }
@@ -388,14 +387,20 @@ class EAVDataImporter
         }
         $uploadManager = $this->uploadManagers[$type];
 
-        $file = new HttpFile($filePath);
+        // Copy file to tmp
+        $tmpFilePath = sys_get_temp_dir().'/'.basename($value);
+        if (!@copy($filePath, $tmpFilePath)) {
+            throw new RuntimeException("Unable to copy file {$filePath} to temporary destination {$tmpFilePath}");
+        }
+
+        $file = new HttpFile($tmpFilePath);
         $response = new EmptyResponse();
         $file = $uploadManager->handleManualUpload($file, $response);
         if (!$file instanceof SidusResource) {
             $errorClass = get_class($file);
             throw new \UnexpectedValueException("Unexpected response from file upload, got: {$errorClass}");
         }
-        $file->setOriginalFileName($value);
+        $file->setOriginalFileName(basename($value));
 
         return $file;
     }

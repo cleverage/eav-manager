@@ -6,6 +6,7 @@ use CleverAge\EAVManager\AssetBundle\Controller\BlueimpController;
 use CleverAge\EAVManager\ImportBundle\DataTransfer\ImportContext;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\MappingException;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMInvalidArgumentException;
 use Exception;
@@ -108,6 +109,13 @@ class EAVDataImporter
         }
     }
 
+    /**
+     * @return ImportContext
+     */
+    public function getImportContext()
+    {
+        return $this->importContext;
+    }
 
     /**
      * @param array $dump
@@ -169,6 +177,37 @@ class EAVDataImporter
         return true;
     }
 
+
+    /**
+     * @param FamilyInterface $family
+     * @param array           $dump
+     * @param ProgressBar     $progress
+     * @return bool
+     * @throws Exception
+     */
+    public function loadBatch(FamilyInterface $family, array $dump, ProgressBar $progress = null)
+    {
+        $this->manager->beginTransaction();
+        foreach ($dump as $reference => $data) {
+            /** @noinspection DisconnectedForeachInstructionInspection */
+            if (isset($progress)) {
+                $progress->advance();
+            }
+            if ($this->importContext->hasReference($family->getCode(), $reference)) {
+                continue;
+            }
+            try {
+                $this->loadData($family, $data, $reference);
+            } catch (Exception $e) {
+                $this->manager->rollback();
+                throw $e;
+            }
+        }
+        $this->saveContext();
+
+        return true;
+    }
+
     /**
      * @throws RuntimeException
      */
@@ -196,7 +235,7 @@ class EAVDataImporter
      * @return DataInterface
      * @throws \Exception
      */
-    protected function loadData(FamilyInterface $family, array $data, $reference = null)
+    public function loadData(FamilyInterface $family, array $data, $reference = null)
     {
         $entity = $this->getEntityOrCreate($family, $reference);
         foreach ($data as $attributeCode => $value) {
@@ -218,6 +257,11 @@ class EAVDataImporter
         $this->persist($entity, $reference);
 
         return $entity;
+    }
+
+    protected function doLoadData()
+    {
+
     }
 
     /**
@@ -385,6 +429,7 @@ class EAVDataImporter
         foreach ($this->referencesToSave as $reference => $entity) {
             $this->importContext->addReference($entity->getFamilyCode(), $reference, $entity->getId());
         }
+        $this->referencesToSave = [];
 
         if (!@file_put_contents($this->lastImportPath, json_encode($this->importContext))) {
             throw new RuntimeException("Unable to save current context to {$this->lastImportPath}");
@@ -407,7 +452,20 @@ class EAVDataImporter
      */
     protected function getEntityByReference(FamilyInterface $family, $reference)
     {
+        if ('' === $reference || null === $reference) {
+            return null;
+        }
+
+        // If reference is not already saved
+        if (array_key_exists($reference, $this->referencesToSave)) {
+            return $this->referencesToSave[$reference];
+        }
+
         if (!$this->importContext->hasReference($family->getCode(), $reference)) {
+            $entity = $this->findByIdentifier($family, $reference);
+            if ($entity) {
+                return $entity;
+            }
             throw new \UnexpectedValueException("Reference not found {$reference} for family {$family->getCode()}");
         }
 
@@ -429,9 +487,7 @@ class EAVDataImporter
             return $this->getEntityByReference($family, $reference);
         }
 
-        /** @var DataRepository $repository */
-        $repository = $this->manager->getRepository($family->getDataClass());
-        $entity = $repository->findByIdentifier($family, $reference);
+        $entity = $this->findByIdentifier($family, $reference);
         if ($entity) {
             return $entity;
         }
@@ -443,5 +499,23 @@ class EAVDataImporter
         }
 
         return $entity;
+    }
+
+    /**
+     * @param FamilyInterface $family
+     * @param string          $reference
+     * @return null|DataInterface
+     * @throws \UnexpectedValueException
+     */
+    protected function findByIdentifier(FamilyInterface $family, $reference)
+    {
+        /** @var DataRepository $repository */
+        $repository = $this->manager->getRepository($family->getDataClass());
+
+        try {
+            return $repository->findByIdentifier($family, $reference);
+        } catch (NonUniqueResultException $e) {
+            throw new \UnexpectedValueException("Non-unique result exception for family {$family->getCode()} and reference {$reference}", 0, $e);
+        }
     }
 }

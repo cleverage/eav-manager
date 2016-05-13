@@ -7,18 +7,9 @@ use CleverAge\EAVManager\UserBundle\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Sidus\EAVModelBundle\Entity\Data as BaseData;
-use Sidus\EAVModelBundle\Model\FamilyInterface;
-use Sidus\PublishingBundle\Entity\PublishableInterface;
 
-abstract class Data extends BaseData implements AuthorableInterface, PublishableInterface
+abstract class Data extends BaseData implements AuthorableInterface
 {
-    /**
-     * @var string
-     * @ORM\Column(name="mongo_id", type="string", length=25)
-     * @JMS\Accessor(getter="getMongoId")
-     */
-    protected $mongoId;
-
     /**
      * @var User
      * @ORM\ManyToOne(targetEntity="CleverAge\EAVManager\UserBundle\Entity\User")
@@ -34,35 +25,6 @@ abstract class Data extends BaseData implements AuthorableInterface, Publishable
      * @JMS\Exclude()
      */
     protected $updatedBy;
-
-    /**
-     * @inheritDoc
-     */
-    public function __construct(FamilyInterface $family)
-    {
-        parent::__construct($family);
-        $this->mongoId = (string)new \MongoId();
-    }
-
-    /**
-     * @return string
-     */
-    public function getMongoId()
-    {
-        if (!$this->mongoId) {
-            $this->mongoId = (string)new \MongoId();
-        }
-
-        return $this->mongoId;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getPublicationUuid()
-    {
-        return $this->getMongoId();
-    }
 
     /**
      * @return User

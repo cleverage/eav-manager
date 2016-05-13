@@ -6,6 +6,7 @@
 
 {% block tg_center %}
     <div class="edit-form {% block edit_form_class %}{% endblock %}">
+        {{ utilities.context_form(contextForm) }}
         {{ form_start(form) }}
         {% block form_actions %}
             <div class="btn-group pull-right">

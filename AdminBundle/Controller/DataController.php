@@ -9,7 +9,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sidus\AdminBundle\Admin\Action;
 use Sidus\EAVDataGridBundle\Model\DataGrid;
 use Sidus\EAVFilterBundle\Configuration\ElasticaFilterConfigurationHandler;
-use Sidus\EAVModelBundle\Entity\ContextualDataInterface;
 use Sidus\EAVModelBundle\Entity\DataInterface;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
 use Symfony\Component\Form\Form;
@@ -23,11 +22,6 @@ use Symfony\Component\HttpFoundation\Response;
 class DataController extends BaseAdminController
 {
     use DataControllerTrait;
-
-    const SESSION_KEY = 'data_context';
-
-    /** @var Form */
-    protected $contextForm;
 
     /**
      * @Template()
@@ -100,7 +94,6 @@ class DataController extends BaseAdminController
     public function editAction(FamilyInterface $family, DataInterface $data, Request $request)
     {
         $this->initDataFamily($family, $data);
-        $this->initContextForm($data, $request);
 
         $options = [];
         if (!$this->isGranted('edit', $family) && !$this->isGranted('ROLE_SUPER_ADMIN')) {
@@ -191,40 +184,6 @@ class DataController extends BaseAdminController
     }
 
     /**
-     * @param ContextualDataInterface|DataInterface $data
-     * @param Request                               $request
-     * @throws \InvalidArgumentException
-     */
-    protected function initContextForm(DataInterface $data, Request $request)
-    {
-        if (!$data instanceof ContextualDataInterface || !$this->container->hasParameter('context_selector_type')) {
-            return;
-        }
-        $contextSelectorType = $this->container->getParameter('context_selector_type');
-        if ($request->getSession()->has(self::SESSION_KEY)) {
-            $context = $request->getSession()->get(self::SESSION_KEY);
-        } else {
-            $context = $data->getFamily()->getDefaultContext();
-        }
-        $formOptions = [
-            'action' => $this->getCurrentUri($request),
-            'attr' => [
-                'novalidate' => 'novalidate',
-                'data-target' => $request->get('target'),
-                'class' => 'form-inline',
-            ],
-        ];
-        $this->contextForm = $this->createForm($contextSelectorType, $context, $formOptions);
-        $this->contextForm->handleRequest($request);
-        if ($this->contextForm->isValid()) {
-            $context = $this->contextForm->getData();
-            $request->getSession()->set(self::SESSION_KEY, $context);
-            $request->getSession()->save();
-        }
-        $data->setCurrentContext($context);
-    }
-
-    /**
      * @param Request     $request
      * @param string      $dataId
      * @param Action|null $action
@@ -252,7 +211,6 @@ class DataController extends BaseAdminController
     {
         return parent::getViewParameters($request, $form, $data) + [
             'family' => $data->getFamily(),
-            'contextForm' => $this->contextForm ? $this->contextForm->createView() : null,
         ];
     }
 }

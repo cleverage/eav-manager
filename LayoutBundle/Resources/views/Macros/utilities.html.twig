@@ -95,15 +95,16 @@
     {% endif %}
 {% endmacro %}
 
-{% macro context_form(contextForm) %}
+{% macro context_form() %}
+    {% set contextForm = context_form() %}
     {% if contextForm %}
-        <div class="pull-left">
-            {{ form_start(contextForm) }}
-            {% for subForm in contextForm %}
-                {{ form_widget(subForm) }}
-            {% endfor %}&nbsp;
-            <button type="submit" class="btn btn-default btn-sm pull-right">{{ 'admin.change_context.label'|trans }}</button>
+            {{ form_start(contextForm, {attr: {class: 'navbar-form navbar-right'}}) }}
+                {% for subForm in contextForm %}
+                    {{ form_widget(subForm) }}
+                {% endfor %}&nbsp;
+                <button type="submit" class="btn btn-default btn-sm pull-right">
+                    <i class="fa fa-language"></i> {{ 'admin.change_context.label'|trans }}
+                </button>
             {{ form_end(contextForm) }}
-        </div>
     {% endif %}
 {% endmacro %}

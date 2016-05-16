@@ -1,2 +1,10 @@
 parameters:
     sidus_admin.entity.matcher.class: CleverAge\EAVManager\AdminBundle\Entity\AdminEntityMatcher
+    eavmanager.twig.context.extension.class: CleverAge\EAVManager\EAVModelBundle\Twig\EAVContextExtension
+
+services:
+    eavmanager.twig.context.extension:
+        class: '%eavmanager.twig.context.extension.class%'
+        arguments: ['@sidus_eav_model.context.manager']
+        tags:
+            - { name: twig.extension }

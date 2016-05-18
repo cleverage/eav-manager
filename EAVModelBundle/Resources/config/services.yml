@@ -1,6 +1,7 @@
 parameters:
     sidus_admin.entity.matcher.class: CleverAge\EAVManager\AdminBundle\Entity\AdminEntityMatcher
     eavmanager.twig.context.extension.class: CleverAge\EAVManager\EAVModelBundle\Twig\EAVContextExtension
+    eavmanager.finder.class: CleverAge\EAVManager\EAVModelBundle\Search\EAVFinder
 
 services:
     eavmanager.twig.context.extension:
@@ -8,3 +9,11 @@ services:
         arguments: ['@sidus_eav_model.context.manager']
         tags:
             - { name: twig.extension }
+
+    eavmanager.finder:
+        class: '%eavmanager.finder.class%'
+        arguments:
+            - '@doctrine'
+            - '@sidus_filter.filter.factory'
+            - '@sidus_eav_model.family_configuration.handler'
+            - '@form.factory'

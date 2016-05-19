@@ -55,6 +55,8 @@ class EAVFinder
     }
 
     /**
+     * WARNING ! $orderBy only takes the first element into account
+     *
      * @param FamilyInterface $family
      * @param array           $filterBy
      * @param array           $orderBy
@@ -164,10 +166,17 @@ class EAVFinder
         array $filterBy,
         array $orderBy = []
     ) {
+        /** @noinspection LoopWhichDoesNotLoopInspection */
+        foreach ($orderBy as $property => $direction) {
+            $filterConfigurationHandler->getSortConfig()
+                ->setDefaultColumn($property)
+                ->setDefaultDirection((bool) $direction)
+            ;
+            break; // @todo handle multiple sort criteria
+        }
         $filterConfigurationHandler->buildForm($this->formFactory->createBuilder());
         $filterConfigurationHandler->handleArray([
             EAVElasticaFilterConfigurationHandler::FILTERS_FORM_NAME => $filterBy,
-            EAVElasticaFilterConfigurationHandler::SORTABLE_FORM_NAME => $orderBy, // Not working for the moment
         ]);
     }
 }

@@ -24,6 +24,6 @@
 {% endblock %}
 
 {% block additionnal_javascript %}
-    {{ utilities.update_datagrid_active_row(family.code, data, data ? data.id, success, target) }}
+    {{ utilities.update_datagrid_active_row(family.code|lower, data, data ? data.id, success, target) }}
     {{ utilities.lock_form(form.vars.attr.id, target) }}
 {% endblock %}

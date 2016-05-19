@@ -26,7 +26,7 @@
 {% endblock %}
 
 {% block additionnal_javascript %}
-    {{ utilities.update_datagrid_active_row(family.code, data is defined ? data, dataId, success, target) }}
+    {{ utilities.update_datagrid_active_row(family.code|lower, data is defined ? data, dataId, success, target) }}
     {% if target and success %}
         <script>
             // Launched only on ajax calls when jQuery is already defined: used to update datagrid's row

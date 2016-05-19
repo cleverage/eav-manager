@@ -1,7 +1,5 @@
 {% extends isAjax ? 'CleverAgeEAVManagerLayoutBundle::empty_layout.html.twig' : admin.baseTemplate %}
 
-{% import "@CleverAgeEAVManagerLayout/Macros/utilities.html.twig" as utilities %}
-
 {% if isAjax and form is defined %}
     {% form_theme form 'CleverAgeEAVManagerLayoutBundle:Form:ajax_theme.html.twig' %}
 {% endif %}

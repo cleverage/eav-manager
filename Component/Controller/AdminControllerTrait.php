@@ -89,6 +89,7 @@ trait AdminControllerTrait
             'success' => $request->get('success'),
             'form' => $form->createView(),
             'data' => $data,
+            'dataGridCode' => $this->getDataGridConfigCode(),
         ];
     }
 

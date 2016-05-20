@@ -69,6 +69,9 @@ class EAVDataImporter
     /** @var DataInterface[] */
     protected $referencesToSave = [];
 
+    /** @var bool */
+    protected $idFallback = false;
+
     /**
      * @param FamilyConfigurationHandler $familyConfigurationHandler
      * @param ValidatorInterface         $validator
@@ -158,7 +161,7 @@ class EAVDataImporter
                 if ($i % $batch === 0) {
                     $this->saveContext();
                     $i2++;
-                    if ($i2 % 10 === 0) {
+                    if ($i2 % 100 === 0) {
                         return false; // Necessary (evil) optimization
                     }
                     $this->manager->beginTransaction();
@@ -518,7 +521,7 @@ class EAVDataImporter
         $repository = $this->manager->getRepository($family->getDataClass());
 
         try {
-            return $repository->findByIdentifier($family, $reference);
+            return $repository->findByIdentifier($family, $reference, $this->idFallback);
         } catch (NonUniqueResultException $e) {
             throw new \UnexpectedValueException("Non-unique result exception for family {$family->getCode()} and reference {$reference}", 0, $e);
         }

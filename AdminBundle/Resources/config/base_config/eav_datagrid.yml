@@ -37,7 +37,6 @@ sidus_eav_data_grid:
                 sortable:
                     - id
                     - title
-                    - fileSize
                     - mimeType
                     - fileName
                 fields:
@@ -64,7 +63,6 @@ sidus_eav_data_grid:
                 sortable:
                     - id
                     - title
-                    - fileSize
                     - mimeType
                 fields:
                     title: ~
@@ -80,6 +78,7 @@ sidus_eav_data_grid:
                 title:
                     template: "CleverAgeEAVManagerAdminBundle:Base:clickable.column.html.twig"
                 tags: ~
+                mimeType: ~
                 filename:
                     property_path: imageFile.originalFilename
                 actions:

@@ -8,14 +8,15 @@ sidus_eav_model:
                 - fileSize
                 - mimeType
                 - fileName
+                - tags
 
         Image:
             parent: BaseAsset
             attributeAsLabel: title
             attributes:
                 - imageFile
-                - link
-                - tags
+                - altText
+                - copyright
 
         Document:
             parent: BaseAsset
@@ -31,9 +32,23 @@ sidus_eav_model:
             form_options:
                 family: Image
 
+        images:
+            group: content
+            type: media_browser
+            multiple: true
+            form_options:
+                family: Image
+
         document:
             group: content
             type: media_browser
+            form_options:
+                family: Document
+
+        documents:
+            group: content
+            type: media_browser
+            multiple: true
             form_options:
                 family: Document
 
@@ -50,36 +65,30 @@ sidus_eav_model:
 
         # Locked attributes (automatically filled from file upload)
         fileSize:
-            group: content
+            group: meta
             type: integer
             form_options:
                 disabled: true
 
         mimeType:
-            group: content
+            group: meta
             form_options:
                 disabled: true
 
         fileName:
-            group: content
+            group: meta
             form_options:
                 disabled: true
 
         # Attributes
-        link:
-            group: content
-
         tags:
             group: content
             multiple: true
 
         altText:
-            group: content
+            group: meta
             form_options:
                 help_block: 'Laisser vide pour utiliser le titre'
 
-        legend:
-            group: content
-
         copyright:
-            group: content
+            group: meta

@@ -5,7 +5,7 @@ sidus_admin:
             controller: CleverAgeEAVManagerAdminBundle:Asset
             entity: '%sidus_data_class%'
             prefix: /medias
-            default_form_type: sidus_data
+            default_form_type: sidus_tabbed_data
             actions:
                 index:
                     path:     /

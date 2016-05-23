@@ -4,5 +4,5 @@
 
 {% block tg_left %}
     <h3>{{ ('admin.' ~ admin.code ~ '.menu.title')|trans }}</h3>
-    {{ utilities.family_menu(admin, admin.option('families', []), family is defined ? family) }}
+    {{ utilities.family_menu(admin, admin.option('families', [])|keys, family is defined ? family) }}
 {% endblock %}

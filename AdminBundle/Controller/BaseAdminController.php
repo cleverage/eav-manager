@@ -23,6 +23,12 @@ abstract class BaseAdminController extends Controller implements AdminInjectable
      */
     protected function getDataGridConfigCode()
     {
+        // Check if datagrid code is set in options
+        $datagridCode = $this->admin->getOption('datagrid');
+        if ($datagridCode) {
+            return $datagridCode;
+        }
+
         return $this->admin->getCode();
     }
 

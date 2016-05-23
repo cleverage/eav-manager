@@ -1,0 +1,6 @@
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: CleverAge\EAVManager\UserBundle\Entity\User
+    group:
+        group_class: CleverAge\EAVManager\UserBundle\Entity\Group

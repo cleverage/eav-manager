@@ -38,6 +38,9 @@
      */
     function getUrl(t, attr) {
         var href = t.attr(attr);
+        if (!href) {
+            return href;
+        }
         if (href.search('\\?') === -1) {
             href += '?target=' + t.data('target');
         } else {
@@ -94,7 +97,14 @@
         if (checkOnBeforeLoad(e, tg)) {
             return;
         }
-        $.ajax(getUrl(t, 'href')).done(function (content) {
+        var href = getUrl(t, 'href');
+        if (!href) { // Fallback to data-href
+            href = getUrl(t, 'data-href');
+        }
+        if (!href) {
+            throw 'Empty href attribute';
+        }
+        $.ajax(href).done(function (content) {
             tg.html(content);
             bindGlobalEvents(tg);
         }).fail(function (e) {
@@ -144,7 +154,7 @@
             a.removeClass('info');
             document.activeDataGridRowRef = null;
         }
-        $(body).removeClass('tg_right-expanded');
+        $(document.body).removeClass('tg_right-expanded');
         finish(tg, e, 'hide');
     });
 

@@ -1,0 +1,24 @@
+stfalcon_tinymce:
+    include_jquery: false
+    tinymce_jquery: false
+    use_callback_tinymce_init: true
+    external_plugins:
+        datalink:
+            url: "asset[bundles/cleverageeavmanagerlayout/js/tinymce/plugins/datalink/plugin.js]"
+        datamedia:
+            url: "asset[bundles/cleverageeavmanagerlayout/js/tinymce/plugins/datamedia/plugin.js]"
+    theme:
+        simple:
+            menubar: false
+        # Advanced theme with almost all enabled plugins
+        advanced:
+             plugins:
+                 - "advlist autolink lists link image charmap print preview hr anchor pagebreak"
+                 - "searchreplace wordcount visualblocks visualchars code fullscreen"
+                 - "insertdatetime media nonbreaking save table contextmenu directionality"
+                 - "emoticons template paste textcolor datalink"
+             toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link unlink image"
+             toolbar2: "print preview media | forecolor backcolor emoticons | stfalcon | datalink datamedia"
+             image_advtab: true
+             relative_urls: false
+             remove_script_host: false

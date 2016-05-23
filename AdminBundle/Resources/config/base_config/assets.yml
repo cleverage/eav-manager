@@ -1,66 +1,85 @@
-# one uploader
-oneup_uploader:
-    mappings:
+sidus_eav_model:
+    families:
+        BaseAsset:
+            instantiable: false
+            attributeAsLabel: title
+            attributes:
+                - title
+                - fileSize
+                - mimeType
+                - fileName
+
+        Image:
+            parent: BaseAsset
+            attributeAsLabel: title
+            attributes:
+                - imageFile
+                - link
+                - tags
+
+        Document:
+            parent: BaseAsset
+            attributeAsLabel: title
+            attributes:
+                - documentFile
+
+    attributes:
+        # Relations
         image:
-            frontend: blueimp
-            allowed_mimetypes: [ "image/jpg", "image/jpeg", "image/png", "image/gif" ]
-            storage:
-                type: gaufrette
-                filesystem: gaufrette.resources_filesystem
-            max_size: 64000000
+            group: content
+            type: media_browser
+            form_options:
+                family: Image
+
         document:
-            frontend: blueimp
-            storage:
-                type: gaufrette
-                filesystem: gaufrette.resources_filesystem
-            max_size: 64000000
+            group: content
+            type: media_browser
+            form_options:
+                family: Document
 
-knp_gaufrette:
-    adapters:
-        resources:
-            local:
-                directory: %resources_dir%
-    filesystems:
-        resources:
-            adapter:    resources
+        # Custom Attributes => link to uploaded file
+        documentFile:
+            group: content
+            type: document
+            required: true
 
-sidus_file_upload:
-    filesystem_key: resources
-    configurations:
-        image: # must match oneup_uploader mapping key
-            entity: CleverAge\EAVManager\AssetBundle\Entity\Image
-        document:
-            entity: CleverAge\EAVManager\AssetBundle\Entity\Document
+        imageFile:
+            group: content
+            required: true
+            type: image
 
-liip_imagine:
-    loaders:
-        default:
-            filesystem:
-                # A modifier si on passe gaufrette sur autre chose que du filesytem
-                data_root: %resources_dir%
+        # Locked attributes (automatically filled from file upload)
+        fileSize:
+            group: content
+            type: integer
+            form_options:
+                disabled: true
 
-    filter_sets:
-        tiny:
-            quality: 70
-            filters:
-                auto_rotate: ~
-                thumbnail: { size: [64, 64], mode: outbound }
-        thumbnail:
-            quality: 70
-            filters:
-                auto_rotate: ~
-                thumbnail: { size: [128, 128], mode: outbound }
-        small:
-            quality: 75
-            filters:
-                thumbnail: { size: [300, 200], mode: outbound }
-        preview:
-            quality: 80
-            filters:
-                auto_rotate: ~
-                thumbnail: { size: [730, 730], mode: inset }
-        large:
-            quality: 90
-            filters:
-                auto_rotate: ~
-                thumbnail: { size: [1900, 1000], mode: inset }
+        mimeType:
+            group: content
+            form_options:
+                disabled: true
+
+        fileName:
+            group: content
+            form_options:
+                disabled: true
+
+        # Attributes
+        link:
+            group: content
+
+        tags:
+            group: content
+            multiple: true
+
+        altText:
+            group: content
+            form_options:
+                help_block: 'Laisser vide pour utiliser le titre'
+
+        legend:
+            group: content
+
+        copyright:
+            group: content

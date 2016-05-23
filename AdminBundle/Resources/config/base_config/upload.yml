@@ -1,0 +1,66 @@
+# one uploader
+oneup_uploader:
+    mappings:
+        image:
+            frontend: blueimp
+            allowed_mimetypes: [ "image/jpg", "image/jpeg", "image/png", "image/gif" ]
+            storage:
+                type: gaufrette
+                filesystem: gaufrette.resources_filesystem
+            max_size: 64000000
+        document:
+            frontend: blueimp
+            storage:
+                type: gaufrette
+                filesystem: gaufrette.resources_filesystem
+            max_size: 64000000
+
+knp_gaufrette:
+    adapters:
+        resources:
+            local:
+                directory: %resources_dir%
+    filesystems:
+        resources:
+            adapter:    resources
+
+sidus_file_upload:
+    filesystem_key: resources
+    configurations:
+        image: # must match oneup_uploader mapping key
+            entity: CleverAge\EAVManager\AssetBundle\Entity\Image
+        document:
+            entity: CleverAge\EAVManager\AssetBundle\Entity\Document
+
+liip_imagine:
+    loaders:
+        default:
+            filesystem:
+                # A modifier si on passe gaufrette sur autre chose que du filesytem
+                data_root: %resources_dir%
+
+    filter_sets:
+        tiny:
+            quality: 70
+            filters:
+                auto_rotate: ~
+                thumbnail: { size: [64, 64], mode: outbound }
+        thumbnail:
+            quality: 70
+            filters:
+                auto_rotate: ~
+                thumbnail: { size: [128, 128], mode: outbound }
+        small:
+            quality: 75
+            filters:
+                thumbnail: { size: [300, 200], mode: outbound }
+        preview:
+            quality: 80
+            filters:
+                auto_rotate: ~
+                thumbnail: { size: [730, 730], mode: inset }
+        large:
+            quality: 90
+            filters:
+                auto_rotate: ~
+                thumbnail: { size: [1900, 1000], mode: inset }

@@ -21,6 +21,9 @@ class Image extends Document
      */
     protected $height;
 
+    /**
+     * @return string
+     */
     public static function getType()
     {
         return 'image';

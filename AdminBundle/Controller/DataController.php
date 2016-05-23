@@ -160,14 +160,27 @@ class DataController extends BaseAdminController
         ]);
     }
 
+    /**
+     * Resolve datagrid code
+     *
+     * @return string
+     * @throws \UnexpectedValueException
+     */
     protected function getDataGridConfigCode()
     {
-        $code = strtolower($this->family->getCode());
+        // If datagrid code set in options, use it
+        $familyCode = $this->family->getCode();
+        if (isset($this->admin->getOption('families')[$familyCode]['datagrid'])) {
+            return $this->admin->getOption('families')[$familyCode]['datagrid'];
+        }
+
+        // Check if family has a datagrid with the same name
+        $code = strtolower($familyCode);
         if ($this->get('sidus_data_grid.datagrid_configuration.handler')->hasDataGrid($code)) {
             return $code;
         }
 
-        return 'data';
+        return parent::getDataGridConfigCode();
     }
 
     /**

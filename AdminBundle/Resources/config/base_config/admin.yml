@@ -27,8 +27,8 @@ sidus_admin:
                     path:     /{familyCode}/browse/{id}/edit/{inputId}
             options:
                 families:
-                    - Image
-                    - Document
+                    Image: ~
+                    Document: ~
 
         user:
             controller: CleverAgeEAVManagerAdminBundle:User

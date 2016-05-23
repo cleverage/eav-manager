@@ -22,8 +22,8 @@ class MediaController extends Controller
         if ($data->getFamilyCode() !== 'Image') {
             throw new \UnexpectedValueException("Data should be of family 'Image', '{$data->getFamilyCode()}' given");
         }
-        /** @noinspection PhpUndefinedMethodInspection */
-        $image = $data->getImage();
+        /** @var \Sidus\EAV\Image $data*/
+        $image = $data->getImageFile();
         if (!$image instanceof Image) {
             return $this->createNotFoundException("No actual media associated to image #{$data->getId()}");
         }

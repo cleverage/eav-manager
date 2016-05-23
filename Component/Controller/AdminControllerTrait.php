@@ -48,13 +48,13 @@ trait AdminControllerTrait
     }
 
     /**
-     * @param mixed $data
+     * @param mixed $user
      * @throws \Exception
      */
-    protected function saveEntity($data)
+    protected function saveEntity($user)
     {
         $em = $this->getManager();
-        $em->persist($data);
+        $em->persist($user);
         $em->flush();
 
         $action = $this->admin->getCurrentAction();

@@ -70,17 +70,25 @@ class UserController extends GenericAdminController
     }
 
     /**
-     * @param mixed $data
+     * @param User $user
      * @throws \Exception
      */
-    protected function saveEntity($data)
+    protected function saveEntity($user)
     {
-        if (!$data instanceof UserInterface) {
-            parent::saveEntity($data);
+        if (!$user instanceof UserInterface) {
+            parent::saveEntity($user);
 
             return;
         }
-        $this->get('fos_user.user_manager')->updateUser($data);
+
+        if (!$user->getId() && $user->isEnabled()) {
+            $password = $this->generatePassword();
+            $user->setPlainPassword($password);
+            $this->get('fos_user.user_manager')->updateUser($user);
+            $this->get('eavmanager_user.mailer')->sendAdminResetPasswordEmailMessage($user, $password);
+        } else {
+            $this->get('fos_user.user_manager')->updateUser($user);
+        }
 
         $action = $this->admin->getCurrentAction();
         $this->addFlash('success', "eavmanager.flash.{$action->getCode()}.success");

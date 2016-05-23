@@ -1,7 +1,7 @@
 sidus_eav_data_grid:
     configurations:
-        data:
-            family: Base
+        baseasset:
+            family: BaseAsset
             filter_config:
                 sortable:
                     - id
@@ -32,65 +32,58 @@ sidus_eav_data_grid:
 
         document:
             family: Document
-            parent: data
+            parent: baseasset
             filter_config:
                 sortable:
                     - id
-                    - label
-                    - pages
+                    - title
                     - fileSize
-                    - documentType
+                    - mimeType
+                    - fileName
                 fields:
-                    label: ~
-                    documentType:
+                    title: ~
+                    fileName: ~
+                    mimeType:
                         type: choice
             columns:
                 id:
                     label: "#"
-                label:
+                title:
                     template: "CleverAgeEAVManagerAdminBundle:Base:clickable.column.html.twig"
-                pages: ~
                 fileSize: ~
-                documentType: ~
-                filename:
-                    property_path: document.originalFilename
+                mimeType: ~
+                fileName: ~
                 actions:
                     template: "CleverAgeEAVManagerAdminBundle:Data:list.row.actions.html.twig"
 
         image:
             family: Image
+            parent: baseasset
             filter_config:
                 results_per_page: 5
                 sortable:
                     - id
-                    - label
+                    - title
+                    - fileSize
+                    - mimeType
                 fields:
-                    label: ~
+                    title: ~
                     tags: ~
+                    fileName: ~
+                    mimeType:
+                        type: choice
             columns:
                 id:
                     label: "#"
-                thumbnail:
+                imageFile:
                     template: "CleverAgeEAVManagerAdminBundle:Asset:browse.thumbnail.html.twig"
-                label:
+                title:
                     template: "CleverAgeEAVManagerAdminBundle:Base:clickable.column.html.twig"
                 tags: ~
                 filename:
-                    property_path: image.originalFilename
+                    property_path: imageFile.originalFilename
                 actions:
                     template: "CleverAgeEAVManagerAdminBundle:Data:list.row.actions.html.twig"
-            actions:
-                create:
-                    form_type: admin_link
-                    label: admin.action.create.label
-                    action: create
-                    icon: plus
-                    attr:
-                        class: btn-primary
-                        data-target: tg_right
-            reset_button:
-                attr:
-                    data-target: tg_center
 
         image_browser:
             family: Image
@@ -98,16 +91,16 @@ sidus_eav_data_grid:
                 results_per_page: 5
                 sortable:
                     - id
-                    - label
+                    - title
                 fields:
-                    label: ~
+                    title: ~
                     tags: ~
             columns:
                 id:
                     label: "#"
-                thumbnail:
+                imageFile:
                     template: "CleverAgeEAVManagerAdminBundle:Asset:browse.thumbnail.html.twig"
-                label:
+                title:
                     template: "CleverAgeEAVManagerAdminBundle:Asset:browse.row.label.html.twig"
                 actions:
                     template: "CleverAgeEAVManagerAdminBundle:Asset:browse.row.actions.html.twig"
@@ -138,7 +131,7 @@ sidus_eav_data_grid:
                 results_per_page: 18
                 sortable: []
                 fields:
-                    label: ~
+                    title: ~
                     tags: ~
             columns: {}
             actions:

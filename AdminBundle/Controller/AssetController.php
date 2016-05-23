@@ -54,15 +54,7 @@ class AssetController extends DataController
     {
         $this->browserMode = true;
         $this->family = $family;
-        $dataGrid = $this->getDataGrid();
-        $dataGrid->setActionParameters('create', [
-            'familyCode' => $family->getCode(),
-            'inputId' => $inputId,
-        ]);
-        $dataGrid->setActionParameters('browse', [
-            'familyCode' => $family->getCode(),
-            'inputId' => $inputId,
-        ]);
+        $dataGrid = $this->getBrowserDataGrid($inputId);
 
         $this->bindDataGridRequest($dataGrid, $request);
 
@@ -124,12 +116,13 @@ class AssetController extends DataController
         }
 
         return $this->renderAction($this->getViewParameters($request, $form, $data) + [
-                'inputId' => $inputId,
-            ]);
+            'inputId' => $inputId,
+        ]);
     }
 
     /**
      * @return string
+     * @throws \UnexpectedValueException
      */
     protected function getDataGridConfigCode()
     {
@@ -137,7 +130,9 @@ class AssetController extends DataController
             return 'thumbnail_browser';
         }
 
-        return strtolower($this->family->getCode()).($this->browserMode ? '_browser' : '');
+        $code = parent::getDataGridConfigCode();
+
+        return $code.($this->browserMode ? '_browser' : '');
     }
 
     /**

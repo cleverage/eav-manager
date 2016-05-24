@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\Request;
 class WysiwygController extends Controller
 {
     /**
-     * @Template()
      * @param Request $request
      * @param string  $configName
      * @return array
@@ -34,9 +33,7 @@ class WysiwygController extends Controller
         $form = $builder->getForm();
         $form->handleRequest($request);
 
-        return [
-            'form' => $form->createView(),
-        ];
+        return $this->render('CleverAgeEAVManagerAdminBundle:Wysiwyg:select'.ucfirst($configName).'.html.twig', ['form' => $form->createView()]);
     }
 
     /**

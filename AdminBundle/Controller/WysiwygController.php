@@ -65,6 +65,29 @@ class WysiwygController extends Controller
             'form' => $form->createView(),
         ];
     }
+    /**
+     * @Template()
+     * @param Request $request
+     * @return array
+     * @throws \Exception
+     */
+    public function selectObjectAction(Request $request)
+    {
+        $formData = [
+          'data' => $this->getData($request),
+        ];
+        $builder = $this->createFormBuilder($formData, [
+          'show_legend' => false,
+        ]);
+        $builder->add('data', 'sidus_combo_data_selector');
+
+        $form = $builder->getForm();
+        $form->handleRequest($request);
+
+        return [
+          'form' => $form->createView(),
+        ];
+    }
 
     /**
      * @param Request $request

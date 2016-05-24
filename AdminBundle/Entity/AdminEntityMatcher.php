@@ -20,7 +20,7 @@ class AdminEntityMatcher extends BaseAdminEntityMatcher
             if (is_a($entity, $admin->getEntity())) {
                 if ($entity instanceof DataInterface) {
                     $default = $default ?: $admin;
-                    foreach ($admin->getOption('families', []) as $family) {
+                    foreach ($admin->getOption('families', []) as $family => $config) {
                         if ($entity->getFamilyCode() === $family) {
                             return $admin;
                         }

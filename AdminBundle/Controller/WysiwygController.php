@@ -12,18 +12,24 @@ class WysiwygController extends Controller
     /**
      * @Template()
      * @param Request $request
+     * @param string  $configName
      * @return array
-     * @throws \Exception
+     * @throws \InvalidArgumentException
      */
-    public function selectDataAction(Request $request)
+    public function selectDataAction(Request $request, $configName)
     {
+        $formOptions = [];
+        $selectorConfig = $this->getParameter('cleverage_eavmanager.configuration')['wysiwyg'];
+        if (array_key_exists($configName, $selectorConfig)) {
+            $formOptions = $selectorConfig[$configName];
+        }
         $formData = [
             'data' => $this->getData($request),
         ];
         $builder = $this->createFormBuilder($formData, [
             'show_legend' => false,
         ]);
-        $builder->add('data', 'sidus_combo_data_selector');
+        $builder->add('data', 'sidus_combo_data_selector', $formOptions);
 
         $form = $builder->getForm();
         $form->handleRequest($request);

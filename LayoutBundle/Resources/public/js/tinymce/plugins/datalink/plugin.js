@@ -26,7 +26,8 @@ tinymce.PluginManager.add('datalink', function (editor) {
 
         editor.windowManager.open({
             title: 'Sélection d\'une donnée',
-            url: Routing.generate('eavmanager_admin.wysiwyg.data_selector.link', {
+            url: Routing.generate('eavmanager_admin.wysiwyg.data_selector', {
+                configName: 'datalink',
                 dataId: dataId
             }),
             width: 500,

@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\Request;
 class WysiwygController extends Controller
 {
     /**
-     * @Template()
      * @param Request $request
      * @param string  $configName
      * @return array
@@ -34,9 +33,7 @@ class WysiwygController extends Controller
         $form = $builder->getForm();
         $form->handleRequest($request);
 
-        return [
-            'form' => $form->createView(),
-        ];
+        return $this->render('CleverAgeEAVManagerAdminBundle:Wysiwyg:select'.ucfirst($configName).'.html.twig', ['form' => $form->createView()]);
     }
 
     /**
@@ -69,29 +66,6 @@ class WysiwygController extends Controller
 
         return [
             'form' => $form->createView(),
-        ];
-    }
-    /**
-     * @Template()
-     * @param Request $request
-     * @return array
-     * @throws \Exception
-     */
-    public function selectObjectAction(Request $request)
-    {
-        $formData = [
-          'data' => $this->getData($request),
-        ];
-        $builder = $this->createFormBuilder($formData, [
-          'show_legend' => false,
-        ]);
-        $builder->add('data', 'sidus_combo_data_selector');
-
-        $form = $builder->getForm();
-        $form->handleRequest($request);
-
-        return [
-          'form' => $form->createView(),
         ];
     }
 

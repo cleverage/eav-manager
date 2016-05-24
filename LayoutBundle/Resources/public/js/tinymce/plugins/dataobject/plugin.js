@@ -1,7 +1,7 @@
 tinymce.PluginManager.add('dataobject', function (editor) {
     var utilities = {
         isDataobject: function (node) {
-            return node.tagName == 'A' && editor.dom.getAttrib(node, 'data-object-id');
+            return node.tagName == 'IMG' && editor.dom.getAttrib(node, 'data-object-id');
         },
         createObject: function (dataId, family) {
             var node = editor.selection.getNode();
@@ -9,9 +9,7 @@ tinymce.PluginManager.add('dataobject', function (editor) {
                 $(node)
                     .attr('data-object-id', dataId);
             } else {
-                // editor.selection.getContent()
-                var imgSrc = '/bundles/cleverageeavmanagerlayout/img/dataobject.png';
-                editor.insertContent('<div class="dataobject" data-family="' + family + '" data-object-id="' + dataId + '"><img src="' + imgSrc + '" /></div>');
+                editor.insertContent('<div><img class="dataobject" data-family="' + family + '" data-object-id="' + dataId + '" src="/bundles/cleverageeavmanagerlayout/img/dataobject.png" /></div>');
             }
         }
     };
@@ -25,7 +23,8 @@ tinymce.PluginManager.add('dataobject', function (editor) {
 
         editor.windowManager.open({
             title: 'Sélection d\'un objet',
-            url: Routing.generate('eavmanager_admin.wysiwyg.data_selector.object', {
+            url: Routing.generate('eavmanager_admin.wysiwyg.data_selector', {
+                configName: 'dataobject',
                 dataId: dataId
             }),
             width: 500,
@@ -40,7 +39,7 @@ tinymce.PluginManager.add('dataobject', function (editor) {
         text: 'Dataobject',
         tooltip: 'Insérer un objet',
         onclick: showDialog,
-        stateSelector: 'div[data-object-id]'
+        stateSelector: 'img[data-object-id]'
     });
 
     editor.addMenuItem('dataobject', {

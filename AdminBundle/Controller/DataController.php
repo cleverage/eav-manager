@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sidus\AdminBundle\Admin\Action;
 use Sidus\EAVDataGridBundle\Model\DataGrid;
-use Sidus\EAVFilterBundle\Configuration\ElasticaEAVFilterConfigurationHandler;
+use Sidus\EAVFilterBundle\Configuration\EAVElasticaFilterConfigurationHandler;
 use Sidus\EAVModelBundle\Entity\DataInterface;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
 use Symfony\Component\Form\Form;
@@ -51,7 +51,7 @@ class DataController extends BaseAdminController
 
         if ($this->isElasticaEnabled() && $this->isElasticaUp()) {
             $finder = $this->container->get('fos_elastica.finder.sidus.data');
-            if ($filterConfig instanceof ElasticaEAVFilterConfigurationHandler) {
+            if ($filterConfig instanceof EAVElasticaFilterConfigurationHandler) {
                 $filterConfig->setFinder($finder);
                 $filterConfig->getESQuery(); // trigger usage of elastic search
             }

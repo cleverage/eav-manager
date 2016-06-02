@@ -81,8 +81,8 @@
                         <li><a href="{{ path('fos_user_security_logout') }}" title="logout"><i
                                         class="fa fa-power-off"></i></a></li>
                     </ul>
+                    {{ utilities.context_form() }}
                 {% endif %}
-                {{ utilities.context_form() }}
             </div>
         </div>
     </nav>

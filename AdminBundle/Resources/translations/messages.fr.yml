@@ -118,3 +118,7 @@ form:
         confirmation: Êtes-vous certain de vouloir annuler vos modifications ?
     resetPassword:
         confirmation: Êtes-vous certain de vouloir réinitialiser le mot de passe de l'utilisateur "%entity%" ?
+
+warning:
+    missing:
+        asset: Fichier manquant

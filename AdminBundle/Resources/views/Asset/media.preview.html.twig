@@ -1,6 +1,10 @@
 {% block media_preview %}
-    <a href="{{ result.imageFile | imagine_filter('large') }}" target="_blank">
-        <img src="{{ result.imageFile | imagine_filter('thumbnail') }}"
-             class="img-thumbnail pull-left" {{ image_size_attrs(result.imageFile, 'thumbnail') }}>
-    </a>
+    {% if result.imageFile %}
+        <a href="{{ result.imageFile | imagine_filter('large') }}" target="_blank">
+            <img src="{{ result.imageFile | imagine_filter('thumbnail') }}"
+                 class="img-thumbnail pull-left" {{ image_size_attrs(result.imageFile, 'thumbnail') }}>
+        </a>
+    {% else %}
+        <span class="text-muted">{{ 'warning.missing.asset'|trans }}</span>
+    {% endif %}
 {% endblock %}

@@ -1,10 +1,12 @@
-{% extends isAjax ? 'CleverAgeEAVManagerLayoutBundle::empty_layout.html.twig' : 'CleverAgeEAVManagerAdminBundle:Data:index.html.twig' %}
+{% set baseTemplate = baseTemplate|default('CleverAgeEAVManagerAdminBundle:Data:index.html.twig') %}
+{% extends 'CleverAgeEAVManagerAdminBundle:Base:list.html.twig' %}
 
 {% import "@SidusDataGrid/DataGrid/datagrid.html.twig" as DataGridHelper %}
 
 {% block tg_center %}
-    {# @var family \Sidus\EAVModelBundle\Model\Family #}
-    <h3>{{ tryTrans('eav.family.' ~ family.code ~ '.datagrid.title', [], 'admin.list_of'|trans({'%family%': family.label})) }}</h3>
+    <h3>{{ tryTrans([admin_trans_key ~ '.title', 'admin.list_of'], {'%family%': family|trim}) }}</h3>
     <hr>
-    {{ DataGridHelper.render(datagrid, {family: family}) }}
+    {% block datagrid %}
+        {{ DataGridHelper.render(datagrid, {family: family}) }}
+    {% endblock %}
 {% endblock %}

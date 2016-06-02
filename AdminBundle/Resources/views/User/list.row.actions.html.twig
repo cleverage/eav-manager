@@ -2,8 +2,12 @@
 
 {% block list_row_actions %}
     {% if is_granted('ROLE_ADMIN') %}
+        {% set link_title = tryTrans([
+            'admin.'~admin.code~'.resetPassword.label',
+            'admin.action.resetPassword.label',
+        ]) %}
         <a href="{{ entity_path(result, 'resetPassword') }}"
-           class="btn btn-warning" data-target="tg_right" title="{{ (admin.code ~ '.resetPassword.title')|trans }}">
+           class="btn btn-warning" data-target="tg_right" title="{{ link_title }}">
             <i class="fa fa-unlock"></i>
         </a>
     {% endif %}

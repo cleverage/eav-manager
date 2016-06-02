@@ -1,12 +1,20 @@
 {% spaceless %}
     <div class="btn-group btn-group-xs btn-group-nowrap">
         {% block list_row_actions %}
+            {% set link_title = tryTrans([
+                'admin.'~admin.code~'.edit.label',
+                'admin.action.edit.label',
+            ]) %}
             <a href="{{ entity_path(result, 'edit') }}"
-               class="btn btn-primary" data-target="tg_right" title="{{ (admin.code ~ '.edit.title')|trans }}">
+               class="btn btn-primary" data-target="tg_right" title="{{ link_title }}">
                 <i class="fa fa-edit"></i>
             </a>
+            {% set link_title = tryTrans([
+                'admin.'~admin.code~'.delete.label',
+                'admin.action.delete.label',
+            ]) %}
             <a href="{{ entity_path(result, 'delete') }}"
-               class="btn btn-danger" data-target="tg_right" title="{{ (admin.code ~ '.delete.title')|trans }}">
+               class="btn btn-danger" data-target="tg_right" title="{{ link_title }}">
                 <i class="fa fa-remove"></i>
             </a>
         {% endblock %}

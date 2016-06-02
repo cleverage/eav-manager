@@ -47,8 +47,8 @@ class UserController extends GenericAdminController
         }
 
         return $this->renderAction($this->getViewParameters($request, $form, $user) + [
-                'dataId' => $user->getId(),
-            ]);
+            'dataId' => $user->getId(),
+        ]);
     }
 
     /**

@@ -80,48 +80,4 @@ trait BaseControllerTrait
 
         return false;
     }
-
-    /**
-     * @param mixed $entity
-     * @param string $action
-     * @param array $parameters
-     * @param int $referenceType
-     * @param int $status
-     * @return RedirectResponse
-     * @throws \Exception
-     */
-    protected function redirectToEntity(
-        $entity,
-        $action,
-        array $parameters = [],
-        $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH,
-        $status = 302
-    ) {
-        $url = $this->container->get('sidus_admin.routing.admin_router')
-            ->generateEntityPath($entity, $action, $parameters, $referenceType);
-
-        return new RedirectResponse($url, $status);
-    }
-
-    /**
-     * @param string $admin
-     * @param string $action
-     * @param array  $parameters
-     * @param int    $referenceType
-     * @param int    $status
-     * @return RedirectResponse
-     * @throws \Exception
-     */
-    protected function redirectToAdmin(
-        $admin,
-        $action,
-        array $parameters = [],
-        $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH,
-        $status = 302
-    ) {
-        $url = $this->container->get('sidus_admin.routing.admin_router')
-            ->generateAdminPath($admin, $action, $parameters, $referenceType);
-
-        return new RedirectResponse($url, $status);
-    }
 }

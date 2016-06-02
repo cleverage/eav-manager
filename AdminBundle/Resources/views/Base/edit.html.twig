@@ -1,18 +1,29 @@
-{% extends isAjax ? 'CleverAgeEAVManagerLayoutBundle::empty_layout.html.twig' : admin.baseTemplate %}
+{% extends isAjax ? 'CleverAgeEAVManagerLayoutBundle::empty_layout.html.twig'
+        : baseTemplate|default('CleverAgeEAVManagerAdminBundle:Base:list.html.twig') %}
+
+{% set admin_trans_key = 'admin.' ~ admin.code ~ '.' ~ admin.currentAction.code ~ '.' %}
 
 {% if isAjax and form is defined %}
     {% form_theme form 'CleverAgeEAVManagerLayoutBundle:Form:ajax_theme.html.twig' %}
 {% endif %}
 
 {% block tg_center %}
-    <div class="edit-form">
+    <div class="edit-form {% block edit_form_class %}{% endblock %}">
         {{ form_start(form) }}
         {% block form_actions %}
             <div class="btn-group pull-right">
-                <a href="{{ admin_path(admin, 'list') }}" class="btn btn-default" data-close-target="{{ target }}">
-                    {{ isAjax ? 'Fermer' : 'Retour' }}
+                <a href="{{ listPath }}" data-close-target="{{ target }}" class="btn btn-default">
+                    {% if isAjax %}
+                        {{ tryTrans([admin_trans_key ~ 'close.label', 'admin.action.close.label'], []) }}
+                    {% else %}
+                        {{ tryTrans([admin_trans_key ~ 'back.label', 'admin.action.back.label'], []) }}
+                    {% endif %}
                 </a>
-                <button type="submit" class="btn btn-primary">Enregistrer</button>
+                {% block submit_button %}
+                    <button type="submit" class="btn btn-primary">
+                        {{ tryTrans([admin_trans_key ~ 'submit.label', 'admin.action.submit.label'], []) }}
+                    </button>
+                {% endblock %}
             </div>
             <div class="clear"></div>
         {% endblock %}

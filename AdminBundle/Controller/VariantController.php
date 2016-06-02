@@ -18,7 +18,7 @@ use UnexpectedValueException;
 /**
  * @Security("is_granted('ROLE_DATA_MANAGER')")
  */
-class VariantController extends BaseAdminController
+class VariantController extends AbstractAdminController
 {
     use DataControllerTrait;
 

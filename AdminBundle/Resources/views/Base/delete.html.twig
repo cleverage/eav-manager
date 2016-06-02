@@ -4,24 +4,20 @@
     {{ not success ? utilities.flash_messages() }}
 {% endblock %}
 
+{% block submit_button %}
+    <button type="submit" class="btn btn-danger">
+        {{ tryTrans([admin_trans_key ~ '.label', 'admin.action.' ~ admin.currentAction.code ~ '.label'], []) }}
+    </button>
+{% endblock %}
+
 {% block tg_center %}
-    {% set admin_trans_key = 'admin.' ~ admin.code ~ '.' ~ admin.currentAction.code ~ '.' %}
-    {% if form is defined %}
-        <div class="edit-form">
-            <a href="{{ admin_path(admin, 'list') }}" data-close-target="{{ target }}" class="pull-right">
-                <i class="fa fa-close"></i>
-            </a>
-            {{ form_start(form) }}
-            {{ form_widget(form) }}
-            <div class="btn-group pull-right">
-                <a href="{{ admin_path(admin, 'list') }}" class="btn btn-default" data-close-target="{{ target }}">
-                    {{ (admin_trans_key ~ 'back.label')|trans }}
-                </a>
-                <button type="submit" class="btn btn-primary">{{ (admin_trans_key ~ 'submit.label')|trans }}</button>
-            </div>
-            {{ form_end(form) }}
-        </div>
-    {% endif %}
+    <div class="edit-form {% block edit_form_class %}{% endblock %}">
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <p>{{ ('form.' ~ admin.currentAction.code ~ '.confirmation')|trans({'%entity%': data is defined ? (data.__toString is defined ? data.__toString)}) }}</p>
+        {{ block('form_actions') }}
+        {{ form_end(form) }}
+    </div>
 {% endblock %}
 
 {% block additionnal_javascript %}

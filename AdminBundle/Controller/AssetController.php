@@ -5,6 +5,7 @@ namespace CleverAge\EAVManager\AdminBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sidus\AdminBundle\Routing\AdminRouter;
 use Sidus\DataGridBundle\Model\DataGrid;
 use Sidus\EAVModelBundle\Entity\DataInterface;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
@@ -39,6 +40,7 @@ class AssetController extends DataController
             'family' => $family,
             'target' => $this->getTarget($request),
             'inputId' => $inputId,
+            'baseTemplate' => $this->admin->getBaseTemplate(),
         ];
     }
 
@@ -64,6 +66,7 @@ class AssetController extends DataController
             'family' => $family,
             'target' => $this->getTarget($request),
             'inputId' => $inputId,
+            'baseTemplate' => $this->admin->getBaseTemplate(),
         ];
     }
 
@@ -164,5 +167,23 @@ class AssetController extends DataController
         }
 
         return $dataGrid;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getAdminListPath(array $parameters = [])
+    {
+        if (!$this->browserMode) {
+            return parent::getAdminListPath($parameters);
+        }
+        /** @var AdminRouter $adminRouter */
+        $adminRouter = $this->get('sidus_admin.routing.admin_router');
+
+        return $adminRouter->generateAdminPath(
+            $this->admin,
+            'browse',
+            array_merge(['familyCode' => $this->family->getCode()], $parameters)
+        );
     }
 }

@@ -1,9 +1,14 @@
-{% extends isAjax ? 'CleverAgeEAVManagerLayoutBundle::empty_layout.html.twig' : admin.baseTemplate %}
+{% extends isAjax ? 'CleverAgeEAVManagerLayoutBundle::empty_layout.html.twig'
+    : baseTemplate|default('CleverAgeEAVManagerLayoutBundle::layout.html.twig') %}
 
 {% import "@SidusDataGrid/DataGrid/datagrid.html.twig" as DataGridHelper %}
 
+{% set admin_trans_key = 'admin.' ~ admin.code ~ '.' ~ admin.currentAction.code ~ '.' %}
+
 {% block tg_center %}
-    <h3>{{ (admin.code ~ '.list')|trans }}</h3>
+    <h3>{{ tryTrans([admin_trans_key ~ '.title', 'admin.list_of'], {'%family%': admin.code|humanize}) }}</h3>
     <hr>
-    {{ DataGridHelper.render(datagrid) }}
+    {% block datagrid %}
+        {{ DataGridHelper.render(datagrid) }}
+    {% endblock %}
 {% endblock %}

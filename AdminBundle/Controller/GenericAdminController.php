@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class GenericAdminController extends BaseAdminController
+class GenericAdminController extends AbstractAdminController
 {
     /**
      * @param Request $request
@@ -24,6 +24,7 @@ class GenericAdminController extends BaseAdminController
             'datagrid' => $dataGrid,
             'isAjax' => $request->isXmlHttpRequest(),
             'target' => $this->getTarget($request),
+            'baseTemplate' => $this->admin->getBaseTemplate(),
         ]);
     }
 
@@ -97,7 +98,7 @@ class GenericAdminController extends BaseAdminController
         }
 
         return $this->renderAction($this->getViewParameters($request, $form, $data) + [
-                'dataId' => $dataId,
-            ]);
+            'dataId' => $dataId,
+        ]);
     }
 }

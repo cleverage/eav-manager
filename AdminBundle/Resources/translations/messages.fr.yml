@@ -8,30 +8,26 @@ admin:
     action:
         create:
             label: Ajouter
+            title: Création
+        edit:
+            label: Modifier
+            title: Modification
         browseThumbnail:
             label: Vue compacte
         browse:
             label: Vue en liste
-
-    family:
-        edit:
-            title: Modifier
-            close:
-                label: Fermer
-            back:
-                label: Retour
-            submit:
-                label: Enregistrer
-            publish:
-                label: Publier
-            master_mode:
-                    label: Mode Master
+        back:
+            label: Retour
+        close:
+            label: Fermer
+        submit:
+            label: Enregistrer
         delete:
-            title: Supprimer
-            back:
-                label: Retour
-            submit:
-                label: Supprimer
+            label: Supprimer
+            title: Suppression
+        resetPassword:
+            label: Réinitialiser le mot de passe
+            title: Réinitialisation du mot de passe
 
     user:
         tab:
@@ -75,12 +71,6 @@ admin:
                 label: Groupes
 
     group:
-        delete:
-            back:
-                label: Annuler
-            submit:
-                    label: Supprimer
-
         form:
             name:
                 label: Nom du groupe
@@ -112,6 +102,19 @@ admin:
             title: Sélectionner un média
         detach:
             label: Détacher
+
+    flash:
+        create:
+            success: Élément créé avec succès
+        edit:
+            success: Élément mis à jour avec succès
+        delete:
+            success: Élément supprimé avec succès
+
 form:
+    delete:
+        confirmation: Êtes-vous certain de vouloir supprimer l'entité "%entity%" ?
     abandon_changes:
         confirmation: Êtes-vous certain de vouloir annuler vos modifications ?
+    resetPassword:
+        confirmation: Êtes-vous certain de vouloir réinitialiser le mot de passe de l'utilisateur "%entity%" ?

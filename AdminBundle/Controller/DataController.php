@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @Security("is_granted('ROLE_DATA_MANAGER')")
  */
-class DataController extends BaseAdminController
+class DataController extends AbstractAdminController
 {
     use DataControllerTrait;
 
@@ -64,6 +64,7 @@ class DataController extends BaseAdminController
             'isAjax' => $request->isXmlHttpRequest(),
             'family' => $family,
             'target' => $this->getTarget($request),
+            'baseTemplate' => $this->admin->getBaseTemplate(),
         ];
     }
 
@@ -209,7 +210,11 @@ class DataController extends BaseAdminController
             $action = $this->admin->getCurrentAction();
         }
         $options = parent::getDefaultFormOptions($request, $dataId, $action);
-        $options['label'] = "admin.family.{$this->family->getCode()}.{$action->getCode()}.title";
+        $formOptions['label'] = $this->tryTranslate([
+            "admin.family.{$this->family->getCode()}.{$action->getCode()}.title",
+            "admin.{$this->admin->getCode()}.{$action->getCode()}.title",
+            "admin.action.{$action->getCode()}.title",
+        ], [], ucfirst($action->getCode()));
 
         return $options;
     }
@@ -219,11 +224,21 @@ class DataController extends BaseAdminController
      * @param Form          $form
      * @param DataInterface $data
      * @return array
+     * @throws \Exception
      */
     protected function getViewParameters(Request $request, Form $form, $data)
     {
-        return parent::getViewParameters($request, $form, $data) + [
-            'family' => $data->getFamily(),
-        ];
+        return array_merge(
+            ['family' => $data->getFamily()],
+            parent::getViewParameters($request, $form, $data)
+        );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getAdminListPath(array $parameters = [])
+    {
+        return parent::getAdminListPath(array_merge(['familyCode' => $this->family->getCode()], $parameters));
     }
 }

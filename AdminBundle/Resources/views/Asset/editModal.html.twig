@@ -1,4 +1,4 @@
-{% extends 'CleverAgeEAVManagerAdminBundle:Data:edit.html.twig' %}
+{% extends 'CleverAgeEAVManagerAdminBundle:Base:edit.html.twig' %}
 
 {% block tg_center %}
     <div class="modal-dialog modal-lg" role="document">
@@ -12,12 +12,14 @@
             <div class="modal-footer">
                 {% block form_actions %}
                     <div class="btn-group pull-right">
-                        <a href="{{ admin_path(admin, 'browse', {familyCode: family.code, inputId: inputId}) }}"
-                           class="btn btn-default" data-target="{{ target }}">
-                            {{ 'admin.family.edit.back.label'|trans }}
+                        <a href="{{ listPath }}" data-close-target="{{ target }}" class="btn btn-default">
+                            {{ tryTrans([admin_trans_key ~ 'back.label', 'admin.action.back.label'], []) }}
                         </a>
-                        <button type="submit"
-                                class="btn btn-primary">{{ 'admin.family.edit.submit.label'|trans }}</button>
+                        {% block submit_button %}
+                            <button type="submit" class="btn btn-primary">
+                                {{ tryTrans([admin_trans_key ~ 'submit.label', 'admin.action.submit.label'], []) }}
+                            </button>
+                        {% endblock %}
                     </div>
                     <div class="clear"></div>
                 {% endblock %}

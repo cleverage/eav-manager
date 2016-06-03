@@ -84,7 +84,7 @@
         <ul class="nav nav-pills nav-stacked">
             {% for f in families %}
                 {% set f = f.code is defined ? f : get_family(f) %}
-                {% if f.instantiable and (is_granted('list', f) or is_granted('ROLE_SUPER_ADMIN')) %}
+                {% if f.instantiable and (is_granted('list', f) or is_granted('ROLE_DATA_ADMIN')) %}
                     <li {% if activeFamily and activeFamily.code == f.code %}class="active"{% endif %}>
                         <a href="{{ admin_path(admin, 'list', {familyCode: f.code}) }}">{{ f }}</a>
                         {{ _self.family_menu(admin, f.children, activeFamily) }}

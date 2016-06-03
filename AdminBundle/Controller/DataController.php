@@ -33,7 +33,7 @@ class DataController extends AbstractAdminController
     }
 
     /**
-     * @Security("is_granted('list', family) or is_granted('ROLE_SUPER_ADMIN')")
+     * @Security("is_granted('list', family) or is_granted('ROLE_DATA_ADMIN')")
      * @Template()
      * @param FamilyInterface $family
      * @param Request         $request
@@ -69,7 +69,7 @@ class DataController extends AbstractAdminController
     }
 
     /**
-     * @Security("is_granted('create', family) or is_granted('ROLE_SUPER_ADMIN')")
+     * @Security("is_granted('create', family) or is_granted('ROLE_DATA_ADMIN')")
      * @Template()
      * @param FamilyInterface $family
      * @param Request         $request
@@ -97,7 +97,7 @@ class DataController extends AbstractAdminController
         $this->initDataFamily($family, $data);
 
         $options = [];
-        if (!$this->isGranted('edit', $family) && !$this->isGranted('ROLE_SUPER_ADMIN')) {
+        if (!$this->isGranted('edit', $family) && !$this->isGranted('ROLE_DATA_ADMIN')) {
             $options['disabled'] = true;
         }
 
@@ -121,7 +121,7 @@ class DataController extends AbstractAdminController
     }
 
     /**
-     * @Security("is_granted('delete', family) or is_granted('ROLE_SUPER_ADMIN')")
+     * @Security("is_granted('delete', family) or is_granted('ROLE_DATA_ADMIN')")
      * @Template()
      * @param FamilyInterface $family
      * @param DataInterface   $data

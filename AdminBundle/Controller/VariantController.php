@@ -133,7 +133,7 @@ class VariantController extends AbstractAdminController
     }
 
     /**
-     * @Security("is_granted('delete', family) or is_granted('ROLE_SUPER_ADMIN')")
+     * @Security("is_granted('delete', family) or is_granted('ROLE_DATA_ADMIN')")
      * @Template()
      * @param AttributeInterface $attribute
      * @param int|DataInterface  $parentId

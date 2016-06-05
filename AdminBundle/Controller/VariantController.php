@@ -7,9 +7,11 @@ use Elastica\Query;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sidus\AdminBundle\Routing\AdminRouter;
 use Sidus\EAVModelBundle\Entity\DataInterface;
 use Sidus\EAVModelBundle\Model\AttributeInterface;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,10 +25,9 @@ class VariantController extends AbstractAdminController
     use DataControllerTrait;
 
     /**
-     * @Template()
      * @param AttributeInterface $attribute
      * @param DataInterface      $parentData
-     * @ParamConverter("parentData", class="CleverAgeEAVManagerEAVModelBundle:Data", options={"id" = "parentId"})
+     * @ParamConverter("parentData", class="CleverAge\EAVManager\EAVModelBundle\Entity\Data", options={"id" = "parentId"})
      * @param Request            $request
      * @return Response
      * @throws \Exception
@@ -54,14 +55,16 @@ class VariantController extends AbstractAdminController
             return $this->redirectToAdmin($this->admin->getCode(), 'create', $parameters);
         }
 
-        return $this->getViewParameters($request, $form, $parentData);
+        $parameters = $this->getViewParameters($request, $form, null);
+        $parameters['listPath'] = $this->getParentDataPath($parentData);
+
+        return $this->renderAction($parameters);
     }
 
     /**
-     * @Template()
      * @param AttributeInterface $attribute
      * @param DataInterface      $parentData
-     * @ParamConverter("parentData", class="CleverAgeEAVManagerEAVModelBundle:Data", options={"id" = "parentId"})
+     * @ParamConverter("parentData", class="CleverAge\EAVManager\EAVModelBundle\Entity\Data", options={"id" = "parentId"})
      * @param FamilyInterface    $family
      * @param Request            $request
      * @return Response
@@ -78,12 +81,12 @@ class VariantController extends AbstractAdminController
         }
         /** @var DataInterface $data */
         $data = $family->createData();
+        $data->setParent($parentData);
 
         return $this->editAction($attribute, $parentData, $family, $data, $request);
     }
 
     /**
-     * @Template()
      * @param AttributeInterface $attribute
      * @param int|DataInterface  $parentId
      * @param FamilyInterface    $family
@@ -112,6 +115,7 @@ class VariantController extends AbstractAdminController
 
         $form->handleRequest($request);
         if ($form->isValid()) {
+            $data->setParent($parentData);
             $this->saveEntity($data);
             $this->attachVariant($data, $attribute, $parentData);
 
@@ -127,14 +131,11 @@ class VariantController extends AbstractAdminController
             return $this->redirectToEntity($data, 'edit', $parameters);
         }
 
-        return $this->getViewParameters($request, $form, $data) + [
-            'parentData' => $parentData,
-        ];
+        return $this->renderAction($this->getViewParameters($request, $form, $data));
     }
 
     /**
      * @Security("is_granted('delete', family) or is_granted('ROLE_DATA_ADMIN')")
-     * @Template()
      * @param AttributeInterface $attribute
      * @param int|DataInterface  $parentId
      * @param FamilyInterface    $family
@@ -158,6 +159,7 @@ class VariantController extends AbstractAdminController
 
         $builder = $this->createFormBuilder(null, $this->getDefaultFormOptions($request, $data->getId()));
         $form = $builder->getForm();
+        $dataId = $data->getId();
 
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -166,9 +168,9 @@ class VariantController extends AbstractAdminController
             return $this->redirectToEntity($parentData, 'edit');
         }
 
-        return $this->getViewParameters($request, $form, $data) + [
-            'parentData' => $parentData,
-        ];
+        return $this->renderAction($this->getViewParameters($request, $form, $data) + [
+            'dataId' => $dataId,
+        ]);
     }
 
     /**
@@ -202,5 +204,31 @@ class VariantController extends AbstractAdminController
         if (!$parentData->getFamily()->hasAttribute($attribute->getCode())) {
             throw new UnexpectedValueException("Attribute {$attribute->getCode()} does not belong to parent data's family {$parentData->getFamilyCode()}");
         }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getAdminListPath($data = null, array $parameters = [])
+    {
+        if ($data instanceof DataInterface && $data->getParent()) {
+            return $this->getParentDataPath($data->getParent(), $parameters);
+        }
+
+        return null;
+    }
+
+    /**
+     * @param DataInterface $parentData
+     * @param array         $parameters
+     * @return string
+     * @throws \Exception
+     */
+    protected function getParentDataPath(DataInterface $parentData, array $parameters = [])
+    {
+        /** @var AdminRouter $adminRouter */
+        $adminRouter = $this->get('sidus_admin.routing.admin_router');
+
+        return $adminRouter->generateEntityPath($parentData, 'edit', $parameters);
     }
 }

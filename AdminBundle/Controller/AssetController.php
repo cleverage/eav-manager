@@ -172,10 +172,10 @@ class AssetController extends DataController
     /**
      * @inheritDoc
      */
-    protected function getAdminListPath(array $parameters = [])
+    protected function getAdminListPath($data = null, array $parameters = [])
     {
         if (!$this->browserMode) {
-            return parent::getAdminListPath($parameters);
+            return parent::getAdminListPath($data, $parameters);
         }
         /** @var AdminRouter $adminRouter */
         $adminRouter = $this->get('sidus_admin.routing.admin_router');

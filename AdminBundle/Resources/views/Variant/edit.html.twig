@@ -1,25 +1,15 @@
-{% extends isAjax ? 'CleverAgeEAVManagerLayoutBundle::empty_layout.html.twig' : 'CleverAgeEAVManagerAdminBundle:Variant:index.html.twig' %}
+{% extends 'CleverAgeEAVManagerAdminBundle:Base:edit.html.twig' %}
 
-{% block tg_center %}
-    <div class="edit-form">
-        {{ form_start(form) }}
-        {% block form_actions %}
-            <div class="btn-group pull-right">
-                <a href="{{ entity_path(parentData, 'edit') }}" class="btn btn-default" data-target="{{ target }}">
-                    {{ 'admin.variant.edit.back.label'|trans }}
-                </a>
-                <button type="submit" class="btn btn-primary">{{ 'admin.variant.edit.submit.label'|trans }}</button>
-            </div>
-            <div class="clear"></div>
-        {% endblock %}
-        {{ form_widget(form) }}
-        {{ block('form_actions') }}
-        {{ form_end(form) }}
+{% block form_actions %}
+    <div class="btn-group pull-right">
+        <a href="{{ listPath }}" data-target="{{ target }}" class="btn btn-default">
+            {{ tryTrans([admin_trans_key ~ 'back.label', 'admin.action.back.label'], []) }}
+        </a>
+        {{ block('submit_button') }}
     </div>
+    <div class="clear"></div>
 {% endblock %}
 
 {% block additionnal_javascript %}
-    {% if form.vars.attr.id is defined %}
-        {{ utilities.lock_form(form.vars.attr.id, target) }}
-    {% endif %}
+    {{ utilities.lock_form(form.vars.attr.id, target) }}
 {% endblock %}

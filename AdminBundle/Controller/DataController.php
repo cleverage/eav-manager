@@ -4,8 +4,8 @@ namespace CleverAge\EAVManager\AdminBundle\Controller;
 
 use CleverAge\EAVManager\Component\Controller\DataControllerTrait;
 use Elastica\Query;
+use FOS\ElasticaBundle\Finder\TransformedFinder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sidus\AdminBundle\Admin\Action;
 use Sidus\EAVDataGridBundle\Model\DataGrid;
 use Sidus\EAVFilterBundle\Configuration\EAVElasticaFilterConfigurationHandler;
@@ -24,17 +24,16 @@ class DataController extends AbstractAdminController
     use DataControllerTrait;
 
     /**
-     * @Template()
      * @return array
+     * @throws \Exception
      */
     public function indexAction()
     {
-        return [];
+        return $this->renderAction();
     }
 
     /**
      * @Security("is_granted('list', family) or is_granted('ROLE_DATA_ADMIN')")
-     * @Template()
      * @param FamilyInterface $family
      * @param Request         $request
      * @return array
@@ -50,6 +49,7 @@ class DataController extends AbstractAdminController
         $filterConfig = $dataGrid->getFilterConfig();
 
         if ($this->isElasticaEnabled() && $this->isElasticaUp()) {
+            /** @var TransformedFinder $finder */
             $finder = $this->container->get('fos_elastica.finder.sidus.data');
             if ($filterConfig instanceof EAVElasticaFilterConfigurationHandler) {
                 $filterConfig->setFinder($finder);
@@ -59,18 +59,17 @@ class DataController extends AbstractAdminController
 
         $this->bindDataGridRequest($dataGrid, $request);
 
-        return [
+        return $this->renderAction([
             'datagrid' => $dataGrid,
             'isAjax' => $request->isXmlHttpRequest(),
             'family' => $family,
             'target' => $this->getTarget($request),
             'baseTemplate' => $this->admin->getBaseTemplate(),
-        ];
+        ]);
     }
 
     /**
      * @Security("is_granted('create', family) or is_granted('ROLE_DATA_ADMIN')")
-     * @Template()
      * @param FamilyInterface $family
      * @param Request         $request
      * @return Response
@@ -85,7 +84,6 @@ class DataController extends AbstractAdminController
     }
 
     /**
-     * @Template()
      * @param FamilyInterface $family
      * @param DataInterface   $data
      * @param Request         $request
@@ -122,7 +120,6 @@ class DataController extends AbstractAdminController
 
     /**
      * @Security("is_granted('delete', family) or is_granted('ROLE_DATA_ADMIN')")
-     * @Template()
      * @param FamilyInterface $family
      * @param DataInterface   $data
      * @param Request         $request
@@ -142,13 +139,13 @@ class DataController extends AbstractAdminController
             $this->deleteEntity($data);
 
             if ($request->isXmlHttpRequest()) {
-                return [
+                return $this->renderAction([
                     'family' => $family,
                     'dataId' => $dataId,
                     'isAjax' => 1,
                     'target' => $request->get('target'),
                     'success' => 1,
-                ];
+                ]);
             }
 
             return $this->redirectToAdmin($this->admin, 'list', [
@@ -171,6 +168,7 @@ class DataController extends AbstractAdminController
     {
         // If datagrid code set in options, use it
         $familyCode = $this->family->getCode();
+        /** @noinspection UnSafeIsSetOverArrayInspection */
         if (isset($this->admin->getOption('families')[$familyCode]['datagrid'])) {
             return $this->admin->getOption('families')[$familyCode]['datagrid'];
         }
@@ -237,8 +235,8 @@ class DataController extends AbstractAdminController
     /**
      * @inheritDoc
      */
-    protected function getAdminListPath(array $parameters = [])
+    protected function getAdminListPath($data = null, array $parameters = [])
     {
-        return parent::getAdminListPath(array_merge(['familyCode' => $this->family->getCode()], $parameters));
+        return parent::getAdminListPath($data, array_merge(['familyCode' => $this->family->getCode()], $parameters));
     }
 }

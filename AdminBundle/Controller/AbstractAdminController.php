@@ -62,17 +62,18 @@ abstract class AbstractAdminController extends BaseAdminController
             'form' => $form->createView(),
             'data' => $data,
             'dataGridCode' => $this->getDataGridConfigCode(),
-            'listPath' => $this->getAdminListPath(),
+            'listPath' => $this->getAdminListPath($data),
             'baseTemplate' => $this->admin->getBaseTemplate(),
         ];
     }
 
     /**
+     * @param mixed $data
      * @param array $parameters
      * @return string
      * @throws \Exception
      */
-    protected function getAdminListPath(array $parameters = [])
+    protected function getAdminListPath($data = null, array $parameters = [])
     {
         /** @var AdminRouter $adminRouter */
         $adminRouter = $this->get('sidus_admin.routing.admin_router');

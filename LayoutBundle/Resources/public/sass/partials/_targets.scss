@@ -47,11 +47,14 @@
 }
 
 .tg_right-expanded {
-  #tg_center {
-    display: none;
+  #page-wrapper {
+    display: block;
   }
   #tg_right {
     width: 100%;
+    position: absolute;
+    left: 0px;
+    top: 0px;
   }
   .expand-target {
     .fa-expand {

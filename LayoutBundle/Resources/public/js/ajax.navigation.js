@@ -154,7 +154,6 @@
             a.removeClass('info');
             document.activeDataGridRowRef = null;
         }
-        $(document.body).removeClass('tg_right-expanded');
         finish(tg, e, 'hide');
     });
 

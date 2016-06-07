@@ -11,5 +11,6 @@
 {% endblock %}
 
 {% block additionnal_javascript %}
+    {{ parent() }}
     {{ utilities.lock_form(form.vars.attr.id, target) }}
 {% endblock %}

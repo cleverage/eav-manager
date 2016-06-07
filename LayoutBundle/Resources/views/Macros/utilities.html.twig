@@ -1,3 +1,6 @@
+{#
+Displays flash messages for main keys
+#}
 {% macro flash_messages() %}
     {% for name in ['error', 'warning', 'success', 'info'] %}
         {% for message in app.session.flashBag.get(name) %}
@@ -9,6 +12,9 @@
     {% endfor %}
 {% endmacro %}
 
+{#
+Displays a menu link
+#}
 {% macro menu_link(title, route, routes, parameters) %}
     {% if routes is defined and routes %}
         {% set routes = routes | merge([route]) %}
@@ -20,22 +26,34 @@
     </li>
 {% endmacro %}
 
+{#
+Displays a menu link with an icon
+#}
 {% macro menu_icon_link(icon, title, route, routes, parameters) %}
     {% set title = ('<i class="fa fa-' ~ icon ~ '"></i> ') ~ title %}
     {{ _self.menu_link(title, route, routes, parameters) }}
 {% endmacro %}
 
+{#
+Displays an admin menu link
+#}
 {% macro admin_menu_link(title, admin, action, parameters) %}
     <li {% if admin(admin).hasRoute(app.request.attributes.get('_route')) %}class="active"{% endif %}>
         <a href="{{ admin_path(admin, action, parameters|default({})) }}">{{ title|raw }}</a>
     </li>
 {% endmacro %}
 
+{#
+Displays an admin menu link with a FA icon
+#}
 {% macro admin_menu_icon_link(icon, title, admin, action, parameters) %}
     {% set title = ('<i class="fa fa-' ~ icon ~ '"></i> ') ~ title %}
     {{ _self.admin_menu_link(title, admin, action, parameters) }}
 {% endmacro %}
 
+{#
+Changes the current active datagrid row
+#}
 {% macro update_datagrid_active_row(dataGridCode, data, id, success, target) %}
     {% if target %}
         <script>
@@ -67,6 +85,9 @@
     {% endif %}
 {% endmacro %}
 
+{#
+Locks the form attached to the modified input
+#}
 {% macro lock_form(inputId, target) %}
     <script>
         // Launched only on ajax calls when jQuery is already defined: lock
@@ -79,6 +100,9 @@
     </script>
 {% endmacro %}
 
+{#
+Used to generate a menu for the given families
+#}
 {% macro family_menu(admin, families, activeFamily) %}
     {% if families is defined and families | length > 0 %}
         <ul class="nav nav-pills nav-stacked">
@@ -95,6 +119,9 @@
     {% endif %}
 {% endmacro %}
 
+{#
+Displays the global context switcher
+#}
 {% macro context_form() %}
     {% set contextForm = context_form() %}
     {% if contextForm %}
@@ -106,5 +133,26 @@
                     <i class="fa fa-language"></i> {{ 'admin.change_context.label'|trans }}
                 </button>
             {{ form_end(contextForm) }}
+    {% endif %}
+{% endmacro %}
+
+{#
+Displays a link button to an entity, checking permissions and with configurable title, class, target and icon
+#}
+{% macro eav_action_button(admin, entity, actionName, options) %}
+    {% if is_granted(actionName, entity.family) or is_granted('ROLE_DATA_ADMIN') %}
+        {% if options.title is defined %}
+            {% set title = options.title %}
+        {% else %}
+            {% set title = tryTrans([
+            'admin.family.'~entity.family.code~actionName~'.label',
+            'admin.'~admin.code~actionName~'.label',
+            'admin.action.'~actionName~'.label',
+            ], {}, actionName) %}
+        {% endif %}
+        <a href="{{ entity_path(entity, actionName) }}" class="{{ options.class|default('btn btn-default') }}"
+           data-target="{{ options.target|default('tg_right') }}" title="{{ title }}">
+            <i class="fa fa-{{ options.icon is defined ? options.icon : actionName }}"></i>
+        </a>
     {% endif %}
 {% endmacro %}

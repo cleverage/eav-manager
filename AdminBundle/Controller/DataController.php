@@ -145,6 +145,7 @@ class DataController extends AbstractAdminController
                     'isAjax' => 1,
                     'target' => $request->get('target'),
                     'success' => 1,
+                    'dataGridCode' => $this->getDataGridConfigCode(),
                 ]);
             }
 

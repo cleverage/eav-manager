@@ -1,7 +1,7 @@
 {% extends isAjax ? 'CleverAgeEAVManagerLayoutBundle::empty_layout.html.twig'
     : baseTemplate|default('CleverAgeEAVManagerLayoutBundle::layout.html.twig') %}
 
-{% import "@SidusDataGrid/DataGrid/datagrid.html.twig" as DataGridHelper %}
+{% import "SidusDataGridBundle:DataGrid:datagrid.html.twig" as DataGridHelper %}
 
 {% set admin_trans_key = 'admin.' ~ admin.code ~ '.' ~ admin.currentAction.code ~ '.' %}
 

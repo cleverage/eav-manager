@@ -43,6 +43,10 @@ abstract class AbstractAdminController extends BaseAdminController
      */
     protected function getTarget(Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return $this->defaultTarget;
+        }
+
         return $request->get('target', $this->defaultTarget);
     }
 

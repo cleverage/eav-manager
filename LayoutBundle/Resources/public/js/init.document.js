@@ -28,6 +28,14 @@ function bindGlobalEvents(target) {
     $(target).find('.fileupload-widget').each(function () {
         $(this).sidusFileUpload();
     });
+
+    // Tooltips
+    $(target).find('[data-toggle="tooltip"]').tooltip();
+
+    // Bind custom global event if defined
+    if (typeof(bindCustomGlobalEvents) == 'function') {
+        bindCustomGlobalEvents(target);
+    }
 }
 
 !function ($) {

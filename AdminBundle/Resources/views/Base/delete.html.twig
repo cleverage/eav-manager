@@ -11,13 +11,15 @@
 {% endblock %}
 
 {% block tg_center %}
-    <div class="edit-form {% block edit_form_class %}{% endblock %}">
-        {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <p>{{ ('form.' ~ admin.currentAction.code ~ '.confirmation')|trans({'%entity%': data is defined ? (data.__toString is defined ? data.__toString)}) }}</p>
-        {{ block('form_actions') }}
-        {{ form_end(form) }}
-    </div>
+    {% if form is defined %}
+        <div class="edit-form {% block edit_form_class %}{% endblock %}">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <p>{{ ('form.' ~ admin.currentAction.code ~ '.confirmation')|trans({'%entity%': data is defined ? (data.__toString is defined ? data.__toString)}) }}</p>
+            {{ block('form_actions') }}
+            {{ form_end(form) }}
+        </div>
+    {% endif %}
 {% endblock %}
 
 {% block additionnal_javascript %}
@@ -26,7 +28,11 @@
         <script>
             // Launched only on ajax calls when jQuery is already defined: used to update datagrid's row
             if (typeof $ != 'undefined') {
-                $('#{{ target }}').html('');
+                var t = $('#{{ target }}');
+                t.html('');
+                {% if target == 'tg_modal' %}
+                t.modal('hide');
+                {% endif %}
             }
         </script>
     {% endif %}

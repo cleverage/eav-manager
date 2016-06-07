@@ -53,8 +53,9 @@
   #tg_right {
     width: 100%;
     position: absolute;
-    left: 0px;
-    top: 0px;
+    left: 0;
+    top: 0;
+    z-index: 100;
   }
   .expand-target {
     .fa-expand {

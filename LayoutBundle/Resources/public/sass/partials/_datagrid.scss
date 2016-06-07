@@ -4,3 +4,12 @@
     margin: 0;
   }
 }
+
+.datagrid-filters {
+  .col-sm-4:nth-child(3n+4) {
+    clear: both;
+  }
+  .datagrid-filters-actions {
+    margin-bottom: $form-group-margin-bottom;
+  }
+}

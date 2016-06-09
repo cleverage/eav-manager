@@ -175,6 +175,10 @@ class DataController extends AbstractAdminController
         }
 
         // Check if family has a datagrid with the same name
+        if ($this->get('sidus_data_grid.datagrid_configuration.handler')->hasDataGrid($familyCode)) {
+            return $familyCode;
+        }
+        // Check in lowercase (this should be deprecated ?)
         $code = strtolower($familyCode);
         if ($this->get('sidus_data_grid.datagrid_configuration.handler')->hasDataGrid($code)) {
             return $code;

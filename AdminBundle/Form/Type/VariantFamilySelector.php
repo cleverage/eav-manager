@@ -2,7 +2,6 @@
 
 namespace CleverAge\EAVManager\AdminBundle\Form\Type;
 
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Exception\AccessException;
@@ -16,6 +15,7 @@ class VariantFamilySelector extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('family', 'sidus_variant_family_selector', [
+            'label' => 'admin.variant.select.family.label',
             'attribute' => $options['attribute'],
             'parent_data' => $options['parent_data'],
         ]);

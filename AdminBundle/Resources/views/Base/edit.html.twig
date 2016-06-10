@@ -36,6 +36,8 @@
 
 {% block additionnal_javascript %}
     {{ parent() }}
-    {{ utilities.update_datagrid_active_row(dataGridCode, data, data ? data.id, success, target) }}
+    {% if isAjax %}
+        {{ utilities.update_datagrid_active_row(dataGridCode, data, data ? data.id, success, target) }}
+    {% endif %}
     {{ utilities.lock_form(form.vars.attr.id, target) }}
 {% endblock %}

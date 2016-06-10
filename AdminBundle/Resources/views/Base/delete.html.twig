@@ -23,17 +23,19 @@
 {% endblock %}
 
 {% block additionnal_javascript %}
-    {{ utilities.update_datagrid_active_row(dataGridCode, data is defined ? data, dataId, success, target) }}
-    {% if target and success %}
-        <script>
-            // Launched only on ajax calls when jQuery is already defined: used to update datagrid's row
-            if (typeof $ != 'undefined') {
-                var t = $('#{{ target }}');
-                t.html('');
-                {% if target == 'tg_modal' %}
-                t.modal('hide');
-                {% endif %}
-            }
-        </script>
+    {% if isAjax %}
+        {{ utilities.update_datagrid_active_row(dataGridCode, data is defined ? data, dataId, success, target) }}
+        {% if target and success %}
+            <script>
+                // Launched only on ajax calls when jQuery is already defined: close current target
+                if (typeof $ != 'undefined') {
+                    var t = $('#{{ target }}');
+                    t.html('');
+                    {% if target == 'tg_modal' %}
+                    t.modal('hide');
+                    {% endif %}
+                }
+            </script>
+        {% endif %}
     {% endif %}
 {% endblock %}

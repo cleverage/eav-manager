@@ -20,7 +20,7 @@
                     a.addClass('info');
                     document.activeDataGridRowRef = null;
                 }
-                window.history.pushState('test', '{{ block('title')|escape }}', '{{ app.request.requestUri|raw }}');
+                window.history.pushState({}, '{{ block('title')|escape }}', '{{ app.request.requestUri|raw }}');
             }
         </script>
     {% endif %}

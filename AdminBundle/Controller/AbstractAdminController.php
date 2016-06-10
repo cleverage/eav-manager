@@ -57,7 +57,7 @@ abstract class AbstractAdminController extends BaseAdminController
      * @return array
      * @throws \Exception
      */
-    protected function getViewParameters(Request $request, Form $form, $data)
+    protected function getViewParameters(Request $request, Form $form, $data = null)
     {
         return [
             'isAjax' => $request->isXmlHttpRequest(),
@@ -112,7 +112,10 @@ abstract class AbstractAdminController extends BaseAdminController
         }
 
         $formOptions = parent::getDefaultFormOptions($request, $dataId, $action);
-        $formOptions['attr']['data-target'] = $request->get('target');
+
+        if ($request->isXmlHttpRequest()) { // Target should not be used when not calling through Ajax
+            $formOptions['attr']['data-target'] = $this->getTarget($request);
+        }
         $formOptions['label'] = $this->tryTranslate([
             "admin.{$this->admin->getCode()}.{$action->getCode()}.title",
             "admin.action.{$action->getCode()}.title",

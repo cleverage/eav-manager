@@ -229,12 +229,14 @@ class DataController extends AbstractAdminController
      * @return array
      * @throws \Exception
      */
-    protected function getViewParameters(Request $request, Form $form, $data)
+    protected function getViewParameters(Request $request, Form $form, $data = null)
     {
-        return array_merge(
-            ['family' => $data->getFamily()],
-            parent::getViewParameters($request, $form, $data)
-        );
+        $parameters = parent::getViewParameters($request, $form, $data);
+        if ($data instanceof DataInterface) {
+            $parameters['family'] = $this->family;
+        }
+
+        return $parameters;
     }
 
     /**

@@ -24,25 +24,27 @@
                 {{ 'sidus_eav_variant.text.create_first'|trans }}
             {% endif %}
         </div>
-        <ul class="list-group">
-            {% for variant in variants %}
-                <li class="list-group-item">
-                    {{ variant }} <span class="text-muted">({{ variant.family }})</span>
-                    <div class="btn-group pull-right">
-                        <a href="{{ entity_path(variant, 'edit', base_route_parameters) }}"
-                           class="btn btn-default" title="{{ 'sidus_eav_variant.link.edit.title'|trans }}"
-                           data-target="{{ target }}">
-                            <i class="fa fa-edit"></i>
-                        </a>
-                        <a href="{{ entity_path(variant, 'delete', base_route_parameters) }}"
-                           class="btn btn-danger" title="{{ 'sidus_eav_variant.link.delete.title'|trans }}"
-                           data-target="{{ target }}">
-                            <i class="fa fa-trash"></i>
-                        </a>
-                    </div>
-                </li>
-            {% endfor %}
-        </ul>
+        {% if data.id %}
+            <ul class="list-group">
+                {% for variant in variants %}
+                    <li class="list-group-item">
+                        {{ variant }} <span class="text-muted">({{ variant.family }})</span>
+                        <div class="btn-group pull-right">
+                            <a href="{{ entity_path(variant, 'edit', base_route_parameters) }}"
+                               class="btn btn-default" title="{{ 'sidus_eav_variant.link.edit.title'|trans }}"
+                               data-target="{{ target }}">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                            <a href="{{ entity_path(variant, 'delete', base_route_parameters) }}"
+                               class="btn btn-danger" title="{{ 'sidus_eav_variant.link.delete.title'|trans }}"
+                               data-target="{{ target }}">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
     </div>
 {% endblock %}
 

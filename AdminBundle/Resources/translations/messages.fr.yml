@@ -124,3 +124,6 @@ form:
 warning:
     missing:
         asset: Fichier manquant
+
+eav.attribute.validation:
+    required: Cette valeur ne doit pas être vide.

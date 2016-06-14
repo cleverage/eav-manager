@@ -1,9 +1,9 @@
 #main_content {
   display: flex;
+  position: relative;
 }
 
 #tg_right, #tg_left, #tg_center {
-  //display: table-cell;
   padding: $padding-base-horizontal;
   vertical-align: top;
   position: relative;
@@ -30,6 +30,7 @@
 #tg_right {
   border-left: 1px solid $table-border-color;
   min-width: 625px;
+  background-color: white;
 }
 
 #tg_center {

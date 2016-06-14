@@ -59,7 +59,6 @@ sidus_eav_data_grid:
             family: Image
             parent: baseasset
             filter_config:
-                results_per_page: 5
                 sortable:
                     - id
                     - title

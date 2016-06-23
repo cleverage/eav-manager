@@ -274,11 +274,7 @@ class EAVDataImporter
         if ($attribute->getType()->isRelation()) {
             $value = $this->resolveReferences($entity, $attribute, $value);
         }
-        if ($attribute->isMultiple()) {
-            $entity->setValuesData($attribute, $value);
-        } else {
-            $entity->setValueData($attribute, $value);
-        }
+        $entity->set($attribute->getCode(), $value);
     }
 
     /**
@@ -503,7 +499,7 @@ class EAVDataImporter
         $entity = $family->createData();
         $attributeAsIdentifier = $family->getAttributeAsIdentifier();
         if ($attributeAsIdentifier) {
-            $entity->setValueData($attributeAsIdentifier, $reference);
+            $entity->set($attributeAsIdentifier->getCode(), $reference);
         }
 
         return $entity;

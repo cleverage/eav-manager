@@ -43,9 +43,11 @@ class DataController extends AbstractAdminController
     {
         $this->family = $family;
         $dataGrid = $this->getDataGrid();
-        $dataGrid->setActionParameters('create', [
-            'familyCode' => $family->getCode(),
-        ]);
+        if ($dataGrid->hasAction('create')) {
+            $dataGrid->setActionParameters('create', [
+                'familyCode' => $family->getCode(),
+            ]);
+        }
         $filterConfig = $dataGrid->getFilterConfig();
 
         if ($this->isElasticaEnabled() && $this->isElasticaUp()) {

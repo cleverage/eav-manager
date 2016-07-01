@@ -14,6 +14,3 @@ services:
         class: '%eavmanager.finder.class%'
         arguments:
             - '@doctrine'
-            - '@sidus_filter.filter.factory'
-            - '@sidus_eav_model.family_configuration.handler'
-            - '@form.factory'

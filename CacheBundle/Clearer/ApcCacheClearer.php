@@ -6,6 +6,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\CacheClearer\CacheClearerInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Will call a local URL to clean APC cache
@@ -39,6 +40,9 @@ class ApcCacheClearer implements CacheClearerInterface
      */
     public function clear($cacheDir)
     {
+        if (!$this->cacheClearerUrl) {
+            return;
+        }
         $value = file_get_contents($this->cacheClearerUrl.'?'.self::URL_PARAM.'=1');
         $response = json_decode($value, true);
         if (false === $response || empty($response[self::URL_PARAM]) || $response[self::URL_PARAM] !== 'ok') {
@@ -50,22 +54,15 @@ class ApcCacheClearer implements CacheClearerInterface
     }
 
     /**
-     * @param GetResponseEvent $e
-     *
-     * @throws \InvalidArgumentException
+     * @return string
+     * @throws \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
      */
-    public function onKernelRequest(GetResponseEvent $e)
+    public static function clearCache()
     {
-        $r = $e->getRequest();
-
+        $remoteIp = @$_SERVER['REMOTE_ADDR'];
         // If not called by local client, abort
-        if (!in_array($r->getClientIp(), ['127.0.0.1', 'fe80::1', '::1'], true)) {
-            return;
-        }
-
-        // If not a request to clear the cache, abort
-        if (!$r->query->get(self::URL_PARAM)) {
-            return;
+        if (!in_array($remoteIp, ['127.0.0.1', 'fe80::1', '::1', @$_SERVER['SERVER_ADDR']], true)) {
+            throw new AccessDeniedHttpException("Access denied for IP {$remoteIp}");
         }
 
         $functions = ['apc_clear_cache', 'apcu_clear_cache', 'opcache_reset', 'xcache_clear_cache', 'wincache_ucache_clear'];
@@ -86,6 +83,6 @@ class ApcCacheClearer implements CacheClearerInterface
             'caches' => $return,
         ];
 
-        $e->setResponse(new JsonResponse($response));
+        return json_encode($response);
     }
 }

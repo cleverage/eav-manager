@@ -7,4 +7,3 @@ services:
         arguments: ['@logger', ~]
         tags:
             - { name: kernel.cache_clearer, priority: 255 }
-            - { name: kernel.event_listener, event: kernel.request, priority: 255 }

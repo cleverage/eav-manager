@@ -1,0 +1,10 @@
+parameters:
+    eavmanager.cache.apc.clearer.class: CleverAge\EAVManager\CacheBundle\Clearer\ApcCacheClearer
+
+services:
+    eavmanager.cache.apc.clearer:
+        class: '%eavmanager.cache.apc.clearer.class%'
+        arguments: ['@logger', ~]
+        tags:
+            - { name: kernel.cache_clearer }
+            - { name: kernel.event_listener, event: kernel.request }

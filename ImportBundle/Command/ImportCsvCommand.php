@@ -125,7 +125,11 @@ class ImportCsvCommand extends ContainerAwareCommand
                     $m = "Multiple attribute '{$attributeCode}' expects a splitCharacter option in import mapping";
                     throw new \UnexpectedValueException($m);
                 }
-                $value = explode($config['splitCharacter'], $value);
+                if (null === $value || '' === $value) { // Skip case where value is empty
+                    $value = [];
+                } else {
+                    $value = explode($config['splitCharacter'], $value);
+                }
             }
 
             $value = $this->transformValue($attribute, $value, $config);

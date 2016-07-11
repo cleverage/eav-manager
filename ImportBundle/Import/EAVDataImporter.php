@@ -291,7 +291,10 @@ class EAVDataImporter
         }
         $resolvedValues = [];
         foreach ($values as $value) {
-            $resolvedValues[] = $this->resolveReference($data, $attribute, $value);
+            $entity = $this->resolveReference($data, $attribute, $value);
+            if ($entity) { // Removing empty values: doesn't make sense in a collection.
+                $resolvedValues[] = $entity;
+            }
         }
 
         return $resolvedValues;

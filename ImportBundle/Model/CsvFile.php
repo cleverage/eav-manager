@@ -93,8 +93,9 @@ class CsvFile
     }
 
     /**
-     * @return int
      * @throws \RuntimeException
+     *
+     * @return int
      */
     public function getLineCount()
     {
@@ -145,7 +146,10 @@ class CsvFile
     }
 
     /**
+     * Warning, this function will return exactly the same value as the fgetcsv() function
+     *
      * @param null|int $length
+     *
      * @return array
      */
     public function readRaw($length = null)
@@ -156,13 +160,20 @@ class CsvFile
     }
 
     /**
-     * @param null $length
+     * @param int|null $length
+     *
      * @throws \UnexpectedValueException
+     *
      * @return array|null
      */
     public function readLine($length = null)
     {
         $values = $this->readRaw($length);
+
+        if (false === $values) {
+            $message = "Unable to parse data on line {$this->currentLine} for file {$this->filePath}";
+            throw new \UnexpectedValueException($message);
+        }
 
         if (count($values) !== $this->headerCount) {
             if ($this->isEndOfFile()) {
@@ -176,8 +187,11 @@ class CsvFile
     }
 
     /**
-     * @return bool
+     * This methods rewinds the file to the first line of data, skipping the headers
+     *
      * @throws \RuntimeException
+     *
+     * @return bool
      */
     public function rewind()
     {

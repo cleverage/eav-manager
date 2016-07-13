@@ -176,14 +176,14 @@ class CsvFile
         $values = $this->readRaw($length);
 
         if (false === $values) {
+            if ($this->isEndOfFile()) {
+                return null;
+            }
             $message = "Unable to parse data on line {$this->currentLine} for file {$this->filePath}";
             throw new \UnexpectedValueException($message);
         }
 
         if (count($values) !== $this->headerCount) {
-            if ($this->isEndOfFile()) {
-                return null;
-            }
             $message = "Number of columns not matching on line {$this->currentLine} for file {$this->filePath}";
             throw new \UnexpectedValueException($message);
         }

@@ -39,6 +39,8 @@ class CsvFile
      * @param string $delimiter
      * @param string $enclosure
      * @param string $escape
+     *
+     * @throws \UnexpectedValueException
      */
     public function __construct($filePath, $delimiter = ',', $enclosure = '"', $escape = '\\')
     {
@@ -49,6 +51,9 @@ class CsvFile
 
         $this->handler = fopen($filePath, 'r');
         $this->headers = fgetcsv($this->handler, null, $delimiter, $enclosure, $escape);
+        if (false === $this->headers || 0 === count($this->headers)) {
+            throw new \UnexpectedValueException("Unable to open file as CSV : {$filePath}");
+        }
         $this->headerCount = count($this->headers);
     }
 

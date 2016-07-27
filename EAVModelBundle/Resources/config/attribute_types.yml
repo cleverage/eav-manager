@@ -1,6 +1,6 @@
 services:
     eavmanager_eav_model.attribute_type.document:
-        class: %sidus_eav_model.attribute_type.default.class%
+        class: '%sidus_eav_model.attribute_type.default.class%'
         arguments:
             - document
             - documentValue
@@ -10,7 +10,7 @@ services:
             - { name: sidus.attribute_type }
 
     eavmanager_eav_model.attribute_type.image:
-        class: %sidus_eav_model.attribute_type.default.class%
+        class: '%sidus_eav_model.attribute_type.default.class%'
         arguments:
             - image
             - imageValue
@@ -20,7 +20,7 @@ services:
             - { name: sidus.attribute_type }
 
     eavmanager_eav_model.attribute_type.media_browser:
-        class: %sidus_eav_model.attribute_type.default.class%
+        class: '%sidus_eav_model.attribute_type.default.class%'
         arguments:
             - media_browser
             - dataValue

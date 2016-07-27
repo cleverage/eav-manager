@@ -3,6 +3,8 @@
 namespace CleverAge\EAVManager\AdminBundle\Controller;
 
 use CleverAge\EAVManager\Component\Controller\DataControllerTrait;
+use CleverAge\EAVManager\EAVModelBundle\Entity\Data;
+use Doctrine\ORM\EntityManager;
 use Elastica\Query;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -183,6 +185,15 @@ class VariantController extends AbstractAdminController
      */
     protected function attachVariant(DataInterface $data, AttributeInterface $attribute, DataInterface $parentData)
     {
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+
+        if ($parentData instanceof Data) {
+            $parentData->setUpdatedAt(new \DateTime()); // Force update
+            $em->flush($parentData);
+        }
+
+        // Only if variant is not part of data values
         /** @var DataInterface $variant */
         foreach ($parentData->getValuesData($attribute) as $variant) {
             // Skip adding variant to parent data if already set
@@ -191,7 +202,7 @@ class VariantController extends AbstractAdminController
             }
         }
         $parentData->addValueData($attribute, $data);
-        $this->getDoctrine()->getManager()->flush();
+        $em->flush();
     }
 
     /**

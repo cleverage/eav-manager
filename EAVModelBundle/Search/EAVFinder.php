@@ -44,7 +44,6 @@ class EAVFinder
     /**
      * @param FamilyInterface $family
      * @param array           $filterBy
-     * @param array           $orderBy
      *
      * @throws \UnexpectedValueException
      * @throws \LogicException
@@ -52,9 +51,9 @@ class EAVFinder
      *
      * @return array
      */
-    public function findOneBy(FamilyInterface $family, array $filterBy, array $orderBy = [])
+    public function findOneBy(FamilyInterface $family, array $filterBy)
     {
-        $qb = $this->getQb($family, $filterBy, $orderBy);
+        $qb = $this->getQb($family, $filterBy);
 
         return $qb->getQuery()->getOneOrNullResult();
     }

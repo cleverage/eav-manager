@@ -33,6 +33,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *          ],
  *      ],
  * ];
+ *
+ * or directly from a flat array, specifying the family
  */
 class EAVDataImporter
 {
@@ -79,6 +81,7 @@ class EAVDataImporter
      * @param array                      $uploadManagers
      * @param string                     $baseDirectory
      * @param string                     $downloadsDirectory
+     *
      * @throws RuntimeException
      */
     public function __construct(
@@ -123,8 +126,10 @@ class EAVDataImporter
     /**
      * @param array $dump
      * @param null  $filename
-     * @return bool
+     *
      * @throws Exception
+     *
+     * @return bool
      */
     public function loadDump(array $dump, $filename = null)
     {
@@ -185,8 +190,10 @@ class EAVDataImporter
      * @param FamilyInterface $family
      * @param array           $dump
      * @param ProgressBar     $progress
-     * @return bool
+     *
      * @throws Exception
+     *
+     * @return bool
      */
     public function loadBatch(FamilyInterface $family, array $dump, ProgressBar $progress = null)
     {
@@ -235,11 +242,17 @@ class EAVDataImporter
      * @param FamilyInterface $family
      * @param array           $data
      * @param string          $reference
-     * @return DataInterface
+     *
      * @throws \Exception
+     *
+     * @return DataInterface
      */
     public function loadData(FamilyInterface $family, array $data, $reference = null)
     {
+        if ($family->isSingleton() && count($data) > 1) {
+            $m = "Family {$family->getCode()} is a singleton but more tha one data was provided";
+            throw new \UnexpectedValueException($m);
+        }
         $entity = $this->getEntityOrCreate($family, $reference);
         foreach ($data as $attributeCode => $value) {
             if ($family->hasAttribute($attributeCode)) {
@@ -267,6 +280,7 @@ class EAVDataImporter
      * @param DataInterface      $entity
      * @param AttributeInterface $attribute
      * @param mixed              $value
+     *
      * @throws \Exception
      */
     protected function setEntityValue(DataInterface $entity, AttributeInterface $attribute, $value)
@@ -280,9 +294,11 @@ class EAVDataImporter
     /**
      * @param DataInterface      $data
      * @param AttributeInterface $attribute
-     * @param                    $values
-     * @return array
+     * @param mixed              $values
+     *
      * @throws \Exception
+     *
+     * @return array
      */
     protected function resolveReferences(DataInterface $data, AttributeInterface $attribute, $values)
     {
@@ -290,6 +306,7 @@ class EAVDataImporter
             return $this->resolveReference($data, $attribute, $values);
         }
         $resolvedValues = [];
+        /** @var array $values */
         foreach ($values as $value) {
             $entity = $this->resolveReference($data, $attribute, $value);
             if ($entity) { // Removing empty values: doesn't make sense in a collection.
@@ -303,9 +320,11 @@ class EAVDataImporter
     /**
      * @param DataInterface      $data
      * @param AttributeInterface $attribute
-     * @param                    $reference
-     * @return mixed
+     * @param string|array       $reference
+     *
      * @throws \Exception
+     *
+     * @return mixed
      */
     protected function resolveReference(DataInterface $data, AttributeInterface $attribute, $reference)
     {
@@ -334,6 +353,7 @@ class EAVDataImporter
     /**
      * @param FamilyInterface    $parentFamily
      * @param AttributeInterface $attribute
+     *
      * @throws MappingException|\UnexpectedValueException
      */
     protected function getTargetClass(FamilyInterface $parentFamily, AttributeInterface $attribute)
@@ -351,8 +371,10 @@ class EAVDataImporter
     /**
      * @param string $class
      * @param mixed  $value
-     * @return mixed
+     *
      * @throws \Exception
+     *
+     * @return mixed
      */
     protected function createEntity($class, $value)
     {
@@ -363,10 +385,12 @@ class EAVDataImporter
     }
 
     /**
-     * @param $class
-     * @param $value
-     * @return SidusResource
+     * @param string $class
+     * @param string $value
+     *
      * @throws \Exception
+     *
+     * @return SidusResource
      */
     protected function handleFileUpload($class, $value)
     {
@@ -411,6 +435,7 @@ class EAVDataImporter
     /**
      * @param DataInterface $entity
      * @param string        $reference
+     *
      * @throws ORMInvalidArgumentException
      */
     protected function persist(DataInterface $entity, $reference = null)
@@ -454,8 +479,10 @@ class EAVDataImporter
     /**
      * @param FamilyInterface $family
      * @param string          $reference
-     * @return DataInterface
+     *
      * @throws \Exception
+     *
+     * @return DataInterface
      */
     protected function getEntityByReference(FamilyInterface $family, $reference)
     {
@@ -485,8 +512,10 @@ class EAVDataImporter
     /**
      * @param FamilyInterface $family
      * @param string          $reference
-     * @return DataInterface
+     *
      * @throws \Exception
+     *
+     * @return DataInterface
      */
     protected function getEntityOrCreate(FamilyInterface $family, $reference)
     {
@@ -499,7 +528,11 @@ class EAVDataImporter
             return $entity;
         }
 
-        $entity = $family->createData();
+        if ($family->isSingleton()) {
+            $entity = $this->getRepository($family)->getInstance($family);
+        } else {
+            $entity = $family->createData();
+        }
         $attributeAsIdentifier = $family->getAttributeAsIdentifier();
         if ($attributeAsIdentifier) {
             $entity->set($attributeAsIdentifier->getCode(), $reference);
@@ -511,18 +544,30 @@ class EAVDataImporter
     /**
      * @param FamilyInterface $family
      * @param string          $reference
-     * @return null|DataInterface
+     *
      * @throws \UnexpectedValueException
+     *
+     * @return null|DataInterface
      */
     protected function findByIdentifier(FamilyInterface $family, $reference)
     {
-        /** @var DataRepository $repository */
-        $repository = $this->manager->getRepository($family->getDataClass());
+        $repository = $this->getRepository($family);
 
         try {
             return $repository->findByIdentifier($family, $reference, $this->idFallback);
         } catch (NonUniqueResultException $e) {
-            throw new \UnexpectedValueException("Non-unique result exception for family {$family->getCode()} and reference {$reference}", 0, $e);
+            $m = "Non-unique result exception for family {$family->getCode()} and reference {$reference}";
+            throw new \UnexpectedValueException($m, 0, $e);
         }
+    }
+
+    /**
+     * @param FamilyInterface $family
+     *
+     * @return DataRepository
+     */
+    protected function getRepository(FamilyInterface $family)
+    {
+        return $this->manager->getRepository($family->getDataClass());
     }
 }

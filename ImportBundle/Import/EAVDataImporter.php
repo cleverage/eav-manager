@@ -147,6 +147,10 @@ class EAVDataImporter
                 $progress = new ProgressBar($this->output, count($datas));
                 $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% %memory:6s%');
             }
+            if ($family->isSingleton() && count($datas) > 1) {
+                $m = "Family {$family->getCode()} is a singleton but more tha one data was provided";
+                throw new \UnexpectedValueException($m);
+            }
             foreach ($datas as $reference => $data) {
                 /** @noinspection DisconnectedForeachInstructionInspection */
                 if (isset($progress)) {
@@ -249,10 +253,6 @@ class EAVDataImporter
      */
     public function loadData(FamilyInterface $family, array $data, $reference = null)
     {
-        if ($family->isSingleton() && count($data) > 1) {
-            $m = "Family {$family->getCode()} is a singleton but more tha one data was provided";
-            throw new \UnexpectedValueException($m);
-        }
         $entity = $this->getEntityOrCreate($family, $reference);
         foreach ($data as $attributeCode => $value) {
             if ($family->hasAttribute($attributeCode)) {
@@ -331,6 +331,7 @@ class EAVDataImporter
         if (null === $reference) {
             return null;
         }
+
         $familyCode = null;
         if (isset($attribute->getFormOptions()['family'])) {
             $familyCode = $attribute->getFormOptions()['family'];
@@ -342,7 +343,6 @@ class EAVDataImporter
             return $this->createEntity($class, $reference);
         }
         $family = $this->familyConfigurationHandler->getFamily($familyCode);
-
         if (is_array($reference)) {
             return $this->loadData($family, $reference);
         }

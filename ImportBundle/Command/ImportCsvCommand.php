@@ -79,6 +79,10 @@ class ImportCsvCommand extends ContainerAwareCommand
         $this->importContext->setBatchCount($this->importConfig->getOption('batch_count', 30));
 
         $this->family = $this->importConfig->getFamily();
+        if (!$this->family->getAttributeAsIdentifier()) {
+            $m = "Cannot import data for family {$this->family->getCode()} without an attributeAsIdentifier";
+            throw new \LogicException($m);
+        }
 
         $this->processFile($filePath, $output);
 
@@ -230,8 +234,13 @@ class ImportCsvCommand extends ContainerAwareCommand
         $transformer = null;
 
         // Default DataTransformer for dates
-        if (is_string($value) && !is_numeric($value) && $attribute->getType()->getDatabaseType() === 'dateValue') {
-            $transformer = $this->getContainer()->get('eavmanager.import.transformer.simple_date');
+        if (is_string($value) && !is_numeric($value)) {
+            if ($attribute->getType()->getDatabaseType() === 'dateValue') {
+                $transformer = $this->getContainer()->get('eavmanager.import.transformer.simple_date');
+            }
+            if ($attribute->getType()->getDatabaseType() === 'datetimeValue') {
+                $transformer = $this->getContainer()->get('eavmanager.import.transformer.simple_datetime');
+            }
         }
 
         // Custom transformer in configuration
@@ -247,6 +256,8 @@ class ImportCsvCommand extends ContainerAwareCommand
 
         if ($transformer) {
             $value = $transformer->reverseTransform($value);
+        } elseif ($value === '\\N') { // MySQL CSV outputs \N for null values
+            return null;
         }
 
         return $value;

@@ -23,3 +23,7 @@ services:
     eavmanager.import.transformer.simple_date:
         class: '%eavmanager.import.transformer.simple_date.class%'
         arguments: [~, ~, 'Y-m-d']
+
+    eavmanager.import.transformer.simple_datetime:
+        class: '%eavmanager.import.transformer.simple_date.class%'
+        arguments: [~, ~, 'Y-m-d H:i:s']

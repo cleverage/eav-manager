@@ -201,7 +201,7 @@ class EAVDataImporter
      */
     public function loadBatch(FamilyInterface $family, array $dump, ProgressBar $progress = null)
     {
-        $this->manager->beginTransaction();
+        $hasTransaction = false;
         foreach ($dump as $reference => $data) {
             /** @noinspection DisconnectedForeachInstructionInspection */
             if (isset($progress)) {
@@ -210,6 +210,10 @@ class EAVDataImporter
             if ($this->importContext->hasReference($family->getCode(), $reference)) {
                 continue;
             }
+            if (!$hasTransaction) {
+                $this->manager->beginTransaction();
+                $hasTransaction = true;
+            }
             try {
                 $this->loadData($family, $data, $reference);
             } catch (Exception $e) {
@@ -217,7 +221,9 @@ class EAVDataImporter
                 throw $e;
             }
         }
-        $this->saveContext();
+        if ($hasTransaction) {
+            $this->saveContext();
+        }
 
         return true;
     }
@@ -274,6 +280,42 @@ class EAVDataImporter
         $this->persist($entity, $reference);
 
         return $entity;
+    }
+
+    /**
+     * @param bool $flush
+     *
+     * @throws RuntimeException
+     * @throws OptimisticLockException
+     */
+    public function saveContext($flush = true)
+    {
+        if ($flush) {
+            if ($this->output && $this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
+                $this->output->writeln("\n<comment>Flushing & commiting...</comment>");
+            }
+            $this->manager->flush();
+            $this->manager->commit();
+        }
+
+        foreach ($this->referencesToSave as $reference => $entity) {
+            $this->importContext->addReference($entity->getFamilyCode(), $reference, $entity->getId());
+        }
+        $this->referencesToSave = [];
+
+        if (!@file_put_contents($this->lastImportPath, json_encode($this->importContext))) {
+            throw new RuntimeException("Unable to save current context to {$this->lastImportPath}");
+        }
+
+        if ($flush) {
+            // Optimize memory consumption
+            $this->manager->clear();
+            gc_collect_cycles();
+
+            if ($this->output && $this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
+                $this->output->writeln('<comment>OK</comment>');
+            }
+        }
     }
 
     /**
@@ -443,36 +485,6 @@ class EAVDataImporter
         $this->manager->persist($entity);
         if (null !== $reference) {
             $this->referencesToSave[$reference] = $entity;
-        }
-    }
-
-    /**
-     * @throws RuntimeException
-     * @throws OptimisticLockException
-     */
-    protected function saveContext()
-    {
-        if ($this->output && $this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-            $this->output->writeln("\n<comment>Flushing & commiting...</comment>");
-        }
-        $this->manager->flush();
-        $this->manager->commit();
-
-        foreach ($this->referencesToSave as $reference => $entity) {
-            $this->importContext->addReference($entity->getFamilyCode(), $reference, $entity->getId());
-        }
-        $this->referencesToSave = [];
-
-        if (!@file_put_contents($this->lastImportPath, json_encode($this->importContext))) {
-            throw new RuntimeException("Unable to save current context to {$this->lastImportPath}");
-        }
-
-        // Optimize memory consumption
-        $this->manager->clear();
-        gc_collect_cycles();
-
-        if ($this->output && $this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-            $this->output->writeln('<comment>OK</comment>');
         }
     }
 

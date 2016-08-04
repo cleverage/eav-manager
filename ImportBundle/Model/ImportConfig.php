@@ -159,12 +159,14 @@ class ImportConfig
 
     /**
      * @param string $code
+     * @param null   $default
+     *
      * @return mixed
      */
-    public function getOption($code)
+    public function getOption($code, $default = null)
     {
         if (!isset($this->options[$code])) {
-            return null;
+            return $default;
         }
 
         return $this->options[$code];

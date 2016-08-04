@@ -4,6 +4,8 @@ namespace CleverAge\EAVManager\ImportBundle\Command;
 
 use CleverAge\EAVManager\ImportBundle\DataTransfer\ImportContext;
 use CleverAge\EAVManager\ImportBundle\Import\EAVDataImporter;
+use CleverAge\EAVManager\ImportBundle\Model\CsvFile;
+use CleverAge\EAVManager\ImportBundle\Model\ImportConfig;
 use Sidus\EAVModelBundle\Model\AttributeInterface;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -11,8 +13,6 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use CleverAge\EAVManager\ImportBundle\Model\CsvFile;
-use CleverAge\EAVManager\ImportBundle\Model\ImportConfig;
 use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\Form\DataTransformerInterface;
@@ -49,6 +49,7 @@ class ImportCsvCommand extends ContainerAwareCommand
     /**
      * @param InputInterface  $input
      * @param OutputInterface $output
+     *
      * @return null|int null or 0 if everything went fine, or an error code
      * @throws \Exception
      */
@@ -75,6 +76,7 @@ class ImportCsvCommand extends ContainerAwareCommand
         if ($filePath && $this->importContext->hasProcessedFile($filePath)) {
             throw new \LogicException('File already processed but import context was never closed properly ?');
         }
+        $this->importContext->setBatchCount($this->importConfig->getOption('batch_count', 30));
 
         $this->family = $this->importConfig->getFamily();
 
@@ -143,15 +145,28 @@ class ImportCsvCommand extends ContainerAwareCommand
     /**
      * @param string          $filePath
      * @param OutputInterface $output
+     *
      * @throws \Exception
      */
     protected function processFile($filePath, OutputInterface $output)
     {
-        $csv = new CsvFile($filePath, ';');
+        $delimiter = $this->importConfig->getOption('delimiter', ';');
+        $enclosure = $this->importConfig->getOption('enclosure', '"');
+        $escape = $this->importConfig->getOption('escape', '\\');
+        $headers = $this->importConfig->getOption('headers');
+        $csv = new CsvFile($filePath, $delimiter, $enclosure, $escape, $headers);
 
         $output->writeln("<info>Importing family {$this->family->getCode()}</info>");
         $progress = new ProgressBar($output, $csv->getLineCount());
         $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% %memory:6s%');
+
+        $currentPosition = $this->importContext->getCurrentPosition();
+        if (is_array($currentPosition) && array_key_exists('seek', $currentPosition) &&
+            array_key_exists('progress', $currentPosition)
+        ) {
+            $csv->seek($currentPosition['seek']);
+            $progress->setProgress($currentPosition['progress']);
+        }
 
         $line = 0;
         while (!$csv->isEndOfFile()) {
@@ -171,6 +186,7 @@ class ImportCsvCommand extends ContainerAwareCommand
     /**
      * @param CsvFile     $csv
      * @param ProgressBar $progress
+     *
      * @throws \Exception
      */
     protected function readLine(CsvFile $csv, ProgressBar $progress)
@@ -188,6 +204,11 @@ class ImportCsvCommand extends ContainerAwareCommand
 
         if (count($this->dataBatch) >= $this->importContext->getBatchCount()) {
             $this->eavDataImporter->loadBatch($this->family, $this->dataBatch, $progress);
+            $this->importContext->setCurrentPosition([
+                'seek' => $csv->tell(),
+                'progress' => $progress->getProgress(),
+            ]);
+            $this->eavDataImporter->saveContext(false);
             $this->dataBatch = [];
         }
     }

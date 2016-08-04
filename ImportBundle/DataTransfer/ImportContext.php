@@ -28,6 +28,9 @@ class ImportContext implements \JsonSerializable
     /** @var int */
     protected $batchCount;
 
+    /** @var mixed */
+    protected $currentPosition;
+
     /** @var array */
     protected $errors = [];
 
@@ -184,6 +187,30 @@ class ImportContext implements \JsonSerializable
     public function getBatchCount()
     {
         return $this->batchCount;
+    }
+
+    /**
+     * @param int $batchCount
+     */
+    public function setBatchCount($batchCount)
+    {
+        $this->batchCount = (int) $batchCount;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCurrentPosition()
+    {
+        return $this->currentPosition;
+    }
+
+    /**
+     * @param mixed $currentPosition
+     */
+    public function setCurrentPosition($currentPosition)
+    {
+        $this->currentPosition = $currentPosition;
     }
 
     /**

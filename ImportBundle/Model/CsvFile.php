@@ -28,6 +28,9 @@ class CsvFile
     /** @var array */
     protected $headers;
 
+    /** @var bool */
+    protected $manualHeaders = false;
+
     /** @var int */
     protected $headerCount;
 
@@ -39,10 +42,11 @@ class CsvFile
      * @param string $delimiter
      * @param string $enclosure
      * @param string $escape
+     * @param array  $headers
      *
      * @throws \UnexpectedValueException
      */
-    public function __construct($filePath, $delimiter = ',', $enclosure = '"', $escape = '\\')
+    public function __construct($filePath, $delimiter = ',', $enclosure = '"', $escape = '\\', array $headers = null)
     {
         $this->filePath = $filePath;
         $this->delimiter = $delimiter;
@@ -50,7 +54,12 @@ class CsvFile
         $this->escape = $escape;
 
         $this->handler = fopen($filePath, 'r');
-        $this->headers = fgetcsv($this->handler, null, $delimiter, $enclosure, $escape);
+        if (null === $headers) {
+            $this->headers = fgetcsv($this->handler, null, $delimiter, $enclosure, $escape);
+        } else {
+            $this->manualHeaders = true;
+            $this->headers = $headers;
+        }
         if (false === $this->headers || 0 === count($this->headers)) {
             throw new \UnexpectedValueException("Unable to open file as CSV : {$filePath}");
         }
@@ -183,8 +192,11 @@ class CsvFile
             throw new \UnexpectedValueException($message);
         }
 
-        if (count($values) !== $this->headerCount) {
-            $message = "Number of columns not matching on line {$this->currentLine} for file {$this->filePath}";
+        $count = count($values);
+        if ($count !== $this->headerCount) {
+            $message = "Number of columns not matching on line {$this->currentLine} for file {$this->filePath}: ";
+            $message .= "{$count} columns for {$this->headerCount} headers";
+            var_dump($values);
             throw new \UnexpectedValueException($message);
         }
 
@@ -204,6 +216,26 @@ class CsvFile
             throw new \RuntimeException('Unable to rewind CSV resource file');
         }
         $this->currentLine = 0;
-        $this->readRaw(); // skip headers
+        if (!$this->manualHeaders) {
+            $this->readRaw(); // skip headers
+        }
+    }
+
+    /**
+     * @return int
+     */
+    public function tell()
+    {
+        return ftell($this->handler);
+    }
+
+    /**
+     * @param int $offset
+     *
+     * @return int
+     */
+    public function seek($offset)
+    {
+        return fseek($this->handler, $offset);
     }
 }

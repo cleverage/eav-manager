@@ -188,4 +188,18 @@ class ImportConfig
     {
         $this->options = $options;
     }
+
+    /**
+     * @param string $code
+     *
+     * @return bool|mixed
+     */
+    public function getAttributeMapping($code)
+    {
+        if (array_key_exists($code, $this->mapping)) {
+            return $this->mapping[$code];
+        }
+
+        return false;
+    }
 }

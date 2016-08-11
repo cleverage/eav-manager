@@ -63,6 +63,7 @@ class CsvFile
         if (false === $this->headers || 0 === count($this->headers)) {
             throw new \UnexpectedValueException("Unable to open file as CSV : {$filePath}");
         }
+        $this->headers = array_map('trim', $this->headers); // Trimming headers
         $this->headerCount = count($this->headers);
     }
 

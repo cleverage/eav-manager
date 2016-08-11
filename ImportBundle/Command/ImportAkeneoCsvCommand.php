@@ -50,13 +50,6 @@ class ImportAkeneoCsvCommand extends ImportCsvCommand
             return;
         }
 
-        $data = $this->mapValues($rawData);
-        $reference = $data[$this->family->getAttributeAsIdentifier()->getCode()];
-        $this->dataBatch[$reference] = $data;
-
-        if (count($this->dataBatch) >= $this->importContext->getBatchCount()) {
-            $this->eavDataImporter->loadBatch($this->family, $this->dataBatch, $progress);
-            $this->dataBatch = [];
-        }
+        $this->processLine($csv, $progress, $rawData);
     }
 }

@@ -180,7 +180,7 @@ class ImportCsvCommand extends ContainerAwareCommand
 
         // Save remaining data
         if (count($this->dataBatch)) {
-            $this->eavDataImporter->loadBatch($this->family, $this->dataBatch, $progress);
+            $this->eavDataImporter->loadBatch($this->family, $this->dataBatch, $progress, $this->importConfig);
         }
 
         $progress->finish();
@@ -202,19 +202,7 @@ class ImportCsvCommand extends ContainerAwareCommand
             return;
         }
 
-        $data = $this->mapValues($rawData);
-        $reference = $data[$this->family->getAttributeAsIdentifier()->getCode()];
-        $this->dataBatch[$reference] = $data;
-
-        if (count($this->dataBatch) >= $this->importContext->getBatchCount()) {
-            $this->eavDataImporter->loadBatch($this->family, $this->dataBatch, $progress);
-            $this->importContext->setCurrentPosition([
-                'seek' => $csv->tell(),
-                'progress' => $progress->getProgress(),
-            ]);
-            $this->eavDataImporter->saveContext(false);
-            $this->dataBatch = [];
-        }
+        $this->processLine($csv, $progress, $rawData);
     }
 
     /**
@@ -261,5 +249,29 @@ class ImportCsvCommand extends ContainerAwareCommand
         }
 
         return $value;
+    }
+
+    /**
+     * @param CsvFile     $csv
+     * @param ProgressBar $progress
+     * @param array       $rawData
+     *
+     * @throws \Exception
+     */
+    protected function processLine(CsvFile $csv, ProgressBar $progress, array $rawData)
+    {
+        $data = $this->mapValues($rawData);
+        $reference = $data[$this->family->getAttributeAsIdentifier()->getCode()];
+        $this->dataBatch[$reference] = $data;
+
+        if (count($this->dataBatch) >= $this->importContext->getBatchCount()) {
+            $this->eavDataImporter->loadBatch($this->family, $this->dataBatch, $progress, $this->importConfig);
+            $this->importContext->setCurrentPosition([
+                'seek' => $csv->tell(),
+                'progress' => $progress->getProgress(),
+            ]);
+            $this->eavDataImporter->saveContext(false);
+            $this->dataBatch = [];
+        }
     }
 }

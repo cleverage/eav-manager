@@ -4,12 +4,15 @@ namespace CleverAge\EAVManager\ImportBundle\Import;
 
 use CleverAge\EAVManager\AssetBundle\Controller\BlueimpController;
 use CleverAge\EAVManager\ImportBundle\DataTransfer\ImportContext;
+use CleverAge\EAVManager\ImportBundle\Model\ImportConfig;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMInvalidArgumentException;
 use Exception;
+use CleverAge\EAVManager\ImportBundle\Exception\NonUniqueReferenceException;
+use CleverAge\EAVManager\ImportBundle\Exception\ReferenceNotFoundException;
 use Oneup\UploaderBundle\Uploader\Response\EmptyResponse;
 use RuntimeException;
 use Sidus\EAVModelBundle\Configuration\FamilyConfigurationHandler;
@@ -21,6 +24,7 @@ use Sidus\FileUploadBundle\Entity\Resource as SidusResource;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpFoundation\File\File as HttpFile;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -138,9 +142,9 @@ class EAVDataImporter
         }
         $this->manager->beginTransaction();
         $batch = $this->importContext->getBatchCount();
+        /** @var array $datas */
         foreach ($dump as $familyCode => $datas) {
             $i = 0;
-            $i2 = 0;
             $family = $this->familyConfigurationHandler->getFamily($familyCode);
             if ($this->output) {
                 $this->output->writeln("<info>Importing family {$family->getCode()}</info>");
@@ -169,10 +173,6 @@ class EAVDataImporter
                 $i++;
                 if ($i % $batch === 0) {
                     $this->saveContext();
-                    $i2++;
-                    if ($i2 % 100 === 0) {
-                        return false; // Necessary (evil) optimization
-                    }
                     $this->manager->beginTransaction();
                 }
             }
@@ -194,13 +194,18 @@ class EAVDataImporter
      * @param FamilyInterface $family
      * @param array           $dump
      * @param ProgressBar     $progress
+     * @param ImportConfig    $config
      *
      * @throws Exception
      *
      * @return bool
      */
-    public function loadBatch(FamilyInterface $family, array $dump, ProgressBar $progress = null)
-    {
+    public function loadBatch(
+        FamilyInterface $family,
+        array $dump,
+        ProgressBar $progress = null,
+        ImportConfig $config = null
+    ) {
         $hasTransaction = false;
         foreach ($dump as $reference => $data) {
             /** @noinspection DisconnectedForeachInstructionInspection */
@@ -208,6 +213,7 @@ class EAVDataImporter
                 $progress->advance();
             }
             if ($this->importContext->hasReference($family->getCode(), $reference)) {
+                // Skip already imported references
                 continue;
             }
             if (!$hasTransaction) {
@@ -215,7 +221,7 @@ class EAVDataImporter
                 $hasTransaction = true;
             }
             try {
-                $this->loadData($family, $data, $reference);
+                $this->loadData($family, $data, $reference, $config);
             } catch (Exception $e) {
                 $this->manager->rollback();
                 throw $e;
@@ -252,19 +258,23 @@ class EAVDataImporter
      * @param FamilyInterface $family
      * @param array           $data
      * @param string          $reference
+     * @param ImportConfig    $config
      *
      * @throws \Exception
      *
      * @return DataInterface
      */
-    public function loadData(FamilyInterface $family, array $data, $reference = null)
+    public function loadData(FamilyInterface $family, array $data, $reference = null, ImportConfig $config = null)
     {
+        $accessor = PropertyAccess::createPropertyAccessor();
         $entity = $this->getEntityOrCreate($family, $reference);
         foreach ($data as $attributeCode => $value) {
             if ($family->hasAttribute($attributeCode)) {
-                $this->setEntityValue($entity, $family->getAttribute($attributeCode), $value);
+                // EAV Model property
+                $this->setEntityValue($entity, $family->getAttribute($attributeCode), $value, $config);
             } else {
-                $entity->set($attributeCode, $value);
+                // Standard relational property
+                $accessor->setValue($entity, $attributeCode, $value);
             }
         }
         $violations = $this->validator->validate($entity);
@@ -322,13 +332,25 @@ class EAVDataImporter
      * @param DataInterface      $entity
      * @param AttributeInterface $attribute
      * @param mixed              $value
+     * @param ImportConfig       $config
      *
      * @throws \Exception
      */
-    protected function setEntityValue(DataInterface $entity, AttributeInterface $attribute, $value)
-    {
+    protected function setEntityValue(
+        DataInterface $entity,
+        AttributeInterface $attribute,
+        $value,
+        ImportConfig $config = null
+    ) {
+        $ignoreMissing = false;
+        if ($config) {
+            $attributeConfig = $config->getAttributeMapping($attribute->getCode());
+            if (isset($attributeConfig['ignore_missing'])) {
+                $ignoreMissing = $attributeConfig['ignore_missing'];
+            }
+        }
         if ($attribute->getType()->isRelation()) {
-            $value = $this->resolveReferences($entity, $attribute, $value);
+            $value = $this->resolveReferences($entity, $attribute, $value, $ignoreMissing);
         }
         $entity->set($attribute->getCode(), $value);
     }
@@ -337,20 +359,25 @@ class EAVDataImporter
      * @param DataInterface      $data
      * @param AttributeInterface $attribute
      * @param mixed              $values
+     * @param bool               $ignoreMissing
      *
      * @throws \Exception
      *
      * @return array
      */
-    protected function resolveReferences(DataInterface $data, AttributeInterface $attribute, $values)
-    {
+    protected function resolveReferences(
+        DataInterface $data,
+        AttributeInterface $attribute,
+        $values,
+        $ignoreMissing = false
+    ) {
         if (!$attribute->isMultiple()) {
-            return $this->resolveReference($data, $attribute, $values);
+            return $this->resolveReference($data, $attribute, $values, $ignoreMissing);
         }
         $resolvedValues = [];
         /** @var array $values */
         foreach ($values as $value) {
-            $entity = $this->resolveReference($data, $attribute, $value);
+            $entity = $this->resolveReference($data, $attribute, $value, $ignoreMissing);
             if ($entity) { // Removing empty values: doesn't make sense in a collection.
                 $resolvedValues[] = $entity;
             }
@@ -363,13 +390,18 @@ class EAVDataImporter
      * @param DataInterface      $data
      * @param AttributeInterface $attribute
      * @param string|array       $reference
+     * @param bool               $ignoreMissing
      *
      * @throws \Exception
      *
      * @return mixed
      */
-    protected function resolveReference(DataInterface $data, AttributeInterface $attribute, $reference)
-    {
+    protected function resolveReference(
+        DataInterface $data,
+        AttributeInterface $attribute,
+        $reference,
+        $ignoreMissing = false
+    ) {
         if (null === $reference) {
             return null;
         }
@@ -382,14 +414,16 @@ class EAVDataImporter
         } else {
             $class = $this->getTargetClass($data->getFamily(), $attribute);
 
-            return $this->createEntity($class, $reference);
+            return $this->createEntity($class, $reference); // @todo Not pertinent outside of uploads, use find instead
         }
         $family = $this->familyConfigurationHandler->getFamily($familyCode);
+
+        // Case where the reference is actually an embed data
         if (is_array($reference)) {
             return $this->loadData($family, $reference);
         }
 
-        return $this->getEntityByReference($family, $reference);
+        return $this->getEntityByReference($family, $reference, $ignoreMissing);
     }
 
     /**
@@ -491,12 +525,13 @@ class EAVDataImporter
     /**
      * @param FamilyInterface $family
      * @param string          $reference
+     * @param bool            $ignoreMissing
      *
      * @throws \Exception
      *
      * @return DataInterface
      */
-    protected function getEntityByReference(FamilyInterface $family, $reference)
+    protected function getEntityByReference(FamilyInterface $family, $reference, $ignoreMissing = false)
     {
         if ('' === $reference || null === $reference) {
             return null;
@@ -509,10 +544,10 @@ class EAVDataImporter
 
         if (!$this->importContext->hasReference($family->getCode(), $reference)) {
             $entity = $this->findByIdentifier($family, $reference);
-            if ($entity) {
+            if ($entity || $ignoreMissing) {
                 return $entity;
             }
-            throw new \UnexpectedValueException("Reference not found {$reference} for family {$family->getCode()}");
+            throw ReferenceNotFoundException::create($family, $reference);
         }
 
         return $this->manager->find(
@@ -568,8 +603,7 @@ class EAVDataImporter
         try {
             return $repository->findByIdentifier($family, $reference, $this->idFallback);
         } catch (NonUniqueResultException $e) {
-            $m = "Non-unique result exception for family {$family->getCode()} and reference {$reference}";
-            throw new \UnexpectedValueException($m, 0, $e);
+            throw NonUniqueReferenceException::create($family, $reference, $e);
         }
     }
 

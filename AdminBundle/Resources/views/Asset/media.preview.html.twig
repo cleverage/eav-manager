@@ -1,9 +1,11 @@
 {% block media_preview %}
-    {% if result.imageFile %}
+    {% if result.family.hasAttribute('imageFile') and result.imageFile %}
         <a href="{{ result.imageFile | imagine_filter('large') }}" target="_blank">
             <img src="{{ result.imageFile | imagine_filter('thumbnail') }}"
                  class="img-thumbnail pull-left" {{ image_size_attrs(result.imageFile, 'thumbnail') }}>
         </a>
+    {% elseif result.family.hasAttribute('documentFile') and result.documentFile %}
+        {{ result.documentFile.originalFileName }}
     {% else %}
         <span class="text-muted">{{ 'warning.missing.asset'|trans }}</span>
     {% endif %}

@@ -47,6 +47,7 @@ class WysiwygController extends Controller
         $formData = [
             'data' => $this->getData($request),
             'filter' => $request->get('dataFilter'),
+            'responsive' => $request->get('dataResponsive') == 1 ? true : false,
         ];
         $builder = $this->createFormBuilder($formData, [
             'show_legend' => false,
@@ -59,6 +60,11 @@ class WysiwygController extends Controller
         $choices = array_combine(array_keys($filterConfig), array_keys($filterConfig));
         $builder->add('filter', 'choice', [
             'choices' => $choices,
+        ]);
+
+        $builder->add('responsive', 'sidus_switch', [
+            'label' => 'Reponsive',
+            'required' => false,
         ]);
 
         $form = $builder->getForm();

@@ -4,8 +4,9 @@
         $('.tinymce-submit').on('click', function (e) {
             var dataId = $('#form_data').val();
             var filter = $('#form_filter').val();
+            var isResponsive = $('#form_responsive').is(':checked');
             var plugin = parent.tinymce.PluginManager.get('datamedia')(editor);
-            plugin.createMedia(dataId, filter);
+            plugin.createMedia(dataId, filter, isResponsive);
             editor.windowManager.close();
             e.preventDefault();
             e.stopPropagation();

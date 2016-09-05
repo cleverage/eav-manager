@@ -197,7 +197,6 @@ class CsvFile
         if ($count !== $this->headerCount) {
             $message = "Number of columns not matching on line {$this->currentLine} for file {$this->filePath}: ";
             $message .= "{$count} columns for {$this->headerCount} headers";
-            var_dump($values);
             throw new \UnexpectedValueException($message);
         }
 

@@ -352,6 +352,10 @@ class EAVDataImporter
         if ($attribute->getType()->isRelation()) {
             $value = $this->resolveReferences($entity, $attribute, $value, $ignoreMissing);
         }
+        // Special case for fields that are not strings/texts:
+        if ($value === '' && !in_array($attribute->getType()->getDatabaseType(), ['stringValue', 'textValue'], true)) {
+            $value = null; // Setting a non-text field to an empty string makes no sense
+        }
         $entity->set($attribute->getCode(), $value);
     }
 

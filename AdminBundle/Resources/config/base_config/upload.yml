@@ -19,7 +19,7 @@ knp_gaufrette:
     adapters:
         resources:
             local:
-                directory: %resources_dir%
+                directory: %resources_dir%/resources
     filesystems:
         resources:
             adapter:    resources
@@ -37,7 +37,7 @@ liip_imagine:
         default:
             filesystem:
                 # A modifier si on passe gaufrette sur autre chose que du filesytem
-                data_root: %resources_dir%
+                data_root: %resources_dir%/generated
 
     filter_sets:
         tiny:

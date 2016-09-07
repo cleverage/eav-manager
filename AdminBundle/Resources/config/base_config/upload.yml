@@ -19,7 +19,7 @@ knp_gaufrette:
     adapters:
         resources:
             local:
-                directory: %resources_dir%/resources
+                directory: '%resources_dir%'
     filesystems:
         resources:
             adapter:    resources
@@ -33,11 +33,15 @@ sidus_file_upload:
             entity: CleverAge\EAVManager\AssetBundle\Entity\Document
 
 liip_imagine:
+    resolvers:
+        default:
+            web_path:
+                cache_prefix: images/cache
     loaders:
         default:
             filesystem:
                 # A modifier si on passe gaufrette sur autre chose que du filesytem
-                data_root: %resources_dir%/generated
+                data_root: '%resources_dir%'
 
     filter_sets:
         tiny:

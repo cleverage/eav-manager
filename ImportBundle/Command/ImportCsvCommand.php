@@ -6,8 +6,7 @@ use CleverAge\EAVManager\ImportBundle\DataTransfer\ImportContext;
 use CleverAge\EAVManager\ImportBundle\Import\EAVDataImporter;
 use CleverAge\EAVManager\ImportBundle\Model\CsvFile;
 use CleverAge\EAVManager\ImportBundle\Model\ImportConfig;
-use CleverAge\EAVManager\ImportBundle\Transformer\EAVDataTransformerInterface;
-use Sidus\EAVModelBundle\Model\AttributeInterface;
+use CleverAge\EAVManager\ImportBundle\Transformer\EAVValueTransformerInterface;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -166,6 +165,10 @@ class ImportCsvCommand extends ContainerAwareCommand
     protected function processLine(CsvFile $csv, ProgressBar $progress, array $rawData)
     {
         $data = $this->mapValues($rawData);
+        $transformer = $this->importConfig->getTransformer();
+        if ($transformer) {
+            $data = $transformer->reverseTransform($this->importConfig->getFamily(), $data);
+        }
         $reference = $data[$this->family->getAttributeAsIdentifier()->getCode()];
         $this->dataBatch[$reference] = $data;
 
@@ -273,17 +276,15 @@ class ImportCsvCommand extends ContainerAwareCommand
         if (isset($config['transformer'])) {
             $transformer = $this->getContainer()->get(ltrim($config['transformer'], '@'));
             if (!$transformer instanceof DataTransformerInterface
-                && !$transformer instanceof EAVDataTransformerInterface) {
+                && !$transformer instanceof EAVValueTransformerInterface) {
                 $m = "Transformer for attribute mapping '{$attributeCode}' must be a DataTransformerInterface";
-                $m .= ' or EAVDataTransformerInterface';
+                $m .= ' or EAVValueTransformerInterface';
                 throw new \UnexpectedValueException($m);
             }
         }
 
-        // @todo handle custom EAV transformer where we pass the attribute and the config ?
-
         if ($transformer) {
-            if ($transformer instanceof EAVDataTransformerInterface) {
+            if ($transformer instanceof EAVValueTransformerInterface) {
                 $value = $transformer->reverseTransform($family, $attribute, $value, $config);
             } else {
                 $value = $transformer->reverseTransform($value);

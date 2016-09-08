@@ -26,7 +26,7 @@ class DataRepository extends BaseDataRepository
     }
 
     /**
-     * @param                   $alias
+     * @param string            $alias
      * @param null              $indexBy
      * @param QueryBuilder|null $qb
      * @return QueryBuilder

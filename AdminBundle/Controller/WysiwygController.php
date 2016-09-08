@@ -47,7 +47,7 @@ class WysiwygController extends Controller
         $formData = [
             'data' => $this->getData($request),
             'filter' => $request->get('dataFilter'),
-            'responsive' => $request->get('dataResponsive') == 1 ? true : false,
+            'responsive' => $request->get('dataResponsive') == 1,
         ];
         $builder = $this->createFormBuilder($formData, [
             'show_legend' => false,

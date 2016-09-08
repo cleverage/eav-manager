@@ -3,6 +3,7 @@
 namespace CleverAge\EAVManager\ImportBundle\Model;
 
 use CleverAge\EAVManager\ImportBundle\Import\EAVDataImporter;
+use CleverAge\EAVManager\ImportBundle\Transformer\EAVDataTransformerInterface;
 use Sidus\EAVModelBundle\Configuration\FamilyConfigurationHandler;
 use Sidus\EAVModelBundle\Exception\MissingFamilyException;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
@@ -27,6 +28,9 @@ class ImportConfig
 
     /** @var EAVDataImporter */
     protected $service;
+
+    /** @var EAVDataTransformerInterface */
+    protected $transformer;
 
     /** @var array */
     protected $mapping;
@@ -115,6 +119,22 @@ class ImportConfig
     public function setService($service)
     {
         $this->service = $service;
+    }
+
+    /**
+     * @return EAVDataTransformerInterface
+     */
+    public function getTransformer()
+    {
+        return $this->transformer;
+    }
+
+    /**
+     * @param EAVDataTransformerInterface $transformer
+     */
+    public function setTransformer(EAVDataTransformerInterface $transformer)
+    {
+        $this->transformer = $transformer;
     }
 
     /**

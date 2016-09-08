@@ -2,7 +2,7 @@
 
 namespace CleverAge\EAVManager\ImportBundle\Transformer;
 
-use Sidus\EAVModelBundle\Model\AttributeInterface;
+use Sidus\EAVModelBundle\Entity\DataInterface;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
 
 /**
@@ -11,22 +11,20 @@ use Sidus\EAVModelBundle\Model\FamilyInterface;
 interface EAVDataTransformerInterface
 {
     /**
-     * @param FamilyInterface    $family
-     * @param AttributeInterface $attribute
-     * @param mixed              $value
-     * @param array              $config
+     * @param FamilyInterface $family
+     * @param DataInterface   $data
+     * @param array           $config
      *
      * @return mixed
      */
-    public function transform(FamilyInterface $family, AttributeInterface $attribute, $value, array $config = null);
+    public function transform(FamilyInterface $family, DataInterface $data, array $config = null);
 
     /**
-     * @param FamilyInterface    $family
-     * @param AttributeInterface $attribute
-     * @param mixed              $value
-     * @param array              $config
+     * @param FamilyInterface $family
+     * @param array           $data
+     * @param array           $config
      *
      * @return mixed
      */
-    public function reverseTransform(FamilyInterface $family, AttributeInterface $attribute, $value, array $config = null);
+    public function reverseTransform(FamilyInterface $family, $data, array $config = null);
 }

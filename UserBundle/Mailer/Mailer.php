@@ -83,6 +83,7 @@ class Mailer // implements \FOS\UserBundle\Mailer\MailerInterface
             $recipients = [$recipients];
         }
         $compiled = [];
+        /** @var array $recipients */
         foreach ($recipients as $email => $name) {
             if ($name instanceof User) {
                 $compiled[$name->getEmail()] = $name;

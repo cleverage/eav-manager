@@ -57,5 +57,4 @@ class ImportYmlFixturesCommand extends ContainerAwareCommand
 
         return 0;
     }
-
 }

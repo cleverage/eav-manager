@@ -14,13 +14,25 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class Configuration implements ConfigurationInterface
 {
+    /** @var string */
+    protected $root;
+
+    /**
+     * @param string $root
+     */
+    public function __construct($root = 'clever_age_eav_manager_import')
+    {
+        $this->root = $root;
+    }
+
     /**
      * {@inheritdoc}
+     * @throws \RuntimeException
      */
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('clever_age_eav_manager_import');
+        $rootNode = $treeBuilder->root($this->root);
         $importConfigDefinition = $rootNode
             ->children()
                 ->arrayNode('configurations')
@@ -37,10 +49,6 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end();
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
-
         return $treeBuilder;
     }
 
@@ -53,6 +61,7 @@ class Configuration implements ConfigurationInterface
             ->scalarNode('file_path')->isRequired()->end()
             ->scalarNode('family')->isRequired()->end()
             ->scalarNode('service')->defaultValue('@eavmanager_import.eav_data_importer')->end()
+            ->scalarNode('transformer')->end()
             ->variableNode('mapping')->end()
             ->variableNode('options')->end();
     }

@@ -13,8 +13,12 @@ class DashboardController extends Controller
 
     /**
      * @Template()
-     * @return array
+     *
+     * @param Request $request
+     *
      * @throws \Exception
+     *
+     * @return array
      */
     public function dashboardAction(Request $request)
     {

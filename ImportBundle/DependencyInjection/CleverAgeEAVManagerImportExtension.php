@@ -49,11 +49,10 @@ class CleverAgeEAVManagerImportExtension extends Extension
      */
     protected function addImportServiceDefinition($code, $importConfiguration, ContainerBuilder $container)
     {
-        $service = $importConfiguration['service'];
-        if (0 === strpos($service, '@')) {
-            $service = substr($service, 1);
+        $importConfiguration['service'] = $this->resolveServiceReference($importConfiguration['service']);
+        if (isset($importConfiguration['transformer'])) {
+            $importConfiguration['transformer'] = $this->resolveServiceReference($importConfiguration['transformer']);
         }
-        $importConfiguration['service'] = new Reference($service);
         $definitionOptions = [
             $code,
             new Reference('sidus_eav_model.family_configuration.handler'),
@@ -62,5 +61,22 @@ class CleverAgeEAVManagerImportExtension extends Extension
         $definition = new Definition(new Parameter('eavmanager_import.import_config.class'), $definitionOptions);
         $definition->addTag('eavmanager.import');
         $container->setDefinition('eavmanager.import.'.$code, $definition);
+    }
+
+    /**
+     * @param string $serviceId
+     *
+     * @return Reference
+     */
+    protected function resolveServiceReference($serviceId)
+    {
+        if (null === $serviceId) {
+            return null;
+        }
+        if (0 === strpos($serviceId, '@')) {
+            $serviceId = substr($serviceId, 1);
+        }
+
+        return new Reference($serviceId);
     }
 }

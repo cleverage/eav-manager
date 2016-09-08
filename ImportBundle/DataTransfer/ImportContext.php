@@ -2,7 +2,6 @@
 
 namespace CleverAge\EAVManager\ImportBundle\DataTransfer;
 
-
 use DateTime;
 
 /**

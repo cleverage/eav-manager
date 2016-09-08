@@ -110,7 +110,7 @@ class Document extends Resource
         $json['fileSize'] = $this->getFileSize();
         $json['fileType'] = $this->getFileType();
         $json['fileModifiedAt'] = $this->getFileModifiedAt();
-        $json['type'] = $this::getType();
+        $json['type'] = static::getType();
 
         return $json;
     }

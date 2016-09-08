@@ -21,6 +21,9 @@ class MediaExtension extends Twig_Extension
         $this->liipFilterConfiguration = $liipFilterConfiguration;
     }
 
+    /**
+     * @return array
+     */
     public function getFunctions()
     {
         return [
@@ -28,6 +31,9 @@ class MediaExtension extends Twig_Extension
         ];
     }
 
+    /**
+     * @return array
+     */
     public function getFilters()
     {
         return [
@@ -36,8 +42,8 @@ class MediaExtension extends Twig_Extension
     }
 
     /**
-     * @param Image $image
-     * @param       $filter
+     * @param Image  $image
+     * @param string $filter
      * @return string
      * @throws NonExistingFilterException
      */
@@ -47,8 +53,7 @@ class MediaExtension extends Twig_Extension
         $width = $image->getWidth();
         $height = $image->getHeight();
         if (isset($config['filters']['thumbnail'])) {
-            $width = $config['filters']['thumbnail']['size'][0];
-            $height = $config['filters']['thumbnail']['size'][1];
+            list($width, $height) = $config['filters']['thumbnail']['size'];
             if ($config['filters']['thumbnail']['mode'] === 'inset') {
                 if ($image->getWidth() > $image->getHeight()) {
                     $height = floor($width / $image->getWidth() * $image->getHeight());

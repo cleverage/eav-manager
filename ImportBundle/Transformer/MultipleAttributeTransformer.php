@@ -8,7 +8,7 @@ use Sidus\EAVModelBundle\Model\FamilyInterface;
 /**
  * Simple transformer for multiple attributes
  */
-class MultipleAttributeTransformer implements EAVDataTransformerInterface
+class MultipleAttributeTransformer implements EAVValueTransformerInterface
 {
     /**
      * @param FamilyInterface    $family

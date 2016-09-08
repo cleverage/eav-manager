@@ -6,6 +6,7 @@ use CleverAge\EAVManager\ImportBundle\DataTransfer\ImportContext;
 use CleverAge\EAVManager\ImportBundle\Import\EAVDataImporter;
 use CleverAge\EAVManager\ImportBundle\Model\CsvFile;
 use CleverAge\EAVManager\ImportBundle\Model\ImportConfig;
+use CleverAge\EAVManager\ImportBundle\Transformer\EAVDataTransformerInterface;
 use Sidus\EAVModelBundle\Model\AttributeInterface;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -97,56 +98,6 @@ class ImportCsvCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param $data
-     *
-     * @return array
-     * @throws TransformationFailedException
-     * @throws \LogicException
-     * @throws ServiceNotFoundException
-     * @throws ServiceCircularReferenceException
-     * @throws \UnexpectedValueException
-     */
-    protected function mapValues($data)
-    {
-        $mappedData = [];
-        foreach ($this->importConfig->getMapping() as $attributeCode => $config) {
-            $attribute = $this->importConfig->getFamily()->getAttribute($attributeCode);
-            $importCode = $attributeCode;
-
-            // Custom code for mapping
-            if (isset($config['code'])) {
-                $importCode = $config['code'];
-            }
-            if (!array_key_exists($importCode, $data)) {
-                $m = "Missing column '{$importCode}' in CVS for attribute mapping {$attributeCode}";
-                throw new \UnexpectedValueException($m);
-            }
-
-            // Fetching value
-            $value = $data[$importCode];
-
-            // Case multiple @todo: Maybe this should be handled by a transformer ?
-            if ($attribute->isMultiple()) {
-                if (!isset($config['splitCharacter'])) {
-                    $m = "Multiple attribute '{$attributeCode}' expects a splitCharacter option in import mapping";
-                    throw new \UnexpectedValueException($m);
-                }
-                if (null === $value || '' === $value) { // Skip case where value is empty
-                    $value = [];
-                } else {
-                    $value = explode($config['splitCharacter'], $value);
-                }
-            }
-
-            $value = $this->transformValue($attribute, $value, $config);
-
-            $mappedData[$attributeCode] = $value;
-        }
-
-        return $mappedData;
-    }
-
-    /**
      * @param string          $filePath
      * @param OutputInterface $output
      *
@@ -206,52 +157,6 @@ class ImportCsvCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param AttributeInterface $attribute
-     * @param mixed              $value
-     * @param array              $config
-     *
-     * @throws \LogicException
-     * @throws ServiceNotFoundException
-     * @throws ServiceCircularReferenceException
-     * @throws \UnexpectedValueException
-     *
-     * @return mixed
-     */
-    protected function transformValue(AttributeInterface $attribute, $value, array $config = null)
-    {
-        $transformer = null;
-
-        // Default DataTransformer for dates
-        if (is_string($value) && !is_numeric($value)) {
-            if ($attribute->getType()->getDatabaseType() === 'dateValue') {
-                $transformer = $this->getContainer()->get('eavmanager.import.transformer.simple_date');
-            }
-            if ($attribute->getType()->getDatabaseType() === 'datetimeValue') {
-                $transformer = $this->getContainer()->get('eavmanager.import.transformer.simple_datetime');
-            }
-        }
-
-        // Custom transformer in configuration
-        if (isset($config['transformer'])) {
-            $transformer = $this->getContainer()->get(ltrim($config['transformer'], '@'));
-            if (!$transformer instanceof DataTransformerInterface) {
-                $m = "Transformer for attribute mapping '{$attribute->getCode()}' must be a DataTransformerInterface";
-                throw new \UnexpectedValueException($m);
-            }
-        }
-
-        // @todo handle custom EAV transformer where we pass the attribute and the config ?
-
-        if ($transformer) {
-            $value = $transformer->reverseTransform($value);
-        } elseif ($value === '\\N') { // MySQL CSV outputs \N for null values
-            return null;
-        }
-
-        return $value;
-    }
-
-    /**
      * @param CsvFile     $csv
      * @param ProgressBar $progress
      * @param array       $rawData
@@ -273,5 +178,120 @@ class ImportCsvCommand extends ContainerAwareCommand
             $this->eavDataImporter->saveContext(false);
             $this->dataBatch = [];
         }
+    }
+
+    /**
+     * @param $data
+     *
+     * @return array
+     * @throws TransformationFailedException
+     * @throws \LogicException
+     * @throws ServiceNotFoundException
+     * @throws ServiceCircularReferenceException
+     * @throws \UnexpectedValueException
+     */
+    protected function mapValues($data)
+    {
+        $mappedData = [];
+        foreach ($this->importConfig->getMapping() as $attributeCode => $config) {
+            $mappedData[$attributeCode] = $this->processValue($data, $attributeCode, $config);
+        }
+
+        return $mappedData;
+    }
+
+    /**
+     * @param array  $data
+     * @param string $attributeCode
+     * @param array  $config
+     *
+     * @throws ServiceNotFoundException
+     * @throws ServiceCircularReferenceException
+     * @throws \LogicException
+     * @throws \UnexpectedValueException
+     *
+     * @return mixed
+     */
+    protected function processValue($data, $attributeCode, array $config = null)
+    {
+        $importCode = $attributeCode;
+
+        // Custom code for mapping
+        if (isset($config['code'])) {
+            $importCode = $config['code'];
+        }
+        if (!array_key_exists($importCode, $data)) {
+            $m = "Missing column '{$importCode}' in CVS for attribute mapping {$attributeCode}";
+            throw new \UnexpectedValueException($m);
+        }
+
+        // Fetching value
+        $value = $data[$importCode];
+
+        return $this->transformValue($attributeCode, $value, $config);
+    }
+
+    /**
+     * @param string $attributeCode
+     * @param mixed              $value
+     * @param array              $config
+     *
+     * @throws \LogicException
+     * @throws ServiceNotFoundException
+     * @throws ServiceCircularReferenceException
+     * @throws \UnexpectedValueException
+     *
+     * @return mixed
+     */
+    protected function transformValue($attributeCode, $value, array $config = null)
+    {
+        $transformer = null;
+        $attribute = null;
+        $family = $this->importConfig->getFamily();
+        if ($family->hasAttribute($attributeCode)) {
+            $attribute = $family->getAttribute($attributeCode);
+
+            // If we put this in a transformer
+            if ($attribute->isMultiple()) {
+                $transformer = $this->getContainer()->get('eavmanager.import.transformer.multiple');
+            }
+
+            // Default DataTransformer for dates
+            if (is_string($value) && !is_numeric($value)) {
+                if ($attribute->getType()->getDatabaseType() === 'dateValue') {
+                    $transformer = $this->getContainer()->get('eavmanager.import.transformer.simple_date');
+                }
+                if ($attribute->getType()->getDatabaseType() === 'datetimeValue') {
+                    $transformer = $this->getContainer()->get('eavmanager.import.transformer.simple_datetime');
+                }
+            }
+
+            // This default configuration will crash for multiple date/datetime attributes, @fixme
+        }
+
+        // Custom transformer in configuration
+        if (isset($config['transformer'])) {
+            $transformer = $this->getContainer()->get(ltrim($config['transformer'], '@'));
+            if (!$transformer instanceof DataTransformerInterface
+                && !$transformer instanceof EAVDataTransformerInterface) {
+                $m = "Transformer for attribute mapping '{$attributeCode}' must be a DataTransformerInterface";
+                $m .= ' or EAVDataTransformerInterface';
+                throw new \UnexpectedValueException($m);
+            }
+        }
+
+        // @todo handle custom EAV transformer where we pass the attribute and the config ?
+
+        if ($transformer) {
+            if ($transformer instanceof EAVDataTransformerInterface) {
+                $value = $transformer->reverseTransform($family, $attribute, $value, $config);
+            } else {
+                $value = $transformer->reverseTransform($value);
+            }
+        } elseif ($value === '\\N') { // MySQL CSV outputs \N for null values
+            return null;
+        }
+
+        return $value;
     }
 }

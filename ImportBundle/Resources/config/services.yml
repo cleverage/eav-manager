@@ -3,6 +3,7 @@ parameters:
     eavmanager_import.import_config.class: CleverAge\EAVManager\ImportBundle\Model\ImportConfig
     eavmanager.import_configuration.handler.class: CleverAge\EAVManager\ImportBundle\Configuration\ImportConfigurationHandler
     eavmanager.import.transformer.simple_date.class: Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToStringTransformer
+    eavmanager.import.transformer.multiple.class: CleverAge\EAVManager\ImportBundle\Transformer\MultipleAttributeTransformer
 
 services:
     eavmanager_import.eav_data_importer:
@@ -27,3 +28,6 @@ services:
     eavmanager.import.transformer.simple_datetime:
         class: '%eavmanager.import.transformer.simple_date.class%'
         arguments: [~, ~, 'Y-m-d H:i:s']
+
+    eavmanager.import.transformer.multiple:
+        class: '%eavmanager.import.transformer.multiple.class%'

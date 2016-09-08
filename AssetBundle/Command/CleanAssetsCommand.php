@@ -5,12 +5,14 @@ namespace CleverAge\EAVManager\AssetBundle\Command;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\MappingException;
 use Gaufrette\Filesystem;
 use Knp\Bundle\GaufretteBundle\FilesystemMap;
 use Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper;
 use Sidus\FileUploadBundle\Configuration\ResourceTypeConfiguration;
 use Sidus\FileUploadBundle\Entity\ResourceRepository;
 use Sidus\FileUploadBundle\Manager\ResourceManager;
+use Sidus\FileUploadBundle\Model\ResourceInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Exception\LogicException;
@@ -60,6 +62,7 @@ class CleanAssetsCommand extends ContainerAwareCommand
             ->addOption('delete-orphans', null, InputOption::VALUE_NONE, 'Delete orphan entities with no relations')
             ->addOption('delete-missing', null, InputOption::VALUE_NONE, 'Delete entities with missing file')
             ->addOption('force', null, InputOption::VALUE_NONE, 'Force actions (no interaction)')
+            ->addOption('simulate', null, InputOption::VALUE_NONE, 'Do not remove anything, only simulate the action')
             ->setDescription('Cleanup orphan files and extra assets');
     }
 
@@ -99,12 +102,12 @@ class CleanAssetsCommand extends ContainerAwareCommand
      * @throws \RuntimeException
      *
      * @return int|null
+     * @throws \BadMethodCallException
      * @throws \InvalidArgumentException
-     * @throws \Doctrine\ORM\Mapping\MappingException
+     * @throws MappingException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        throw new \RuntimeException('This command is a work in progress, do not launch');
         $executeAll = true;
         if ($input->getOption('delete-extra') || $input->getOption('delete-orphans')
             || $input->getOption('delete-missing')
@@ -155,16 +158,21 @@ class CleanAssetsCommand extends ContainerAwareCommand
                 'info' => "<comment>The following files will be deleted in fs '{$fsKey}': {$files}</comment>",
                 'skipping' => '<comment>Skipping file removal.</comment>',
                 'error' => $m,
+                'question' => "Are you sure you want to remove {$count} files in fs '{$fsKey}' ? y/[n]\n",
             ];
 
-            $question = new Question("Are you sure you want to remove {$count} files in fs '{$fsKey}' ? y/[n]\n", 'n');
-            if (!$this->askQuestion($input, $output, $extraFiles, $question, $messages)) {
-                return;
+            if (!$this->askQuestion($input, $output, $extraFiles, $messages)) {
+                continue;
             }
 
             $fs = $this->fileSystems[$fsKey];
             foreach ($extraFiles as $extraFile) {
-                $fs->delete($extraFile);
+                if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
+                    $output->writeln("<comment>Removing file {$extraFile}</comment>");
+                }
+                if (!$input->getOption('simulate')) {
+                    $fs->delete($extraFile);
+                }
             }
 
             if ($output->getVerbosity() >= OutputInterface::VERBOSITY_NORMAL) {
@@ -188,7 +196,11 @@ class CleanAssetsCommand extends ContainerAwareCommand
      * @param OutputInterface $output
      *
      * @throws \InvalidArgumentException
-     * @throws \Doctrine\ORM\Mapping\MappingException
+     * @throws MappingException
+     * @throws InvalidArgumentException
+     * @throws LogicException
+     * @throws RuntimeException
+     * @throws \BadMethodCallException
      */
     protected function executeDeleteOrphans(InputInterface $input, OutputInterface $output)
     {
@@ -213,6 +225,26 @@ class CleanAssetsCommand extends ContainerAwareCommand
             }
         }
 
+        $foundEntities = $this->findAssociatedEntities($associations, $reverseAssociations);
+
+        $this->removeOrphanEntities($input, $output, $foundEntities);
+    }
+
+    /**
+     * @param array $associations
+     * @param array $reverseAssociations
+     *
+     * @throws \InvalidArgumentException
+     * @throws MappingException
+     * @throws InvalidArgumentException
+     * @throws LogicException
+     * @throws RuntimeException
+     * @throws \BadMethodCallException
+     *
+     * @return array
+     */
+    protected function findAssociatedEntities(array $associations, array $reverseAssociations)
+    {
         $foundEntities = [];
 
         // Collecting all resource entities with associations to other entities
@@ -254,6 +286,23 @@ class CleanAssetsCommand extends ContainerAwareCommand
             }
         }
 
+        return $foundEntities;
+    }
+
+    /**
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     * @param array           $foundEntities
+     *
+     * @throws \InvalidArgumentException
+     * @throws MappingException
+     * @throws InvalidArgumentException
+     * @throws LogicException
+     * @throws RuntimeException
+     * @throws \BadMethodCallException
+     */
+    protected function removeOrphanEntities(InputInterface $input, OutputInterface $output, array $foundEntities)
+    {
         $em = $this->doctrine->getManager();
 
         foreach ($this->resourceManager->getResourceConfigurations() as $resourceConfiguration) {
@@ -268,19 +317,78 @@ class CleanAssetsCommand extends ContainerAwareCommand
                 ->setParameter('ids', $ids)
             ;
 
+            $results = [];
+            /** @var ResourceInterface $result */
             foreach ($qb->getQuery()->getResult() as $result) {
-                $em->remove($result);
+                // We filter the results based on their type, it's really important with single-table inheritance as
+                // Doctrine will load all subtype for a current class and this cannot be done easily in the query.
+                if ($result->getType() !== $resourceConfiguration->getCode()) {
+                    continue;
+                }
+                $results[] = $result;
             }
 
-            $em->flush();
+            $messages = $this->getEntityRemovalMessages($metadata, $results);
+            if (!$this->askQuestion($input, $output, $results, $messages)) {
+                continue;
+            }
+
+            /** @var ResourceInterface $result */
+            foreach ($results as $result) {
+                if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
+                    $m = "<comment>Removing : {$result->getType()} #{$result->getId()}";
+                    $m .= " : {$result->getFileName()} - {$result->getOriginalFileName()}</comment>";
+                    $output->writeln($m);
+                }
+                if (!$input->getOption('simulate')) {
+                    $em->remove($result);
+                }
+            }
+
+            /** @noinspection DisconnectedForeachInstructionInspection */
+            if (!$input->getOption('simulate')) {
+                $em->flush();
+            }
         }
+    }
+
+    /**
+     * @param ClassMetadata $metadata
+     * @param array         $results
+     *
+     * @return array
+     * @throws \BadMethodCallException
+     */
+    protected function getEntityRemovalMessages(ClassMetadata $metadata, array $results)
+    {
+        $className = $metadata->getName();
+
+        $ids = [];
+        $primaryKeyReflection = $metadata->getSingleIdReflectionProperty();
+        foreach ($results as $result) {
+            $ids[] = $primaryKeyReflection->getValue($result);
+        }
+        $list = implode(', ', $ids);
+        $info = "<comment>The following entities of class '{$className}' will be deleted: {$list}</comment>";
+
+        $error = '<error>NO ENTITY REMOVED : Please use the --force option in non-interactive mode to prevent';
+        $error .= ' any mistake</error>';
+
+        $count = count($results);
+
+        return [
+            'no_item' => "<comment>No entity to remove of class '{$className}'</comment>",
+            'info' => $info,
+            'skipping' => '<comment>Skipping entity removal.</comment>',
+            'error' => $error,
+            'question' => "Are you sure you want to remove {$count} entities for class '{$className}' ? y/[n]\n",
+        ];
     }
 
     /**
      * @param InputInterface  $input
      * @param OutputInterface $output
      * @param array           $items
-     * @param Question        $question
      * @param array           $messages
      *
      * @throws RuntimeException
@@ -293,7 +401,6 @@ class CleanAssetsCommand extends ContainerAwareCommand
         InputInterface $input,
         OutputInterface $output,
         array $items,
-        Question $question,
         array $messages
     ) {
         $count = count($items);
@@ -312,6 +419,11 @@ class CleanAssetsCommand extends ContainerAwareCommand
         if (!$input->getOption('force') && $input->isInteractive()) {
             /** @var QuestionHelper $questionHelper */
             $questionHelper = $this->getHelper('question');
+            $questionMessage = "Are you sure you wan't to do this action ? y/[n]\n";
+            if (isset($messages['question'])) {
+                $questionMessage = $messages['question'];
+            }
+            $question = new Question($questionMessage, 'n');
             if ('y' !== strtolower($questionHelper->ask($input, $output, $question))) {
                 if (isset($messages['skipping']) && $output->getVerbosity() >= OutputInterface::VERBOSITY_NORMAL) {
                     $output->writeln($messages['skipping']);
@@ -349,7 +461,7 @@ class CleanAssetsCommand extends ContainerAwareCommand
         foreach ($this->fileSystems as $fsKey => $fileSystem) {
             $existingFileNames = [];
             foreach ($fileSystem->keys() as $entityFileName) {
-                if (in_array($entityFileName, ['.gitkeep'])) {
+                if (in_array($entityFileName, ['.gitkeep'], true)) {
                     continue;
                 }
                 $existingFileNames[$entityFileName] = $entityFileName;

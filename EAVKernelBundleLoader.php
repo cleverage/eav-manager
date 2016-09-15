@@ -26,12 +26,6 @@ class EAVKernelBundleLoader
             new \JMS\SerializerBundle\JMSSerializerBundle(), // Required by (at least) SidusPublishingBundle
             new \Circle\RestClientBundle\CircleRestClientBundle(), // Required by SidusPublishingBundle
 
-            // Frontend Dependencies
-            new \Sonata\SeoBundle\SonataSeoBundle(),
-            new \FOS\ElasticaBundle\FOSElasticaBundle(),
-            new \WhiteOctober\BreadcrumbsBundle\WhiteOctoberBreadcrumbsBundle(),
-            new \Ensepar\Html2pdfBundle\EnseparHtml2pdfBundle(),
-
             // Sidus bundles
             new \Sidus\EAVModelBundle\SidusEAVModelBundle(), //  Base bundle for EAV model
             new \Sidus\FilterBundle\SidusFilterBundle(), // Data filtering based on user input

@@ -24,5 +24,20 @@
         }
     },
     "require": {
+        "friendsofsymfony/user-bundle": "~1.3.6",
+        "friendsofsymfony/jsrouting-bundle": "~1.5",
+        "liip/imagine-bundle": "1.5.*",
+        "tinymce/tinymce": "4.3.*",
+
+        "sidus/eav-model-bundle": "~1.1.0",
+        "sidus/eav-bootstrap-bundle": "~1.1.0",
+        "sidus/filter-bundle": "~1.1.0",
+        "sidus/eav-filter-bundle": "~1.1.0",
+        "sidus/datagrid-bundle": "~1.1.0",
+        "sidus/eav-datagrid-bundle": "~1.1.0",
+        "sidus/eav-variant-bundle": "~1.1.0",
+        "sidus/publishing-bundle": "~1.1.0",
+        "sidus/file-upload-bundle": "~1.1.0",
+        "sidus/admin-bundle": "~1.1.0"
     }
 }

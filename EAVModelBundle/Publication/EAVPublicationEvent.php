@@ -6,7 +6,7 @@ use Sidus\EAVModelBundle\Entity\DataInterface;
 use Sidus\PublishingBundle\Entity\PublishableInterface;
 use Sidus\PublishingBundle\Event\PublicationEvent;
 
-class EAVManagerPublicationEvent extends PublicationEvent
+class EAVPublicationEvent extends PublicationEvent
 {
     public $family;
 

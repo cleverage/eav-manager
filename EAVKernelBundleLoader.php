@@ -45,6 +45,7 @@ class EAVKernelBundleLoader
             new \Exercise\HTMLPurifierBundle\ExerciseHTMLPurifierBundle(), // Clean HTML input (or during import)
             new \FOS\JsRoutingBundle\FOSJsRoutingBundle(), // Sf2 routing in JS
             new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
+            new \FOS\ElasticaBundle\FOSElasticaBundle(),
 
             // CleverAge EAVManager
             new \CleverAge\EAVManager\EAVModelBundle\CleverAgeEAVManagerEAVModelBundle(),

@@ -11,11 +11,12 @@
     {% block stylesheets %}
         {# !!!!!! WARNING !!!!! #}
         {# Because of the way Assetic works, if you want to override this block you will also have to override the JS block #}
-        {% stylesheets  'bundles/pinanoselect2/css/select2.css'
-        'bundles/pinanoselect2/css/select2-bootstrap.css'
-        'bundles/samsonautocomplete/css/autocomplete.css'
-        'bundles/mopabootstrap/components/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css'
-        'bundles/cleverageeavmanagerlayout/css/layout.css'
+        {% stylesheets
+            'bundles/pinanoselect2/css/select2.css'
+            'bundles/pinanoselect2/css/select2-bootstrap.css'
+            'bundles/samsonautocomplete/css/autocomplete.css'
+            'bundles/mopabootstrap/components/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css'
+            'bundles/cleverageeavmanagerlayout/css/layout.css'
         filter='?uglifycss' filter='cssrewrite' %}
         <link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen"/>
         {% endstylesheets %}
@@ -40,29 +41,21 @@
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 {% block main_menu_application %}
-                    {% set activeFamily = family is defined ? family %}
                     <ul class="nav navbar-nav">
-                        {# @var f \Sidus\EAVModelBundle\Model\Family #}
-                        {% for f in get_root_families() %}
-                            {% set f = f.code is defined ? f : get_family(f) %}
-                            {% set fClass = (activeFamily and activeFamily.code == f.code ? 'active') ~ (f.children | length ? ' dropdown') %}
-                            <li {% if fClass %}class="{{ fClass }}"{% endif %}>
-                                {% if f.instantiable %}
-                                    <a href="{{ admin_path(admin, 'list', {familyCode: f.code}) }}">{{ f|capitalize }}</a>
-                                {% else %}
-                                    {{ f|capitalize }}
+                        {% if is_granted('ROLE_DATA_MANAGER') %}
+                            {% for admin in get_admins() %}
+                                {% if admin.code not in ['media', 'user', 'group', 'variant'] %}
+                                    {# @var admin \Sidus\AdminBundle\Admin\Admin #}
+                                    {{ utilities.admin_menu_icon_link(admin.option('icon'), admin.code|humanize, admin, 'index') }}
                                 {% endif %}
-                                {% if f.children | length %}
-                                    <ul class="dropdown-menu">
-                                        {% for subF in f.children %}
-                                            <li>
-                                                <a href="{{ admin_path(admin, 'list', {familyCode: f.code}) }}">{{ f|capitalize }}</a>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                {% endif %}
-                            </li>
-                        {% endfor %}
+                            {% endfor %}
+                            {% if is_granted('ROLE_MEDIA_MANAGER') %}
+                                {{ utilities.admin_menu_icon_link('image', 'Medias', 'media', 'list', {familyCode: 'Image'}) }}
+                            {% endif %}
+                        {% endif %}
+                        {% if is_granted('ROLE_USER_MANAGER') %}
+                            {{ utilities.admin_menu_icon_link('users', 'Utilisateurs', 'user', 'list') }}
+                        {% endif %}
                     </ul>
                 {% endblock %}
                 {% if app.user %}
@@ -109,28 +102,28 @@
     {# !!!!!! WARNING !!!!! #}
     {# Because of the way Assetic works, if you want to override this block you will also have to override the CSS block #}
     {% javascripts
-    'assets/jquery/jquery.min.js'
-    'assets/jquery-ui/jquery-ui.min.js'
-    '@FOSJsRoutingBundle/Resources/public/js/router.js'
-    '@MopaBootstrapBundle/Resources/public/bootstrap-sass/assets/javascripts/bootstrap.js'
-    '@MopaBootstrapBundle/Resources/public/js/mopabootstrap-subnav.js'
-    '@MopaBootstrapBundle/Resources/public/components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.js'
-    '@MopaBootstrapBundle/Resources/public/components/smalot-bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.fr.js'
-    '@SidusFileUploadBundle/Resources/public/vendor/jquery-file-upload/js/jquery.fileupload.js'
-    '@SidusFileUploadBundle/Resources/public/vendor/jquery-file-upload/js/jquery.fileupload-jquery-ui.js'
-    '@SidusFileUploadBundle/Resources/public/vendor/jquery-file-upload/js/jquery.iframe-transport.js'
-    '@SidusEAVBootstrapBundle/Resources/public/js/bootstrap.collection.js'
-    '@SidusEAVBootstrapBundle/Resources/public/js/sortable.collection.js'
-    '@SidusFileUploadBundle/Resources/public/js/jquery.fileupload.sidus.js'
-    '@PinanoSelect2Bundle/Resources/public/js/select2.min.js'
-    '@PinanoSelect2Bundle/Resources/public/js/select2_locale_fr.js'
-    '@SamsonAutocompleteBundle/Resources/public/js/autocomplete.js'
-    '@SidusEAVBootstrapBundle/Resources/public/js/autocomplete.combo.selector.js'
-    '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/init.datepickers.js'
-    '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/ajax.navigation.js'
-    '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/init.document.js'
-    '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/navigation.lock.js'
-    '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/media.browser.js'
+        'assets/jquery/jquery.min.js'
+        'assets/jquery-ui/jquery-ui.min.js'
+        '@FOSJsRoutingBundle/Resources/public/js/router.js'
+        '@MopaBootstrapBundle/Resources/public/bootstrap-sass/assets/javascripts/bootstrap.js'
+        '@MopaBootstrapBundle/Resources/public/js/mopabootstrap-subnav.js'
+        '@MopaBootstrapBundle/Resources/public/components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.js'
+        '@MopaBootstrapBundle/Resources/public/components/smalot-bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.fr.js'
+        '@SidusFileUploadBundle/Resources/public/vendor/jquery-file-upload/js/jquery.fileupload.js'
+        '@SidusFileUploadBundle/Resources/public/vendor/jquery-file-upload/js/jquery.fileupload-jquery-ui.js'
+        '@SidusFileUploadBundle/Resources/public/vendor/jquery-file-upload/js/jquery.iframe-transport.js'
+        '@SidusEAVBootstrapBundle/Resources/public/js/bootstrap.collection.js'
+        '@SidusEAVBootstrapBundle/Resources/public/js/sortable.collection.js'
+        '@SidusFileUploadBundle/Resources/public/js/jquery.fileupload.sidus.js'
+        '@PinanoSelect2Bundle/Resources/public/js/select2.min.js'
+        '@PinanoSelect2Bundle/Resources/public/js/select2_locale_fr.js'
+        '@SamsonAutocompleteBundle/Resources/public/js/autocomplete.js'
+        '@SidusEAVBootstrapBundle/Resources/public/js/autocomplete.combo.selector.js'
+        '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/init.datepickers.js'
+        '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/ajax.navigation.js'
+        '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/init.document.js'
+        '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/navigation.lock.js'
+        '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/media.browser.js'
     filter='?uglifyjs2' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}

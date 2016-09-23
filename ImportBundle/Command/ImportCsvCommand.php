@@ -71,7 +71,7 @@ class ImportCsvCommand extends ContainerAwareCommand
 
         $this->eavDataImporter = $this->importConfig->getService();
         $this->eavDataImporter->setOutput($output);
-        $this->importContext = $this->eavDataImporter->getImportContext();
+        $this->importContext = $this->eavDataImporter->getImportContext($this->importConfig);
 
         if ($filePath && $this->importContext->hasProcessedFile($filePath)) {
             throw new \LogicException('File already processed but import context was never closed properly ?');
@@ -111,7 +111,12 @@ class ImportCsvCommand extends ContainerAwareCommand
         $csv = new CsvFile($filePath, $delimiter, $enclosure, $escape, $headers);
 
         $output->writeln("<info>Importing family {$this->family->getCode()}</info>");
-        $progress = new ProgressBar($output, $csv->getLineCount());
+        if ($this->importConfig->getOption('line_count')) {
+            $lineCount = $this->importConfig->getOption('line_count');
+        } else {
+            $lineCount = $csv->getLineCount();
+        }
+        $progress = new ProgressBar($output, $lineCount);
         $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% %memory:6s%');
 
         $currentPosition = $this->importContext->getCurrentPosition();
@@ -169,7 +174,11 @@ class ImportCsvCommand extends ContainerAwareCommand
         if ($transformer) {
             $data = $transformer->reverseTransform($this->importConfig->getFamily(), $data);
         }
-        $reference = $data[$this->family->getAttributeAsIdentifier()->getCode()];
+        $identifier = $this->family->getAttributeAsIdentifier()->getCode();
+        if (!array_key_exists($identifier, $data)) {
+            throw new \UnexpectedValueException("Missing identifier column '{$identifier}'");
+        }
+        $reference = $data[$identifier];
         $this->dataBatch[$reference] = $data;
 
         if (count($this->dataBatch) >= $this->importContext->getBatchCount()) {
@@ -248,6 +257,10 @@ class ImportCsvCommand extends ContainerAwareCommand
      */
     protected function transformValue($attributeCode, $value, array $config = null)
     {
+        if ($value === '\\N' && $this->importConfig->getOption('ignore_mysql_null')) {
+            return null;
+        }
+
         $transformer = null;
         $attribute = null;
         $family = $this->importConfig->getFamily();
@@ -289,8 +302,6 @@ class ImportCsvCommand extends ContainerAwareCommand
             } else {
                 $value = $transformer->reverseTransform($value);
             }
-        } elseif ($value === '\\N') { // MySQL CSV outputs \N for null values
-            return null;
         }
 
         return $value;

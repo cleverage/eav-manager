@@ -3,7 +3,10 @@
 namespace CleverAge\EAVManager\ImportBundle\Import;
 
 use CleverAge\EAVManager\AssetBundle\Controller\BlueimpController;
+use CleverAge\EAVManager\ImportBundle\Configuration\DirectoryConfigurationHandler;
 use CleverAge\EAVManager\ImportBundle\DataTransfer\ImportContext;
+use CleverAge\EAVManager\ImportBundle\Exception\NonUniqueReferenceException;
+use CleverAge\EAVManager\ImportBundle\Exception\ReferenceNotFoundException;
 use CleverAge\EAVManager\ImportBundle\Model\ImportConfig;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\MappingException;
@@ -11,8 +14,6 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMInvalidArgumentException;
 use Exception;
-use CleverAge\EAVManager\ImportBundle\Exception\NonUniqueReferenceException;
-use CleverAge\EAVManager\ImportBundle\Exception\ReferenceNotFoundException;
 use Oneup\UploaderBundle\Uploader\Response\EmptyResponse;
 use RuntimeException;
 use Sidus\EAVModelBundle\Configuration\FamilyConfigurationHandler;
@@ -23,6 +24,7 @@ use Sidus\EAVModelBundle\Model\FamilyInterface;
 use Sidus\FileUploadBundle\Entity\Resource as SidusResource;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\File as HttpFile;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -54,17 +56,8 @@ class EAVDataImporter
     /** @var BlueimpController[] */
     protected $uploadManagers;
 
-    /** @var string */
-    protected $baseDirectory;
-
-    /** @var string */
-    protected $downloadsDirectory;
-
-    /** @var string */
-    protected $lastImportPath;
-
-    /** @var string */
-    protected $archiveDirectory;
+    /** @var DirectoryConfigurationHandler */
+    protected $directoryConfigurationHandler;
 
     /** @var ImportContext */
     protected $importContext;
@@ -79,69 +72,43 @@ class EAVDataImporter
     protected $idFallback = false;
 
     /**
-     * @param FamilyConfigurationHandler $familyConfigurationHandler
-     * @param ValidatorInterface         $validator
-     * @param EntityManager              $manager
-     * @param array                      $uploadManagers
-     * @param string                     $baseDirectory
-     * @param string                     $downloadsDirectory
-     *
-     * @throws RuntimeException
+     * @param FamilyConfigurationHandler    $familyConfigurationHandler
+     * @param ValidatorInterface            $validator
+     * @param EntityManager                 $manager
+     * @param array                         $uploadManagers
+     * @param DirectoryConfigurationHandler $directoryConfigurationHandler
      */
     public function __construct(
         FamilyConfigurationHandler $familyConfigurationHandler,
         ValidatorInterface $validator,
         EntityManager $manager,
         array $uploadManagers,
-        $baseDirectory,
-        $downloadsDirectory
+        DirectoryConfigurationHandler $directoryConfigurationHandler
     ) {
         $this->familyConfigurationHandler = $familyConfigurationHandler;
         $this->validator = $validator;
         $this->manager = $manager;
         $this->uploadManagers = $uploadManagers;
-        $this->baseDirectory = rtrim($baseDirectory, '/');
-        $this->downloadsDirectory = rtrim($downloadsDirectory, '/');
-        $this->archiveDirectory = $this->baseDirectory.'/archives';
-
-        if (@mkdir($this->baseDirectory) && !is_dir($this->baseDirectory)) {
-            throw new RuntimeException("Unable to create directory {$this->baseDirectory}");
-        }
-        if (@mkdir($this->archiveDirectory) && !is_dir($this->archiveDirectory)) {
-            throw new RuntimeException("Unable to create directory {$this->archiveDirectory}");
-        }
-        $this->lastImportPath = "{$this->baseDirectory}/current_import.json";
-        if (file_exists($this->lastImportPath)) {
-            $data = json_decode(file_get_contents($this->lastImportPath), true);
-            $this->importContext = ImportContext::unserialize($data);
-        } else {
-            $this->importContext = new ImportContext();
-        }
+        $this->directoryConfigurationHandler = $directoryConfigurationHandler;
     }
 
     /**
-     * @return ImportContext
-     */
-    public function getImportContext()
-    {
-        return $this->importContext;
-    }
-
-    /**
-     * @param array $dump
-     * @param null  $filename
+     * @param array        $dump
+     * @param null         $filename
+     * @param ImportConfig $importConfig
      *
      * @throws Exception
      *
      * @return bool
      */
-    public function loadDump(array $dump, $filename = null)
+    public function loadDump(array $dump, $filename = null, ImportConfig $importConfig = null)
     {
-        if ($filename && $this->importContext->hasProcessedFile($filename)) {
+        $importContext = $this->getImportContext($importConfig);
+        if ($filename && $importContext->hasProcessedFile($filename)) {
             return true;
         }
         $this->manager->beginTransaction();
-        $batch = $this->importContext->getBatchCount();
+        $batch = $importContext->getBatchCount();
         /** @var array $datas */
         foreach ($dump as $familyCode => $datas) {
             $i = 0;
@@ -160,7 +127,7 @@ class EAVDataImporter
                 if (isset($progress)) {
                     $progress->advance();
                 }
-                if ($this->importContext->hasReference($family->getCode(), $reference)) {
+                if ($importContext->hasReference($family->getCode(), $reference)) {
                     continue;
                 }
                 try {
@@ -182,7 +149,7 @@ class EAVDataImporter
             }
         }
         if ($filename) {
-            $this->importContext->addProcessedFile($filename);
+            $importContext->addProcessedFile($filename);
         }
         $this->saveContext();
 
@@ -206,13 +173,14 @@ class EAVDataImporter
         ProgressBar $progress = null,
         ImportConfig $config = null
     ) {
+        $importContext = $this->getImportContext($config);
         $hasTransaction = false;
         foreach ($dump as $reference => $data) {
             /** @noinspection DisconnectedForeachInstructionInspection */
             if (isset($progress)) {
                 $progress->advance();
             }
-            if ($this->importContext->hasReference($family->getCode(), $reference)) {
+            if ($importContext->hasReference($family->getCode(), $reference)) {
                 // Skip already imported references
                 continue;
             }
@@ -241,8 +209,13 @@ class EAVDataImporter
     {
         $this->importContext->terminate();
         $timestamp = $this->importContext->getEndedAt()->format(\DateTime::W3C);
-        if (!@rename($this->lastImportPath, $this->archiveDirectory.'/'.$timestamp.'.json')) {
-            throw new RuntimeException('Unable to archive current import');
+        $archiveDirectory = $this->directoryConfigurationHandler->getArchiveDirectory();
+        $currentPath = $this->importContext->getCurrentPath();
+        $configCode = $this->importContext->getConfigCode();
+        $codeSuffix = $configCode ? '-'.$configCode : '';
+        $destPath = "{$archiveDirectory}/{$timestamp}{$codeSuffix}.json";
+        if (!@rename($currentPath, $destPath)) {
+            throw new RuntimeException("Unable to archive current import to '{$destPath}'");
         }
     }
 
@@ -313,8 +286,9 @@ class EAVDataImporter
         }
         $this->referencesToSave = [];
 
-        if (!@file_put_contents($this->lastImportPath, json_encode($this->importContext))) {
-            throw new RuntimeException("Unable to save current context to {$this->lastImportPath}");
+        $contextPath = $this->importContext->getCurrentPath();
+        if (!@file_put_contents($contextPath, json_encode($this->importContext))) {
+            throw new RuntimeException("Unable to save current context to '{$contextPath}'");
         }
 
         if ($flush) {
@@ -326,6 +300,109 @@ class EAVDataImporter
                 $this->output->writeln('<comment>OK</comment>');
             }
         }
+    }
+
+    /**
+     * @param ImportConfig $importConfig
+     *
+     * @throws \UnexpectedValueException
+     *
+     * @return ImportContext
+     */
+    public function getImportContext(ImportConfig $importConfig = null)
+    {
+        if (null === $this->importContext) {
+            $currentImportPath = $this->getCurrentImportPath($importConfig);
+            if (file_exists($currentImportPath)) {
+                $this->importContext = $this->loadImport($currentImportPath);
+            } else {
+                $this->importContext = new ImportContext();
+                $this->importContext->setCurrentPath($currentImportPath);
+            }
+        }
+
+        return $this->importContext;
+    }
+
+    /**
+     * @throws \UnexpectedValueException
+     * @throws \RuntimeException
+     * @throws \InvalidArgumentException
+     *
+     * @return ImportContext[]
+     */
+    public function getRunningImports()
+    {
+        $baseDirectory = $this->directoryConfigurationHandler->getBaseDirectory();
+        $finder = new Finder();
+        $files = $finder->in($baseDirectory)->name('current_import*.json')->files();
+
+        $imports = [];
+        foreach ($files as $file) {
+            $imports[$file->getBasename()] = $this->loadImport($file->getPathname());
+        }
+
+        return $imports;
+    }
+
+    /**
+     * @param int $count
+     *
+     * @throws \RuntimeException
+     * @throws \InvalidArgumentException
+     * @throws \UnexpectedValueException
+     *
+     * @return ImportContext[]
+     */
+    public function getArchivedImports($count = 10)
+    {
+        $archiveDirectory = $this->directoryConfigurationHandler->getArchiveDirectory();
+        $finder = new Finder();
+        $files = $finder->in($archiveDirectory)->sortByModifiedTime()->name('*.json')->files();
+
+        $imports = [];
+        $i = 0;
+        foreach ($files as $file) {
+            if ($i >= $count) {
+                break;
+            }
+            $i++;
+            $imports[$file->getBasename()] = $this->loadImport($file->getPathname());
+        }
+
+        return $imports;
+    }
+
+    /**
+     * @param string $filePath
+     *
+     * @throws \UnexpectedValueException
+     *
+     * @return ImportContext
+     */
+    protected function loadImport($filePath)
+    {
+        $data = json_decode(file_get_contents($filePath), true);
+        if (null === $data) {
+            throw new \UnexpectedValueException("Unable to load import context : '{$filePath}'");
+        }
+
+        return ImportContext::unserialize($data);
+    }
+
+    /**
+     * @param ImportConfig|null $importConfig
+     *
+     * @return string
+     */
+    protected function getCurrentImportPath(ImportConfig $importConfig = null)
+    {
+        $baseDirectory = $this->directoryConfigurationHandler->getBaseDirectory();
+        if ($importConfig) {
+            return "{$baseDirectory}/current_import-{$importConfig->getCode()}.json";
+        }
+
+        return "{$baseDirectory}/current_import.json";
     }
 
     /**
@@ -442,7 +519,9 @@ class EAVDataImporter
         $classMetadata = $this->manager->getClassMetadata($parentFamily->getValueClass());
         $mapping = $classMetadata->getAssociationMapping($attribute->getType()->getDatabaseType());
         if (empty($mapping['targetEntity'])) {
-            throw new \UnexpectedValueException("Unable to find target class for attribute type: '{$attribute->getType()->getCode()}'");
+            throw new \UnexpectedValueException(
+                "Unable to find target class for attribute type: '{$attribute->getType()->getCode()}'"
+            );
         }
 
         return $mapping['targetEntity'];
@@ -477,7 +556,7 @@ class EAVDataImporter
         if (!$value) {
             return null;
         }
-        $filePath = $this->downloadsDirectory.'/'.$value;
+        $filePath = $this->directoryConfigurationHandler->getDownloadsDirectory().'/'.$value;
         if (!file_exists($filePath)) {
             $error = "Unable to find file {$filePath}";
             if ($this->output) {
@@ -537,8 +616,17 @@ class EAVDataImporter
      */
     protected function getEntityByReference(FamilyInterface $family, $reference, $ignoreMissing = false)
     {
+        if (is_a($reference, $family->getDataClass())) {
+            return $reference; // Case where data was already transformed elsewhere
+        }
+
         if ('' === $reference || null === $reference) {
             return null;
+        }
+
+        if (!is_string($reference) && !is_int($reference)) {
+            $type = is_object($reference) ? get_class($reference) : gettype($reference);
+            throw new \UnexpectedValueException("Reference must be a string or an integer, '{$type}' given");
         }
 
         // If reference is not already saved

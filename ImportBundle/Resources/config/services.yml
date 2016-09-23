@@ -4,6 +4,7 @@ parameters:
     eavmanager.import_configuration.handler.class: CleverAge\EAVManager\ImportBundle\Configuration\ImportConfigurationHandler
     eavmanager.import.transformer.simple_date.class: Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToStringTransformer
     eavmanager.import.transformer.multiple.class: CleverAge\EAVManager\ImportBundle\Transformer\MultipleAttributeTransformer
+    eavmanager_import.configuration.directory.handler.class: CleverAge\EAVManager\ImportBundle\Configuration\DirectoryConfigurationHandler
 
 services:
     eavmanager_import.eav_data_importer:
@@ -15,6 +16,11 @@ services:
             -
                 document: '@oneup_uploader.controller.document'
                 image: '@oneup_uploader.controller.image'
+            - '@eavmanager_import.configuration.directory.handler'
+
+    eavmanager_import.configuration.directory.handler:
+        class: '%eavmanager_import.configuration.directory.handler.class%'
+        arguments:
             - '%import_dir%'
             - '%import_downloads_dir%'
 

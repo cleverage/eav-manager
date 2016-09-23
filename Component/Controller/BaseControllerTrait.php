@@ -68,9 +68,7 @@ trait BaseControllerTrait
      */
     protected function isElasticaUp()
     {
-        if ($this->container->hasParameter('elastica_enabled')
-            && false === $this->container->getParameter('elastica_enabled')
-        ) {
+        if (!$this->isElasticaEnabled()) {
             return false;
         }
         try {

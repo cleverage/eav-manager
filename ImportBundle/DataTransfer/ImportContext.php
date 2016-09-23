@@ -15,6 +15,15 @@ class ImportContext implements \JsonSerializable
     /** @var DateTime */
     protected $endedAt;
 
+    /** @var DateTime */
+    protected $updatedAt;
+
+    /** @var string */
+    protected $configCode;
+
+    /** @var string */
+    protected $currentPath;
+
     /** @var array */
     protected $processedFiles = [];
 
@@ -42,6 +51,9 @@ class ImportContext implements \JsonSerializable
         $object = new ImportContext();
         foreach ($data as $property => $item) {
             $object->$property = $item;
+            if (in_array($property, ['startedAt', 'endedAt', 'updatedAt'], true)) {
+                $object->$property = new DateTime($item['date']);
+            }
         }
 
         return $object;
@@ -78,6 +90,38 @@ class ImportContext implements \JsonSerializable
     public function getEndedAt()
     {
         return $this->endedAt;
+    }
+
+    /**
+     * @return string
+     */
+    public function getConfigCode()
+    {
+        return $this->configCode;
+    }
+
+    /**
+     * @param string $configCode
+     */
+    public function setConfigCode($configCode)
+    {
+        $this->configCode = $configCode;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrentPath()
+    {
+        return $this->currentPath;
+    }
+
+    /**
+     * @param string $currentPath
+     */
+    public function setCurrentPath($currentPath)
+    {
+        $this->currentPath = $currentPath;
     }
 
     /**

@@ -38,6 +38,9 @@ class ImportCsvCommand extends ContainerAwareCommand
     /** @var FamilyInterface */
     protected $family;
 
+    /** @var int */
+    protected $flushCount;
+
     protected function configure()
     {
         $this
@@ -84,7 +87,9 @@ class ImportCsvCommand extends ContainerAwareCommand
             throw new \LogicException($m);
         }
 
-        $this->processFile($filePath, $output);
+        if (!$this->processFile($filePath, $output)) {
+            return 37; // Custom code to notify script that the import should be launched again
+        }
 
         if ($filePath) {
             $this->importContext->addProcessedFile($filePath);
@@ -101,6 +106,8 @@ class ImportCsvCommand extends ContainerAwareCommand
      * @param OutputInterface $output
      *
      * @throws \Exception
+     *
+     * @return bool
      */
     protected function processFile($filePath, OutputInterface $output)
     {
@@ -127,10 +134,19 @@ class ImportCsvCommand extends ContainerAwareCommand
             $progress->setProgress($currentPosition['progress']);
         }
 
+        $exitBatchCount = $this->importConfig->getOption('exit_batch_count');
+
         $line = 0;
         while (!$csv->isEndOfFile()) {
             $line++;
             $this->readLine($csv, $progress);
+            if ($exitBatchCount && $this->flushCount >= $exitBatchCount) {
+                if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
+                    $output->writeln("<comment>Exit batch count reached : {$exitBatchCount}</comment>");
+                }
+
+                return false;
+            }
         }
 
         // Save remaining data
@@ -140,6 +156,8 @@ class ImportCsvCommand extends ContainerAwareCommand
 
         $progress->finish();
         $output->writeln('');
+
+        return true;
     }
 
     /**
@@ -189,6 +207,7 @@ class ImportCsvCommand extends ContainerAwareCommand
             ]);
             $this->eavDataImporter->saveContext(false);
             $this->dataBatch = [];
+            $this->flushCount++;
         }
     }
 

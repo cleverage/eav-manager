@@ -71,6 +71,9 @@ class EAVDataImporter
     /** @var bool */
     protected $idFallback = false;
 
+    /** @var int */
+    protected $lastFlushTime;
+
     /**
      * @param FamilyConfigurationHandler    $familyConfigurationHandler
      * @param ValidatorInterface            $validator
@@ -136,7 +139,7 @@ class EAVDataImporter
                     $this->manager->rollback();
                     throw $e;
                 }
-                // Flush every $batch and restart script every $batch * 10 iteration
+                // Flush every $batch
                 $i++;
                 if ($i % $batch === 0) {
                     $this->saveContext();
@@ -262,6 +265,11 @@ class EAVDataImporter
         }
         $this->persist($entity, $reference);
 
+        if (null === $this->lastFlushTime) {
+            // If first imported data, log the time
+            $this->lastFlushTime = time();
+        }
+
         return $entity;
     }
 
@@ -274,13 +282,14 @@ class EAVDataImporter
     public function saveContext($flush = true)
     {
         if ($flush) {
-            if ($this->output && $this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
+            if ($this->output && $this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
                 $this->output->writeln("\n<comment>Flushing & commiting...</comment>");
             }
             $this->manager->flush();
             $this->manager->commit();
         }
 
+        $referenceCount = count($this->referencesToSave);
         foreach ($this->referencesToSave as $reference => $entity) {
             $this->importContext->addReference($entity->getFamilyCode(), $reference, $entity->getId());
         }
@@ -297,8 +306,15 @@ class EAVDataImporter
             gc_collect_cycles();
 
             if ($this->output && $this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
+                $timeDiff = time() - $this->lastFlushTime;
+                $this->output->writeln(" <comment>{$referenceCount} imported references in {$timeDiff}s</comment>");
+            }
+
+            if ($this->output && $this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
                 $this->output->writeln('<comment>OK</comment>');
             }
+
+            $this->lastFlushTime = time();
         }
     }
 

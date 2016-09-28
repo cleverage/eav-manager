@@ -11,7 +11,9 @@ use CleverAge\EAVManager\ImportBundle\Model\ImportConfig;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\ORM\ORMInvalidArgumentException;
 use Exception;
 use Oneup\UploaderBundle\Uploader\Response\EmptyResponse;
@@ -294,6 +296,7 @@ class EAVDataImporter
             $this->importContext->addReference($entity->getFamilyCode(), $reference, $entity->getId());
         }
         $this->referencesToSave = [];
+        unset($entity);
 
         $contextPath = $this->importContext->getCurrentPath();
         if (!@file_put_contents($contextPath, json_encode($this->importContext))) {
@@ -443,7 +446,7 @@ class EAVDataImporter
             }
         }
         if ($attribute->getType()->isRelation()) {
-            $value = $this->resolveReferences($entity, $attribute, $value, $ignoreMissing);
+            $value = $this->resolveReferences($entity, $attribute, $value, $ignoreMissing, true);
         }
         // Special case for fields that are not strings/texts:
         if ($value === '' && !in_array($attribute->getType()->getDatabaseType(), ['stringValue', 'textValue'], true)) {
@@ -457,6 +460,7 @@ class EAVDataImporter
      * @param AttributeInterface $attribute
      * @param mixed              $values
      * @param bool               $ignoreMissing
+     * @param bool               $partialLoad
      *
      * @throws \Exception
      *
@@ -466,15 +470,16 @@ class EAVDataImporter
         DataInterface $data,
         AttributeInterface $attribute,
         $values,
-        $ignoreMissing = false
+        $ignoreMissing = false,
+        $partialLoad = false
     ) {
         if (!$attribute->isMultiple()) {
-            return $this->resolveReference($data, $attribute, $values, $ignoreMissing);
+            return $this->resolveReference($data, $attribute, $values, $ignoreMissing, $partialLoad);
         }
         $resolvedValues = [];
         /** @var array $values */
         foreach ($values as $value) {
-            $entity = $this->resolveReference($data, $attribute, $value, $ignoreMissing);
+            $entity = $this->resolveReference($data, $attribute, $value, $ignoreMissing, $partialLoad);
             if ($entity) { // Removing empty values: doesn't make sense in a collection.
                 $resolvedValues[] = $entity;
             }
@@ -488,6 +493,7 @@ class EAVDataImporter
      * @param AttributeInterface $attribute
      * @param string|array       $reference
      * @param bool               $ignoreMissing
+     * @param bool               $partialLoad
      *
      * @throws \Exception
      *
@@ -497,7 +503,8 @@ class EAVDataImporter
         DataInterface $data,
         AttributeInterface $attribute,
         $reference,
-        $ignoreMissing = false
+        $ignoreMissing = false,
+        $partialLoad = false
     ) {
         if (null === $reference) {
             return null;
@@ -520,7 +527,7 @@ class EAVDataImporter
             return $this->loadData($family, $reference);
         }
 
-        return $this->getEntityByReference($family, $reference, $ignoreMissing);
+        return $this->getEntityByReference($family, $reference, $ignoreMissing, $partialLoad);
     }
 
     /**
@@ -609,7 +616,7 @@ class EAVDataImporter
 
     /**
      * @param DataInterface $entity
-     * @param string        $reference
+     * @param mixed         $reference
      *
      * @throws ORMInvalidArgumentException
      */
@@ -623,15 +630,20 @@ class EAVDataImporter
 
     /**
      * @param FamilyInterface $family
-     * @param string          $reference
+     * @param mixed           $reference
      * @param bool            $ignoreMissing
+     * @param bool            $partialLoad
      *
      * @throws \Exception
      *
      * @return DataInterface
      */
-    protected function getEntityByReference(FamilyInterface $family, $reference, $ignoreMissing = false)
-    {
+    protected function getEntityByReference(
+        FamilyInterface $family,
+        $reference,
+        $ignoreMissing = false,
+        $partialLoad = false
+    ) {
         if (is_a($reference, $family->getDataClass())) {
             return $reference; // Case where data was already transformed elsewhere
         }
@@ -645,23 +657,22 @@ class EAVDataImporter
             throw new \UnexpectedValueException("Reference must be a string or an integer, '{$type}' given");
         }
 
-        // If reference is not already saved
+        // If reference is already saved
         if (array_key_exists($reference, $this->referencesToSave)) {
             return $this->referencesToSave[$reference];
         }
 
-        if (!$this->importContext->hasReference($family->getCode(), $reference)) {
-            $entity = $this->findByIdentifier($family, $reference);
-            if ($entity || $ignoreMissing) {
-                return $entity;
-            }
-            throw ReferenceNotFoundException::create($family, $reference);
+        if ($this->importContext->hasReference($family->getCode(), $reference)) {
+            $repo = $this->getRepository($family);
+
+            return $repo->findByPrimaryKey($family, $reference, $partialLoad);
         }
 
-        return $this->manager->find(
-            $family->getDataClass(),
-            $this->importContext->getReference($family->getCode(), $reference)
-        );
+        $entity = $this->findByIdentifier($family, $reference, $partialLoad);
+        if ($entity || $ignoreMissing) {
+            return $entity;
+        }
+        throw ReferenceNotFoundException::create($family, $reference);
     }
 
     /**
@@ -699,17 +710,23 @@ class EAVDataImporter
     /**
      * @param FamilyInterface $family
      * @param string          $reference
+     * @param bool            $partialLoad
      *
      * @throws \UnexpectedValueException
+     * @throws ORMException
+     * @throws ReferenceNotFoundException
+     * @throws NoResultException
+     * @throws MappingException
+     * @throws \LogicException
      *
      * @return null|DataInterface
      */
-    protected function findByIdentifier(FamilyInterface $family, $reference)
+    protected function findByIdentifier(FamilyInterface $family, $reference, $partialLoad = false)
     {
         $repository = $this->getRepository($family);
 
         try {
-            return $repository->findByIdentifier($family, $reference, $this->idFallback);
+            return $repository->findByIdentifier($family, $reference, $this->idFallback, $partialLoad);
         } catch (NonUniqueResultException $e) {
             throw NonUniqueReferenceException::create($family, $reference, $e);
         }

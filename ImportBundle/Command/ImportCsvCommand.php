@@ -151,7 +151,7 @@ class ImportCsvCommand extends ContainerAwareCommand
 
         // Save remaining data
         if (count($this->dataBatch)) {
-            $this->eavDataImporter->loadBatch($this->family, $this->dataBatch, $progress, $this->importConfig);
+            $this->saveBatch($csv, $progress);
         }
 
         $progress->finish();
@@ -196,18 +196,12 @@ class ImportCsvCommand extends ContainerAwareCommand
         if (!array_key_exists($identifier, $data)) {
             throw new \UnexpectedValueException("Missing identifier column '{$identifier}'");
         }
+
         $reference = $data[$identifier];
         $this->dataBatch[$reference] = $data;
 
         if (count($this->dataBatch) >= $this->importContext->getBatchCount()) {
-            $this->eavDataImporter->loadBatch($this->family, $this->dataBatch, $progress, $this->importConfig);
-            $this->importContext->setCurrentPosition([
-                'seek' => $csv->tell(),
-                'progress' => $progress->getProgress(),
-            ]);
-            $this->eavDataImporter->saveContext(false);
-            $this->dataBatch = [];
-            $this->flushCount++;
+            $this->saveBatch($csv, $progress);
         }
     }
 
@@ -324,5 +318,24 @@ class ImportCsvCommand extends ContainerAwareCommand
         }
 
         return $value;
+    }
+
+    /**
+     * @param CsvFile     $csv
+     * @param ProgressBar $progress
+     *
+     * @throws \Exception
+     */
+    protected function saveBatch(CsvFile $csv, ProgressBar $progress)
+    {
+        $this->eavDataImporter->loadBatch($this->family, $this->dataBatch, $progress, $this->importConfig);
+
+        $this->importContext->setCurrentPosition([
+            'seek' => $csv->tell(),
+            'progress' => $progress->getProgress(),
+        ]);
+        $this->eavDataImporter->saveContext(false);
+        $this->dataBatch = [];
+        $this->flushCount++;
     }
 }

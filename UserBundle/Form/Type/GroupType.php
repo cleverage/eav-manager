@@ -2,8 +2,12 @@
 
 namespace CleverAge\EAVManager\UserBundle\Form\Type;
 
+use CleverAge\EAVManager\SecurityBundle\Form\Type\FamilyPermissionType;
+use CleverAge\EAVManager\SecurityBundle\Form\Type\RoleHierarchyType;
 use CleverAge\EAVManager\UserBundle\Entity\Group;
+use Sidus\EAVBootstrapBundle\Form\Type\BootstrapCollectionType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -18,15 +22,15 @@ class GroupType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'text', [
+            ->add('name', TextType::class, [
                 'label' => 'admin.group.form.name.label',
             ])
-            ->add('roles', 'role_hierarchy', [
+            ->add('roles', RoleHierarchyType::class, [
                 'label' => 'admin.group.form.roles.label',
             ])
-            ->add('familyPermissions', 'sidus_bootstrap_collection', [
+            ->add('familyPermissions', BootstrapCollectionType::class, [
                 'label' => 'admin.group.form.familyPermissions.label',
-                'type' => 'family_permission',
+                'type' => FamilyPermissionType::class,
                 'options' => [],
                 'allow_add' => true,
                 'allow_delete' => true,
@@ -59,7 +63,7 @@ class GroupType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'eavmanager_group';
     }

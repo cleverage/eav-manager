@@ -219,6 +219,9 @@ class ImportCsvCommand extends ContainerAwareCommand
     {
         $mappedData = [];
         foreach ($this->importConfig->getMapping() as $attributeCode => $config) {
+            if (isset($config['virtual']) && $config['virtual']) {
+                continue;
+            }
             $mappedData[$attributeCode] = $this->processValue($data, $attributeCode, $config);
         }
 

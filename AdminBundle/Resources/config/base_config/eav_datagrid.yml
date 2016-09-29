@@ -19,7 +19,7 @@ sidus_eav_data_grid:
                     template: "CleverAgeEAVManagerAdminBundle:Data:list.row.actions.html.twig"
             actions:
                 create:
-                    form_type: admin_link
+                    form_type: 'CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink'
                     label: admin.action.create.label
                     action: create
                     icon: plus
@@ -104,7 +104,7 @@ sidus_eav_data_grid:
                     template: "CleverAgeEAVManagerAdminBundle:Asset:browse.row.actions.html.twig"
             actions:
                 create:
-                    form_type: admin_link
+                    form_type: 'CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink'
                     label: admin.action.create.label
                     action: createModal
                     icon: plus
@@ -112,7 +112,7 @@ sidus_eav_data_grid:
                         class: btn-primary
                         data-target: tg_modal
                 browseThumbnail:
-                    form_type: admin_link
+                    form_type: 'CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink'
                     label: admin.action.browseThumbnail.label
                     action: browseThumbnail
                     icon: th
@@ -134,7 +134,7 @@ sidus_eav_data_grid:
             columns: {}
             actions:
                 create:
-                    form_type: admin_link
+                    form_type: 'CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink'
                     label: admin.action.create.label
                     action: createModal
                     icon: plus
@@ -142,7 +142,7 @@ sidus_eav_data_grid:
                         class: btn-primary
                         data-target: tg_modal
                 browse:
-                    form_type: admin_link
+                    form_type: 'CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink'
                     label: admin.action.browse.label
                     action: browse
                     icon: list

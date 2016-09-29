@@ -2,6 +2,7 @@
 
 namespace CleverAge\EAVManager\AdminBundle\Form\Type;
 
+use Sidus\EAVVariantBundle\Form\Type\VariantFamilySelectorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Exception\AccessException;
@@ -14,7 +15,7 @@ class VariantFamilySelector extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('family', 'sidus_variant_family_selector', [
+        $builder->add('family', VariantFamilySelectorType::class, [
             'label' => 'admin.variant.select.family.label',
             'attribute' => $options['attribute'],
             'parent_data' => $options['parent_data'],
@@ -37,7 +38,7 @@ class VariantFamilySelector extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'eavmanager_variant_family_selector';
     }

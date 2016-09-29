@@ -2,6 +2,7 @@
 
 namespace CleverAge\EAVManager\AdminBundle\Form\Type;
 
+use Sidus\FileUploadBundle\Form\Type\ResourceType;
 use Symfony\Component\Form\AbstractType;
 
 class ImageType extends AbstractType
@@ -9,7 +10,7 @@ class ImageType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'eavmanager_image';
     }
@@ -19,6 +20,6 @@ class ImageType extends AbstractType
      */
     public function getParent()
     {
-        return 'sidus_resource';
+        return ResourceType::class;
     }
 }

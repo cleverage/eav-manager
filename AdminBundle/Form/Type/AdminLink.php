@@ -4,6 +4,7 @@ namespace CleverAge\EAVManager\AdminBundle\Form\Type;
 
 
 use Sidus\AdminBundle\Routing\AdminRouter;
+use Sidus\DataGridBundle\Form\Type\LinkType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -50,7 +51,7 @@ class AdminLink extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'admin_link';
     }
@@ -60,6 +61,6 @@ class AdminLink extends AbstractType
      */
     public function getParent()
     {
-        return 'sidus_link';
+        return LinkType::class;
     }
 }

@@ -2,11 +2,20 @@
 
 namespace CleverAge\EAVManager\UserBundle\Form\Type;
 
+use CleverAge\EAVManager\SecurityBundle\Form\Type\FamilyPermissionType;
+use CleverAge\EAVManager\SecurityBundle\Form\Type\RoleHierarchyType;
 use CleverAge\EAVManager\UserBundle\Entity\Group;
 use CleverAge\EAVManager\UserBundle\Entity\User;
 use FOS\UserBundle\Model\UserInterface;
+use Mopa\Bundle\BootstrapBundle\Form\Type\TabType;
+use Sidus\EAVBootstrapBundle\Form\Type\BootstrapCollectionType;
+use Sidus\EAVBootstrapBundle\Form\Type\SwitchType;
+use Sidus\EAVModelBundle\Form\Type\DataType;
 use Sidus\EAVModelBundle\Model\Family;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -48,29 +57,29 @@ class UserType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('__tab_main', 'tab', [
+        $builder->add('__tab_main', TabType::class, [
             'label' => 'admin.user.tab.main.label',
             'inherit_data' => true,
         ]);
         $builder->get('__tab_main')
-            ->add('username', 'text', [
+            ->add('username', TextType::class, [
                 'label' => 'admin.user.form.username.label',
             ])
-            ->add('email', 'email', [
+            ->add('email', EmailType::class, [
                 'label' => 'admin.user.form.email.label',
             ]);
 
         if ($this->getUser() && $this->authorizationChecker->isGranted('ROLE_ADMIN', $this->getUser())) {
             $builder->get('__tab_main')
-                ->add('enabled', 'sidus_switch', [
+                ->add('enabled', SwitchType::class, [
                     'label' => 'admin.user.form.enabled.label',
                 ])
-                ->add('rawRoles', 'role_hierarchy', [
+                ->add('rawRoles', RoleHierarchyType::class, [
                     'label' => 'admin.user.form.roles.label',
                 ])
-                ->add('familyPermissions', 'sidus_bootstrap_collection', [
+                ->add('familyPermissions', BootstrapCollectionType::class, [
                     'label' => 'admin.user.form.familyPermissions.label',
-                    'type' => 'family_permission',
+                    'type' => FamilyPermissionType::class,
                     'options' => [],
                     'allow_add' => true,
                     'allow_delete' => true,
@@ -79,12 +88,12 @@ class UserType extends AbstractType
                     'by_reference' => false,
                 ]);
 
-            $builder->add('__tab_groups', 'tab', [
+            $builder->add('__tab_groups', TabType::class, [
                 'label' => 'admin.user.tab.groups.label',
                 'inherit_data' => true,
             ]);
             $builder->get('__tab_groups')
-                ->add('groups', 'entity', [
+                ->add('groups', EntityType::class, [
                     'label' => 'admin.user.form.groups.label',
                     'class' => Group::class,
                     'expanded' => true,
@@ -92,7 +101,7 @@ class UserType extends AbstractType
                 ]);
         }
 
-        $builder->add('__tab_info', 'tab', [
+        $builder->add('__tab_info', TabType::class, [
             'label' => 'admin.user.tab.info.label',
             'inherit_data' => true,
         ]);
@@ -121,9 +130,9 @@ class UserType extends AbstractType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'eavmanager_user';
     }
@@ -151,7 +160,7 @@ class UserType extends AbstractType
             if ($user && !$user->getData()) {
                 $dataOptions['data'] = $this->family->createData();
             }
-            $form->get('__tab_info')->add('data', 'sidus_data', $dataOptions);
+            $form->get('__tab_info')->add('data', DataType::class, $dataOptions);
         });
     }
 

@@ -240,12 +240,20 @@ class EAVDataImporter
      *
      * @throws \Exception
      *
-     * @return DataInterface
+     * @return DataInterface|null
      */
     public function loadData(FamilyInterface $family, array $data, $reference = null, ImportConfig $config = null)
     {
         $accessor = PropertyAccess::createPropertyAccessor();
-        $entity = $this->getEntityOrCreate($family, $reference);
+        if ($config && $config->getOption('update_existing_only')) {
+            $entity = $this->getEntityByReference($family, $reference, true);
+            if (null === $entity) {
+                return null;
+            }
+        } else {
+            $entity = $this->getEntityOrCreate($family, $reference);
+        }
+
         foreach ($data as $attributeCode => $value) {
             if ($family->hasAttribute($attributeCode)) {
                 // EAV Model property
@@ -439,20 +447,59 @@ class EAVDataImporter
         ImportConfig $config = null
     ) {
         $ignoreMissing = false;
+        $append = false;
         if ($config) {
             $attributeConfig = $config->getAttributeMapping($attribute->getCode());
             if (isset($attributeConfig['ignore_missing'])) {
                 $ignoreMissing = $attributeConfig['ignore_missing'];
             }
+            if (isset($attributeConfig['append'])) {
+                $append = $attributeConfig['append'];
+            }
         }
         if ($attribute->getType()->isRelation()) {
             $value = $this->resolveReferences($entity, $attribute, $value, $ignoreMissing, true);
         }
+
         // Special case for fields that are not strings/texts:
         if ($value === '' && !in_array($attribute->getType()->getDatabaseType(), ['stringValue', 'textValue'], true)) {
             $value = null; // Setting a non-text field to an empty string makes no sense
         }
-        $entity->set($attribute->getCode(), $value);
+
+        if ($attribute->getType()->isEmbedded()) {
+            $this->handleEmbedded($entity, $attribute, $value, $append);
+        } else {
+            $entity->set($attribute->getCode(), $value);
+        }
+    }
+
+    /**
+     * @param DataInterface      $data
+     * @param AttributeInterface $attribute
+     * @param string             $value
+     * @param bool               $append
+     *
+     * @throws \Exception
+     */
+    protected function handleEmbedded(DataInterface $data, AttributeInterface $attribute, $value, $append = false)
+    {
+        $entityValues = $this->resolveReferences($data, $attribute, $value);
+
+        if (!$attribute->isMultiple()) {
+            $data->setValueData($attribute, $entityValues);
+
+            return;
+        }
+
+        if (!$append) {
+            $data->setValuesData($attribute, $entityValues);
+
+            return;
+        }
+
+        foreach ($entityValues as $entityValue) {
+            $data->addValueData($attribute, $entityValue);
+        }
     }
 
     /**
@@ -685,13 +732,15 @@ class EAVDataImporter
      */
     protected function getEntityOrCreate(FamilyInterface $family, $reference)
     {
-        if ($this->importContext->hasReference($family->getCode(), $reference)) {
-            return $this->getEntityByReference($family, $reference);
-        }
+        if (null !== $reference) {
+            if ($this->importContext->hasReference($family->getCode(), $reference)) {
+                return $this->getEntityByReference($family, $reference);
+            }
 
-        $entity = $this->findByIdentifier($family, $reference);
-        if ($entity) {
-            return $entity;
+            $entity = $this->findByIdentifier($family, $reference);
+            if ($entity) {
+                return $entity;
+            }
         }
 
         if ($family->isSingleton()) {

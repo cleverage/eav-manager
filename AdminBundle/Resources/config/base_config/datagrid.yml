@@ -29,7 +29,7 @@ sidus_data_grid:
                     template: "CleverAgeEAVManagerAdminBundle:User:list.row.actions.html.twig"
             actions:
                 create:
-                    form_type: admin_link
+                    form_type: 'CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink'
                     label: admin.action.create.label
                     action: create
                     icon: plus
@@ -60,7 +60,7 @@ sidus_data_grid:
                     template: "CleverAgeEAVManagerAdminBundle:Base:list.row.actions.html.twig"
             actions:
                 create:
-                    form_type: admin_link
+                    form_type: 'CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink'
                     label: admin.action.create.label
                     action: create
                     icon: plus

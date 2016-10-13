@@ -12,35 +12,11 @@ use Sidus\FileUploadBundle\Model\ResourceInterface;
 class ResourceManager extends BaseResourceManager
 {
     /**
-     * Add an entry for Resource entity in database at each upload
-     *
-     * @param GaufretteFile $file
-     * @param string        $originalFilename
-     * @param string        $type
-     * @return ResourceInterface
-     * @throws \InvalidArgumentException|\UnexpectedValueException|FileNotFound
-     */
-    public function addFile(GaufretteFile $file, $originalFilename, $type = null)
-    {
-        $resource = $this->createByType($type)
-            ->setOriginalFileName($originalFilename)
-            ->setFileName($file->getKey());
-
-        $this->updateResourceMetadata($resource, $file); // Custom code
-
-        $em = $this->doctrine->getManager();
-        $em->persist($resource);
-        $em->flush();
-
-        return $resource;
-    }
-
-    /**
      * @param ResourceInterface $resource
      * @param GaufretteFile     $file
      * @throws \InvalidArgumentException|\UnexpectedValueException|FileNotFound
      */
-    public function updateResourceMetadata(ResourceInterface $resource, GaufretteFile $file)
+    protected function updateResourceMetadata(ResourceInterface $resource, GaufretteFile $file)
     {
         if ($resource instanceof Document) {
             $mimeType = $file->getMimeType();

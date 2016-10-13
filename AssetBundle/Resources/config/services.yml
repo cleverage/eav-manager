@@ -1,5 +1,4 @@
 parameters:
-    oneup_uploader.controller.blueimp.class: CleverAge\EAVManager\AssetBundle\Controller\BlueimpController
     eavmanager_asset.form.media_browser.type.class: CleverAge\EAVManager\AssetBundle\Form\Type\MediaBrowser
     sidus_file_upload.resource.manager.class: CleverAge\EAVManager\AssetBundle\Manager\ResourceManager
     eavmanager_asset.twig.media.extension.class: CleverAge\EAVManager\AssetBundle\Twig\MediaExtension

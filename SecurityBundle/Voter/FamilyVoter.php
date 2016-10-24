@@ -2,7 +2,6 @@
 
 namespace CleverAge\EAVManager\SecurityBundle\Voter;
 
-
 use Doctrine\Common\Collections\Collection;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -17,7 +16,7 @@ class FamilyVoter implements VoterInterface
      */
     public function supportsClass($class)
     {
-        return is_a($class, 'Sidus\EAVModelBundle\Model\FamilyInterface', true);
+        return is_a($class, FamilyInterface::class, true);
     }
 
     /**

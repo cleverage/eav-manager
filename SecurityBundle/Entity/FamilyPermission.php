@@ -5,7 +5,7 @@ namespace CleverAge\EAVManager\SecurityBundle\Entity;
 use CleverAge\EAVManager\UserBundle\Entity\Group;
 use CleverAge\EAVManager\UserBundle\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
-use Sidus\EAVModelBundle\Model\Family;
+use Sidus\EAVModelBundle\Model\FamilyInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
@@ -47,7 +47,7 @@ class FamilyPermission
     protected $group;
 
     /**
-     * @var Family
+     * @var FamilyInterface
      * @ORM\Column(name="family_code", type="sidus_family")
      */
     protected $family;
@@ -142,7 +142,7 @@ class FamilyPermission
      * @param User $user
      * @return FamilyPermission
      */
-    public function setUser($user)
+    public function setUser(User $user = null)
     {
         $this->user = $user;
         if ($user && !$user->getFamilyPermissions()->contains($this)) {
@@ -164,7 +164,7 @@ class FamilyPermission
      * @param Group $group
      * @return FamilyPermission
      */
-    public function setGroup($group)
+    public function setGroup(Group $group = null)
     {
         $this->group = $group;
         if ($group && !$group->getFamilyPermissions()->contains($this)) {
@@ -175,7 +175,7 @@ class FamilyPermission
     }
 
     /**
-     * @return Family
+     * @return FamilyInterface
      */
     public function getFamily()
     {
@@ -183,10 +183,10 @@ class FamilyPermission
     }
 
     /**
-     * @param Family $family
+     * @param FamilyInterface $family
      * @return FamilyPermission
      */
-    public function setFamily($family)
+    public function setFamily(FamilyInterface $family = null)
     {
         $this->family = $family;
 

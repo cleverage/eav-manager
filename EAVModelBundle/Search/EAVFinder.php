@@ -6,6 +6,7 @@ use CleverAge\EAVManager\EAVModelBundle\Entity\DataRepository;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
+use Sidus\EAVModelBundle\Entity\DataInterface;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
 
 /**
@@ -49,7 +50,7 @@ class EAVFinder
      * @throws \LogicException
      * @throws NonUniqueResultException
      *
-     * @return array
+     * @return DataInterface
      */
     public function findOneBy(FamilyInterface $family, array $filterBy)
     {
@@ -62,17 +63,18 @@ class EAVFinder
      * @param FamilyInterface $family
      * @param array           $filterBy
      * @param array           $orderBy
+     * @param string          $alias
      *
      * @throws \UnexpectedValueException
      * @throws \LogicException
      *
      * @return QueryBuilder
      */
-    public function getQb(FamilyInterface $family, array $filterBy, array $orderBy = [])
+    public function getQb(FamilyInterface $family, array $filterBy, array $orderBy = [], $alias = 'e')
     {
         /** @var DataRepository $dataRepo */
         $dataRepo = $this->doctrine->getRepository($family->getDataClass());
-        $eavQb = $dataRepo->createEAVQueryBuilder($family);
+        $eavQb = $dataRepo->createEAVQueryBuilder($family, $alias);
 
         // Add order by
         foreach ($orderBy as $attributeCode => $direction) {

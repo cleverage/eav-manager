@@ -2,16 +2,9 @@
 
 namespace CleverAge\EAVManager\ImportBundle\Command;
 
-use CleverAge\EAVManager\ImportBundle\DataTransfer\ImportContext;
-use CleverAge\EAVManager\ImportBundle\Import\EAVDataImporter;
-use Sidus\EAVModelBundle\Model\FamilyInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use CleverAge\EAVManager\ImportBundle\Model\CsvFile;
-use CleverAge\EAVManager\ImportBundle\Model\ImportConfig;
 
 /**
  * Import data from CSV Akeneo file with all families mixed up

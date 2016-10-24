@@ -63,3 +63,21 @@ sidus_admin:
                     path:     /{id}/edit
                 delete:
                     path:     /{id}/delete
+
+        variant:
+            controller: 'CleverAgeEAVManagerAdminBundle:Variant'
+            entity: '%sidus_data_class%'
+            prefix: /variant
+            default_form_type: sidus_variant
+            actions:
+                select:
+                    path:     /{attribute}/{parentId}/select
+                    form_type: eavmanager_variant_family_selector
+                create:
+                    path:     /{attribute}/{parentId}/{familyCode}/create
+                edit:
+                    path:     /{attribute}/{parentId}/{familyCode}/{id}/edit
+                delete:
+                    path:     /{attribute}/{parentId}/{familyCode}/{id}/delete
+            options:
+                datagrid: base

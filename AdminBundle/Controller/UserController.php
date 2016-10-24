@@ -55,7 +55,7 @@ class UserController extends GenericAdminController
      * @param int $count
      * @return string
      */
-    public function generatePassword($count = 10)
+    protected function generatePassword($count = 10)
     {
         $passwd = '';
         $possible = '23456789ABCDEFGHJKLMNPQRSTVWXYZabcdefghijkmnpqrstvwxyz';

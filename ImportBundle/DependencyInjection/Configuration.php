@@ -5,7 +5,6 @@ namespace CleverAge\EAVManager\ImportBundle\DependencyInjection;
 use Symfony\Component\Config\Definition\Builder\NodeBuilder;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * This is the class that validates and merges configuration from your app/config files.

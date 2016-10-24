@@ -38,6 +38,14 @@ class EAVKernelBundleLoader
             new \Sidus\FileUploadBundle\SidusFileUploadBundle(), // Easily attach file to doctrine's entities
             new \Sidus\AdminBundle\SidusAdminBundle(), // Very basic admin configuration in YML to regroup entities and route actions easily
 
+            // Additionnal Bundles
+            new \FOS\UserBundle\FOSUserBundle(), // User management
+            new \Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle(), // TinyMCE WYSIWYG integration
+            new \Liip\ImagineBundle\LiipImagineBundle(), // Automatic image resizing
+            new \Exercise\HTMLPurifierBundle\ExerciseHTMLPurifierBundle(), // Clean HTML input (or during import)
+            new \FOS\JsRoutingBundle\FOSJsRoutingBundle(), // Sf2 routing in JS
+            new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
+
             // CleverAge EAVManager
             new \CleverAge\EAVManager\EAVModelBundle\CleverAgeEAVManagerEAVModelBundle(),
             new \CleverAge\EAVManager\LayoutBundle\CleverAgeEAVManagerLayoutBundle(),

@@ -99,7 +99,7 @@ class AssetSubscriber implements EventSubscriber
      */
     protected function updateEntity($data)
     {
-        if (!is_a($data, $this->dataClass, true)) {
+        if (!is_a($data, $this->dataClass)) {
             return;
         }
         /** @var $data DataInterface */

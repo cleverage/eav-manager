@@ -4,10 +4,11 @@ namespace CleverAge\EAVManager\SecurityBundle\Security\Core\Role;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\Role\RoleHierarchy as BaseRoleHierarchy;
-use Symfony\Component\Validator\Constraints\Collection;
+use Doctrine\Common\Collections\Collection;
 
 class RoleHierarchy extends BaseRoleHierarchy
 {
+    /** @var LeafRole[]|Collection */
     protected $treeHierarchy;
 
     /**
@@ -39,6 +40,9 @@ class RoleHierarchy extends BaseRoleHierarchy
         }
     }
 
+    /**
+     * @return array
+     */
     public function getMap()
     {
         return $this->map;

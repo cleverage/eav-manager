@@ -50,9 +50,10 @@ class DataController extends AbstractAdminController
         }
         $filterConfig = $dataGrid->getFilterConfig();
 
-        if ($this->isElasticaEnabled() && $this->isElasticaUp()) {
+        if ($this->isElasticaUp() && $this->admin->getOption('elastica_finder')) {
+            $finderReference = ltrim($this->admin->getOption('elastica_finder'), '@');
             /** @var TransformedFinder $finder */
-            $finder = $this->container->get('fos_elastica.finder.sidus.data');
+            $finder = $this->container->get($finderReference);
             if ($filterConfig instanceof EAVElasticaFilterConfigurationHandler) {
                 $filterConfig->setFinder($finder);
                 $filterConfig->getESQuery(); // trigger usage of elastic search
@@ -214,14 +215,14 @@ class DataController extends AbstractAdminController
         if (!$action) {
             $action = $this->admin->getCurrentAction();
         }
-        $options = parent::getDefaultFormOptions($request, $dataId, $action);
+        $formOptions = parent::getDefaultFormOptions($request, $dataId, $action);
         $formOptions['label'] = $this->tryTranslate([
             "admin.family.{$this->family->getCode()}.{$action->getCode()}.title",
             "admin.{$this->admin->getCode()}.{$action->getCode()}.title",
             "admin.action.{$action->getCode()}.title",
         ], [], ucfirst($action->getCode()));
 
-        return $options;
+        return $formOptions;
     }
 
     /**

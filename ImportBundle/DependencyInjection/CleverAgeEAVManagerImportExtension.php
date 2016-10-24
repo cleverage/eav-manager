@@ -73,10 +73,7 @@ class CleverAgeEAVManagerImportExtension extends Extension
         if (null === $serviceId) {
             return null;
         }
-        if (0 === strpos($serviceId, '@')) {
-            $serviceId = substr($serviceId, 1);
-        }
 
-        return new Reference($serviceId);
+        return new Reference(ltrim($serviceId, '@'));
     }
 }

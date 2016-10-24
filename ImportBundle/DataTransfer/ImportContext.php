@@ -177,7 +177,7 @@ class ImportContext implements \JsonSerializable
      */
     public function addError($message)
     {
-        $this->errors[time()] = $message;
+        $this->errors[] = $message;
     }
 
     /**

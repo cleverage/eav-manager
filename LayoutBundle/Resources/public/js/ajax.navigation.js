@@ -39,7 +39,10 @@
     function getUrl(t, attr) {
         var href = t.attr(attr);
         if (!href) {
-            return href;
+            return null;
+        }
+        if (href.substr(0, 1) == '#') { // This means this links is not meant to be loaded by this library
+            return null;
         }
         var target = t.data('target').replace(/^#/, '');
         if (href.search('\\?') === -1) {
@@ -103,7 +106,7 @@
             href = getUrl(t, 'data-href');
         }
         if (!href) {
-            throw 'Empty href attribute';
+            return;
         }
         $.ajax(href).done(function (content) {
             tg.html(content);

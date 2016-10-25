@@ -4,6 +4,7 @@ namespace CleverAge\EAVManager\UserBundle\Form\Type;
 
 use CleverAge\EAVManager\UserBundle\Entity\Group;
 use CleverAge\EAVManager\UserBundle\Entity\User;
+use FOS\UserBundle\Model\UserInterface;
 use Sidus\EAVModelBundle\Model\Family;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -41,7 +42,8 @@ class UserType extends AbstractType
     }
 
     /**
-     * @inheritdoc
+     * {@inheritDoc}
+     *
      * @throws \Exception
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -107,14 +109,23 @@ class UserType extends AbstractType
     }
 
     /**
-     * @inheritdoc
+     * {@inheritDoc}
+     *
      * @throws AccessException
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'CleverAge\EAVManager\UserBundle\Entity\User',
+            'data_class' => User::class,
         ]);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getName()
+    {
+        return 'eavmanager_user';
     }
 
     /**
@@ -145,13 +156,8 @@ class UserType extends AbstractType
     }
 
     /**
-     * @inheritdoc
+     * @return UserInterface|null
      */
-    public function getName()
-    {
-        return 'eavmanager_user';
-    }
-
     protected function getUser()
     {
         if (!$this->tokenStorage->getToken()) {

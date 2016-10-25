@@ -191,7 +191,7 @@ class DataController extends AbstractAdminController
     }
 
     /**
-     * @inheritdoc
+     * {@inheritDoc}
      */
     protected function getDataGrid()
     {
@@ -243,7 +243,7 @@ class DataController extends AbstractAdminController
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function getAdminListPath($data = null, array $parameters = [])
     {

@@ -13,8 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class GroupType extends AbstractType
 {
     /**
-     * @inheritdoc
-     * @throws \Exception
+     * {@inheritDoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -46,18 +45,19 @@ class GroupType extends AbstractType
     }
 
     /**
-     * @inheritdoc
+     * {@inheritDoc}
+     *
      * @throws AccessException
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'CleverAge\EAVManager\UserBundle\Entity\Group',
+            'data_class' => Group::class,
         ]);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritDoc}
      */
     public function getName()
     {

@@ -23,7 +23,7 @@ class UserProfileType extends UserType
     }
 
     /**
-     * @inheritdoc
+     * {@inheritDoc}
      */
     public function getName()
     {

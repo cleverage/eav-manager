@@ -10,7 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class VariantFamilySelector extends AbstractType
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -22,7 +22,8 @@ class VariantFamilySelector extends AbstractType
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws AccessException
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -34,7 +35,7 @@ class VariantFamilySelector extends AbstractType
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getName()
     {

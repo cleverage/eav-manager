@@ -20,7 +20,7 @@ class MediaBrowser extends AbstractType
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getName()
     {
@@ -28,7 +28,7 @@ class MediaBrowser extends AbstractType
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getParent()
     {

@@ -22,7 +22,8 @@ class AdminLink extends AbstractType
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws \Exception
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -47,7 +48,7 @@ class AdminLink extends AbstractType
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getName()
     {
@@ -55,7 +56,7 @@ class AdminLink extends AbstractType
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getParent()
     {

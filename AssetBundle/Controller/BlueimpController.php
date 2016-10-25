@@ -42,7 +42,7 @@ class BlueimpController extends BaseBlueimpController
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function getRequest()
     {

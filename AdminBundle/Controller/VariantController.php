@@ -218,7 +218,7 @@ class VariantController extends AbstractAdminController
     }
 
     /**
-     * @inheritdoc
+     * {@inheritDoc}
      */
     protected function getAdminListPath($data = null, array $parameters = [])
     {

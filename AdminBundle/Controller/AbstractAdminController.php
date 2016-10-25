@@ -16,7 +16,7 @@ use Sidus\AdminBundle\Routing\AdminRouter;
 use Symfony\Component\Form\Form;
 
 /**
- * @inheritdoc
+ * {@inheritDoc}
  */
 abstract class AbstractAdminController extends BaseAdminController
 {
@@ -86,7 +86,7 @@ abstract class AbstractAdminController extends BaseAdminController
     }
 
     /**
-     * @inheritdoc
+     * {@inheritDoc}
      */
     protected function bindDataGridRequest(DataGrid $dataGrid, Request $request, array $formOptions = [])
     {
@@ -103,7 +103,7 @@ abstract class AbstractAdminController extends BaseAdminController
     }
 
     /**
-     * @inheritdoc
+     * {@inheritDoc}
      */
     protected function getDefaultFormOptions(Request $request, $dataId, Action $action = null)
     {

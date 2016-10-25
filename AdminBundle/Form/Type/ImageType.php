@@ -7,7 +7,7 @@ use Symfony\Component\Form\AbstractType;
 class ImageType extends AbstractType
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getName()
     {
@@ -15,7 +15,7 @@ class ImageType extends AbstractType
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getParent()
     {

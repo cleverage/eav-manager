@@ -170,7 +170,7 @@ class AssetController extends DataController
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function getAdminListPath($data = null, array $parameters = [])
     {

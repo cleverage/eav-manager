@@ -50,7 +50,7 @@ class DataController extends AbstractAdminController
         }
         $filterConfig = $dataGrid->getFilterConfig();
 
-        if ($this->isElasticaUp() && $this->admin->getOption('elastica_finder')) {
+        if ($this->admin->getOption('elastica_finder') && $this->isElasticaUp()) {
             $finderReference = ltrim($this->admin->getOption('elastica_finder'), '@');
             /** @var TransformedFinder $finder */
             $finder = $this->container->get($finderReference);

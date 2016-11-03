@@ -5,7 +5,6 @@ namespace CleverAge\EAVManager\Component\Controller;
 use CleverAge\EAVManager\UserBundle\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityManager;
-use Elastica\Exception\Connection\HttpException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
@@ -62,16 +61,23 @@ trait BaseControllerTrait
     }
 
     /**
-     * @return bool
+     * @throws InvalidArgumentException
      * @throws ServiceCircularReferenceException|ServiceNotFoundException
+     *
+     * @return bool
      */
     protected function isElasticaUp()
     {
+        if ($this->container->hasParameter('elastica_enabled')
+            && false === $this->container->getParameter('elastica_enabled')
+        ) {
+            return false;
+        }
         try {
             $this->container->get('fos_elastica.client')->getStatus();
 
             return true;
-        } catch (HttpException $e) {
+        } catch (\Exception $e) {
             $this->addFlash('warning', 'Elastic search is down, some features will be locked');
         }
 

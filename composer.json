@@ -27,7 +27,7 @@
         "friendsofsymfony/user-bundle": "~1.3.6",
         "friendsofsymfony/jsrouting-bundle": "~1.5",
         "liip/imagine-bundle": "1.5.*",
-        "tinymce/tinymce": "4.3.*",
+        "tinymce/tinymce": "4.4.*",
 
         "sidus/eav-model-bundle": "~1.1.0",
         "sidus/eav-bootstrap-bundle": "~1.1.0",

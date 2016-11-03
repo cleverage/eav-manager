@@ -7,17 +7,17 @@ parameters:
 services:
     eavmanager_security.family.voter:
         parent: security.access.role_hierarchy_voter
-        class: %eavmanager_security.family.voter.class%
+        class: '%eavmanager_security.family.voter.class%'
         tags:
             - { name: security.voter }
 
     eavmanager_security.form.role_hierarchy.type:
-        class: %eavmanager_security.form.role_hierarchy.type.class%
-        arguments: [@security.role_hierarchy]
+        class: '%eavmanager_security.form.role_hierarchy.type.class%'
+        arguments: ['@security.role_hierarchy']
         tags:
-            - { name: form.type, alias: role_hierarchy }
+            - { name: form.type }
 
     eavmanager_security.form.family_permission.type:
-        class: %eavmanager_security.form.family_permission.type.class%
+        class: '%eavmanager_security.form.family_permission.type.class%'
         tags:
-            - { name: form.type, alias: family_permission }
+            - { name: form.type }

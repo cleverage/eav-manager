@@ -8,7 +8,7 @@ services:
     eavmanager_asset.form.media_browser.type:
         class: '%eavmanager_asset.form.media_browser.type.class%'
         tags:
-            - { name: form.type, alias: eavmanager_media_browser }
+            - { name: form.type }
 
     eavmanager_asset.twig.media.extension:
         class: '%eavmanager_asset.twig.media.extension.class%'

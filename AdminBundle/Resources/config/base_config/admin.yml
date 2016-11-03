@@ -5,7 +5,7 @@ sidus_admin:
             controller: CleverAgeEAVManagerAdminBundle:Asset
             entity: '%sidus_data_class%'
             prefix: /medias
-            default_form_type: 'Sidus\EAVBootstrapBundle\Form\Type\TabbedDataType'
+            default_form_type: Sidus\EAVBootstrapBundle\Form\Type\TabbedDataType
             actions:
                 index:
                     path:     /
@@ -34,7 +34,7 @@ sidus_admin:
             controller: CleverAgeEAVManagerAdminBundle:User
             entity: CleverAge\EAVManager\UserBundle\Entity\User
             prefix: /users
-            default_form_type: eavmanager_user
+            default_form_type: CleverAge\EAVManager\UserBundle\Form\Type\UserType
             base_template: CleverAgeEAVManagerAdminBundle:User:index.html.twig
             actions:
                 list:
@@ -52,7 +52,7 @@ sidus_admin:
             controller: CleverAgeEAVManagerAdminBundle:User
             entity: CleverAge\EAVManager\UserBundle\Entity\Group
             prefix: /groups
-            default_form_type: eavmanager_group
+            default_form_type: CleverAge\EAVManager\UserBundle\Form\Type\GroupType
             base_template: CleverAgeEAVManagerAdminBundle:User:index.html.twig
             actions:
                 list:
@@ -68,7 +68,7 @@ sidus_admin:
             controller: 'CleverAgeEAVManagerAdminBundle:Variant'
             entity: '%sidus_data_class%'
             prefix: /variant
-            default_form_type: sidus_variant
+            default_form_type: Sidus\EAVVariantBundle\Form\Type\VariantType
             actions:
                 select:
                     path:     /{attribute}/{parentId}/select

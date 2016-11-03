@@ -3,8 +3,11 @@
 namespace CleverAge\EAVManager\SecurityBundle\Form\Type;
 
 use CleverAge\EAVManager\SecurityBundle\Entity\FamilyPermission;
+use Sidus\EAVModelBundle\Form\Type\FamilySelectorType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\Exception\AccessException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FamilyPermissionType extends AbstractType
@@ -15,29 +18,36 @@ class FamilyPermissionType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('family', 'sidus_family_selector', [
+        $builder->add('family', FamilySelectorType::class, [
             'label' => false,
             'horizontal_input_wrapper_class' => 'col-sm-3',
         ]);
         foreach (FamilyPermission::getPermissions() as $permission) {
-            $builder->add($permission, 'checkbox', [
+            $builder->add($permission, CheckboxType::class, [
                 'widget_checkbox_label' => 'widget',
                 'horizontal_input_wrapper_class' => 'col-sm-1',
             ]);
         }
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     *
+     * @throws AccessException
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'CleverAge\EAVManager\SecurityBundle\Entity\FamilyPermission',
+            'data_class' => FamilyPermission::class,
             'required' => false,
             'widget_type' => 'inline',
         ]);
     }
 
-
-    public function getName()
+    /**
+     * @return string
+     */
+    public function getBlockPrefix()
     {
         return 'family_permission';
     }

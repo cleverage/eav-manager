@@ -6,11 +6,18 @@ use CleverAge\EAVManager\SecurityBundle\Security\Core\Role\LeafRole;
 use CleverAge\EAVManager\SecurityBundle\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
+use Symfony\Component\Form\Exception\AlreadySubmittedException;
+use Symfony\Component\Form\Exception\LogicException;
+use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\OptionsResolver\Exception\AccessException;
+use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Role\Role;
 
 class RoleHierarchyType extends AbstractType
 {
@@ -25,6 +32,15 @@ class RoleHierarchyType extends AbstractType
         $this->roleHierarchy = $roleHierarchy;
     }
 
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array                $options
+     *
+     * @throws AlreadySubmittedException
+     * @throws LogicException
+     * @throws UnexpectedTypeException
+     * @throws \InvalidArgumentException
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $hierarchy = $options['hierarchy'];
@@ -46,9 +62,10 @@ class RoleHierarchyType extends AbstractType
                         }
                     }
                 }
-                $form->add('hasRole', 'checkbox', $options);
+                $form->add('hasRole', CheckboxType::class, $options);
                 $hierarchy = $hierarchy->getChildren();
             }
+            /** @var Role[] $hierarchy */
             foreach ($hierarchy as $subRole) {
                 $form->add($subRole->getRole(), $this->getName(), [
                     'hierarchy' => $subRole,
@@ -57,6 +74,7 @@ class RoleHierarchyType extends AbstractType
                 ]);
             }
         });
+
         $builder->addModelTransformer(new CallbackTransformer(
             function ($originalData) {
                 // Delete original data:
@@ -83,6 +101,13 @@ class RoleHierarchyType extends AbstractType
         ));
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     *
+     * @throws AccessException
+     * @throws UndefinedOptionsException
+     * @throws \UnexpectedValueException
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -94,7 +119,8 @@ class RoleHierarchyType extends AbstractType
             if (!$value instanceof \Traversable && !$value instanceof LeafRole) {
                 throw new \UnexpectedValueException($error);
             }
-            if ($value instanceof \Traversable) {
+            if (is_array($value) || $value instanceof \Traversable) {
+                /** @var array $value */
                 foreach ($value as $item) {
                     if (!$item instanceof LeafRole) {
                         throw new \UnexpectedValueException($error);
@@ -106,8 +132,10 @@ class RoleHierarchyType extends AbstractType
         });
     }
 
-
-    public function getName()
+    /**
+     * @return string
+     */
+    public function getBlockPrefix()
     {
         return 'role_hierarchy';
     }

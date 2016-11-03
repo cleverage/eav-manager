@@ -7,28 +7,28 @@ parameters:
 
 services:
     eavmanager_user.form.user.type:
-        class: %eavmanager_user.form.user.type.class%
-        arguments: [@sidus_eav_model.family.User, @security.token_storage, @security.authorization_checker]
+        class: '%eavmanager_user.form.user.type.class%'
+        arguments: ['@sidus_eav_model.family.user', '@security.token_storage', '@security.authorization_checker']
         tags:
-            - { name: form.type, alias: eavmanager_user }
+            - { name: form.type }
 
     eavmanager_user.form.group.type:
-        class: %eavmanager_user.form.group.type.class%
+        class: '%eavmanager_user.form.group.type.class%'
         tags:
-            - { name: form.type, alias: eavmanager_group }
+            - { name: form.type }
 
     eavmanager_user.form.user_profile.type:
         parent: eavmanager_user.form.user.type
-        class: %eavmanager_user.form.user_profile.type.class%
+        class: '%eavmanager_user.form.user_profile.type.class%'
         tags:
-            - { name: form.type, alias: eavmanager_user_profile }
+            - { name: form.type }
 
     eavmanager_user.doctrine.event.authorable.subscriber:
-        class: %eavmanager_user.doctrine.event.authorable.subscriber.class%
-        arguments: [@security.token_storage]
+        class: '%eavmanager_user.doctrine.event.authorable.subscriber.class%'
+        arguments: ['@security.token_storage']
         tags:
             - { name: doctrine.event_subscriber, connection: default }
 
     eavmanager_user.mailer:
-        class: %eavmanager_user.mailer.class%
-        arguments: [@mailer, %mailer_sender%, @twig]
+        class: '%eavmanager_user.mailer.class%'
+        arguments: ['@mailer', '%mailer_sender%', '@twig']

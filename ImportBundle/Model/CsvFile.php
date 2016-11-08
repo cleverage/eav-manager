@@ -238,4 +238,20 @@ class CsvFile
     {
         return fseek($this->handler, $offset);
     }
+
+    /**
+     * @return bool
+     */
+    public function close()
+    {
+        return fclose($this->handler);
+    }
+
+    /**
+     * Closes the resource when the object is destroyed
+     */
+    public function __destruct()
+    {
+        $this->close();
+    }
 }

@@ -37,6 +37,9 @@ class CsvFile
     /** @var int */
     protected $currentLine = 0;
 
+    /** @var bool */
+    protected $isClosed;
+
     /**
      * @param string $filePath
      * @param string $delimiter
@@ -157,6 +160,8 @@ class CsvFile
      */
     public function isEndOfFile()
     {
+        $this->assertOpened();
+
         return feof($this->handler);
     }
 
@@ -169,6 +174,7 @@ class CsvFile
      */
     public function readRaw($length = null)
     {
+        $this->assertOpened();
         $this->currentLine++;
 
         return fgetcsv($this->handler, $length, $this->delimiter, $this->enclosure, $this->escape);
@@ -212,6 +218,7 @@ class CsvFile
      */
     public function rewind()
     {
+        $this->assertOpened();
         if (!rewind($this->handler)) {
             throw new \RuntimeException('Unable to rewind CSV resource file');
         }
@@ -226,6 +233,8 @@ class CsvFile
      */
     public function tell()
     {
+        $this->assertOpened();
+
         return ftell($this->handler);
     }
 
@@ -236,6 +245,8 @@ class CsvFile
      */
     public function seek($offset)
     {
+        $this->assertOpened();
+
         return fseek($this->handler, $offset);
     }
 
@@ -244,7 +255,13 @@ class CsvFile
      */
     public function close()
     {
-        return fclose($this->handler);
+        if ($this->isClosed) {
+            return true;
+        }
+
+        $this->isClosed = fclose($this->handler);
+
+        return $this->isClosed;
     }
 
     /**
@@ -253,5 +270,15 @@ class CsvFile
     public function __destruct()
     {
         $this->close();
+    }
+
+    /**
+     * @throws \RuntimeException
+     */
+    protected function assertOpened()
+    {
+        if ($this->isClosed) {
+            throw new \RuntimeException('Resource handler was closed earlier');
+        }
     }
 }

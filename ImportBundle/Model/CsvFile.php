@@ -156,6 +156,8 @@ class CsvFile
     }
 
     /**
+     * @throws \RuntimeException
+     *
      * @return bool
      */
     public function isEndOfFile()
@@ -169,6 +171,8 @@ class CsvFile
      * Warning, this function will return exactly the same value as the fgetcsv() function
      *
      * @param null|int $length
+     *
+     * @throws \RuntimeException
      *
      * @return array
      */
@@ -184,6 +188,7 @@ class CsvFile
      * @param int|null $length
      *
      * @throws \UnexpectedValueException
+     * @throws \RuntimeException
      *
      * @return array|null
      */
@@ -229,6 +234,8 @@ class CsvFile
     }
 
     /**
+     * @throws \RuntimeException
+     *
      * @return int
      */
     public function tell()
@@ -240,6 +247,8 @@ class CsvFile
 
     /**
      * @param int $offset
+     *
+     * @throws \RuntimeException
      *
      * @return int
      */

@@ -30,15 +30,15 @@
         "tinymce/tinymce": "4.4.*",
         "exercise/htmlpurifier-bundle": "0.2.*",
 
-        "sidus/eav-model-bundle": "dev-master",
-        "sidus/eav-bootstrap-bundle": "dev-master",
-        "sidus/filter-bundle": "dev-master",
-        "sidus/eav-filter-bundle": "dev-master",
-        "sidus/datagrid-bundle": "dev-master",
-        "sidus/eav-datagrid-bundle": "dev-master",
-        "sidus/eav-variant-bundle": "dev-master",
-        "sidus/publishing-bundle": "dev-master",
-        "sidus/file-upload-bundle": "dev-master",
-        "sidus/admin-bundle": "dev-master"
+        "sidus/eav-model-bundle": "dev-v1.2.x-dev",
+        "sidus/eav-bootstrap-bundle": "dev-v1.2.x-dev",
+        "sidus/filter-bundle": "dev-v1.2.x-dev",
+        "sidus/eav-filter-bundle": "dev-v1.2.x-dev",
+        "sidus/datagrid-bundle": "dev-v1.2.x-dev",
+        "sidus/eav-datagrid-bundle": "dev-v1.2.x-dev",
+        "sidus/eav-variant-bundle": "dev-v1.2.x-dev",
+        "sidus/publishing-bundle": "dev-v1.2.x-dev",
+        "sidus/file-upload-bundle": "dev-v1.2.x-dev",
+        "sidus/admin-bundle": "dev-v1.2.x-dev"
     }
 }

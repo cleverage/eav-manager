@@ -9,11 +9,15 @@ use Oneup\UploaderBundle\Uploader\File\GaufretteFile;
 use Sidus\FileUploadBundle\Manager\ResourceManager as BaseResourceManager;
 use Sidus\FileUploadBundle\Model\ResourceInterface;
 
+/**
+ * Extends the standard resource manager to append more info to the resource entities
+ */
 class ResourceManager extends BaseResourceManager
 {
     /**
      * @param ResourceInterface $resource
      * @param GaufretteFile     $file
+     *
      * @throws \InvalidArgumentException|\UnexpectedValueException|FileNotFound
      */
     protected function updateResourceMetadata(ResourceInterface $resource, GaufretteFile $file)

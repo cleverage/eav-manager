@@ -51,6 +51,7 @@ class Document extends Resource
 
     /**
      * @param int $fileSize
+     *
      * @return Document
      */
     public function setFileSize($fileSize)
@@ -70,6 +71,7 @@ class Document extends Resource
 
     /**
      * @param string $fileType
+     *
      * @return Document
      */
     public function setFileType($fileType)
@@ -89,6 +91,7 @@ class Document extends Resource
 
     /**
      * @param \DateTime|int|string|null $fileModifiedAt
+     *
      * @return Document
      * @throws \UnexpectedValueException
      */

@@ -1,0 +1,5 @@
+services:
+    eavmanager_user.user.provider:
+        class: CleverAge\EAVManager\UserBundle\Security\UserProvider
+        arguments:
+            - '@doctrine'

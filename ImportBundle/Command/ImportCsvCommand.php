@@ -261,8 +261,8 @@ class ImportCsvCommand extends ContainerAwareCommand
 
     /**
      * @param string $attributeCode
-     * @param mixed              $value
-     * @param array              $config
+     * @param mixed  $value
+     * @param array  $config
      *
      * @throws \LogicException
      * @throws ServiceNotFoundException
@@ -305,7 +305,8 @@ class ImportCsvCommand extends ContainerAwareCommand
         if (isset($config['transformer'])) {
             $transformer = $this->getContainer()->get(ltrim($config['transformer'], '@'));
             if (!$transformer instanceof DataTransformerInterface
-                && !$transformer instanceof EAVValueTransformerInterface) {
+                && !$transformer instanceof EAVValueTransformerInterface
+            ) {
                 $m = "Transformer for attribute mapping '{$attributeCode}' must be a DataTransformerInterface";
                 $m .= ' or EAVValueTransformerInterface';
                 throw new \UnexpectedValueException($m);
@@ -333,10 +334,12 @@ class ImportCsvCommand extends ContainerAwareCommand
     {
         $this->eavDataImporter->loadBatch($this->family, $this->dataBatch, $progress, $this->importConfig);
 
-        $this->importContext->setCurrentPosition([
-            'seek' => $csv->tell(),
-            'progress' => $progress->getProgress(),
-        ]);
+        $this->importContext->setCurrentPosition(
+            [
+                'seek' => $csv->tell(),
+                'progress' => $progress->getProgress(),
+            ]
+        );
         $this->eavDataImporter->saveContext(false);
         $this->dataBatch = [];
         $this->flushCount++;

@@ -13,11 +13,11 @@
                 {% block form_actions %}
                     <div class="btn-group pull-right">
                         <a href="{{ listPath }}" data-close-target="{{ target }}" class="btn btn-default">
-                            {{ tryTrans([admin_trans_key ~ 'back.label', 'admin.action.back.label'], []) }}
+                            {{ tryTrans([admin_trans_key ~ 'back.label', 'admin.action.back.label'], [], 'Back') }}
                         </a>
                         {% block submit_button %}
                             <button type="submit" class="btn btn-primary">
-                                {{ tryTrans([admin_trans_key ~ 'submit.label', 'admin.action.submit.label'], []) }}
+                                {{ tryTrans([admin_trans_key ~ 'submit.label', 'admin.action.submit.label'], [], 'Submit') }}
                             </button>
                         {% endblock %}
                     </div>

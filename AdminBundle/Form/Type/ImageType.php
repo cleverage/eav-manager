@@ -5,10 +5,13 @@ namespace CleverAge\EAVManager\AdminBundle\Form\Type;
 use Sidus\FileUploadBundle\Form\Type\ResourceType;
 use Symfony\Component\Form\AbstractType;
 
+/**
+ * Custom form type to upload images
+ */
 class ImageType extends AbstractType
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getBlockPrefix()
     {
@@ -16,7 +19,7 @@ class ImageType extends AbstractType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getParent()
     {

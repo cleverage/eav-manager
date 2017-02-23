@@ -1,0 +1,7 @@
+services:
+    eavmanager_asset.doctrine.subscriber:
+        class: CleverAge\EAVManager\AssetBundle\Event\AssetSubscriber
+        arguments:
+            - '%sidus_eav_model.entity.data.class%'
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }

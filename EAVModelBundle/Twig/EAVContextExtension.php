@@ -7,6 +7,9 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Twig_Extension;
 
+/**
+ * Display context form in twig templates
+ */
 class EAVContextExtension extends Twig_Extension
 {
     /** @var ContextManager */

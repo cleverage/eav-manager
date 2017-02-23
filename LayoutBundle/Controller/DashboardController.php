@@ -7,6 +7,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Override this controller to create a custom dashboard
+ */
 class DashboardController extends Controller
 {
     use BaseControllerTrait;
@@ -16,15 +19,10 @@ class DashboardController extends Controller
      *
      * @param Request $request
      *
-     * @throws \Exception
-     *
      * @return array
      */
     public function dashboardAction(Request $request)
     {
-        // This will trigger a flash message if elastica is enabled but down
-        $this->isElasticaEnabled() && $this->isElasticaUp();
-
         return [];
     }
 }

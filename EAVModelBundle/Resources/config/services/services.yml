@@ -1,0 +1,8 @@
+parameters:
+    sidus_admin.entity.matcher.class: CleverAge\EAVManager\AdminBundle\Entity\AdminEntityMatcher
+
+services:
+    eavmanager.finder:
+        class: CleverAge\EAVManager\EAVModelBundle\Search\EAVFinder
+        arguments:
+            - '@doctrine'

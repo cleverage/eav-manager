@@ -9,6 +9,9 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use CleverAge\EAVManager\SecurityBundle\Entity\FamilyPermission;
 use CleverAge\EAVManager\UserBundle\Entity\User;
 
+/**
+ * Allows the access to a family based on the family permissions of a user
+ */
 class FamilyVoter implements VoterInterface
 {
     /**
@@ -63,6 +66,7 @@ class FamilyVoter implements VoterInterface
 
     /**
      * @param TokenInterface $token
+     *
      * @return FamilyPermission[]|Collection
      * @throws \UnexpectedValueException
      */

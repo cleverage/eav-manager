@@ -1,6 +1,6 @@
 {% extends 'CleverAgeEAVManagerLayoutBundle::layout.html.twig' %}
 
-{% trans_default_domain 'FOSUserBundle' %}
+{% import "CleverAgeEAVManagerLayoutBundle:Macros:utilities.html.twig" as utilities %}
 
 {% block main_content %}
     <h1 class="text-center">{{ block('title') }}</h1>
@@ -15,9 +15,8 @@
                     <h3 class="panel-title">Connexion</h3>
                 </div>
                 <div class="panel-body">
-                    <form action="{{ path("fos_user_security_check") }}" method="post" accept-charset="UTF-8"
-                          role="form">
-                        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}"/>
+                    <form action="{{ path('login') }}" method="post" accept-charset="UTF-8" role="form"
+                          class="{{ error ? 'has-error' }}">
                         <fieldset>
                             <div class="form-group">
                                 <input class="form-control" placeholder="{{ 'security.login.username'|trans }}"
@@ -27,8 +26,9 @@
                                 <input class="form-control" placeholder="{{ 'security.login.password'|trans }}"
                                        name="_password" type="password" value="" required="required">
                             </div>
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                             {% if error %}
-                                <div class="text-danger text-center">{{ error|trans }}</div>
+                                <div class="text-danger text-center">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                             {% endif %}
                             <div class="checkbox">
                                 <label>
@@ -36,6 +36,7 @@
                                            value="on"> {{ 'security.login.remember_me'|trans }}
                                 </label>
                             </div>
+                            <p><a href="{{ path('lost_password') }}">Mot de passe perdu</a></p>
                             <input class="btn btn-lg btn-success btn-block" type="submit" id="_submit" name="_submit"
                                    value="{{ 'security.login.submit'|trans }}">
                         </fieldset>

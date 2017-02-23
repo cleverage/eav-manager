@@ -6,10 +6,14 @@ use CleverAge\EAVManager\UserBundle\Entity\User;
 use Doctrine\ORM\QueryBuilder;
 use Sidus\EAVModelBundle\Entity\DataRepository as BaseDataRepository;
 
+/**
+ * Additional methods to data repositories
+ */
 class DataRepository extends BaseDataRepository
 {
     /**
      * @param User $user
+     *
      * @return QueryBuilder
      */
     public function getQbLastByUser(User $user)
@@ -17,10 +21,12 @@ class DataRepository extends BaseDataRepository
         $qb = $this->createOptimizedQueryBuilder('d')
             ->where('d.createdBy = :user1 OR d.updatedBy = :user2')
             ->orderBy('d.updatedAt', 'desc')
-            ->setParameters([
-                'user1' => $user,
-                'user2' => $user,
-            ]);
+            ->setParameters(
+                [
+                    'user1' => $user,
+                    'user2' => $user,
+                ]
+            );
 
         return $qb;
     }
@@ -29,6 +35,7 @@ class DataRepository extends BaseDataRepository
      * @param string            $alias
      * @param null              $indexBy
      * @param QueryBuilder|null $qb
+     *
      * @return QueryBuilder
      */
     public function createOptimizedQueryBuilder($alias, $indexBy = null, QueryBuilder $qb = null)

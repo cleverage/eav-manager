@@ -2,13 +2,15 @@
 
 namespace CleverAge\EAVManager\AssetBundle\Form\Type;
 
-
 use Sidus\EAVBootstrapBundle\Form\Type\AutocompleteDataSelectorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
-class MediaBrowser extends AbstractType
+/**
+ * Form type to browse media data
+ */
+class MediaBrowserType extends AbstractType
 {
     /**
      * @param FormView      $view
@@ -21,7 +23,7 @@ class MediaBrowser extends AbstractType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getBlockPrefix()
     {
@@ -29,7 +31,7 @@ class MediaBrowser extends AbstractType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getParent()
     {

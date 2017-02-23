@@ -4,7 +4,7 @@
     <script>
         $('.tinymce-submit').on('click', function (e) {
             var dataId = $('.sidus-combo-selector input.select2').val();
-            var dataName = $('#form_data_family option:selected').text() + ' - ' + $('.sidus-combo-selector .select2-chosen').text();
+            var dataName = $('#form_data_family').find('option:selected').text() + ' - ' + $('.sidus-combo-selector .select2-chosen').text();
             var family = $('.sidus-combo-selector select[name="form[data][family]"]').val();
             var plugin = parent.tinymce.PluginManager.get('dataobject')(editor);
             plugin.createObject(dataId, family, dataName);

@@ -20,7 +20,24 @@ class CleverAgeEAVManagerUserExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.yml');
+        $config = $this->processConfiguration($this->createConfiguration(), $configs);
+
+        $container->setParameter('eavmanager_user.config', $config);
+
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config/services'));
+        $loader->load('configuration.yml');
+        $loader->load('events.yml');
+        $loader->load('forms.yml');
+        $loader->load('mailer.yml');
+        $loader->load('managers.yml');
+        $loader->load('security.yml');
+    }
+
+    /**
+     * @return Configuration
+     */
+    protected function createConfiguration()
+    {
+        return new Configuration();
     }
 }

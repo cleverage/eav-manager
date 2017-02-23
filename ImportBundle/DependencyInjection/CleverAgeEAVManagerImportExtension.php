@@ -33,7 +33,7 @@ class CleverAgeEAVManagerImportExtension extends Extension
         $this->globalConfig = $config;
 
         // Automatically declare a service for each import configured
-        foreach ($config['configurations'] as $code => $importConfiguration) {
+        foreach ((array) $config['configurations'] as $code => $importConfiguration) {
             $this->addImportServiceDefinition($code, $importConfiguration, $container);
         }
 
@@ -45,6 +45,7 @@ class CleverAgeEAVManagerImportExtension extends Extension
      * @param string           $code
      * @param array            $importConfiguration
      * @param ContainerBuilder $container
+     *
      * @throws BadMethodCallException
      */
     protected function addImportServiceDefinition($code, $importConfiguration, ContainerBuilder $container)

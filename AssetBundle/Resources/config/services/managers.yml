@@ -1,0 +1,3 @@
+parameters:
+    sidus_file_upload.resource.manager.class: CleverAge\EAVManager\AssetBundle\Manager\ResourceManager
+

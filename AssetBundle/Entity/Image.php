@@ -39,6 +39,7 @@ class Image extends Document
 
     /**
      * @param int $width
+     *
      * @return Image
      */
     public function setWidth($width)
@@ -58,6 +59,7 @@ class Image extends Document
 
     /**
      * @param int $height
+     *
      * @return Image
      */
     public function setHeight($height)

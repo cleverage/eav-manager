@@ -1,0 +1,129 @@
+user:
+    profile:
+        menu:
+            title: User profile
+
+admin:
+    list_of: List of %family%
+    action:
+        create:
+            label: Create
+            title: Create
+        edit:
+            label: Edit
+            title: Edit
+        browseThumbnail:
+            label: Thumbnail view
+        browse:
+            label: List view
+        back:
+            label: Back
+        close:
+            label: Close
+        submit:
+            label: Submit
+        delete:
+            label: Delete
+            title: Delete
+        resetPassword:
+            label: Reset password
+            title: Reset password
+
+    user:
+        tab:
+            main:
+                label: Base
+            info:
+                label: Info
+            groups:
+                label: Groups
+            password:
+                label: Security
+        delete:
+            back:
+                label: Cancel
+            submit:
+                label: Delete
+
+        form:
+            username:
+                label: Username
+            email:
+                label: Email
+                blank: Please fill your email
+                invalid: Not a valid email address
+                already_used: This email is already in use
+            password:
+                label: Password
+                blank: Please fill your password
+                short: Password must be at least 8 characters
+            repeat_password:
+                label: Repeat password
+                blank: Please type your password again
+                mismatch: Both passwords must be identicals
+            enabled:
+                label: Enabled
+            roles:
+                label: Roles
+            familyPermissions:
+                label: Familie's permissions
+            groups:
+                label: Groups
+
+    group:
+        form:
+            name:
+                label: Group name
+            roles:
+                label: Roles
+            familyPermissions:
+                label: Familie's permissions
+
+    variant:
+        select:
+            submit:
+                label: Create a new variant
+            family:
+                label: Select family
+        edit:
+            back:
+                label: Back
+            submit:
+                label: Save
+        delete:
+            back:
+                label: Cancel
+            submit:
+                label: Delete
+
+    media:
+        menu:
+            title: Media
+        select:
+            label: Select
+            title: Select a media
+        detach:
+            label: Detach
+
+    flash:
+        create:
+            success: Element created with success
+        edit:
+            success: Element updated with success
+        delete:
+            success: Element deleted with success
+
+form:
+    delete:
+        confirmation: Are you sure you want to delete "%entity%" ?
+    abandon_changes:
+        confirmation: Are you sure you want to cancel current modifications ?
+    resetPassword:
+        confirmation: Are you sure you want to reset the password of the user "%entity%" ?
+
+warning:
+    missing:
+        asset: Missing file
+
+eav.attribute.validation:
+    required: This value must not be blank

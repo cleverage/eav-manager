@@ -90,6 +90,7 @@ class FamilyPermission
 
     /**
      * @param string $permission
+     *
      * @return bool
      * @throws \Exception
      */
@@ -121,6 +122,7 @@ class FamilyPermission
 
     /**
      * @param int $id
+     *
      * @return FamilyPermission
      */
     public function setId($id)
@@ -140,6 +142,7 @@ class FamilyPermission
 
     /**
      * @param User $user
+     *
      * @return FamilyPermission
      */
     public function setUser(User $user = null)
@@ -162,6 +165,7 @@ class FamilyPermission
 
     /**
      * @param Group $group
+     *
      * @return FamilyPermission
      */
     public function setGroup(Group $group = null)
@@ -184,6 +188,7 @@ class FamilyPermission
 
     /**
      * @param FamilyInterface $family
+     *
      * @return FamilyPermission
      */
     public function setFamily(FamilyInterface $family = null)
@@ -203,6 +208,7 @@ class FamilyPermission
 
     /**
      * @param boolean $list
+     *
      * @return FamilyPermission
      */
     public function setList($list)
@@ -222,6 +228,7 @@ class FamilyPermission
 
     /**
      * @param boolean $read
+     *
      * @return FamilyPermission
      */
     public function setRead($read)
@@ -241,6 +248,7 @@ class FamilyPermission
 
     /**
      * @param boolean $create
+     *
      * @return FamilyPermission
      */
     public function setCreate($create)
@@ -260,6 +268,7 @@ class FamilyPermission
 
     /**
      * @param boolean $edit
+     *
      * @return FamilyPermission
      */
     public function setEdit($edit)
@@ -279,6 +288,7 @@ class FamilyPermission
 
     /**
      * @param boolean $delete
+     *
      * @return FamilyPermission
      */
     public function setDelete($delete)
@@ -298,6 +308,7 @@ class FamilyPermission
 
     /**
      * @param boolean $publish
+     *
      * @return FamilyPermission
      */
     public function setPublish($publish)

@@ -28,5 +28,10 @@ interface EAVValueTransformerInterface
      *
      * @return mixed
      */
-    public function reverseTransform(FamilyInterface $family, AttributeInterface $attribute, $value, array $config = null);
+    public function reverseTransform(
+        FamilyInterface $family,
+        AttributeInterface $attribute,
+        $value,
+        array $config = null
+    );
 }

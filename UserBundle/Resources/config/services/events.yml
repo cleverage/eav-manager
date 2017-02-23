@@ -1,0 +1,7 @@
+services:
+    eavmanager_user.doctrine.event.authorable.subscriber:
+        class: CleverAge\EAVManager\UserBundle\Event\AuthorableSubscriber
+        arguments: ['@security.token_storage']
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+

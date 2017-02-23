@@ -1,9 +1,12 @@
+parameters:
+    resources_dir: '%kernel.root_dir%/../var/resources'
+
 # one uploader
 oneup_uploader:
     mappings:
         image:
             frontend: blueimp
-            allowed_mimetypes: [ "image/jpg", "image/jpeg", "image/png", "image/gif" ]
+            allowed_mimetypes: [ image/jpg, image/jpeg, image/png, image/gif ]
             storage:
                 type: gaufrette
                 filesystem: gaufrette.resources_filesystem

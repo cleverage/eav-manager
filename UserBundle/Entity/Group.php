@@ -7,15 +7,12 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use FOS\UserBundle\Entity\Group as BaseGroup;
-use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="eavmanager_group")
- * @JMS\ExclusionPolicy("all")
  */
-class Group extends BaseGroup
+class Group
 {
     /**
      * @ORM\Id
@@ -23,6 +20,12 @@ class Group extends BaseGroup
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
+    /**
+     * @var string
+     * @ORM\Column(name="name", type="string")
+     */
+    protected $name;
 
     /**
      * @var DateTime
@@ -38,7 +41,8 @@ class Group extends BaseGroup
 
     /**
      * @var FamilyPermission[]|Collection
-     * @ORM\OneToMany(targetEntity="CleverAge\EAVManager\SecurityBundle\Entity\FamilyPermission", mappedBy="group", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="CleverAge\EAVManager\SecurityBundle\Entity\FamilyPermission", mappedBy="group",
+     *                                                           cascade={"persist", "remove"}, orphanRemoval=true)
      */
     protected $familyPermissions;
 
@@ -48,14 +52,50 @@ class Group extends BaseGroup
      */
     protected $users;
 
-    /** @noinspection PhpMissingParentConstructorInspection */
+    /**
+     * @var array
+     *
+     * @ORM\Column(type="json_array")
+     */
+    protected $roles = [];
+
+    /**
+     * Building default values
+     */
     public function __construct()
     {
         $this->createdAt = new DateTime();
         $this->updatedAt = new DateTime();
         $this->familyPermissions = new ArrayCollection();
         $this->users = new ArrayCollection();
-        $this->roles = [];
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return Group
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
     }
 
     /**
@@ -76,6 +116,7 @@ class Group extends BaseGroup
 
     /**
      * @param DateTime $updatedAt
+     *
      * @return User
      */
     public function setUpdatedAt(DateTime $updatedAt = null)
@@ -95,6 +136,7 @@ class Group extends BaseGroup
 
     /**
      * @param FamilyPermission $familyPermission
+     *
      * @return User
      */
     public function addFamilyPermission(FamilyPermission $familyPermission)
@@ -106,6 +148,7 @@ class Group extends BaseGroup
 
     /**
      * @param FamilyPermission $familyPermission
+     *
      * @return $this
      */
     public function removeFamilyPermission(FamilyPermission $familyPermission)
@@ -116,8 +159,72 @@ class Group extends BaseGroup
         return $this;
     }
 
+    /**
+     * Returns the user roles
+     *
+     * @return array The roles
+     */
+    public function getRoles()
+    {
+        return $this->roles;
+    }
+
+    /**
+     * Never use this to check if this user has access to anything!
+     *
+     * Use the SecurityContext, or an implementation of AccessDecisionManager
+     * instead, e.g.
+     *
+     *         $securityContext->isGranted('ROLE_USER');
+     *
+     * @param string $role
+     *
+     * @return boolean
+     */
+    public function hasRole($role)
+    {
+        return in_array(strtoupper($role), $this->getRoles(), true);
+    }
+
+    /**
+     * @param string $role
+     *
+     * @return User
+     */
+    public function addRole($role)
+    {
+        $role = strtoupper($role);
+        if ($role === User::ROLE_DEFAULT) {
+            return $this;
+        }
+
+        if (!$this->hasRole($role)) {
+            $this->roles[] = $role;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param string $role
+     *
+     * @return $this
+     */
+    public function removeRole($role)
+    {
+        if (false !== $key = array_search(strtoupper($role), $this->roles, true)) {
+            unset($this->roles[$key]);
+            $this->roles = array_values($this->roles);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
     public function __toString()
     {
-        return (string)$this->getName();
+        return (string) $this->getName();
     }
 }

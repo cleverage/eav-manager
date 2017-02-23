@@ -25,6 +25,7 @@ trait DataControllerTrait
 
     /**
      * @param string $familyCode
+     *
      * @return FamilyInterface
      * @throws Exception
      */
@@ -36,6 +37,7 @@ trait DataControllerTrait
     /**
      * @param                      $id
      * @param FamilyInterface|null $family
+     *
      * @return DataInterface
      * @throws Exception
      */
@@ -44,12 +46,13 @@ trait DataControllerTrait
         if ($id instanceof DataInterface) {
             $data = $id;
         } else {
-            /** @var DataInterface $data */
+            $dataClass = $this->container->getParameter('sidus_eav_model.entity.data.class');
             if ($family) {
-                $data = $this->getDoctrine()->getRepository($family->getDataClass())->find($id);
-            } else {
-                $data = $this->container->get('sidus_eav_model.doctrine.repository.data')->find($id);
+                $dataClass = $family->getDataClass();
             }
+            /** @var DataInterface $data */
+            $data = $this->getDoctrine()->getRepository($dataClass)->find($id);
+
             if (!$data) {
                 throw new NotFoundHttpException("No data found with id : {$id}");
             }
@@ -65,6 +68,7 @@ trait DataControllerTrait
     /**
      * @param FamilyInterface $family
      * @param DataInterface   $data
+     *
      * @return FamilyInterface
      * @throws LogicException
      * @throws UnexpectedValueException
@@ -72,7 +76,9 @@ trait DataControllerTrait
     protected function initDataFamily(FamilyInterface $family, DataInterface $data)
     {
         if ($family->getCode() !== $data->getFamilyCode()) {
-            throw new UnexpectedValueException("Data family '{$data->getFamilyCode()}'' not matching admin family {$family->getCode()}");
+            throw new UnexpectedValueException(
+                "Data family '{$data->getFamilyCode()}'' not matching admin family {$family->getCode()}"
+            );
         }
         $this->family = $family;
     }

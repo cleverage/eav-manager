@@ -47,6 +47,7 @@ class ImportConfig
      * @param string                     $code
      * @param FamilyConfigurationHandler $familyConfigurationHandler
      * @param array                      $configuration
+     *
      * @throws MissingFamilyException
      * @throws AccessException
      * @throws InvalidArgumentException

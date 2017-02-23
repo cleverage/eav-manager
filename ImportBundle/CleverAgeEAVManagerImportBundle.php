@@ -6,6 +6,9 @@ use Sidus\EAVModelBundle\DependencyInjection\Compiler\GenericCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
+/**
+ * @package CleverAge\EAVManager\ImportBundle
+ */
 class CleverAgeEAVManagerImportBundle extends Bundle
 {
     /**
@@ -15,10 +18,12 @@ class CleverAgeEAVManagerImportBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new GenericCompilerPass(
-            'eavmanager.import_configuration.handler',
-            'eavmanager.import',
-            'addImport'
-        ));
+        $container->addCompilerPass(
+            new GenericCompilerPass(
+                'eavmanager.import_configuration.handler',
+                'eavmanager.import',
+                'addImport'
+            )
+        );
     }
 }

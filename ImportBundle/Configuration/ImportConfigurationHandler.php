@@ -31,6 +31,7 @@ class ImportConfigurationHandler
 
     /**
      * @param string $code
+     *
      * @return ImportConfig
      * @throws UnexpectedValueException
      */

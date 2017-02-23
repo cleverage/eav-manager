@@ -2,16 +2,24 @@
 
 namespace CleverAge\EAVManager\AdminBundle\Controller;
 
+use CleverAge\EAVManager\AssetBundle\Form\Type\MediaBrowserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sidus\EAVBootstrapBundle\Form\Type\ComboDataSelectorType;
+use Sidus\EAVBootstrapBundle\Form\Type\SwitchType;
 use Sidus\EAVModelBundle\Entity\DataInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Enrich the WYSIWYG experience with in-place data selectors
+ */
 class WysiwygController extends Controller
 {
     /**
      * @param Request $request
      * @param string  $configName
+     *
      * @return array
      * @throws \InvalidArgumentException
      */
@@ -25,20 +33,27 @@ class WysiwygController extends Controller
         $formData = [
             'data' => $this->getData($request),
         ];
-        $builder = $this->createFormBuilder($formData, [
-            'show_legend' => false,
-        ]);
-        $builder->add('data', 'sidus_combo_data_selector', $formOptions);
+        $builder = $this->createFormBuilder(
+            $formData,
+            [
+                'show_legend' => false,
+            ]
+        );
+        $builder->add('data', ComboDataSelectorType::class, $formOptions);
 
         $form = $builder->getForm();
         $form->handleRequest($request);
 
-        return $this->render('CleverAgeEAVManagerAdminBundle:Wysiwyg:select'.ucfirst($configName).'.html.twig', ['form' => $form->createView()]);
+        return $this->render(
+            'CleverAgeEAVManagerAdminBundle:Wysiwyg:select'.ucfirst($configName).'.html.twig',
+            ['form' => $form->createView()]
+        );
     }
 
     /**
      * @Template()
      * @param Request $request
+     *
      * @return array
      * @throws \Exception
      */
@@ -47,25 +62,40 @@ class WysiwygController extends Controller
         $formData = [
             'data' => $this->getData($request),
             'filter' => $request->get('dataFilter'),
-            'responsive' => $request->get('dataResponsive') == 1,
+            'responsive' => (string) $request->get('dataResponsive') === '1',
         ];
-        $builder = $this->createFormBuilder($formData, [
-            'show_legend' => false,
-        ]);
-        $builder->add('data', 'eavmanager_media_browser', [
-            'family' => 'Image',
-        ]);
+        $builder = $this->createFormBuilder(
+            $formData,
+            [
+                'show_legend' => false,
+            ]
+        );
+        $builder->add(
+            'data',
+            MediaBrowserType::class,
+            [
+                'family' => 'Image',
+            ]
+        );
 
         $filterConfig = $this->get('liip_imagine.filter.manager')->getFilterConfiguration()->all();
         $choices = array_combine(array_keys($filterConfig), array_keys($filterConfig));
-        $builder->add('filter', 'choice', [
-            'choices' => $choices,
-        ]);
+        $builder->add(
+            'filter',
+            ChoiceType::class,
+            [
+                'choices' => $choices,
+            ]
+        );
 
-        $builder->add('responsive', 'sidus_switch', [
-            'label' => 'Reponsive',
-            'required' => false,
-        ]);
+        $builder->add(
+            'responsive',
+            SwitchType::class,
+            [
+                'label' => 'Responsive',
+                'required' => false,
+            ]
+        );
 
         $form = $builder->getForm();
         $form->handleRequest($request);
@@ -77,6 +107,7 @@ class WysiwygController extends Controller
 
     /**
      * @param Request $request
+     *
      * @return DataInterface|null
      * @throws \InvalidArgumentException
      */
@@ -84,8 +115,9 @@ class WysiwygController extends Controller
     {
         $data = null;
         if ($request->query->has('dataId')) {
-            $data = $this->get('sidus_eav_model.doctrine.repository.data')
-                ->find($request->query->get('dataId'));
+            $dataClass = $this->getParameter('sidus_eav_model.entity.data.class');
+            $dataRepository = $this->get('doctrine')->getRepository($dataClass);
+            $data = $dataRepository->find($request->query->get('dataId'));
         }
 
         return $data;

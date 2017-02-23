@@ -4,7 +4,7 @@ services:
         arguments:
             - document
             - documentValue
-            - sidus_resource
+            - Sidus\FileUploadBundle\Form\Type\ResourceType
             - { resource_type: document }
         tags:
             - { name: sidus.attribute_type }
@@ -14,7 +14,7 @@ services:
         arguments:
             - image
             - imageValue
-            - eavmanager_image
+            - CleverAge\EAVManager\AdminBundle\Form\Type\ImageType
             - { resource_type: image }
         tags:
             - { name: sidus.attribute_type }
@@ -24,6 +24,6 @@ services:
         arguments:
             - media_browser
             - dataValue
-            - eavmanager_media_browser
+            - CleverAge\EAVManager\AssetBundle\Form\Type\MediaBrowserType
         tags:
             - { name: sidus.attribute_type }

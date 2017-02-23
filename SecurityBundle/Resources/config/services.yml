@@ -1,23 +1,21 @@
-parameters:
-    eavmanager_security.family.voter.class: CleverAge\EAVManager\SecurityBundle\Voter\FamilyVoter
-    security.role_hierarchy.class: CleverAge\EAVManager\SecurityBundle\Security\Core\Role\RoleHierarchy
-    eavmanager_security.form.role_hierarchy.type.class: CleverAge\EAVManager\SecurityBundle\Form\Type\RoleHierarchyType
-    eavmanager_security.form.family_permission.type.class: CleverAge\EAVManager\SecurityBundle\Form\Type\FamilyPermissionType
-
 services:
+    security.role_hierarchy:
+        class: CleverAge\EAVManager\SecurityBundle\Security\Core\Role\RoleHierarchy
+        arguments: ['%security.role_hierarchy.roles%']
+
     eavmanager_security.family.voter:
         parent: security.access.role_hierarchy_voter
-        class: '%eavmanager_security.family.voter.class%'
+        class: CleverAge\EAVManager\SecurityBundle\Voter\FamilyVoter
         tags:
             - { name: security.voter }
 
     eavmanager_security.form.role_hierarchy.type:
-        class: '%eavmanager_security.form.role_hierarchy.type.class%'
+        class: CleverAge\EAVManager\SecurityBundle\Form\Type\RoleHierarchyType
         arguments: ['@security.role_hierarchy']
         tags:
             - { name: form.type }
 
     eavmanager_security.form.family_permission.type:
-        class: '%eavmanager_security.form.family_permission.type.class%'
+        class: CleverAge\EAVManager\SecurityBundle\Form\Type\FamilyPermissionType
         tags:
             - { name: form.type }

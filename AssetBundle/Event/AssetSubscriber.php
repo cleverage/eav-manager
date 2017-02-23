@@ -50,6 +50,7 @@ class AssetSubscriber implements EventSubscriber
 
     /**
      * @param PreUpdateEventArgs $event
+     *
      * @throws AccessException
      * @throws InvalidArgumentException
      * @throws UnexpectedTypeException
@@ -62,6 +63,7 @@ class AssetSubscriber implements EventSubscriber
 
     /**
      * @param LifecycleEventArgs $event
+     *
      * @throws AccessException
      * @throws InvalidArgumentException
      * @throws UnexpectedTypeException
@@ -74,6 +76,7 @@ class AssetSubscriber implements EventSubscriber
 
     /**
      * @param PostFlushEventArgs $event
+     *
      * @throws ORMInvalidArgumentException
      * @throws OptimisticLockException
      */
@@ -92,6 +95,7 @@ class AssetSubscriber implements EventSubscriber
 
     /**
      * @param DataInterface|mixed $data
+     *
      * @throws AccessException
      * @throws InvalidArgumentException
      * @throws UnexpectedTypeException

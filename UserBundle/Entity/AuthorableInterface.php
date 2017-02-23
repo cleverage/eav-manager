@@ -2,7 +2,9 @@
 
 namespace CleverAge\EAVManager\UserBundle\Entity;
 
-
+/**
+ * Entities implementing this interface will be automatically "filled" with the current user info
+ */
 interface AuthorableInterface
 {
     /**
@@ -12,6 +14,7 @@ interface AuthorableInterface
 
     /**
      * @param User $user
+     *
      * @return mixed
      */
     public function setUpdatedBy(User $user);
@@ -23,6 +26,7 @@ interface AuthorableInterface
 
     /**
      * @param User $user
+     *
      * @return mixed
      */
     public function setCreatedBy(User $user);

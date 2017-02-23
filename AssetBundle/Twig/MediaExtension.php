@@ -8,6 +8,9 @@ use Liip\ImagineBundle\Imagine\Filter\FilterConfiguration;
 use Sidus\FileUploadBundle\Utilities\BinarySizeUtility;
 use Twig_Extension;
 
+/**
+ * Allows twig templates to gather information about image size
+ */
 class MediaExtension extends Twig_Extension
 {
     /** @var FilterConfiguration */
@@ -44,6 +47,7 @@ class MediaExtension extends Twig_Extension
     /**
      * @param Image  $image
      * @param string $filter
+     *
      * @return string
      * @throws NonExistingFilterException
      */
@@ -64,15 +68,19 @@ class MediaExtension extends Twig_Extension
             }
         }
 
-        return strtr('width="%w%" height="%h%" alt="%a%"', [
-            '%w%' => $width,
-            '%h%' => $height,
-            '%a%' => $image->getOriginalFileName(),
-        ]);
+        return strtr(
+            'width="%w%" height="%h%" alt="%a%"',
+            [
+                '%w%' => $width,
+                '%h%' => $height,
+                '%a%' => $image->getOriginalFileName(),
+            ]
+        );
     }
 
     /**
      * @param int $size
+     *
      * @return string
      * @throws \UnexpectedValueException
      */

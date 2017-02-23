@@ -1,12 +1,14 @@
 {% extends 'CleverAgeEAVManagerAdminBundle:Base:edit.html.twig' %}
 
+{% import "CleverAgeEAVManagerLayoutBundle:Macros:utilities.html.twig" as utilities %}
+
 {% block flash_messages %}
     {{ not success ? utilities.flash_messages() }}
 {% endblock %}
 
 {% block submit_button %}
     <button type="submit" class="btn btn-danger">
-        {{ tryTrans([admin_trans_key ~ '.label', 'admin.action.' ~ admin.currentAction.code ~ '.label'], []) }}
+        {{ tryTrans([admin_trans_key ~ '.label', 'admin.action.' ~ admin.currentAction.code ~ '.label'], [], admin.currentAction.code|capitalize) }}
     </button>
 {% endblock %}
 

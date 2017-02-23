@@ -1,6 +1,6 @@
-{% extends 'SidusEAVBootstrapBundle:Form:fields.html.twig' %}
+{% extends 'SidusEAVVariantBundle:Form:fields.html.twig' %}
 
-{# Extended from Sidus/EAVVariantBundle/Resources/views/Form/fields.html.twig #}
+{# Extended from SidusEAVVariantBundle:Form:fields.html.twig #}
 {% block sidus_variant_collection_widget %}
     {% set target = target is defined ? target : app.request.query.get('target') %}
     <div class="panel panel-default">

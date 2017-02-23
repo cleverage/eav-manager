@@ -6,8 +6,12 @@ use Sidus\EAVModelBundle\Entity\DataInterface;
 use Sidus\PublishingBundle\Entity\PublishableInterface;
 use Sidus\PublishingBundle\Event\PublicationEvent;
 
+/**
+ * Custom publication event to include the familly code
+ */
 class EAVPublicationEvent extends PublicationEvent
 {
+    /** @var string */
     public $family;
 
     /**

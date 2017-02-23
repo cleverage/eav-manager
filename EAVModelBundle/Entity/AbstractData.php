@@ -5,16 +5,17 @@ namespace CleverAge\EAVManager\EAVModelBundle\Entity;
 use CleverAge\EAVManager\UserBundle\Entity\AuthorableInterface;
 use CleverAge\EAVManager\UserBundle\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as JMS;
-use Sidus\EAVModelBundle\Entity\Data as BaseData;
+use Sidus\EAVModelBundle\Entity\AbstractData as AbstractBaseData;
 
-abstract class Data extends BaseData implements AuthorableInterface
+/**
+ * Adding authoring information on the Data entities
+ */
+abstract class AbstractData extends AbstractBaseData implements AuthorableInterface
 {
     /**
      * @var User
      * @ORM\ManyToOne(targetEntity="CleverAge\EAVManager\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id", onDelete="SET NULL")
-     * @JMS\Exclude()
      */
     protected $createdBy;
 
@@ -22,7 +23,6 @@ abstract class Data extends BaseData implements AuthorableInterface
      * @var User
      * @ORM\ManyToOne(targetEntity="CleverAge\EAVManager\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="updated_by", referencedColumnName="id", onDelete="SET NULL")
-     * @JMS\Exclude()
      */
     protected $updatedBy;
 
@@ -36,7 +36,8 @@ abstract class Data extends BaseData implements AuthorableInterface
 
     /**
      * @param User $createdBy
-     * @return Data
+     *
+     * @return AbstractData
      */
     public function setCreatedBy(User $createdBy = null)
     {
@@ -55,7 +56,8 @@ abstract class Data extends BaseData implements AuthorableInterface
 
     /**
      * @param User $updatedBy
-     * @return Data
+     *
+     * @return AbstractData
      */
     public function setUpdatedBy(User $updatedBy = null)
     {

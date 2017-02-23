@@ -6,9 +6,6 @@ use CleverAge\EAVManager\UserBundle\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
-use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -24,6 +21,7 @@ trait BaseControllerTrait
     /**
      * @param Request $request
      * @param array   $parameters
+     *
      * @return string
      * @throws \InvalidArgumentException
      */
@@ -41,6 +39,7 @@ trait BaseControllerTrait
      * Alias to return the entity manager
      *
      * @param string|null $persistentManagerName
+     *
      * @return EntityManager
      * @throws \InvalidArgumentException
      * @throws \LogicException
@@ -48,37 +47,5 @@ trait BaseControllerTrait
     protected function getManager($persistentManagerName = null)
     {
         return $this->getDoctrine()->getManager($persistentManagerName);
-    }
-
-
-    /**
-     * @return bool
-     * @throws InvalidArgumentException
-     */
-    protected function isElasticaEnabled()
-    {
-        return $this->container->getParameter('elastica_enabled');
-    }
-
-    /**
-     * @throws InvalidArgumentException
-     * @throws ServiceCircularReferenceException|ServiceNotFoundException
-     *
-     * @return bool
-     */
-    protected function isElasticaUp()
-    {
-        if (!$this->isElasticaEnabled()) {
-            return false;
-        }
-        try {
-            $this->container->get('fos_elastica.client')->getStatus();
-
-            return true;
-        } catch (\Exception $e) {
-            $this->addFlash('warning', 'Elastic search is down, some features will be locked');
-        }
-
-        return false;
     }
 }

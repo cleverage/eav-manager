@@ -44,8 +44,12 @@ class MultipleAttributeTransformer implements EAVValueTransformerInterface
      *
      * @return mixed
      */
-    public function reverseTransform(FamilyInterface $family, AttributeInterface $attribute, $value, array $config = null)
-    {
+    public function reverseTransform(
+        FamilyInterface $family,
+        AttributeInterface $attribute,
+        $value,
+        array $config = null
+    ) {
         $this->checkConfig($attribute, $config);
         if (null === $value || '' === $value) { // Skip case where value is empty
             return [];

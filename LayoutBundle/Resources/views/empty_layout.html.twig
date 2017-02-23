@@ -6,10 +6,12 @@
         <i class="fa fa-compress"></i>
     </a>
 {% endif %}
+
 {% block tg_left %}{% endblock %}
 {% block flash_messages %}{{ utilities.flash_messages() }}{% endblock %}
 {% block tg_center %}{% endblock %}
 {% block tg_right %}{% endblock %}
+
 {% block additionnal_javascript %}
     {% if isAjax %}
         <script>
@@ -20,7 +22,11 @@
                     a.addClass('info');
                     document.activeDataGridRowRef = null;
                 }
-                window.history.pushState({}, '{{ block('title')|escape }}', '{{ app.request.requestUri|raw }}');
+                window.history.pushState(
+                        {},
+                        '{{ block('title', 'CleverAgeEAVManagerLayoutBundle::layout.html.twig')|escape('js') }}',
+                        '{{ app.request.requestUri|raw }}'
+                );
             }
         </script>
     {% endif %}

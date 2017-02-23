@@ -34,19 +34,19 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root($this->root);
         $importConfigDefinition = $rootNode
             ->children()
-                ->arrayNode('configurations')
-                    ->useAttributeAsKey('code')
-                    ->prototype('array')
-                        ->performNoDeepMerging()
-                        ->cannotBeOverwritten()
-                        ->children();
+            ->arrayNode('configurations')
+            ->useAttributeAsKey('code')
+            ->prototype('array')
+            ->performNoDeepMerging()
+            ->cannotBeOverwritten()
+            ->children();
 
         $this->appendImportConfigDefinition($importConfigDefinition);
 
         $importConfigDefinition
-                        ->end()
-                    ->end()
-                ->end();
+            ->end()
+            ->end()
+            ->end();
 
         return $treeBuilder;
     }

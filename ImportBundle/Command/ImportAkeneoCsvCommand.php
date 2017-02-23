@@ -22,6 +22,7 @@ class ImportAkeneoCsvCommand extends ImportCsvCommand
     /**
      * @param CsvFile     $csv
      * @param ProgressBar $progress
+     *
      * @throws \Exception
      */
     protected function readLine(CsvFile $csv, ProgressBar $progress)

@@ -14,54 +14,74 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\Exception\AccessException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * User group type
+ */
 class GroupType extends AbstractType
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, [
-                'label' => 'admin.group.form.name.label',
-            ])
-            ->add('roles', RoleHierarchyType::class, [
-                'label' => 'admin.group.form.roles.label',
-            ])
-            ->add('familyPermissions', BootstrapCollectionType::class, [
-                'label' => 'admin.group.form.familyPermissions.label',
-                'type' => FamilyPermissionType::class,
-                'options' => [],
-                'allow_add' => true,
-                'allow_delete' => true,
-                'required' => false,
-                'sortable' => false,
-                'by_reference' => false,
-            ]);
+            ->add(
+                'name',
+                TextType::class,
+                [
+                    'label' => 'admin.group.form.name.label',
+                ]
+            )
+            ->add(
+                'roles',
+                RoleHierarchyType::class,
+                [
+                    'label' => 'admin.group.form.roles.label',
+                ]
+            )
+            ->add(
+                'familyPermissions',
+                BootstrapCollectionType::class,
+                [
+                    'label' => 'admin.group.form.familyPermissions.label',
+                    'entry_type' => FamilyPermissionType::class,
+                    'entry_options' => [],
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'required' => false,
+                    'sortable' => false,
+                    'by_reference' => false,
+                ]
+            );
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
-            /** @var Group $group */
-            $group = $event->getData();
-            if ($group) {
-                $group->setUpdatedAt(new \DateTime());
+        $builder->addEventListener(
+            FormEvents::POST_SUBMIT,
+            function (FormEvent $event) {
+                /** @var Group $group */
+                $group = $event->getData();
+                if ($group) {
+                    $group->setUpdatedAt(new \DateTime());
+                }
             }
-        });
+        );
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @throws AccessException
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => Group::class,
-        ]);
+        $resolver->setDefaults(
+            [
+                'data_class' => Group::class,
+            ]
+        );
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getBlockPrefix()
     {

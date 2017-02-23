@@ -1,5 +1,7 @@
 {% extends isAjax ? 'CleverAgeEAVManagerLayoutBundle::empty_layout.html.twig'
-        : baseTemplate|default('CleverAgeEAVManagerAdminBundle:Base:list.html.twig') %}
+: baseTemplate|default('CleverAgeEAVManagerAdminBundle:Base:list.html.twig') %}
+
+{% import "CleverAgeEAVManagerLayoutBundle:Macros:utilities.html.twig" as utilities %}
 
 {% set admin_trans_key = 'admin.' ~ admin.code ~ '.' ~ admin.currentAction.code ~ '.' %}
 
@@ -15,14 +17,14 @@
                 <a href="{{ listPath }}" {% if isAjax %}data-close-target="{{ target }}"{% endif %}
                    class="btn btn-default">
                     {% if isAjax %}
-                        {{ tryTrans([admin_trans_key ~ 'close.label', 'admin.action.close.label'], []) }}
+                        {{ tryTrans([admin_trans_key ~ 'close.label', 'admin.action.close.label'], [], 'Close') }}
                     {% else %}
-                        {{ tryTrans([admin_trans_key ~ 'back.label', 'admin.action.back.label'], []) }}
+                        {{ tryTrans([admin_trans_key ~ 'back.label', 'admin.action.back.label'], [], 'Back') }}
                     {% endif %}
                 </a>
                 {% block submit_button %}
                     <button type="submit" class="btn btn-primary">
-                        {{ tryTrans([admin_trans_key ~ 'submit.label', 'admin.action.submit.label'], []) }}
+                        {{ tryTrans([admin_trans_key ~ 'submit.label', 'admin.action.submit.label'], [], 'Submit') }}
                     </button>
                 {% endblock %}
             </div>

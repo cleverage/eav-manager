@@ -2,7 +2,7 @@
 
 namespace CleverAge\EAVManager\ImportBundle\Import;
 
-use CleverAge\EAVManager\AssetBundle\Controller\BlueimpController;
+use Sidus\FileUploadBundle\Controller\BlueimpController;
 use CleverAge\EAVManager\ImportBundle\Configuration\DirectoryConfigurationHandler;
 use CleverAge\EAVManager\ImportBundle\DataTransfer\ImportContext;
 use CleverAge\EAVManager\ImportBundle\Exception\NonUniqueReferenceException;
@@ -27,6 +27,7 @@ use Sidus\FileUploadBundle\Entity\Resource as SidusResource;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\HttpFoundation\File\File as HttpFile;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -362,6 +363,7 @@ class EAVDataImporter
     {
         $baseDirectory = $this->directoryConfigurationHandler->getBaseDirectory();
         $finder = new Finder();
+        /** @var SplFileInfo[] $files */
         $files = $finder->in($baseDirectory)->name('current_import*.json')->files();
 
         $imports = [];
@@ -385,6 +387,7 @@ class EAVDataImporter
     {
         $archiveDirectory = $this->directoryConfigurationHandler->getArchiveDirectory();
         $finder = new Finder();
+        /** @var SplFileInfo[] $files */
         $files = $finder->in($archiveDirectory)->sortByModifiedTime()->name('*.json')->files();
 
         $imports = [];

@@ -3,11 +3,11 @@
 namespace CleverAge\EAVManager\AdminBundle\Controller;
 
 use CleverAge\EAVManager\UserBundle\Entity\User;
-use FOS\UserBundle\Model\UserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Security("is_granted('ROLE_USER_MANAGER')")
@@ -19,6 +19,7 @@ class UserController extends GenericAdminController
      * @Template()
      * @param Request $request
      * @param User    $user
+     *
      * @return Response
      * @throws \Exception
      */
@@ -27,12 +28,9 @@ class UserController extends GenericAdminController
         $form = $this->createFormBuilder(null, $this->getDefaultFormOptions($request, $user->getId()))->getForm();
 
         $form->handleRequest($request);
-        if ($form->isValid()) {
-            $password = $this->generatePassword();
-            $user->setPlainPassword($password);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->get('eavmanager_user.user.manager')->requestNewPassword($user);
             $this->saveEntity($user);
-
-            $this->get('eavmanager_user.mailer')->sendAdminResetPasswordEmailMessage($user, $password);
 
             if ($request->isXmlHttpRequest()) {
                 return [
@@ -46,13 +44,16 @@ class UserController extends GenericAdminController
             return $this->redirectToAdmin($this->admin, 'list');
         }
 
-        return $this->renderAction($this->getViewParameters($request, $form, $user) + [
-            'dataId' => $user->getId(),
-        ]);
+        return $this->renderAction(
+            $this->getViewParameters($request, $form, $user) + [
+                'dataId' => $user->getId(),
+            ]
+        );
     }
 
     /**
      * @param int $count
+     *
      * @return string
      */
     protected function generatePassword($count = 10)
@@ -71,6 +72,7 @@ class UserController extends GenericAdminController
 
     /**
      * @param User $user
+     *
      * @throws \Exception
      */
     protected function saveEntity($user)
@@ -81,14 +83,7 @@ class UserController extends GenericAdminController
             return;
         }
 
-        if (!$user->getId() && $user->isEnabled()) {
-            $password = $this->generatePassword();
-            $user->setPlainPassword($password);
-            $this->get('fos_user.user_manager')->updateUser($user);
-            $this->get('eavmanager_user.mailer')->sendAdminResetPasswordEmailMessage($user, $password);
-        } else {
-            $this->get('fos_user.user_manager')->updateUser($user);
-        }
+        $this->get('eavmanager_user.user.manager')->save($user);
 
         $action = $this->admin->getCurrentAction();
         $this->addFlash('success', "eavmanager.flash.{$action->getCode()}.success");

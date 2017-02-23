@@ -1,10 +1,22 @@
-FOS\UserBundle\Model\User:
+CleverAge\EAVManager\UserBundle\Entity\User:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: 
+             fields: username
+             errorPath: username
+             message: admin.user.form.username.already_used
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
              fields: email
-             errorPath: email 
+             errorPath: email
              message: admin.user.form.email.already_used
     properties:
+        username:
+            - NotBlank:
+                message: admin.user.form.username.blank
+            - Length:
+                min: 2
+                minMessage: admin.user.form.username.short
+                max: 255
+                maxMessage: admin.user.form.username.long
         email:
             - NotBlank:
                 message: admin.user.form.email.blank
@@ -18,14 +30,13 @@ FOS\UserBundle\Model\User:
         plainPassword:
             - NotBlank:
                 message: admin.user.form.password.blank
-                groups: [ "Registration", "ResetPassword", "ChangePassword" ]
-            - Regex:
-                pattern: "/^((?=.*\d+)(?=.*[a-zA-Z]).{8,})$/"
-                match: true
-                message: admin.user.form.password.pattern
-                groups: [ "Registration", "ResetPassword", "ChangePassword"]
+                groups: [ 'Registration', 'ResetPassword', 'ChangePassword' ]
+            - Length:
+                min: 6
+                minMessage: admin.user.form.password.short
+                groups: [ 'Registration', 'ResetPassword', 'ChangePassword']
 
-FOS\UserBundle\Model\Group:
+CleverAge\EAVManager\UserBundle\Entity\Group:
     properties:
         name:
             - NotBlank:

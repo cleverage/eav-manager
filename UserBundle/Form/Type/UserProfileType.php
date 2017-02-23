@@ -3,9 +3,13 @@
 namespace CleverAge\EAVManager\UserBundle\Form\Type;
 
 use Mopa\Bundle\BootstrapBundle\Form\Type\TabType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 
+/**
+ * User profile
+ */
 class UserProfileType extends UserType
 {
     /**
@@ -18,20 +22,28 @@ class UserProfileType extends UserType
     {
         parent::buildForm($builder, $options);
 
-        $builder->add('__tab_password', TabType::class, [
-            'label' => 'admin.user.tab.password.label',
-            'inherit_data' => true,
-        ]);
+        $builder->add(
+            '__tab_password',
+            TabType::class,
+            [
+                'label' => 'admin.user.tab.password.label',
+                'inherit_data' => true,
+            ]
+        );
         $builder->get('__tab_password')
-            ->add('plain_password', RepeatedType::class, [
-                'type' => 'password',
-                'first_options' => array('label' => 'admin.user.form.password.label'),
-                'second_options' => array('label' => 'admin.user.form.repeat_password.label'),
-            ]);
+            ->add(
+                'plainPassword',
+                RepeatedType::class,
+                [
+                    'type' => PasswordType::class,
+                    'first_options' => ['label' => 'admin.user.form.password.label'],
+                    'second_options' => ['label' => 'admin.user.form.repeat_password.label'],
+                ]
+            );
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getBlockPrefix()
     {

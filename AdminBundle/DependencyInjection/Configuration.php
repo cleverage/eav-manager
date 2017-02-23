@@ -32,11 +32,11 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->arrayNode('wysiwyg')
-                    ->defaultValue([])
-                    ->useAttributeAsKey('code')
-                    ->prototype('variable')->end()
-                ->end()
+            ->arrayNode('wysiwyg')
+            ->defaultValue([])
+            ->useAttributeAsKey('code')
+            ->prototype('variable')->end()
+            ->end()
             ->end();
 
         return $treeBuilder;

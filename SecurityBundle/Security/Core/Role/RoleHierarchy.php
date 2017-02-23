@@ -6,6 +6,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\Role\RoleHierarchy as BaseRoleHierarchy;
 use Doctrine\Common\Collections\Collection;
 
+/**
+ * Used to work with roles
+ */
 class RoleHierarchy extends BaseRoleHierarchy
 {
     /** @var LeafRole[]|Collection */
@@ -25,6 +28,7 @@ class RoleHierarchy extends BaseRoleHierarchy
             if (!isset($flatRoles[$rootRole])) {
                 $flatRoles[$rootRole] = new LeafRole($rootRole);
             }
+            /** @var array $roles */
             foreach ($roles as $leafRole) {
                 if (!isset($flatRoles[$leafRole])) {
                     $flatRoles[$leafRole] = new LeafRole($leafRole);

@@ -4,11 +4,9 @@ namespace CleverAge\EAVManager\AdminBundle\Controller;
 
 use CleverAge\EAVManager\Component\Controller\DataControllerTrait;
 use Elastica\Query;
-use FOS\ElasticaBundle\Finder\TransformedFinder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sidus\AdminBundle\Admin\Action;
 use Sidus\EAVDataGridBundle\Model\DataGrid;
-use Sidus\EAVFilterBundle\Configuration\EAVElasticaFilterConfigurationHandler;
 use Sidus\EAVModelBundle\Entity\DataInterface;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
 use Symfony\Component\Form\Form;
@@ -36,6 +34,7 @@ class DataController extends AbstractAdminController
      * @Security("is_granted('list', family) or is_granted('ROLE_DATA_ADMIN')")
      * @param FamilyInterface $family
      * @param Request         $request
+     *
      * @return array
      * @throws \Exception
      */
@@ -44,37 +43,32 @@ class DataController extends AbstractAdminController
         $this->family = $family;
         $dataGrid = $this->getDataGrid();
         if ($dataGrid->hasAction('create')) {
-            $dataGrid->setActionParameters('create', [
-                'familyCode' => $family->getCode(),
-            ]);
-        }
-        $filterConfig = $dataGrid->getFilterConfig();
-
-        if ($this->isElasticaEnabled() && $this->admin->getOption('elastica_finder') && $this->isElasticaUp()) {
-            $finderReference = ltrim($this->admin->getOption('elastica_finder'), '@');
-            /** @var TransformedFinder $finder */
-            $finder = $this->container->get($finderReference);
-            if ($filterConfig instanceof EAVElasticaFilterConfigurationHandler) {
-                $filterConfig->setFinder($finder);
-                $filterConfig->getESQuery(); // trigger usage of elastic search
-            }
+            $dataGrid->setActionParameters(
+                'create',
+                [
+                    'familyCode' => $family->getCode(),
+                ]
+            );
         }
 
         $this->bindDataGridRequest($dataGrid, $request);
 
-        return $this->renderAction([
-            'datagrid' => $dataGrid,
-            'isAjax' => $request->isXmlHttpRequest(),
-            'family' => $family,
-            'target' => $this->getTarget($request),
-            'baseTemplate' => $this->admin->getBaseTemplate(),
-        ]);
+        return $this->renderAction(
+            [
+                'datagrid' => $dataGrid,
+                'isAjax' => $request->isXmlHttpRequest(),
+                'family' => $family,
+                'target' => $this->getTarget($request),
+                'baseTemplate' => $this->admin->getBaseTemplate(),
+            ]
+        );
     }
 
     /**
      * @Security("is_granted('create', family) or is_granted('ROLE_DATA_ADMIN')")
      * @param FamilyInterface $family
      * @param Request         $request
+     *
      * @return Response
      * @throws \Exception
      */
@@ -90,6 +84,7 @@ class DataController extends AbstractAdminController
      * @param FamilyInterface $family
      * @param DataInterface   $data
      * @param Request         $request
+     *
      * @return array|RedirectResponse
      * @throws \Exception
      */
@@ -105,7 +100,7 @@ class DataController extends AbstractAdminController
         $form = $this->getForm($request, $data, $options);
 
         $form->handleRequest($request);
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->saveEntity($data);
 
             $parameters = [
@@ -126,6 +121,7 @@ class DataController extends AbstractAdminController
      * @param FamilyInterface $family
      * @param DataInterface   $data
      * @param Request         $request
+     *
      * @return array|RedirectResponse
      * @throws \Exception
      */
@@ -138,28 +134,36 @@ class DataController extends AbstractAdminController
         $dataId = $data->getId();
 
         $form->handleRequest($request);
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->deleteEntity($data);
 
             if ($request->isXmlHttpRequest()) {
-                return $this->renderAction([
-                    'family' => $family,
-                    'dataId' => $dataId,
-                    'isAjax' => 1,
-                    'target' => $request->get('target'),
-                    'success' => 1,
-                    'dataGridCode' => $this->getDataGridConfigCode(),
-                ]);
+                return $this->renderAction(
+                    [
+                        'family' => $family,
+                        'dataId' => $dataId,
+                        'isAjax' => 1,
+                        'target' => $request->get('target'),
+                        'success' => 1,
+                        'dataGridCode' => $this->getDataGridConfigCode(),
+                    ]
+                );
             }
 
-            return $this->redirectToAdmin($this->admin, 'list', [
-                'familyCode' => $family->getCode(),
-            ]);
+            return $this->redirectToAdmin(
+                $this->admin,
+                'list',
+                [
+                    'familyCode' => $family->getCode(),
+                ]
+            );
         }
 
-        return $this->renderAction($this->getViewParameters($request, $form, $data) + [
-            'dataId' => $dataId,
-        ]);
+        return $this->renderAction(
+            $this->getViewParameters($request, $form, $data) + [
+                'dataId' => $dataId,
+            ]
+        );
     }
 
     /**
@@ -191,7 +195,7 @@ class DataController extends AbstractAdminController
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getDataGrid()
     {
@@ -207,6 +211,7 @@ class DataController extends AbstractAdminController
      * @param Request     $request
      * @param string      $dataId
      * @param Action|null $action
+     *
      * @return array
      * @throws \InvalidArgumentException
      */
@@ -216,11 +221,15 @@ class DataController extends AbstractAdminController
             $action = $this->admin->getCurrentAction();
         }
         $formOptions = parent::getDefaultFormOptions($request, $dataId, $action);
-        $formOptions['label'] = $this->tryTranslate([
-            "admin.family.{$this->family->getCode()}.{$action->getCode()}.title",
-            "admin.{$this->admin->getCode()}.{$action->getCode()}.title",
-            "admin.action.{$action->getCode()}.title",
-        ], [], ucfirst($action->getCode()));
+        $formOptions['label'] = $this->tryTranslate(
+            [
+                "admin.family.{$this->family->getCode()}.{$action->getCode()}.title",
+                "admin.{$this->admin->getCode()}.{$action->getCode()}.title",
+                "admin.action.{$action->getCode()}.title",
+            ],
+            [],
+            ucfirst($action->getCode())
+        );
 
         return $formOptions;
     }
@@ -229,6 +238,7 @@ class DataController extends AbstractAdminController
      * @param Request       $request
      * @param Form          $form
      * @param DataInterface $data
+     *
      * @return array
      * @throws \Exception
      */
@@ -243,7 +253,7 @@ class DataController extends AbstractAdminController
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getAdminListPath($data = null, array $parameters = [])
     {

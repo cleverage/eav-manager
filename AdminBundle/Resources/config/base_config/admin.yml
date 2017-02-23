@@ -65,7 +65,7 @@ sidus_admin:
                     path:     /{id}/delete
 
         variant:
-            controller: 'CleverAgeEAVManagerAdminBundle:Variant'
+            controller: CleverAgeEAVManagerAdminBundle:Variant
             entity: '%sidus_data_class%'
             prefix: /variant
             default_form_type: Sidus\EAVVariantBundle\Form\Type\VariantType

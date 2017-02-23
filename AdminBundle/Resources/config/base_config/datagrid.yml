@@ -16,7 +16,7 @@ sidus_data_grid:
                     username: ~
             columns:
                 id:
-                    label: "#"
+                    label: '#'
                 username: ~
                 email: ~
                 lastName:
@@ -26,10 +26,10 @@ sidus_data_grid:
                 roles: ~
                 createdAt: ~
                 actions:
-                    template: "CleverAgeEAVManagerAdminBundle:User:list.row.actions.html.twig"
+                    template: CleverAgeEAVManagerAdminBundle:User:list.row.actions.html.twig
             actions:
                 create:
-                    form_type: 'CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink'
+                    form_type: CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink
                     label: admin.action.create.label
                     action: create
                     icon: plus
@@ -52,15 +52,15 @@ sidus_data_grid:
                     name: ~
             columns:
                 id:
-                    label: "#"
+                    label: '#'
                 name: ~
                 roles: ~
                 createdAt: ~
                 actions:
-                    template: "CleverAgeEAVManagerAdminBundle:Base:list.row.actions.html.twig"
+                    template: CleverAgeEAVManagerAdminBundle:Base:list.row.actions.html.twig
             actions:
                 create:
-                    form_type: 'CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink'
+                    form_type: CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink
                     label: admin.action.create.label
                     action: create
                     icon: plus

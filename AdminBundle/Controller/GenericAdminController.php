@@ -2,15 +2,18 @@
 
 namespace CleverAge\EAVManager\AdminBundle\Controller;
 
-
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Generic admin controller for non-EAV data
+ */
 class GenericAdminController extends AbstractAdminController
 {
     /**
      * @param Request $request
+     *
      * @return array
      * @throws \Exception
      */
@@ -20,16 +23,19 @@ class GenericAdminController extends AbstractAdminController
 
         $this->bindDataGridRequest($dataGrid, $request);
 
-        return $this->renderAction([
-            'datagrid' => $dataGrid,
-            'isAjax' => $request->isXmlHttpRequest(),
-            'target' => $this->getTarget($request),
-            'baseTemplate' => $this->admin->getBaseTemplate(),
-        ]);
+        return $this->renderAction(
+            [
+                'datagrid' => $dataGrid,
+                'isAjax' => $request->isXmlHttpRequest(),
+                'target' => $this->getTarget($request),
+                'baseTemplate' => $this->admin->getBaseTemplate(),
+            ]
+        );
     }
 
     /**
      * @param Request $request
+     *
      * @return Response
      * @throws \Exception
      */
@@ -44,6 +50,7 @@ class GenericAdminController extends AbstractAdminController
     /**
      * @param Request $request
      * @param mixed   $data
+     *
      * @return array|RedirectResponse
      * @throws \Exception
      */
@@ -55,7 +62,7 @@ class GenericAdminController extends AbstractAdminController
         $form = $this->getForm($request, $data);
 
         $form->handleRequest($request);
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->saveEntity($data);
             $parameters = [
                 'success' => 1,
@@ -72,6 +79,7 @@ class GenericAdminController extends AbstractAdminController
 
     /**
      * @param Request $request
+     *
      * @return array|RedirectResponse
      * @throws \Exception
      */
@@ -83,22 +91,26 @@ class GenericAdminController extends AbstractAdminController
         $dataId = $data->getId();
 
         $form->handleRequest($request);
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->deleteEntity($data);
             if ($request->isXmlHttpRequest()) {
-                return $this->renderAction([
-                    'dataId' => $dataId,
-                    'isAjax' => 1,
-                    'target' => $request->get('target'),
-                    'success' => 1,
-                ]);
+                return $this->renderAction(
+                    [
+                        'dataId' => $dataId,
+                        'isAjax' => 1,
+                        'target' => $request->get('target'),
+                        'success' => 1,
+                    ]
+                );
             }
 
             return $this->redirectToAdmin($this->admin, 'list');
         }
 
-        return $this->renderAction($this->getViewParameters($request, $form, $data) + [
-            'dataId' => $dataId,
-        ]);
+        return $this->renderAction(
+            $this->getViewParameters($request, $form, $data) + [
+                'dataId' => $dataId,
+            ]
+        );
     }
 }

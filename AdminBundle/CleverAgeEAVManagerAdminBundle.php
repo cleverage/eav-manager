@@ -5,6 +5,9 @@ namespace CleverAge\EAVManager\AdminBundle;
 use CleverAge\EAVManager\AdminBundle\DependencyInjection\CleverAgeEAVManagerAdminExtension;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
+/**
+ * @package CleverAge\EAVManager\AdminBundle
+ */
 class CleverAgeEAVManagerAdminBundle extends Bundle
 {
     /**

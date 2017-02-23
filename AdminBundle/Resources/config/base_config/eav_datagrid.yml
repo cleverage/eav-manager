@@ -10,16 +10,16 @@ sidus_eav_data_grid:
                 fields: []
             columns:
                 id:
-                    label: "#"
+                    label: '#'
                 label:
-                    template: "CleverAgeEAVManagerAdminBundle:Base:clickable.column.html.twig"
+                    template: CleverAgeEAVManagerAdminBundle:Base:clickable.column.html.twig
                 createdAt: ~
                 updatedAt: ~
                 actions:
-                    template: "CleverAgeEAVManagerAdminBundle:Data:list.row.actions.html.twig"
+                    template: CleverAgeEAVManagerAdminBundle:Data:list.row.actions.html.twig
             actions:
                 create:
-                    form_type: 'CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink'
+                    form_type: CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink
                     label: admin.action.create.label
                     action: create
                     icon: plus
@@ -46,14 +46,14 @@ sidus_eav_data_grid:
                         type: choice
             columns:
                 id:
-                    label: "#"
+                    label: '#'
                 title:
-                    template: "CleverAgeEAVManagerAdminBundle:Base:clickable.column.html.twig"
+                    template: CleverAgeEAVManagerAdminBundle:Base:clickable.column.html.twig
                 fileSize: ~
                 mimeType: ~
                 fileName: ~
                 actions:
-                    template: "CleverAgeEAVManagerAdminBundle:Data:list.row.actions.html.twig"
+                    template: CleverAgeEAVManagerAdminBundle:Data:list.row.actions.html.twig
 
         image:
             family: Image
@@ -71,17 +71,17 @@ sidus_eav_data_grid:
                         type: choice
             columns:
                 id:
-                    label: "#"
+                    label: '#'
                 imageFile:
-                    template: "CleverAgeEAVManagerAdminBundle:Asset:browse.thumbnail.html.twig"
+                    template: CleverAgeEAVManagerAdminBundle:Asset:browse.thumbnail.html.twig
                 title:
-                    template: "CleverAgeEAVManagerAdminBundle:Base:clickable.column.html.twig"
+                    template: CleverAgeEAVManagerAdminBundle:Base:clickable.column.html.twig
                 tags: ~
                 mimeType: ~
                 filename:
                     property_path: imageFile.originalFilename
                 actions:
-                    template: "CleverAgeEAVManagerAdminBundle:Data:list.row.actions.html.twig"
+                    template: CleverAgeEAVManagerAdminBundle:Data:list.row.actions.html.twig
 
         image_browser:
             family: Image
@@ -95,16 +95,16 @@ sidus_eav_data_grid:
                     tags: ~
             columns:
                 id:
-                    label: "#"
+                    label: '#'
                 imageFile:
-                    template: "CleverAgeEAVManagerAdminBundle:Asset:browse.thumbnail.html.twig"
+                    template: CleverAgeEAVManagerAdminBundle:Asset:browse.thumbnail.html.twig
                 title:
-                    template: "CleverAgeEAVManagerAdminBundle:Asset:browse.row.label.html.twig"
+                    template: CleverAgeEAVManagerAdminBundle:Asset:browse.row.label.html.twig
                 actions:
-                    template: "CleverAgeEAVManagerAdminBundle:Asset:browse.row.actions.html.twig"
+                    template: CleverAgeEAVManagerAdminBundle:Asset:browse.row.actions.html.twig
             actions:
                 create:
-                    form_type: 'CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink'
+                    form_type: CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink
                     label: admin.action.create.label
                     action: createModal
                     icon: plus
@@ -112,7 +112,7 @@ sidus_eav_data_grid:
                         class: btn-primary
                         data-target: tg_modal
                 browseThumbnail:
-                    form_type: 'CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink'
+                    form_type: CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink
                     label: admin.action.browseThumbnail.label
                     action: browseThumbnail
                     icon: th
@@ -134,7 +134,7 @@ sidus_eav_data_grid:
             columns: {}
             actions:
                 create:
-                    form_type: 'CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink'
+                    form_type: CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink
                     label: admin.action.create.label
                     action: createModal
                     icon: plus
@@ -142,7 +142,7 @@ sidus_eav_data_grid:
                         class: btn-primary
                         data-target: tg_modal
                 browse:
-                    form_type: 'CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink'
+                    form_type: CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink
                     label: admin.action.browse.label
                     action: browse
                     icon: list

@@ -10,6 +10,9 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Import EAV fixtures
+ */
 class ImportYmlFixturesCommand extends ContainerAwareCommand
 {
     protected function configure()
@@ -23,6 +26,7 @@ class ImportYmlFixturesCommand extends ContainerAwareCommand
     /**
      * @param InputInterface  $input
      * @param OutputInterface $output
+     *
      * @return null|int null or 0 if everything went fine, or an error code
      * @throws \Exception
      */

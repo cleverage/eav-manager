@@ -16,7 +16,7 @@ use Sidus\AdminBundle\Routing\AdminRouter;
 use Symfony\Component\Form\Form;
 
 /**
- * {@inheritDoc}
+ * {@inheritdoc}
  */
 abstract class AbstractAdminController extends BaseAdminController
 {
@@ -28,6 +28,7 @@ abstract class AbstractAdminController extends BaseAdminController
 
     /**
      * @param ContainerInterface|null $container
+     *
      * @throws ServiceCircularReferenceException
      * @throws ServiceNotFoundException
      */
@@ -39,6 +40,7 @@ abstract class AbstractAdminController extends BaseAdminController
 
     /**
      * @param Request $request
+     *
      * @return string
      */
     protected function getTarget(Request $request)
@@ -54,6 +56,7 @@ abstract class AbstractAdminController extends BaseAdminController
      * @param Request $request
      * @param Form    $form
      * @param mixed   $data
+     *
      * @return array
      * @throws \Exception
      */
@@ -74,6 +77,7 @@ abstract class AbstractAdminController extends BaseAdminController
     /**
      * @param mixed $data
      * @param array $parameters
+     *
      * @return string
      * @throws \Exception
      */
@@ -86,7 +90,7 @@ abstract class AbstractAdminController extends BaseAdminController
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function bindDataGridRequest(DataGrid $dataGrid, Request $request, array $formOptions = [])
     {
@@ -103,7 +107,7 @@ abstract class AbstractAdminController extends BaseAdminController
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getDefaultFormOptions(Request $request, $dataId, Action $action = null)
     {
@@ -116,10 +120,14 @@ abstract class AbstractAdminController extends BaseAdminController
         if ($request->isXmlHttpRequest()) { // Target should not be used when not calling through Ajax
             $formOptions['attr']['data-target'] = $this->getTarget($request);
         }
-        $formOptions['label'] = $this->tryTranslate([
-            "admin.{$this->admin->getCode()}.{$action->getCode()}.title",
-            "admin.action.{$action->getCode()}.title",
-        ], [], ucfirst($action->getCode()));
+        $formOptions['label'] = $this->tryTranslate(
+            [
+                "admin.{$this->admin->getCode()}.{$action->getCode()}.title",
+                "admin.action.{$action->getCode()}.title",
+            ],
+            [],
+            ucfirst($action->getCode())
+        );
 
         return $formOptions;
     }

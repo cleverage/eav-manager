@@ -14,38 +14,51 @@ class EAVKernelBundleLoader
      */
     public static function getBundles()
     {
+        // Dependencies
         return [
-            // Dependencies
-            new \Mopa\Bundle\BootstrapBundle\MopaBootstrapBundle(), // Required by SidusEAVBootstrapBundle
-            new \WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(), // Required by SidusFilterBundle
-            new \Samson\Bundle\UnexpectedResponseBundle\SamsonUnexpectedResponseBundle(), // Required by SamsonAutocompleteBundle
-            new \Samson\Bundle\AutocompleteBundle\SamsonAutocompleteBundle(), // Required by SidusEAVBootstrapBundle
-            new \Pinano\Select2Bundle\PinanoSelect2Bundle(), // Required by SidusEAVBootstrapBundle
-            new \Oneup\UploaderBundle\OneupUploaderBundle(), // Required by SidusFileUploadBundle
-            new \Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(), // Required by SidusFileUploadBundle
-            new \JMS\SerializerBundle\JMSSerializerBundle(), // Required by (at least) SidusPublishingBundle
-            new \Circle\RestClientBundle\CircleRestClientBundle(), // Required by SidusPublishingBundle
+            // Required by SidusEAVBootstrapBundle
+            new \Mopa\Bundle\BootstrapBundle\MopaBootstrapBundle(),
+            // Required by SidusFilterBundle
+            new \WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
+            // Required by SidusEAVBootstrapBundle
+            new \Pinano\Select2Bundle\PinanoSelect2Bundle(),
+            // Required by SidusFileUploadBundle
+            new \Oneup\UploaderBundle\OneupUploaderBundle(),
+            // Required by SidusFileUploadBundle
+            new \Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
+            // Required by SidusPublishingBundle
+            new \Circle\RestClientBundle\CircleRestClientBundle(),
 
             // Sidus bundles
-            new \Sidus\EAVModelBundle\SidusEAVModelBundle(), //  Base bundle for EAV model
-            new \Sidus\FilterBundle\SidusFilterBundle(), // Data filtering based on user input
-            new \Sidus\EAVFilterBundle\SidusEAVFilterBundle(), // Data filtering with EAV support
-            new \Sidus\EAVBootstrapBundle\SidusEAVBootstrapBundle(), // Bootstrap integration + additionnal EAV components
-            new \Sidus\DataGridBundle\SidusDataGridBundle(), // Datagrid made easy
-            new \Sidus\EAVDataGridBundle\SidusEAVDataGridBundle(), // EAV support for datagrids
-            new \Sidus\EAVVariantBundle\SidusEAVVariantBundle(), // Handle variants of EAV entities with axles validation
-            new \Sidus\PublishingBundle\SidusPublishingBundle(), // Collect entities, serialize and push them on configured remote servers
-            new \Sidus\FileUploadBundle\SidusFileUploadBundle(), // Easily attach file to doctrine's entities
-            new \Sidus\AdminBundle\SidusAdminBundle(), // Very basic admin configuration in YML to regroup entities and route actions easily
+            //  Base bundle for EAV model
+            new \Sidus\EAVModelBundle\SidusEAVModelBundle(),
+            // Data filtering based on user input
+            new \Sidus\FilterBundle\SidusFilterBundle(),
+            // Data filtering with EAV support
+            new \Sidus\EAVFilterBundle\SidusEAVFilterBundle(),
+            // Bootstrap integration + additionnal EAV components
+            new \Sidus\EAVBootstrapBundle\SidusEAVBootstrapBundle(),
+            // Datagrid made easy
+            new \Sidus\DataGridBundle\SidusDataGridBundle(),
+            // EAV support for datagrids
+            new \Sidus\EAVDataGridBundle\SidusEAVDataGridBundle(),
+            // Handle variants of EAV entities with axles validation
+            new \Sidus\EAVVariantBundle\SidusEAVVariantBundle(),
+            // Collect entities, serialize and push them on configured remote servers
+            new \Sidus\PublishingBundle\SidusPublishingBundle(),
+            // Easily attach file to doctrine's entities
+            new \Sidus\FileUploadBundle\SidusFileUploadBundle(),
+            // Very basic admin configuration in YML to regroup entities and route actions easily
+            new \Sidus\AdminBundle\SidusAdminBundle(),
 
             // Additionnal Bundles
-            new \FOS\UserBundle\FOSUserBundle(), // User management
-            new \Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle(), // TinyMCE WYSIWYG integration
-            new \Liip\ImagineBundle\LiipImagineBundle(), // Automatic image resizing
-            new \Exercise\HTMLPurifierBundle\ExerciseHTMLPurifierBundle(), // Clean HTML input (or during import)
-            new \FOS\JsRoutingBundle\FOSJsRoutingBundle(), // Sf2 routing in JS
+            // TinyMCE WYSIWYG integration
+            new \Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle(),
+            // Automatic image resizing
+            new \Liip\ImagineBundle\LiipImagineBundle(),
+            // Clean HTML input (or during import)
+            new \Exercise\HTMLPurifierBundle\ExerciseHTMLPurifierBundle(),
             new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
-            new \FOS\ElasticaBundle\FOSElasticaBundle(),
 
             // CleverAge EAVManager
             new \CleverAge\EAVManager\EAVModelBundle\CleverAgeEAVManagerEAVModelBundle(),

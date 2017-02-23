@@ -3,17 +3,15 @@
 namespace CleverAge\EAVManager\AdminBundle\Controller;
 
 use CleverAge\EAVManager\Component\Controller\DataControllerTrait;
-use CleverAge\EAVManager\EAVModelBundle\Entity\Data;
+use CleverAge\EAVManager\EAVModelBundle\Entity\AbstractData;
 use Doctrine\ORM\EntityManager;
 use Elastica\Query;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sidus\AdminBundle\Routing\AdminRouter;
 use Sidus\EAVModelBundle\Entity\DataInterface;
 use Sidus\EAVModelBundle\Model\AttributeInterface;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
-use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,20 +27,26 @@ class VariantController extends AbstractAdminController
     /**
      * @param AttributeInterface $attribute
      * @param DataInterface      $parentData
-     * @ParamConverter("parentData", class="CleverAge\EAVManager\EAVModelBundle\Entity\Data", options={"id" = "parentId"})
+     * @ParamConverter("parentData", class="CleverAge\EAVManager\EAVModelBundle\Entity\Data", options={"id" =
+     *                               "parentId"})
      * @param Request            $request
+     *
      * @return Response
      * @throws \Exception
      */
     public function selectAction(AttributeInterface $attribute, DataInterface $parentData, Request $request)
     {
-        $form = $this->getForm($request, null, [
-            'attribute' => $attribute,
-            'parent_data' => $parentData,
-        ]);
+        $form = $this->getForm(
+            $request,
+            null,
+            [
+                'attribute' => $attribute,
+                'parent_data' => $parentData,
+            ]
+        );
 
         $form->handleRequest($request);
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             /** @var FamilyInterface $family */
             $family = $form->get('family')->getData();
             $parameters = [
@@ -66,9 +70,11 @@ class VariantController extends AbstractAdminController
     /**
      * @param AttributeInterface $attribute
      * @param DataInterface      $parentData
-     * @ParamConverter("parentData", class="CleverAge\EAVManager\EAVModelBundle\Entity\Data", options={"id" = "parentId"})
+     * @ParamConverter("parentData", class="CleverAge\EAVManager\EAVModelBundle\Entity\Data", options={"id" =
+     *                               "parentId"})
      * @param FamilyInterface    $family
      * @param Request            $request
+     *
      * @return Response
      * @throws \Exception
      */
@@ -94,6 +100,7 @@ class VariantController extends AbstractAdminController
      * @param FamilyInterface    $family
      * @param DataInterface      $data
      * @param Request            $request
+     *
      * @return array
      * @throws \Exception
      */
@@ -109,14 +116,18 @@ class VariantController extends AbstractAdminController
         if ($data->getFamilyCode() !== $family->getCode()) {
             throw new UnexpectedValueException("Data's family does not match admin family");
         }
-        $form = $this->getForm($request, $data, [
-            'parent_data' => $parentData,
-            'attribute' => $attribute,
-            'family' => $family,
-        ]);
+        $form = $this->getForm(
+            $request,
+            $data,
+            [
+                'parent_data' => $parentData,
+                'attribute' => $attribute,
+                'family' => $family,
+            ]
+        );
 
         $form->handleRequest($request);
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $data->setParent($parentData);
             $this->saveEntity($data);
             $this->attachVariant($data, $attribute, $parentData);
@@ -143,6 +154,7 @@ class VariantController extends AbstractAdminController
      * @param FamilyInterface    $family
      * @param DataInterface      $data
      * @param Request            $request
+     *
      * @return array|RedirectResponse
      * @throws \Exception
      */
@@ -164,15 +176,17 @@ class VariantController extends AbstractAdminController
         $dataId = $data->getId();
 
         $form->handleRequest($request);
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->deleteEntity($data);
 
             return $this->redirectToEntity($parentData, 'edit');
         }
 
-        return $this->renderAction($this->getViewParameters($request, $form, $data) + [
-            'dataId' => $dataId,
-        ]);
+        return $this->renderAction(
+            $this->getViewParameters($request, $form, $data) + [
+                'dataId' => $dataId,
+            ]
+        );
     }
 
     /**
@@ -181,6 +195,7 @@ class VariantController extends AbstractAdminController
      * @param DataInterface      $data
      * @param AttributeInterface $attribute
      * @param DataInterface      $parentData
+     *
      * @throws \Exception
      */
     protected function attachVariant(DataInterface $data, AttributeInterface $attribute, DataInterface $parentData)
@@ -188,7 +203,7 @@ class VariantController extends AbstractAdminController
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
 
-        if ($parentData instanceof Data) {
+        if ($parentData instanceof AbstractData) {
             $parentData->setUpdatedAt(new \DateTime()); // Force update
             $em->flush($parentData);
         }
@@ -208,17 +223,20 @@ class VariantController extends AbstractAdminController
     /**
      * @param DataInterface      $parentData
      * @param AttributeInterface $attribute
+     *
      * @throws UnexpectedValueException
      */
     protected function checkAttributeFamily(DataInterface $parentData, AttributeInterface $attribute)
     {
         if (!$parentData->getFamily()->hasAttribute($attribute->getCode())) {
-            throw new UnexpectedValueException("Attribute {$attribute->getCode()} does not belong to parent data's family {$parentData->getFamilyCode()}");
+            throw new UnexpectedValueException(
+                "Attribute {$attribute->getCode()} does not belong to parent data's family {$parentData->getFamilyCode()}"
+            );
         }
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getAdminListPath($data = null, array $parameters = [])
     {
@@ -232,6 +250,7 @@ class VariantController extends AbstractAdminController
     /**
      * @param DataInterface $parentData
      * @param array         $parameters
+     *
      * @return string
      * @throws \Exception
      */

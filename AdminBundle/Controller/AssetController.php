@@ -2,7 +2,6 @@
 
 namespace CleverAge\EAVManager\AdminBundle\Controller;
 
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sidus\AdminBundle\Routing\AdminRouter;
@@ -13,6 +12,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Used to browse assets inside media selectors
+ */
 class AssetController extends DataController
 {
     /** @var bool */
@@ -23,6 +25,7 @@ class AssetController extends DataController
      * @param FamilyInterface $family
      * @param Request         $request
      * @param string          $inputId
+     *
      * @return array
      * @throws \Exception
      */
@@ -49,6 +52,7 @@ class AssetController extends DataController
      * @param FamilyInterface $family
      * @param Request         $request
      * @param string          $inputId
+     *
      * @return array
      * @throws \Exception
      */
@@ -75,6 +79,7 @@ class AssetController extends DataController
      * @param FamilyInterface $family
      * @param Request         $request
      * @param string          $inputId
+     *
      * @return Response
      * @throws \Exception
      */
@@ -93,6 +98,7 @@ class AssetController extends DataController
      * @param DataInterface   $data
      * @param Request         $request
      * @param string          $inputId
+     *
      * @return array|RedirectResponse
      * @throws \Exception
      */
@@ -103,7 +109,7 @@ class AssetController extends DataController
         $form = $this->getForm($request, $data);
 
         $form->handleRequest($request);
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->saveEntity($data);
 
             $parameters = [
@@ -118,9 +124,11 @@ class AssetController extends DataController
             return $this->redirectToAdmin($this->admin->getCode(), 'browse', $parameters);
         }
 
-        return $this->renderAction($this->getViewParameters($request, $form, $data) + [
-            'inputId' => $inputId,
-        ]);
+        return $this->renderAction(
+            $this->getViewParameters($request, $form, $data) + [
+                'inputId' => $inputId,
+            ]
+        );
     }
 
     /**
@@ -140,6 +148,7 @@ class AssetController extends DataController
 
     /**
      * @param string $inputId
+     *
      * @return DataGrid
      * @throws \UnexpectedValueException
      */
@@ -148,29 +157,38 @@ class AssetController extends DataController
         $dataGrid = parent::getDataGrid();
 
         if ($dataGrid->hasAction('create')) {
-            $dataGrid->setActionParameters('create', [
-                'familyCode' => $this->family->getCode(),
-                'inputId' => $inputId,
-            ]);
+            $dataGrid->setActionParameters(
+                'create',
+                [
+                    'familyCode' => $this->family->getCode(),
+                    'inputId' => $inputId,
+                ]
+            );
         }
         if ($dataGrid->hasAction('browseThumbnail')) {
-            $dataGrid->setActionParameters('browseThumbnail', [
-                'familyCode' => $this->family->getCode(),
-                'inputId' => $inputId,
-            ]);
+            $dataGrid->setActionParameters(
+                'browseThumbnail',
+                [
+                    'familyCode' => $this->family->getCode(),
+                    'inputId' => $inputId,
+                ]
+            );
         }
         if ($dataGrid->hasAction('browse')) {
-            $dataGrid->setActionParameters('browse', [
-                'familyCode' => $this->family->getCode(),
-                'inputId' => $inputId,
-            ]);
+            $dataGrid->setActionParameters(
+                'browse',
+                [
+                    'familyCode' => $this->family->getCode(),
+                    'inputId' => $inputId,
+                ]
+            );
         }
 
         return $dataGrid;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getAdminListPath($data = null, array $parameters = [])
     {

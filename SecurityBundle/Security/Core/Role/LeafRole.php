@@ -6,6 +6,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Security\Core\Role\Role;
 
+/**
+ * Used to work with roles and permissions
+ */
 class LeafRole extends Role
 {
     /** @var LeafRole */
@@ -33,6 +36,7 @@ class LeafRole extends Role
 
     /**
      * @param LeafRole $parent
+     *
      * @return LeafRole
      */
     public function setParent(LeafRole $parent = null)
@@ -55,6 +59,7 @@ class LeafRole extends Role
 
     /**
      * @param LeafRole $child
+     *
      * @return LeafRole
      */
     public function addChild(LeafRole $child)
@@ -67,6 +72,7 @@ class LeafRole extends Role
 
     /**
      * @param LeafRole $child
+     *
      * @return LeafRole
      */
     public function removeChild(LeafRole $child)
@@ -79,6 +85,7 @@ class LeafRole extends Role
 
     /**
      * @param Collection|LeafRole[] $children
+     *
      * @return LeafRole
      */
     public function setChildren($children)

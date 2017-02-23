@@ -1,14 +1,6 @@
-parameters:
-    eavmanager_import.eav_data_importer.class: CleverAge\EAVManager\ImportBundle\Import\EAVDataImporter
-    eavmanager_import.import_config.class: CleverAge\EAVManager\ImportBundle\Model\ImportConfig
-    eavmanager.import_configuration.handler.class: CleverAge\EAVManager\ImportBundle\Configuration\ImportConfigurationHandler
-    eavmanager.import.transformer.simple_date.class: Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToStringTransformer
-    eavmanager.import.transformer.multiple.class: CleverAge\EAVManager\ImportBundle\Transformer\MultipleAttributeTransformer
-    eavmanager_import.configuration.directory.handler.class: CleverAge\EAVManager\ImportBundle\Configuration\DirectoryConfigurationHandler
-
 services:
     eavmanager_import.eav_data_importer:
-        class: '%eavmanager_import.eav_data_importer.class%'
+        class: CleverAge\EAVManager\ImportBundle\Import\EAVDataImporter
         arguments:
             - '@sidus_eav_model.family_configuration.handler'
             - '@validator'
@@ -19,21 +11,21 @@ services:
             - '@eavmanager_import.configuration.directory.handler'
 
     eavmanager_import.configuration.directory.handler:
-        class: '%eavmanager_import.configuration.directory.handler.class%'
+        class: CleverAge\EAVManager\ImportBundle\Configuration\DirectoryConfigurationHandler
         arguments:
-            - '%import_dir%'
-            - '%import_downloads_dir%'
+            - ~
+            - ~
 
     eavmanager.import_configuration.handler:
-        class: '%eavmanager.import_configuration.handler.class%'
+        class: CleverAge\EAVManager\ImportBundle\Configuration\ImportConfigurationHandler
 
     eavmanager.import.transformer.simple_date:
-        class: '%eavmanager.import.transformer.simple_date.class%'
+        class: Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToStringTransformer
         arguments: [~, ~, 'Y-m-d']
 
     eavmanager.import.transformer.simple_datetime:
-        class: '%eavmanager.import.transformer.simple_date.class%'
+        class: Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToStringTransformer
         arguments: [~, ~, 'Y-m-d H:i:s']
 
     eavmanager.import.transformer.multiple:
-        class: '%eavmanager.import.transformer.multiple.class%'
+        class: CleverAge\EAVManager\ImportBundle\Transformer\MultipleAttributeTransformer

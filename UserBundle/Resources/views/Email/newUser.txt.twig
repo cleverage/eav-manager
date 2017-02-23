@@ -1,0 +1,7 @@
+{# @var user \CleverAge\EAVManager\UserBundle\Entity\User #}
+{% set resetPath = url('reset_password', {token: user.authenticationToken}) %}
+
+Greetings {{ user }},
+Your account has been created, please click on the following link to create your password:
+
+{{ resetPath }}

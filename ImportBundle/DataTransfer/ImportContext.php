@@ -44,6 +44,7 @@ class ImportContext implements \JsonSerializable
 
     /**
      * @param array $data
+     *
      * @return ImportContext
      */
     public static function unserialize(array $data)
@@ -143,6 +144,7 @@ class ImportContext implements \JsonSerializable
     /**
      * @param string $namespace
      * @param string $reference
+     *
      * @return bool
      */
     public function hasReference($namespace, $reference)
@@ -160,6 +162,7 @@ class ImportContext implements \JsonSerializable
     /**
      * @param string $namespace
      * @param string $reference
+     *
      * @return mixed
      * @throws \UnexpectedValueException
      */
@@ -193,6 +196,7 @@ class ImportContext implements \JsonSerializable
 
     /**
      * @param string $processedFile
+     *
      * @return bool
      */
     public function hasProcessedFile($processedFile)

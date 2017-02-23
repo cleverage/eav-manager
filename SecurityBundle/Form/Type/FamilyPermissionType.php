@@ -10,6 +10,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Exception\AccessException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Edit families permissions
+ */
 class FamilyPermissionType extends AbstractType
 {
     /**
@@ -18,15 +21,23 @@ class FamilyPermissionType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('family', FamilySelectorType::class, [
-            'label' => false,
-            'horizontal_input_wrapper_class' => 'col-sm-3',
-        ]);
+        $builder->add(
+            'family',
+            FamilySelectorType::class,
+            [
+                'label' => false,
+                'horizontal_input_wrapper_class' => 'col-sm-3',
+            ]
+        );
         foreach (FamilyPermission::getPermissions() as $permission) {
-            $builder->add($permission, CheckboxType::class, [
-                'widget_checkbox_label' => 'widget',
-                'horizontal_input_wrapper_class' => 'col-sm-1',
-            ]);
+            $builder->add(
+                $permission,
+                CheckboxType::class,
+                [
+                    'widget_checkbox_label' => 'widget',
+                    'horizontal_input_wrapper_class' => 'col-sm-1',
+                ]
+            );
         }
     }
 
@@ -37,11 +48,13 @@ class FamilyPermissionType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => FamilyPermission::class,
-            'required' => false,
-            'widget_type' => 'inline',
-        ]);
+        $resolver->setDefaults(
+            [
+                'data_class' => FamilyPermission::class,
+                'required' => false,
+                'widget_type' => 'inline',
+            ]
+        );
     }
 
     /**

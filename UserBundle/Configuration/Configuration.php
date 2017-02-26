@@ -13,6 +13,9 @@ class Configuration
     /** @var array */
     protected $mailerFrom;
 
+    /** @var string */
+    protected $homeRoute;
+
     /**
      * @param array $config
      */
@@ -20,6 +23,7 @@ class Configuration
     {
         $this->mailerCompany = $config['mailer']['company'];
         $this->mailerFrom = [$config['mailer']['from_email'] => $config['mailer']['from_name']];
+        $this->homeRoute = $config['home_route'];
     }
 
     /**
@@ -36,5 +40,13 @@ class Configuration
     public function getMailerFrom()
     {
         return $this->mailerFrom;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHomeRoute()
+    {
+        return $this->homeRoute;
     }
 }

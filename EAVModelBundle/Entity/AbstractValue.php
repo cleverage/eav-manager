@@ -15,14 +15,14 @@ abstract class AbstractValue extends AbstractBaseValue
     /**
      * @var Image
      * @ORM\ManyToOne(targetEntity="CleverAge\EAVManager\AssetBundle\Entity\Image", cascade={"persist"})
-     * @ORM\JoinColumn(name="image_value_id", referencedColumnName="id", onDelete="cascade", nullable=true)
+     * @ORM\JoinColumn(name="image_value_id", referencedColumnName="id", nullable=true)
      */
     protected $imageValue;
 
     /**
      * @var Document
      * @ORM\ManyToOne(targetEntity="CleverAge\EAVManager\AssetBundle\Entity\Document", cascade={"persist"})
-     * @ORM\JoinColumn(name="document_value_id", referencedColumnName="id", onDelete="cascade", nullable=true)
+     * @ORM\JoinColumn(name="document_value_id", referencedColumnName="id", nullable=true)
      */
     protected $documentValue;
 

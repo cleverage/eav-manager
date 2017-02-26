@@ -3,7 +3,7 @@
 namespace CleverAge\EAVManager\AdminBundle\Controller;
 
 use CleverAge\EAVManager\Component\Controller\DataControllerTrait;
-use Elastica\Query;
+use Sidus\EAVModelBundle\Entity\AbstractData;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sidus\AdminBundle\Admin\Action;
 use Sidus\EAVDataGridBundle\Model\DataGrid;
@@ -258,5 +258,18 @@ class DataController extends AbstractAdminController
     protected function getAdminListPath($data = null, array $parameters = [])
     {
         return parent::getAdminListPath($data, array_merge(['familyCode' => $this->family->getCode()], $parameters));
+    }
+
+    /**
+     * @param DataInterface $data
+     *
+     * @throws \Exception
+     */
+    protected function saveEntity($data)
+    {
+        if ($data instanceof AbstractData) {
+            $data->setUpdatedAt(new \DateTime());
+        }
+        parent::saveEntity($data);
     }
 }

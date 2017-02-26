@@ -96,6 +96,7 @@ class GenericAdminController extends AbstractAdminController
             if ($request->isXmlHttpRequest()) {
                 return $this->renderAction(
                     [
+                        'dataGridCode' => $this->getDataGridConfigCode(),
                         'dataId' => $dataId,
                         'isAjax' => 1,
                         'target' => $request->get('target'),

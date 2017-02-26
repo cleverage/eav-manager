@@ -38,6 +38,7 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+            ->scalarNode('home_route')->defaultValue('eavmanager_layout.dashboard')->end()
             ->append($this->getMailerConfigurationTreeBuilder())
             ->end();
 

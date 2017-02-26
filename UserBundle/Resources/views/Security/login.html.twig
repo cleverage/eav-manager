@@ -1,48 +1,42 @@
-{% extends 'CleverAgeEAVManagerLayoutBundle::layout.html.twig' %}
+{% extends '@CleverAgeEAVManagerUser/base.html.twig' %}
 
-{% import "CleverAgeEAVManagerLayoutBundle:Macros:utilities.html.twig" as utilities %}
-
-{% block main_content %}
-    <h1 class="text-center">{{ block('title') }}</h1>
-    {{ utilities.flash_messages() }}
-    <div class="row">
-        <div class="col-md-4 col-md-offset-4">
-            <!--[if lt IE 8]>
-            {% include 'CleverAgeEAVManagerUserBundle:Obsolete:browser_update.html.twig' %}
-            <![endif]-->
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Connexion</h3>
-                </div>
-                <div class="panel-body">
-                    <form action="{{ path('login') }}" method="post" accept-charset="UTF-8" role="form"
-                          class="{{ error ? 'has-error' }}">
-                        <fieldset>
-                            <div class="form-group">
-                                <input class="form-control" placeholder="{{ 'security.login.username'|trans }}"
-                                       name="_username" type="text" value="{{ last_username }}" required="required">
-                            </div>
-                            <div class="form-group">
-                                <input class="form-control" placeholder="{{ 'security.login.password'|trans }}"
-                                       name="_password" type="password" value="" required="required">
-                            </div>
-                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                            {% if error %}
-                                <div class="text-danger text-center">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                            {% endif %}
-                            <div class="checkbox">
-                                <label>
-                                    <input name="_remember_me" type="checkbox"
-                                           value="on"> {{ 'security.login.remember_me'|trans }}
-                                </label>
-                            </div>
-                            <p><a href="{{ path('lost_password') }}">Mot de passe perdu</a></p>
-                            <input class="btn btn-lg btn-success btn-block" type="submit" id="_submit" name="_submit"
-                                   value="{{ 'security.login.submit'|trans }}">
-                        </fieldset>
-                    </form>
-                </div>
-            </div>
+{% block content %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{ 'security.login.title'|trans }}</h3>
+        </div>
+        <div class="panel-body">
+            <form action="{{ path('login') }}" method="post" accept-charset="UTF-8" role="form">
+                <fieldset {% if error %}class="has-error"{% endif %}>
+                    <div class="form-group">
+                        <input class="form-control" placeholder="{{ 'security.login.username'|trans }}"
+                               name="_username" type="text" value="{{ last_username }}" required="required">
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" placeholder="{{ 'security.login.password'|trans }}"
+                               name="_password" type="password" value="" required="required">
+                    </div>
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                    {% if error %}
+                        <div class="text-danger text-center">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                    {% endif %}
+                </fieldset>
+                <fieldset>
+                    <div class="row">
+                        <div class="checkbox col-md-6">
+                            <label>
+                                <input name="_remember_me" type="checkbox"
+                                       value="on"> {{ 'security.login.remember_me'|trans }}
+                            </label>
+                        </div>
+                        <div class="col-md-6 text-right" style="margin-top:10px;">
+                            <a href="{{ path('lost_password') }}">{{ 'security.login.lost_password'|trans }}</a>
+                        </div>
+                    </div>
+                    <input class="btn btn-lg btn-success btn-block" type="submit" id="_submit" name="_submit"
+                           value="{{ 'security.login.submit'|trans }}">
+                </fieldset>
+            </form>
         </div>
     </div>
 {% endblock %}

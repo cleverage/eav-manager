@@ -118,6 +118,10 @@ class AssetSubscriber implements EventSubscriber
         } else {
             return;
         }
+        if (!$resource) {
+            // Maybe we should reset the values to null
+            return;
+        }
         $data->setFileSize($resource->getFileSize());
         $this->valuesToPersist[] = $data->getValue($family->getAttribute('fileSize'));
 

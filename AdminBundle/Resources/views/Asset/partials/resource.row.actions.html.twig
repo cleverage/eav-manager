@@ -1,0 +1,14 @@
+{% spaceless %}
+    <div class="btn-group btn-group-xs btn-group-nowrap">
+        {% block list_row_actions %}
+            {% set link_title = tryTrans([
+            'admin.'~admin.code~'.delete.label',
+            'admin.action.delete.label',
+            ], [], 'Delete') %}
+            <a href="{{ entity_path(result, 'delete') }}"
+               class="btn btn-danger" data-target="tg_right" title="{{ link_title }}">
+                <i class="fa fa-remove"></i>
+            </a>
+        {% endblock %}
+    </div>
+{% endspaceless %}

@@ -4,53 +4,67 @@ sidus_eav_model:
             instantiable: false
             attributeAsLabel: title
             attributes:
-                - title
-                - fileSize
-                - mimeType
-                - fileName
-                - tags
+                title:
+                    group: content
+                    required: true
+                fileSize:
+                    group: meta
+                    type: integer
+                    form_options:
+                        disabled: true
+                mimeType:
+                    group: meta
+                    form_options:
+                        disabled: true
+                fileName:
+                    group: meta
+                    form_options:
+                        disabled: true
+                tags:
+                    group: content
+                    multiple: true
 
         Image:
             parent: BaseAsset
             attributeAsLabel: title
             attributes:
-                - imageFile
-                - altText
-                - copyright
+                imageFile: ~
+                altText:
+                    group: meta
+                    form_options:
+                        help_block: 'Laisser vide pour utiliser le titre'
+                copyright:
+                    group: meta
 
         Document:
             parent: BaseAsset
             attributeAsLabel: title
             attributes:
-                - documentFile
+                documentFile: ~
 
     attributes:
-        # Relations
+        # Relations : Use them in your custom families
         image:
             group: content
             type: media_browser
-            form_options:
-                family: Image
+            family: Image
 
         images:
             group: content
             type: media_browser
             multiple: true
-            form_options:
-                family: Image
+            family: Image
 
         document:
             group: content
             type: media_browser
-            form_options:
-                family: Document
+            family: Document
 
         documents:
             group: content
             type: media_browser
             multiple: true
-            form_options:
-                family: Document
+            family: Document
 
         # Custom Attributes => link to uploaded file
         documentFile:
@@ -62,33 +76,3 @@ sidus_eav_model:
             group: content
             required: true
             type: image
-
-        # Locked attributes (automatically filled from file upload)
-        fileSize:
-            group: meta
-            type: integer
-            form_options:
-                disabled: true
-
-        mimeType:
-            group: meta
-            form_options:
-                disabled: true
-
-        fileName:
-            group: meta
-            form_options:
-                disabled: true
-
-        # Attributes
-        tags:
-            group: content
-            multiple: true
-
-        altText:
-            group: meta
-            form_options:
-                help_block: 'Laisser vide pour utiliser le titre'
-
-        copyright:
-            group: meta

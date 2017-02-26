@@ -4,18 +4,17 @@ namespace CleverAge\EAVManager\UserBundle\Controller;
 
 use CleverAge\EAVManager\UserBundle\Form\Type\LostUserPasswordType;
 use CleverAge\EAVManager\UserBundle\Form\Type\ResetUserPasswordType;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMInvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 /**
  * Gestion de l'authentification et de la perte/création de mot de passe
+ *
+ * @todo translate everything !
  */
 class SecurityController extends Controller
 {
@@ -23,10 +22,15 @@ class SecurityController extends Controller
      * @Template()
      * @Route("/login", name="login")
      *
+     * @throws \Exception
+     *
      * @return array
      */
     public function loginAction()
     {
+        if ($this->getUser()) {
+            return $this->redirectToRoute($this->get('eavmanager_user.config.holder')->getHomeRoute());
+        }
         $authenticationUtils = $this->get('security.authentication_utils');
 
         // get the login error if there is one
@@ -47,18 +51,18 @@ class SecurityController extends Controller
      *
      * @param Request $request
      *
-     * @throws \OutOfBoundsException
-     * @throws \InvalidArgumentException
-     * @throws OptimisticLockException
-     * @throws ORMInvalidArgumentException
-     * @throws UsernameNotFoundException
-     * @throws \LogicException
+     * @throws \Exception
      *
      * @return array
      */
     public function lostPasswordAction(Request $request)
     {
-        $form = $this->createForm(LostUserPasswordType::class);
+        if ($this->getUser()) {
+            return $this->redirectToRoute($this->get('eavmanager_user.config.holder')->getHomeRoute());
+        }
+        $form = $this->createForm(LostUserPasswordType::class, null, [
+            'show_legend' => false,
+        ]);
         $form->handleRequest($request);
 
         $error = null;
@@ -95,17 +99,15 @@ class SecurityController extends Controller
      *
      * @param Request $request
      *
-     * @throws \OutOfBoundsException
-     * @throws \InvalidArgumentException
-     * @throws ORMInvalidArgumentException
-     * @throws OptimisticLockException
-     * @throws \LogicException
-     * @throws AuthenticationException
+     * @throws \Exception
      *
      * @return array
      */
     public function resetPasswordAction(Request $request)
     {
+        if ($this->getUser()) {
+            return $this->redirectToRoute($this->get('eavmanager_user.config.holder')->getHomeRoute());
+        }
         $token = $request->query->get('token');
         if (!$token) {
             return $this->redirectToRoute('lost_password');
@@ -134,7 +136,7 @@ class SecurityController extends Controller
             $tokenStorage = $this->get('security.token_storage');
             $tokenStorage->setToken($token);
 
-            return $this->redirectToRoute($this->getParameter('home_route'));
+            return $this->redirectToRoute($this->get('eavmanager_user.config.holder')->getHomeRoute());
         }
 
         return [

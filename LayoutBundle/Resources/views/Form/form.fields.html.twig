@@ -106,7 +106,13 @@
     <div class="media-browser">
         <input type="hidden" name="{{ full_name }}"
                id="{{ form.vars.id }}" {% if value is defined and value %} value="{{ value }}"{% endif %}>
-        {% if not form.vars.disabled %}
+        {% if form.vars.disabled %}
+            <div class="pull-left btn-group-vertical">
+                <span class="btn btn-default disabled" title="{{ 'admin.media.select.disabled' | trans }}">
+                    <i class="fa fa-image"></i> {{ 'admin.media.select.label' | trans }}
+                </span>
+            </div>
+        {% else %}
             <div class="pull-left btn-group-vertical">
                 <a data-href="{{ admin_path('media', 'browse', {familyCode: form.vars.family.code, inputId: form.vars.id}) }}"
                    type="button" class="btn btn-primary" data-target="tg_modal"

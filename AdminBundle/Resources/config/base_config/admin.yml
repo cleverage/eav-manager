@@ -30,6 +30,18 @@ sidus_admin:
                     Image: ~
                     Document: ~
 
+        resource:
+            controller: CleverAgeEAVManagerAdminBundle:GenericAdmin
+            entity: CleverAge\EAVManager\AssetBundle\Entity\Document
+            prefix: /resources
+            actions:
+                list:
+                    path: /
+                index:
+                    path: /
+                delete:
+                    path: /{id}/delete
+
         user:
             controller: CleverAgeEAVManagerAdminBundle:User
             entity: CleverAge\EAVManager\UserBundle\Entity\User

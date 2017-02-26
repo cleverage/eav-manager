@@ -67,3 +67,29 @@ sidus_data_grid:
                     attr:
                         class: btn-primary
                         data-target: tg_right
+
+        resource:
+            filter_config:
+                entity: CleverAge\EAVManager\AssetBundle\Entity\Document
+                sortable:
+                    - id
+                    - originalFileName
+                    - fileSize
+                    - fileType
+                    - fileModifiedAt
+                fields:
+                    originalFileName: ~
+                    fileType:
+                        type: choice
+                    fileModifiedAt:
+                        type: date_range
+            columns:
+                id:
+                    label: '#'
+                originalFileName: ~
+                type: ~
+                fileSize: ~
+                fileType: ~
+                fileModifiedAt: ~
+                actions:
+                    template: CleverAgeEAVManagerAdminBundle:Asset/partials:resource.row.actions.html.twig

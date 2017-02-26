@@ -1,0 +1,16 @@
+{% extends 'CleverAgeEAVManagerLayoutBundle::layout.html.twig' %}
+
+{% import "CleverAgeEAVManagerLayoutBundle:Macros:utilities.html.twig" as utilities %}
+
+{% block main_content %}
+    <h1 class="text-center">{{ block('title') }}</h1>
+    {{ utilities.flash_messages() }}
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <!--[if lt IE 8]>
+            {% include 'CleverAgeEAVManagerUserBundle:Obsolete:browser_update.html.twig' %}
+            <![endif]-->
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+{% endblock %}

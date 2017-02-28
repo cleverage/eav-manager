@@ -1,0 +1,151 @@
+{#
+!!!! @WARNING !!!!
+Because of a major change in symfony and twig engine, we have changed the way you must inherit the layout template.
+
+Don't inherit this template unless you want to change the ENTIRE layout
+
+NEVER points to this layout directly !
+
+
+#}<!DOCTYPE html>
+<html lang="{{ app.request.locale }}">
+<head>
+    {% import "CleverAgeEAVManagerLayoutBundle:Macros:utilities.html.twig" as utilities %}
+    {% block metas %}
+        <meta charset="{{ _charset }}">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% endblock %}
+    <title>{% block title %}CleverAge/EAVManager{{ title is defined ? ' - ' ~ title }}{% endblock %}</title>
+    {% block stylesheets %}
+        {# !!!!!! WARNING !!!!! #}
+        {# Because of the way Assetic works, if you want to override this block you will also have to override the JS block #}
+        {% stylesheets  'bundles/pinanoselect2/css/select2.css'
+        'bundles/pinanoselect2/css/select2-bootstrap.css'
+        'bundles/samsonautocomplete/css/autocomplete.css'
+        'bundles/mopabootstrap/components/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css'
+        'bundles/cleverageeavmanagerlayout/css/layout.css'
+        filter='?uglifycss' filter='cssrewrite' %}
+        <link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen"/>
+        {% endstylesheets %}
+    {% endblock %}
+</head>
+
+<body class="{% block body_class %}{% endblock %}">
+{% block main_menu %}
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                {% block main_menu_home_link %}
+                    <a class="navbar-brand" href="{{ path('eavmanager_layout.dashboard') }}">CleverAge/EAVManager</a>
+                {% endblock %}
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                {% block main_menu_application %}
+                    {% set activeFamily = family is defined ? family %}
+                    <ul class="nav navbar-nav">
+                        {# @var f \Sidus\EAVModelBundle\Model\Family #}
+                        {% for f in get_root_families() %}
+                            {% set f = f.code is defined ? f : get_family(f) %}
+                            {% set fClass = (activeFamily and activeFamily.code == f.code ? 'active') ~ (f.children | length ? ' dropdown') %}
+                            <li {% if fClass %}class="{{ fClass }}"{% endif %}>
+                                {% if f.instantiable %}
+                                    <a href="{{ admin_path(admin, 'list', {familyCode: f.code}) }}">{{ f|capitalize }}</a>
+                                {% else %}
+                                    {{ f|capitalize }}
+                                {% endif %}
+                                {% if f.children | length %}
+                                    <ul class="dropdown-menu">
+                                        {% for subF in f.children %}
+                                            <li>
+                                                <a href="{{ admin_path(admin, 'list', {familyCode: f.code}) }}">{{ f|capitalize }}</a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endblock %}
+                {% if app.user %}
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="{{ path('eavmanager_user.profile.edit') }}" class="dropdown-toggle"
+                               data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-user"></i> {{ app.user }} <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="{{ path('eavmanager_user.profile.edit') }}">{{ 'user.profile.menu.title' | trans }}</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><a href="{{ path('fos_user_security_logout') }}" title="logout"><i
+                                        class="fa fa-power-off"></i></a></li>
+                    </ul>
+                    {{ utilities.context_form() }}
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+{% block main_container %}
+    <div class="container-fluid">
+        {% block main_content %}
+            <div class="row" id="main_content">
+                <div id="tg_left" class="sidebar sidebar-inverse">{% block tg_left %}{% endblock %}</div>
+                <div id="tg_center">
+                    {{ utilities.flash_messages() }}
+                    {% block tg_center %}{% endblock %}
+                </div>
+                <div id="tg_right">{% block tg_right %}{% endblock %}</div>
+            </div>
+        {% endblock %}
+    </div>
+    {% block tg_modal %}
+        <div class="modal fade" id="tg_modal" tabindex="-1" role="dialog" aria-labelledby="Modal"></div>
+    {% endblock %}
+{% endblock %}
+
+{% block javascripts %}
+    {# !!!!!! WARNING !!!!! #}
+    {# Because of the way Assetic works, if you want to override this block you will also have to override the CSS block #}
+    {% javascripts
+    'assets/jquery/jquery.min.js'
+    'assets/jquery-ui/jquery-ui.min.js'
+    '@FOSJsRoutingBundle/Resources/public/js/router.js'
+    '@MopaBootstrapBundle/Resources/public/bootstrap-sass/assets/javascripts/bootstrap.js'
+    '@MopaBootstrapBundle/Resources/public/js/mopabootstrap-subnav.js'
+    '@MopaBootstrapBundle/Resources/public/components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.js'
+    '@MopaBootstrapBundle/Resources/public/components/smalot-bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.fr.js'
+    '@SidusFileUploadBundle/Resources/public/vendor/jquery-file-upload/js/jquery.fileupload.js'
+    '@SidusFileUploadBundle/Resources/public/vendor/jquery-file-upload/js/jquery.fileupload-jquery-ui.js'
+    '@SidusFileUploadBundle/Resources/public/vendor/jquery-file-upload/js/jquery.iframe-transport.js'
+    '@SidusEAVBootstrapBundle/Resources/public/js/bootstrap.collection.js'
+    '@SidusEAVBootstrapBundle/Resources/public/js/sortable.collection.js'
+    '@SidusFileUploadBundle/Resources/public/js/jquery.fileupload.sidus.js'
+    '@PinanoSelect2Bundle/Resources/public/js/select2.min.js'
+    '@PinanoSelect2Bundle/Resources/public/js/select2_locale_fr.js'
+    '@SamsonAutocompleteBundle/Resources/public/js/autocomplete.js'
+    '@SidusEAVBootstrapBundle/Resources/public/js/autocomplete.combo.selector.js'
+    '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/init.datepickers.js'
+    '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/ajax.navigation.js'
+    '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/init.document.js'
+    '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/navigation.lock.js'
+    '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/media.browser.js'
+    filter='?uglifyjs2' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+    {{ tinymce_init() }}
+{% endblock %}
+{% block additionnal_javascript %}{% endblock %}
+</body>
+</html>

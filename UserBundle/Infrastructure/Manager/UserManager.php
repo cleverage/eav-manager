@@ -125,7 +125,7 @@ class UserManager implements UserManagerInterface
         /** @var EntityManager $em */
         $em = $this->doctrine->getManager();
         $em->persist($user);
-        $em->flush($user);
+        $em->flush();
 
         // Si l'utilisteur est nouveau
         if ($user->isNew() && !$user->isEmailSent()) {

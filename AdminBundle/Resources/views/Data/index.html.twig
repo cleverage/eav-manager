@@ -3,6 +3,6 @@
 {% import "CleverAgeEAVManagerLayoutBundle:Macros:utilities.html.twig" as utilities %}
 
 {% block tg_left %}
-    <h3>{{ ('admin.' ~ admin.code ~ '.menu.title')|trans }}</h3>
+    <h3>{{ tryTrans(['admin.'~admin.code~'.title'], [], admin.code|humanize) }}</h3>
     {{ utilities.family_menu(admin, admin.option('families', [])|keys, family is defined ? family) }}
 {% endblock %}

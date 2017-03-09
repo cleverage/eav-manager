@@ -6,9 +6,9 @@ use Sidus\EAVModelBundle\Model\AttributeInterface;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
 
 /**
- * Simple transformer for multiple attributes
+ * Simple transformer for collection attributes
  */
-class MultipleAttributeTransformer implements EAVValueTransformerInterface
+class CollectionAttributeTransformer implements EAVValueTransformerInterface
 {
     /**
      * @param FamilyInterface    $family
@@ -67,7 +67,7 @@ class MultipleAttributeTransformer implements EAVValueTransformerInterface
     protected function checkConfig(AttributeInterface $attribute, array $config = null)
     {
         if (!isset($config['splitCharacter'])) {
-            $m = "Multiple attribute '{$attribute->getCode()}' expects a splitCharacter option in import mapping";
+            $m = "Collection attribute '{$attribute->getCode()}' expects a splitCharacter option in import mapping";
             throw new \UnexpectedValueException($m);
         }
     }

@@ -27,5 +27,5 @@ services:
         class: Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToStringTransformer
         arguments: [~, ~, 'Y-m-d H:i:s']
 
-    eavmanager.import.transformer.multiple:
-        class: CleverAge\EAVManager\ImportBundle\Transformer\MultipleAttributeTransformer
+    eavmanager.import.transformer.collection:
+        class: CleverAge\EAVManager\ImportBundle\Transformer\CollectionAttributeTransformer

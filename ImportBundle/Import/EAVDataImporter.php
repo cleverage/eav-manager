@@ -488,7 +488,7 @@ class EAVDataImporter
     {
         $entityValues = $this->resolveReferences($data, $attribute, $value);
 
-        if (!$attribute->isMultiple()) {
+        if (!$attribute->isCollection()) {
             $data->setValueData($attribute, $entityValues);
 
             return;
@@ -523,7 +523,7 @@ class EAVDataImporter
         $ignoreMissing = false,
         $partialLoad = false
     ) {
-        if (!$attribute->isMultiple()) {
+        if (!$attribute->isCollection()) {
             return $this->resolveReference($data, $attribute, $values, $ignoreMissing, $partialLoad);
         }
         $resolvedValues = [];

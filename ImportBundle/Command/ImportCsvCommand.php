@@ -284,8 +284,8 @@ class ImportCsvCommand extends ContainerAwareCommand
             $attribute = $family->getAttribute($attributeCode);
 
             // If we put this in a transformer
-            if ($attribute->isMultiple()) {
-                $transformer = $this->getContainer()->get('eavmanager.import.transformer.multiple');
+            if ($attribute->isCollection()) {
+                $transformer = $this->getContainer()->get('eavmanager.import.transformer.collection');
             }
 
             // Default DataTransformer for dates

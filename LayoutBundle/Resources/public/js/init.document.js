@@ -31,15 +31,17 @@ function bindGlobalEvents(target) {
 
     // Tooltips
     $(target).find('[data-toggle="tooltip"]').tooltip();
-
-    // Bind custom global event if defined
-    if (typeof(bindCustomGlobalEvents) == 'function') {
-        bindCustomGlobalEvents(target);
-    }
 }
 
 !function ($) {
     "use strict"; // jshint ;_;
+
+    /**
+     * Binds all required events when loading ajax content
+     */
+    $(document).on('complete.ajaxloading', '.autoload', function(e) {
+        bindGlobalEvents(e.target);
+    });
 
     /**
      * Binds all required events when adding an element to a bootstrap collection

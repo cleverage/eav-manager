@@ -24,7 +24,7 @@ abstract class AbstractAdminController extends BaseAdminController
     use TranslatableTrait;
 
     /** @var string */
-    protected $defaultTarget = 'tg_center';
+    protected $defaultTarget = '#tg_center';
 
     /**
      * @param ContainerInterface|null $container
@@ -97,7 +97,7 @@ abstract class AbstractAdminController extends BaseAdminController
         $formOptions = array_merge(
             [
                 'attr' => [
-                    'data-target' => $this->getTarget($request),
+                    'data-target-element' => $this->getTarget($request),
                 ],
             ],
             $formOptions
@@ -118,7 +118,7 @@ abstract class AbstractAdminController extends BaseAdminController
         $formOptions = parent::getDefaultFormOptions($request, $dataId, $action);
 
         if ($request->isXmlHttpRequest()) { // Target should not be used when not calling through Ajax
-            $formOptions['attr']['data-target'] = $this->getTarget($request);
+            $formOptions['attr']['data-target-element'] = $this->getTarget($request);
         }
         $formOptions['label'] = $this->tryTranslate(
             [

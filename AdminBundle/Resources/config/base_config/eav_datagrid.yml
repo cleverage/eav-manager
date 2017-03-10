@@ -25,10 +25,10 @@ sidus_eav_data_grid:
                     icon: plus
                     attr:
                         class: btn-primary
-                        data-target: tg_right
+                        data-target-element: "#tg_right"
             reset_button:
                 attr:
-                    data-target: tg_center
+                    data-target-element: "#tg_center"
 
         document:
             family: Document
@@ -110,7 +110,7 @@ sidus_eav_data_grid:
                     icon: plus
                     attr:
                         class: btn-primary
-                        data-target: tg_modal
+                        data-target-element: "#tg_modal"
                 browseThumbnail:
                     form_type: CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink
                     label: admin.action.browseThumbnail.label
@@ -118,10 +118,10 @@ sidus_eav_data_grid:
                     icon: th
                     attr:
                         class: btn-default
-                        data-target: tg_modal
+                        data-target-element: "#tg_modal"
             reset_button:
                 attr:
-                    data-target: tg_modal
+                    data-target-element: "#tg_modal"
 
         thumbnail_browser:
             family: Image
@@ -140,7 +140,7 @@ sidus_eav_data_grid:
                     icon: plus
                     attr:
                         class: btn-primary
-                        data-target: tg_modal
+                        data-target-element: "#tg_modal"
                 browse:
                     form_type: CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink
                     label: admin.action.browse.label
@@ -148,7 +148,7 @@ sidus_eav_data_grid:
                     icon: list
                     attr:
                         class: btn-default
-                        data-target: tg_modal
+                        data-target-element: "#tg_modal"
             reset_button:
                 attr:
-                    data-target: tg_modal
+                    data-target-element: "#tg_modal"

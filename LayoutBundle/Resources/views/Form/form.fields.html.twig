@@ -9,13 +9,13 @@
                 {% if variant_families|length == 1 %}
                     <a href="{{ admin_path('variant', 'create', base_route_parameters|merge({familyCode: variant_families|first.code})) }}"
                        class="btn btn-primary"
-                       title="{{ 'sidus_eav_variant.link.create.title'|trans }}" data-target="{{ target }}">
+                       title="{{ 'sidus_eav_variant.link.create.title'|trans }}" data-target-element="{{ target }}">
                         <i class="fa fa-plus"></i> {{ 'sidus_eav_variant.link.create.label'|trans }}
                     </a>
                 {% else %}
                     <a href="{{ admin_path('variant', 'select', base_route_parameters|merge({familyCode: variant_families|first.code})) }}"
                        class="btn btn-primary"
-                       title="{{ 'sidus_eav_variant.link.select.title'|trans }}" data-target="{{ target }}">
+                       title="{{ 'sidus_eav_variant.link.select.title'|trans }}" data-target-element="{{ target }}">
                         <i class="fa fa-plus"></i> {{ 'sidus_eav_variant.link.select.label'|trans }}
                     </a>
                 {% endif %}
@@ -34,12 +34,12 @@
                         <div class="btn-group pull-right">
                             <a href="{{ entity_path(variant, 'edit', base_route_parameters) }}"
                                class="btn btn-default" title="{{ 'sidus_eav_variant.link.edit.title'|trans }}"
-                               data-target="{{ target }}">
+                               data-target-element="{{ target }}">
                                 <i class="fa fa-edit"></i>
                             </a>
                             <a href="{{ entity_path(variant, 'delete', base_route_parameters) }}"
                                class="btn btn-danger" title="{{ 'sidus_eav_variant.link.delete.title'|trans }}"
-                               data-target="{{ target }}">
+                               data-target-element="{{ target }}">
                                 <i class="fa fa-trash"></i>
                             </a>
                         </div>
@@ -115,7 +115,7 @@
         {% else %}
             <div class="pull-left btn-group-vertical">
                 <a data-href="{{ admin_path('media', 'browse', {familyCode: form.vars.family.code, inputId: form.vars.id}) }}"
-                   type="button" class="btn btn-primary" data-target="tg_modal"
+                   type="button" class="btn btn-primary" data-target-element="#tg_modal"
                    title="{{ 'admin.media.select.title' | trans }}">
                     <i class="fa fa-image"></i> {{ 'admin.media.select.label' | trans }}
                 </a>

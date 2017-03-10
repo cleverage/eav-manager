@@ -64,9 +64,9 @@ Changes the current active datagrid row
                 {% if data is defined and id %}
                 // Current element reference in datagrid
                 document.activeDataGridRowRef = '#datagrid_row_{{ dataGridCode }}__{{ id }}';
-                {% if success and target != 'tg_center' %}
+                {% if success and target != '#tg_center' %}
                 // Update datagrid if form was successfully submitted
-                var form = $('#tg_center').find('form[data-target]');
+                var form = $('#tg_center').find('form[data-target-element]');
                 if (form.length) {
                     form.submit();
                 }
@@ -96,7 +96,7 @@ Locks the form attached to the modified input
         if (typeof $ != 'undefined') {
             {% if inputId %}
             // Lock navigation if form is updated
-            lockNavigationOnChange('#{{ inputId }}', '{{ 'form.abandon_changes.confirmation'|trans }}'{% if target %}, '#{{ target }}'{% endif %});
+            lockNavigationOnChange('#{{ inputId }}', '{{ 'form.abandon_changes.confirmation'|trans }}'{% if target %}, '{{ target }}'{% endif %});
             {% endif %}
         }
     </script>
@@ -154,7 +154,7 @@ Displays a link button to an entity, checking permissions and with configurable 
             ], {}, actionName) %}
         {% endif %}
         <a href="{{ entity_path(entity, actionName) }}" class="{{ options.class|default('btn btn-default') }}"
-           data-target="{{ options.target|default('tg_right') }}" title="{{ title }}">
+           data-target-element="{{ options.target|default('#tg_right') }}" title="{{ title }}">
             <i class="fa fa-{{ options.icon is defined ? options.icon : actionName }}"></i>
         </a>
     {% endif %}

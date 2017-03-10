@@ -6,7 +6,7 @@
             'admin.action.edit.label',
             ], [], 'Edit') %}
             <a href="{{ entity_path(result, 'edit') }}"
-               class="btn btn-primary" data-target="tg_right" title="{{ link_title }}">
+               class="btn btn-primary" data-target-element="#tg_right" title="{{ link_title }}">
                 <i class="fa fa-edit"></i>
             </a>
             {% set link_title = tryTrans([
@@ -14,7 +14,7 @@
             'admin.action.delete.label',
             ], [], 'Delete') %}
             <a href="{{ entity_path(result, 'delete') }}"
-               class="btn btn-danger" data-target="tg_right" title="{{ link_title }}">
+               class="btn btn-danger" data-target-element="#tg_right" title="{{ link_title }}">
                 <i class="fa fa-remove"></i>
             </a>
         {% endblock %}

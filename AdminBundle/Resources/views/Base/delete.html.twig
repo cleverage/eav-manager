@@ -31,9 +31,9 @@
             <script>
                 // Launched only on ajax calls when jQuery is already defined: close current target
                 if (typeof $ != 'undefined') {
-                    var t = $('#{{ target }}');
+                    var t = $('{{ target }}');
                     t.html('');
-                    {% if target == 'tg_modal' %}
+                    {% if target == '#tg_modal' %}
                     t.modal('hide');
                     {% endif %}
                 }

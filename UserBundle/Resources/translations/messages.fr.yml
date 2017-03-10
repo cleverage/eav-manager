@@ -1,0 +1,16 @@
+security:
+    login:
+        title: Connexion
+        username: Utilisateur
+        password: Mot de passe
+        submit: Connexion
+        remember_me: Se souvenir de moi
+        lost_password: Mot de passe oublié ?
+    lost_password:
+        title: Demande de réinitialisation de mot de passe
+        back: Retour à l'écran de connexion
+        submit: Envoyer la demande
+    reset_password:
+        title: Réinitialisation du mot de passe
+        back: Retour à l'écran de connexion
+        submit: Changer le mot de passe

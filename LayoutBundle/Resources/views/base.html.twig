@@ -91,17 +91,17 @@ NEVER points to this layout directly !
     <div class="container-fluid">
         {% block main_content %}
             <div class="row" id="main_content">
-                <div id="tg_left" class="sidebar sidebar-inverse">{% block tg_left %}{% endblock %}</div>
-                <div id="tg_center">
+                <div id="tg_left" class="sidebar sidebar-inverse with-loader autoload">{% block tg_left %}{% endblock %}</div>
+                <div id="tg_center" class="with-loader autoload">
                     {{ utilities.flash_messages() }}
                     {% block tg_center %}{% endblock %}
                 </div>
-                <div id="tg_right">{% block tg_right %}{% endblock %}</div>
+                <div id="tg_right" class="with-loader autoload">{% block tg_right %}{% endblock %}</div>
             </div>
         {% endblock %}
     </div>
     {% block tg_modal %}
-        <div class="modal fade" id="tg_modal" tabindex="-1" role="dialog" aria-labelledby="Modal"></div>
+        <div class="modal fade with-loader autoload" id="tg_modal" tabindex="-1" role="dialog" aria-labelledby="Modal"></div>
     {% endblock %}
 {% endblock %}
 

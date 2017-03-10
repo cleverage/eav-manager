@@ -51,3 +51,26 @@ function callback_tinymce_init(editor) {
         $(editor.targetElm).trigger('change');
     });
 }
+
+/**
+ * Locks navigation if target contains changes
+ *
+ * @param {Event}   e
+ * @param {element} tg
+ *
+ * @returns {boolean}
+ */
+function checkOnBeforeLoad(e, tg) {
+    if (typeof window.onbeforeunload == 'function') {
+        var val = window.onbeforeunload({target: tg});
+        if (val) {
+            if (!confirm(val)) {
+                e.preventDefault();
+                e.stopPropagation();
+                return true;
+            } else {
+                unLockNavigation();
+            }
+        }
+    }
+}

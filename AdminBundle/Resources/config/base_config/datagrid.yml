@@ -35,7 +35,7 @@ sidus_data_grid:
                     icon: plus
                     attr:
                         class: btn-primary
-                        data-target: tg_right
+                        data-target-element: "#tg_right"
 
         group:
             filter_config:
@@ -66,7 +66,7 @@ sidus_data_grid:
                     icon: plus
                     attr:
                         class: btn-primary
-                        data-target: tg_right
+                        data-target-element: "#tg_right"
 
         resource:
             filter_config:

@@ -47,24 +47,32 @@ sidus_eav_model:
         image:
             group: content
             type: media_browser
-            family: Image
+            options:
+                allowed_families:
+                    - Image
 
         images:
             group: content
             type: media_browser
             multiple: true
-            family: Image
+            options:
+                allowed_families:
+                    - Image
 
         document:
             group: content
             type: media_browser
-            family: Document
+            options:
+                allowed_families:
+                    - Document
 
         documents:
             group: content
             type: media_browser
             multiple: true
-            family: Document
+            options:
+                allowed_families:
+                    - Document
 
         # Custom Attributes => link to uploaded file
         documentFile:

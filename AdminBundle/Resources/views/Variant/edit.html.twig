@@ -4,7 +4,7 @@
 
 {% block form_actions %}
     <div class="btn-group pull-right">
-        <a href="{{ listPath }}" data-target="{{ target }}" class="btn btn-default">
+        <a href="{{ listPath }}" data-target-element="{{ target }}" class="btn btn-default">
             {{ tryTrans([admin_trans_key ~ 'back.label', 'admin.action.back.label'], [], 'Back') }}
         </a>
         {{ block('submit_button') }}

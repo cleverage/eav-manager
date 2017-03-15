@@ -60,26 +60,34 @@ abstract class AbstractAdminController extends BaseAdminController
      * @return array
      * @throws \Exception
      */
-    protected function getViewParameters(Request $request, Form $form, $data = null)
+    protected function getViewParameters(Request $request, Form $form = null, $data = null)
     {
-        return [
+        $parameters = [
             'isAjax' => $request->isXmlHttpRequest(),
             'target' => $request->get('target'),
             'success' => $request->get('success'),
-            'form' => $form->createView(),
-            'data' => $data,
             'dataGridCode' => $this->getDataGridConfigCode(),
             'listPath' => $this->getAdminListPath($data),
-            'baseTemplate' => $this->admin->getBaseTemplate(),
+            'admin' => $this->admin,
         ];
+
+        if ($form) {
+            $parameters['form'] = $form->createView();
+        }
+        if ($data) {
+            $parameters['data'] = $data;
+        }
+
+        return $parameters;
     }
 
     /**
      * @param mixed $data
      * @param array $parameters
      *
-     * @return string
      * @throws \Exception
+     *
+     * @return string
      */
     protected function getAdminListPath($data = null, array $parameters = [])
     {

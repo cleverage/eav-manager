@@ -1,3 +1,4 @@
+{% set baseTemplate = baseTemplate|default(admin.baseTemplate) %}
 {% extends isAjax ? 'CleverAgeEAVManagerLayoutBundle::empty_layout.html.twig'
 : baseTemplate|default('CleverAgeEAVManagerLayoutBundle::layout.html.twig') %}
 
@@ -9,6 +10,6 @@
     <h3>{{ tryTrans([admin_trans_key ~ '.title', 'admin.list_of'], {'%family%': admin.code|humanize}) }}</h3>
     <hr>
     {% block datagrid %}
-        {{ DataGridHelper.render(datagrid) }}
+        {{ DataGridHelper.render(datagrid, {admin: admin}) }}
     {% endblock %}
 {% endblock %}

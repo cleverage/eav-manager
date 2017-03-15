@@ -28,7 +28,7 @@ class GenericAdminController extends AbstractAdminController
                 'datagrid' => $dataGrid,
                 'isAjax' => $request->isXmlHttpRequest(),
                 'target' => $this->getTarget($request),
-                'baseTemplate' => $this->admin->getBaseTemplate(),
+                'admin' => $this->admin,
             ]
         );
     }

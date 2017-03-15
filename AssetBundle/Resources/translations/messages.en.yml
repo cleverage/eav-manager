@@ -1,0 +1,5 @@
+admin:
+    media:
+        select: Select %family%
+        detach: Detach
+        disabled: Disabled

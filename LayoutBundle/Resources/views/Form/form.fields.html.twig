@@ -52,8 +52,8 @@
 
 {% block eavmanager_image_widget %}
     {# @var image \CleverAge\EAVManager\AssetBundle\Entity\Image #}
-    {% if form.vars.data %}
-        {% set image = form.vars.data %}
+    {% if data %}
+        {% set image = data %}
         <img src="{{ image.fileName | imagine_filter('thumbnail') }}"
              class="pull-right img-thumbnail" {{ image_size_attrs(image, 'thumbnail') }}>
     {% endif %}
@@ -105,28 +105,31 @@
 {% block eavmanager_media_browser_widget %}
     <div class="media-browser">
         <input type="hidden" name="{{ full_name }}"
-               id="{{ form.vars.id }}" {% if value is defined and value %} value="{{ value }}"{% endif %}>
-        {% if form.vars.disabled %}
+               id="{{ id }}" {% if value is defined and value %} value="{{ value }}"{% endif %}>
+        {% if disabled %}
             <div class="pull-left btn-group-vertical">
                 <span class="btn btn-default disabled" title="{{ 'admin.media.select.disabled' | trans }}">
-                    <i class="fa fa-image"></i> {{ 'admin.media.select.label' | trans }}
+                    <i class="fa fa-image"></i> {{ 'admin.media.select.disabled' | trans }}
                 </span>
             </div>
         {% else %}
             <div class="pull-left btn-group-vertical">
-                <a data-href="{{ admin_path('media', 'browse', {familyCode: form.vars.family.code, inputId: form.vars.id}) }}"
-                   type="button" class="btn btn-primary" data-target-element="#tg_modal"
-                   title="{{ 'admin.media.select.title' | trans }}">
-                    <i class="fa fa-image"></i> {{ 'admin.media.select.label' | trans }}
-                </a>
+                {% for family in allowed_families %}
+                    {% set title = 'admin.media.select.label' | trans({'%family%': family.label}) %}
+                    <a data-href="{{ admin_path('media', 'browse', {familyCode: family.code, inputId: id}) }}"
+                       type="button" class="btn btn-primary" data-target-element="#tg_modal"
+                       title="{{ title }}">
+                        <i class="fa fa-image"></i> {{ title }}
+                    </a>
+                {% endfor %}
                 <a href="javascript:void(0)" class="btn btn-warning media-detach">
                     <i class="fa fa-close"></i> {{ 'admin.media.detach.label' | trans }}
                 </a>
             </div>
         {% endif %}
         <div class="pull-left media-preview">
-            {% if form.vars.data %}
-                {% set result = form.vars.data %}
+            {% if data %}
+                {% set result = data %}
                 {{ block('media_preview') }}
             {% endif %}
         </div>
@@ -158,4 +161,21 @@
             {% endif %}
         {% endfor %}
     </div>
+{% endblock %}
+
+{% block sidus_simple_data_selector_widget %}
+    {% if allow_add %}
+        <div class="row">
+            <div class="col-lg-10">
+                {{ form_widget(form) }}
+            </div>
+            <div class="col-lg-2">
+                {#<a href="{{ admin_path(admin, action, {familyCode: }) }}" class="btn btn-default">#}
+                    {#<i class="fa fa-plus"></i> Create#}
+                {#</a>#}
+            </div>
+        </div>
+    {% else %}
+        {{ form_widget(form) }}
+    {% endif %}
 {% endblock %}

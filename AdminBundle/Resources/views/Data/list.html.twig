@@ -7,6 +7,6 @@
     <h3>{{ tryTrans([admin_trans_key ~ '.title', 'admin.list_of'], {'%family%': family|trim}) }}</h3>
     <hr>
     {% block datagrid %}
-        {{ DataGridHelper.render(datagrid, {family: family}) }}
+        {{ DataGridHelper.render(datagrid, {family: family, admin: admin}) }}
     {% endblock %}
 {% endblock %}

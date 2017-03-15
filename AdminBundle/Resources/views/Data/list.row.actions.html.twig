@@ -1,6 +1,7 @@
 {% spaceless %}
     {% import "CleverAgeEAVManagerLayoutBundle:Macros:utilities.html.twig" as utilities %}
     <div class="btn-group btn-group-xs btn-group-nowrap">
+        {% set admin = viewParameters.admin %}
         {% block list_row_actions %}
             {{ utilities.eav_action_button(admin, result, 'edit', {
                 class: 'btn btn-primary',

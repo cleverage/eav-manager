@@ -1,3 +1,4 @@
+{% set baseTemplate = baseTemplate|default(admin.baseTemplate) %}
 {% extends isAjax ? 'CleverAgeEAVManagerLayoutBundle::empty_layout.html.twig'
 : baseTemplate|default('CleverAgeEAVManagerAdminBundle:Base:list.html.twig') %}
 

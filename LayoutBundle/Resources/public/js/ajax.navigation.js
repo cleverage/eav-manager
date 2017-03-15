@@ -249,7 +249,7 @@ window.onpopstate = function () {
     $(document).on('click', '.expand-target', function (e) {
         var t = $(this);
         if (t.data('target-selector')) {
-            $(document.body).toggleClass(t.data('target-selector') + '-expanded');
+            $(document.body).toggleClass(t.data('target-selector').replace('#', '') + '-expanded');
         }
         e.preventDefault();
         e.stopPropagation();

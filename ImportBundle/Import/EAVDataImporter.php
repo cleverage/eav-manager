@@ -449,19 +449,8 @@ class EAVDataImporter
         $value,
         ImportConfig $config = null
     ) {
-        $ignoreMissing = false;
-        $append = false;
-        if ($config) {
-            $attributeConfig = $config->getAttributeMapping($attribute->getCode());
-            if (isset($attributeConfig['ignore_missing'])) {
-                $ignoreMissing = $attributeConfig['ignore_missing'];
-            }
-            if (isset($attributeConfig['append'])) {
-                $append = $attributeConfig['append'];
-            }
-        }
         if ($attribute->getType()->isRelation()) {
-            $value = $this->resolveReferences($entity, $attribute, $value, $ignoreMissing, true);
+            $value = $this->resolveReferences($entity, $attribute, $value, $config, true);
         }
 
         // Special case for fields that are not strings/texts:
@@ -470,7 +459,7 @@ class EAVDataImporter
         }
 
         if ($attribute->getType()->isEmbedded()) {
-            $this->handleEmbedded($entity, $attribute, $value, $append);
+            $this->handleEmbedded($entity, $attribute, $value, $config);
         } else {
             $entity->set($attribute->getCode(), $value);
         }
@@ -480,22 +469,24 @@ class EAVDataImporter
      * @param DataInterface      $data
      * @param AttributeInterface $attribute
      * @param string             $value
-     * @param bool               $append
+     * @param ImportConfig       $config
      *
      * @throws \Exception
      */
-    protected function handleEmbedded(DataInterface $data, AttributeInterface $attribute, $value, $append = false)
+    protected function handleEmbedded(DataInterface $data, AttributeInterface $attribute, $value, ImportConfig $config)
     {
-        $entityValues = $this->resolveReferences($data, $attribute, $value);
+        $entityValues = $this->resolveReferences($data, $attribute, $value, $config);
 
-        if (!$attribute->isCollection()) {
-            $data->setValueData($attribute, $entityValues);
-
-            return;
+        $append = false;
+        if ($config) {
+            $attributeConfig = $config->getAttributeMapping($attribute->getCode());
+            if (isset($attributeConfig['append'])) {
+                $append = $attributeConfig['append'];
+            }
         }
 
-        if (!$append) {
-            $data->setValuesData($attribute, $entityValues);
+        if (!$append || !$attribute->isCollection()) {
+            $data->set($attribute->getCode(), $entityValues);
 
             return;
         }
@@ -509,7 +500,7 @@ class EAVDataImporter
      * @param DataInterface      $data
      * @param AttributeInterface $attribute
      * @param mixed              $values
-     * @param bool               $ignoreMissing
+     * @param ImportConfig       $config
      * @param bool               $partialLoad
      *
      * @throws \Exception
@@ -520,16 +511,16 @@ class EAVDataImporter
         DataInterface $data,
         AttributeInterface $attribute,
         $values,
-        $ignoreMissing = false,
+        ImportConfig $config = null,
         $partialLoad = false
     ) {
         if (!$attribute->isCollection()) {
-            return $this->resolveReference($data, $attribute, $values, $ignoreMissing, $partialLoad);
+            return $this->resolveReference($data, $attribute, $values, $config, $partialLoad);
         }
         $resolvedValues = [];
         /** @var array $values */
         foreach ($values as $value) {
-            $entity = $this->resolveReference($data, $attribute, $value, $ignoreMissing, $partialLoad);
+            $entity = $this->resolveReference($data, $attribute, $value, $config, $partialLoad);
             if ($entity) { // Removing empty values: doesn't make sense in a collection.
                 $resolvedValues[] = $entity;
             }
@@ -542,7 +533,7 @@ class EAVDataImporter
      * @param DataInterface      $data
      * @param AttributeInterface $attribute
      * @param string|array       $reference
-     * @param bool               $ignoreMissing
+     * @param ImportConfig       $config
      * @param bool               $partialLoad
      *
      * @throws \Exception
@@ -553,31 +544,33 @@ class EAVDataImporter
         DataInterface $data,
         AttributeInterface $attribute,
         $reference,
-        $ignoreMissing = false,
+        ImportConfig $config,
         $partialLoad = false
     ) {
         if (null === $reference) {
             return null;
         }
 
-        $familyCode = null;
-        if (isset($attribute->getFormOptions()['family'])) {
-            $familyCode = $attribute->getFormOptions()['family'];
-        } elseif ($attribute->getOption('family')) {
-            $familyCode = $attribute->getOption('family');
-        } else {
+        if (empty($attribute->getOption('allowed_families'))) {
             $class = $this->getTargetClass($data->getFamily(), $attribute);
 
             return $this->createEntity($class, $reference); // @todo Not pertinent outside of uploads, use find instead
         }
-        $family = $this->familyConfigurationHandler->getFamily($familyCode);
+
+        $familyCodes = $attribute->getOption('allowed_families');
+        if (1 !== count($familyCodes)) {
+            $e = "Cannot import data for attribute {$attribute->getCode()} with multiple families";
+            throw new \LogicException($e);
+        }
+        reset($familyCodes);
+        $family = $this->familyConfigurationHandler->getFamily(current($familyCodes));
 
         // Case where the reference is actually an embed data
         if (is_array($reference)) {
             return $this->loadData($family, $reference);
         }
 
-        return $this->getEntityByReference($family, $reference, $ignoreMissing, $partialLoad);
+        return $this->getEntityByReference($family, $reference, $config, $partialLoad);
     }
 
     /**

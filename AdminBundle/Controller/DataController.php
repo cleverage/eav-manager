@@ -10,7 +10,6 @@ use Sidus\EAVDataGridBundle\Model\DataGrid;
 use Sidus\EAVModelBundle\Entity\DataInterface;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
 use Symfony\Component\Form\Form;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -22,21 +21,30 @@ class DataController extends AbstractAdminController
     use DataControllerTrait;
 
     /**
-     * @return array
+     * @param Request $request
+     *
      * @throws \Exception
+     *
+     * @return Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        return $this->renderAction();
+        return $this->renderAction(
+            [
+                'admin' => $this->admin,
+            ]
+        );
     }
 
     /**
      * @Security("is_granted('list', family) or is_granted('ROLE_DATA_ADMIN')")
+     *
      * @param FamilyInterface $family
      * @param Request         $request
      *
-     * @return array
      * @throws \Exception
+     *
+     * @return Response
      */
     public function listAction(FamilyInterface $family, Request $request)
     {
@@ -54,23 +62,22 @@ class DataController extends AbstractAdminController
         $this->bindDataGridRequest($dataGrid, $request);
 
         return $this->renderAction(
-            [
-                'datagrid' => $dataGrid,
-                'isAjax' => $request->isXmlHttpRequest(),
-                'family' => $family,
-                'target' => $this->getTarget($request),
-                'baseTemplate' => $this->admin->getBaseTemplate(),
-            ]
+            array_merge(
+                $this->getViewParameters($request),
+                ['datagrid' => $dataGrid]
+            )
         );
     }
 
     /**
      * @Security("is_granted('create', family) or is_granted('ROLE_DATA_ADMIN')")
+     *
      * @param FamilyInterface $family
      * @param Request         $request
      *
-     * @return Response
      * @throws \Exception
+     *
+     * @return Response
      */
     public function createAction(FamilyInterface $family, Request $request)
     {
@@ -85,8 +92,9 @@ class DataController extends AbstractAdminController
      * @param DataInterface   $data
      * @param Request         $request
      *
-     * @return array|RedirectResponse
      * @throws \Exception
+     *
+     * @return Response
      */
     public function editAction(FamilyInterface $family, DataInterface $data, Request $request)
     {
@@ -118,12 +126,14 @@ class DataController extends AbstractAdminController
 
     /**
      * @Security("is_granted('delete', family) or is_granted('ROLE_DATA_ADMIN')")
+     *
      * @param FamilyInterface $family
      * @param DataInterface   $data
      * @param Request         $request
      *
-     * @return array|RedirectResponse
      * @throws \Exception
+     *
+     * @return Response
      */
     public function deleteAction(FamilyInterface $family, DataInterface $data, Request $request)
     {
@@ -139,14 +149,13 @@ class DataController extends AbstractAdminController
 
             if ($request->isXmlHttpRequest()) {
                 return $this->renderAction(
-                    [
-                        'family' => $family,
-                        'dataId' => $dataId,
-                        'isAjax' => 1,
-                        'target' => $request->get('target'),
-                        'success' => 1,
-                        'dataGridCode' => $this->getDataGridConfigCode(),
-                    ]
+                    array_merge(
+                        $this->getViewParameters($request, $form),
+                        [
+                            'dataId' => $dataId,
+                            'success' => 1,
+                        ]
+                    )
                 );
             }
 
@@ -160,35 +169,41 @@ class DataController extends AbstractAdminController
         }
 
         return $this->renderAction(
-            $this->getViewParameters($request, $form, $data) + [
-                'dataId' => $dataId,
-            ]
+            array_merge(
+                $this->getViewParameters($request, $form, $data),
+                [
+                    'dataId' => $dataId,
+                ]
+            )
         );
     }
 
     /**
      * Resolve datagrid code
      *
-     * @return string
      * @throws \UnexpectedValueException
+     *
+     * @return string
      */
     protected function getDataGridConfigCode()
     {
-        // If datagrid code set in options, use it
-        $familyCode = $this->family->getCode();
-        /** @noinspection UnSafeIsSetOverArrayInspection */
-        if (isset($this->admin->getOption('families')[$familyCode]['datagrid'])) {
-            return $this->admin->getOption('families')[$familyCode]['datagrid'];
-        }
+        if ($this->family) {
+            // If datagrid code set in options, use it
+            $familyCode = $this->family->getCode();
+            /** @noinspection UnSafeIsSetOverArrayInspection */
+            if (isset($this->admin->getOption('families')[$familyCode]['datagrid'])) {
+                return $this->admin->getOption('families')[$familyCode]['datagrid'];
+            }
 
-        // Check if family has a datagrid with the same name
-        if ($this->get('sidus_data_grid.datagrid_configuration.handler')->hasDataGrid($familyCode)) {
-            return $familyCode;
-        }
-        // Check in lowercase (this should be deprecated ?)
-        $code = strtolower($familyCode);
-        if ($this->get('sidus_data_grid.datagrid_configuration.handler')->hasDataGrid($code)) {
-            return $code;
+            // Check if family has a datagrid with the same name
+            if ($this->get('sidus_data_grid.datagrid_configuration.handler')->hasDataGrid($familyCode)) {
+                return $familyCode;
+            }
+            // Check in lowercase (this should be deprecated ?)
+            $code = strtolower($familyCode);
+            if ($this->get('sidus_data_grid.datagrid_configuration.handler')->hasDataGrid($code)) {
+                return $code;
+            }
         }
 
         return parent::getDataGridConfigCode();
@@ -212,8 +227,9 @@ class DataController extends AbstractAdminController
      * @param string      $dataId
      * @param Action|null $action
      *
-     * @return array
      * @throws \InvalidArgumentException
+     *
+     * @return array
      */
     protected function getDefaultFormOptions(Request $request, $dataId, Action $action = null)
     {
@@ -239,13 +255,14 @@ class DataController extends AbstractAdminController
      * @param Form          $form
      * @param DataInterface $data
      *
-     * @return array
      * @throws \Exception
+     *
+     * @return array
      */
-    protected function getViewParameters(Request $request, Form $form, $data = null)
+    protected function getViewParameters(Request $request, Form $form = null, $data = null)
     {
         $parameters = parent::getViewParameters($request, $form, $data);
-        if ($data instanceof DataInterface) {
+        if ($this->family) {
             $parameters['family'] = $this->family;
         }
 
@@ -257,7 +274,11 @@ class DataController extends AbstractAdminController
      */
     protected function getAdminListPath($data = null, array $parameters = [])
     {
-        return parent::getAdminListPath($data, array_merge(['familyCode' => $this->family->getCode()], $parameters));
+        if ($this->family) {
+            $parameters = array_merge(['familyCode' => $this->family->getCode()], $parameters);
+        }
+
+        return parent::getAdminListPath($data, $parameters);
     }
 
     /**

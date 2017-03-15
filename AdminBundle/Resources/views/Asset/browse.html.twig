@@ -14,7 +14,7 @@
             <div class="modal-body">
                 {{ utilities.flash_messages() }}
                 {% block datagrid %}
-                    {{ DataGridHelper.render(datagrid, {inputId: inputId, family: family}) }}
+                    {{ DataGridHelper.render(datagrid, {inputId: inputId, family: family, admin: admin}) }}
                 {% endblock %}
             </div>
             <div class="modal-footer">

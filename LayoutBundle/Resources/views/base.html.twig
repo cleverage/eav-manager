@@ -51,8 +51,8 @@ NEVER points to this layout directly !
                     <ul class="nav navbar-nav">
                         {% if is_granted('ROLE_DATA_MANAGER') %}
                             {% for admin in get_admins() %}
-                                {% if admin.code not in ['resource', 'media', 'user', 'group', 'variant'] %}
-                                    {# @var admin \Sidus\AdminBundle\Admin\Admin #}
+                                {# @var admin \Sidus\AdminBundle\Admin\Admin #}
+                                {% if not admin.option('hidden') %}
                                     {% set adminLabel = tryTrans(['admin.'~admin.code~'.title'], [], admin.code|humanize) %}
                                     {{ utilities.admin_menu_icon_link(admin.option('icon'), adminLabel, admin, 'index') }}
                                 {% endif %}

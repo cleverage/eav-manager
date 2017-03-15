@@ -19,7 +19,7 @@ class MediaBrowserType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['family'] = $options['family'];
+        $view->vars['allowed_families'] = $options['allowed_families'];
     }
 
     /**

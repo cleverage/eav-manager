@@ -26,6 +26,7 @@ sidus_admin:
                 editModal:
                     path:     /{familyCode}/browse/{id}/edit/{inputId}
             options:
+                hidden: true
                 families:
                     Image: ~
                     Document: ~
@@ -41,6 +42,8 @@ sidus_admin:
                     path: /
                 delete:
                     path: /{id}/delete
+            options:
+                hidden: true
 
         user:
             controller: CleverAgeEAVManagerAdminBundle:User
@@ -59,6 +62,8 @@ sidus_admin:
                     path:     /{id}/delete
                 resetPassword:
                     path:     /{id}/reset-password
+            options:
+                hidden: true
 
         group:
             controller: CleverAgeEAVManagerAdminBundle:User
@@ -75,6 +80,8 @@ sidus_admin:
                     path:     /{id}/edit
                 delete:
                     path:     /{id}/delete
+            options:
+                hidden: true
 
         variant:
             controller: CleverAgeEAVManagerAdminBundle:Variant
@@ -92,4 +99,24 @@ sidus_admin:
                 delete:
                     path:     /{attribute}/{parentId}/{familyCode}/{id}/delete
             options:
+                hidden: true
                 datagrid: base
+
+        _data:
+            controller: CleverAgeEAVManagerAdminBundle:Data
+            entity: '%sidus_data_class%'
+            prefix: /_data
+            default_form_type: Sidus\EAVBootstrapBundle\Form\Type\TabbedDataType
+            actions:
+                create:
+                    path:     /{familyCode}/create
+                edit:
+                    path:     /{familyCode}/{id}/edit
+                delete:
+                    path:     /{familyCode}/{id}/delete
+                createModal:
+                    path:     /{familyCode}/modal/create/{inputId}
+                editModal:
+                    path:     /{familyCode}/modal/{id}/edit/{inputId}
+            options:
+                hidden: true

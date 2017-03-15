@@ -22,6 +22,7 @@ class CleverAgeEAVManagerEAVModelExtension extends Extension
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config/services'));
         $loader->load('attribute_types.yml');
+        $loader->load('forms.yml');
         $loader->load('services.yml');
         $loader->load('twig.yml');
     }

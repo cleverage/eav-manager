@@ -44,7 +44,7 @@ class AssetController extends DataController
             'family' => $family,
             'target' => $this->getTarget($request),
             'inputId' => $inputId,
-            'baseTemplate' => $this->admin->getBaseTemplate(),
+            'admin' => $this->admin,
         ];
     }
 
@@ -71,7 +71,7 @@ class AssetController extends DataController
             'family' => $family,
             'target' => $this->getTarget($request),
             'inputId' => $inputId,
-            'baseTemplate' => $this->admin->getBaseTemplate(),
+            'admin' => $this->admin,
         ];
     }
 

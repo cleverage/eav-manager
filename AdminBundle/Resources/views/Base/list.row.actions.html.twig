@@ -1,5 +1,6 @@
 {% spaceless %}
     <div class="btn-group btn-group-xs btn-group-nowrap">
+        {% set admin = viewParameters.admin %}
         {% block list_row_actions %}
             {% set link_title = tryTrans([
             'admin.'~admin.code~'.edit.label',

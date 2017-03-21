@@ -76,63 +76,6 @@ class AssetController extends DataController
     }
 
     /**
-     * @Template()
-     * @param FamilyInterface $family
-     * @param Request         $request
-     * @param string          $inputId
-     *
-     * @return Response
-     * @throws \Exception
-     */
-    public function createModalAction(FamilyInterface $family, Request $request, $inputId)
-    {
-        /** @var DataInterface $data */
-        $data = $family->createData();
-
-        return $this->editModalAction($family, $data, $request, $inputId);
-    }
-
-    /**
-     * @Security("is_granted('edit', family) or is_granted('ROLE_DATA_ADMIN')")
-     * @Template()
-     * @param FamilyInterface $family
-     * @param DataInterface   $data
-     * @param Request         $request
-     * @param string          $inputId
-     *
-     * @return array|RedirectResponse
-     * @throws \Exception
-     */
-    public function editModalAction(FamilyInterface $family, DataInterface $data, Request $request, $inputId)
-    {
-        $this->initDataFamily($family, $data);
-
-        $form = $this->getForm($request, $data);
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->saveEntity($data);
-
-            $parameters = [
-                'familyCode' => $family->getCode(),
-                'inputId' => $inputId,
-                'success' => 1,
-            ];
-            if ($request->get('target')) {
-                $parameters['target'] = $request->get('target');
-            }
-
-            return $this->redirectToAdmin($this->admin->getCode(), 'browse', $parameters);
-        }
-
-        return $this->renderAction(
-            $this->getViewParameters($request, $form, $data) + [
-                'inputId' => $inputId,
-            ]
-        );
-    }
-
-    /**
      * @return string
      * @throws \UnexpectedValueException
      */

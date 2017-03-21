@@ -12,7 +12,7 @@ sidus_eav_data_grid:
                 id:
                     label: '#'
                 label:
-                    template: CleverAgeEAVManagerAdminBundle:Base:clickable.column.html.twig
+                    template: CleverAgeEAVManagerAdminBundle:Base:partials/clickable.column.html.twig
                 createdAt: ~
                 updatedAt: ~
                 actions:
@@ -48,7 +48,7 @@ sidus_eav_data_grid:
                 id:
                     label: '#'
                 title:
-                    template: CleverAgeEAVManagerAdminBundle:Base:clickable.column.html.twig
+                    template: CleverAgeEAVManagerAdminBundle:Base:partials/clickable.column.html.twig
                 fileSize: ~
                 mimeType: ~
                 fileName: ~
@@ -75,7 +75,7 @@ sidus_eav_data_grid:
                 imageFile:
                     template: CleverAgeEAVManagerAdminBundle:Asset:browse.thumbnail.html.twig
                 title:
-                    template: CleverAgeEAVManagerAdminBundle:Base:clickable.column.html.twig
+                    template: CleverAgeEAVManagerAdminBundle:Base:partials/clickable.column.html.twig
                 tags: ~
                 mimeType: ~
                 filename:

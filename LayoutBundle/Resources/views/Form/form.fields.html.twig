@@ -101,7 +101,7 @@
     {% endspaceless %}
 {% endblock form_errors %}
 
-{% use '@CleverAgeEAVManagerAdmin/Asset/media.preview.html.twig' %}
+{% use '@CleverAgeEAVManagerAdmin/Asset/partials/media.preview.html.twig' %}
 {% block eavmanager_media_browser_widget %}
     <div class="media-browser">
         <input type="hidden" name="{{ full_name }}"
@@ -165,15 +165,15 @@
 
 {% block sidus_simple_data_selector_widget %}
     {% if allow_add %}
-        <div class="row">
-            <div class="col-lg-10">
-                {{ form_widget(form) }}
-            </div>
-            <div class="col-lg-2">
-                {#<a href="{{ admin_path(admin, action, {familyCode: }) }}" class="btn btn-default">#}
-                    {#<i class="fa fa-plus"></i> Create#}
-                {#</a>#}
-            </div>
+        <div class="input-group">
+            {{ form_widget(form) }}
+            {% if allowed_families|length == 1 %}
+                {% set family = allowed_families|first %}
+                <a href="{{ admin_path(admin, action, {familyCode: family.code, inputId: id}) }}"
+                   class="input-group-addon btn btn-default" data-target-element="{{ target }}">
+                    <i class="fa fa-plus"></i> Create
+                </a>
+            {% endif %}
         </div>
     {% else %}
         {{ form_widget(form) }}

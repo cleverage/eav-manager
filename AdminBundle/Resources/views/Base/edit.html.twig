@@ -10,31 +10,19 @@
     {% form_theme form 'CleverAgeEAVManagerLayoutBundle:Form:ajax_theme.html.twig' %}
 {% endif %}
 
+{% set isModal = isAjax and target is defined and target == '#tg_modal' %}
+
+{% block flash_messages %}
+    {% if not isModal %}{{ utilities.flash_messages() }}{% endif %}
+{% endblock %}
+
 {% block tg_center %}
-    <div class="edit-form {% block edit_form_class %}{% endblock %}">
-        {{ form_start(form) }}
-        {% block form_actions %}
-            <div class="btn-group pull-right">
-                <a href="{{ listPath }}" {% if isAjax %}data-close-target="{{ target }}"{% endif %}
-                   class="btn btn-default">
-                    {% if isAjax %}
-                        {{ tryTrans([admin_trans_key ~ 'close.label', 'admin.action.close.label'], [], 'Close') }}
-                    {% else %}
-                        {{ tryTrans([admin_trans_key ~ 'back.label', 'admin.action.back.label'], [], 'Back') }}
-                    {% endif %}
-                </a>
-                {% block submit_button %}
-                    <button type="submit" class="btn btn-primary">
-                        {{ tryTrans([admin_trans_key ~ 'submit.label', 'admin.action.submit.label'], [], 'Submit') }}
-                    </button>
-                {% endblock %}
-            </div>
-            <div class="clear"></div>
-        {% endblock %}
-        {{ form_widget(form) }}
-        {{ block('form_actions') }}
-        {{ form_end(form) }}
-    </div>
+    {% use '@CleverAgeEAVManagerAdmin/Base/partials/edit.blocks.html.twig' %}
+    {% if isModal %}
+        {{ block('edit_modal') }}
+    {% else %}
+        {{ block('edit_standard') }}
+    {% endif %}
 {% endblock %}
 
 {% block additionnal_javascript %}

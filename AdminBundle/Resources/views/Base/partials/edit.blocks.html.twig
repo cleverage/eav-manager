@@ -1,0 +1,55 @@
+{% block edit_form_class %}{% endblock %}
+
+{% block form_actions %}
+    <div class="btn-group pull-right">
+        {% if listPath is defined and listPath %}
+            <a href="{{ listPath }}" {% if isAjax %}data-close-target="{{ target }}"{% endif %}
+               class="btn btn-default">
+                {% if isAjax %}
+                    {{ tryTrans([admin_trans_key ~ 'close.label', 'admin.action.close.label'], [], 'Close') }}
+                {% else %}
+                    {{ tryTrans([admin_trans_key ~ 'back.label', 'admin.action.back.label'], [], 'Back') }}
+                {% endif %}
+            </a>
+        {% elseif isAjax %}
+            <a href="#" data-close-target="{{ target }}" class="btn btn-default">
+                {{ tryTrans([admin_trans_key ~ 'close.label', 'admin.action.close.label'], [], 'Close') }}
+            </a>
+        {% endif %}
+        {% block submit_button %}
+            <button type="submit" class="btn btn-primary">
+                {{ tryTrans([admin_trans_key ~ 'submit.label', 'admin.action.submit.label'], [], 'Submit') }}
+            </button>
+        {% endblock %}
+    </div>
+    <div class="clear"></div>
+{% endblock %}
+
+{% block edit_standard %}
+    <div class="edit-form {{ block('edit_form_class') }}">
+        {{ form_start(form) }}
+        {{ block('form_actions') }}
+        {{ form_widget(form) }}
+        {{ block('form_actions') }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+
+{% block edit_modal %}
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            {% import "CleverAgeEAVManagerLayoutBundle:Macros:utilities.html.twig" as utilities %}
+            {{ utilities.flash_messages() }}
+            {{ form_start(form) }}
+            <div class="modal-body">
+                <div class="edit-form {{ block('edit_form_class') }}">
+                    {{ form_widget(form) }}
+                </div>
+            </div>
+            <div class="modal-footer">
+                {{ block('form_actions') }}
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

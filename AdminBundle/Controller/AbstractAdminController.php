@@ -91,6 +91,10 @@ abstract class AbstractAdminController extends BaseAdminController
      */
     protected function getAdminListPath($data = null, array $parameters = [])
     {
+        if (!$this->admin->hasAction('list')) {
+            return null;
+        }
+
         /** @var AdminRouter $adminRouter */
         $adminRouter = $this->get('sidus_admin.routing.admin_router');
 

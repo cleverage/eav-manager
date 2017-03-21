@@ -88,6 +88,8 @@ class DataController extends AbstractAdminController
     }
 
     /**
+     * Security check is done manually in the code : handles the
+     *
      * @param FamilyInterface $family
      * @param DataInterface   $data
      * @param Request         $request
@@ -101,7 +103,9 @@ class DataController extends AbstractAdminController
         $this->initDataFamily($family, $data);
 
         $options = [];
-        if (!$this->isGranted('edit', $family) && !$this->isGranted('ROLE_DATA_ADMIN')) {
+        if ($this->admin->getCurrentAction() === 'edit' && !$this->isGranted('edit', $family)
+            && !$this->isGranted('ROLE_DATA_ADMIN')
+        ) {
             $options['disabled'] = true;
         }
 
@@ -111,9 +115,7 @@ class DataController extends AbstractAdminController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->saveEntity($data);
 
-            $parameters = [
-                'success' => 1,
-            ];
+            $parameters = ['success' => 1];
             if ($request->get('target')) {
                 $parameters['target'] = $request->get('target');
             }
@@ -159,13 +161,7 @@ class DataController extends AbstractAdminController
                 );
             }
 
-            return $this->redirectToAdmin(
-                $this->admin,
-                'list',
-                [
-                    'familyCode' => $family->getCode(),
-                ]
-            );
+            return $this->redirect($this->getAdminListPath());
         }
 
         return $this->renderAction(

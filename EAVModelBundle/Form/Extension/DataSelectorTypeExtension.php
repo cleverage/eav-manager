@@ -19,8 +19,10 @@ class DataSelectorTypeExtension extends AbstractTypeExtension
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['allow_add'] = $options['allow_add'];
+        $view->vars['allowed_families'] = $options['allowed_families'];
         $view->vars['admin'] = $options['admin'];
         $view->vars['action'] = $options['action'];
+        $view->vars['target'] = $options['target'];
     }
 
     /**
@@ -34,6 +36,7 @@ class DataSelectorTypeExtension extends AbstractTypeExtension
             'allow_add' => false,
             'admin' => '_data',
             'action' => 'create',
+            'target' => '#tg_modal',
         ]);
     }
 

@@ -11,9 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @method string generateUrl($route, $parameters = [], $referenceType)
  * @method Registry getDoctrine
- * @method User getUser
- * @method addFlash($key, $message)
- * @method redirect($url, $status)
  * @property ContainerInterface $container
  */
 trait BaseControllerTrait

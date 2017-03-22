@@ -40,6 +40,9 @@ function bindGlobalEvents(target) {
      * Binds all required events when loading ajax content
      */
     $(document).on('complete.ajaxloading', '.autoload', function(e) {
+        if (e.target !== this) {
+            return;
+        }
         bindGlobalEvents(e.target);
     });
 

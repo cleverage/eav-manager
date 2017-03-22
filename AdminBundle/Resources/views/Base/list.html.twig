@@ -6,10 +6,14 @@
 
 {% set admin_trans_key = 'admin.' ~ admin.code ~ '.' ~ admin.currentAction.code ~ '.' %}
 
+{% use '@CleverAgeEAVManagerAdmin/Base/partials/list.blocks.html.twig' %}
+
 {% block tg_center %}
-    <h3>{{ tryTrans([admin_trans_key ~ '.title', 'admin.list_of'], {'%family%': admin.code|humanize}) }}</h3>
-    <hr>
-    {% block datagrid %}
-        {{ DataGridHelper.render(datagrid, {admin: admin}) }}
-    {% endblock %}
+    {% if isModal %}
+        {{ block('list_modal') }}
+    {% else %}
+        <h3>{{ block('list_title') }}</h3>
+        <hr>
+        {{ block('datagrid') }}
+    {% endif %}
 {% endblock %}

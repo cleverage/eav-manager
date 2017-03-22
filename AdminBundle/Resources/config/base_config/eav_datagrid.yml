@@ -16,7 +16,7 @@ sidus_eav_data_grid:
                 createdAt: ~
                 updatedAt: ~
                 actions:
-                    template: CleverAgeEAVManagerAdminBundle:Data:list.row.actions.html.twig
+                    template: CleverAgeEAVManagerAdminBundle:Data:partials/list.row.actions.html.twig
             actions:
                 create:
                     form_type: CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink
@@ -53,7 +53,7 @@ sidus_eav_data_grid:
                 mimeType: ~
                 fileName: ~
                 actions:
-                    template: CleverAgeEAVManagerAdminBundle:Data:list.row.actions.html.twig
+                    template: CleverAgeEAVManagerAdminBundle:Data:partials/list.row.actions.html.twig
 
         image:
             family: Image
@@ -73,7 +73,7 @@ sidus_eav_data_grid:
                 id:
                     label: '#'
                 imageFile:
-                    template: CleverAgeEAVManagerAdminBundle:Asset:browse.thumbnail.html.twig
+                    template: CleverAgeEAVManagerAdminBundle:Asset:partials/browse.thumbnail.html.twig
                 title:
                     template: CleverAgeEAVManagerAdminBundle:Base:partials/clickable.column.html.twig
                 tags: ~
@@ -81,7 +81,7 @@ sidus_eav_data_grid:
                 filename:
                     property_path: imageFile.originalFilename
                 actions:
-                    template: CleverAgeEAVManagerAdminBundle:Data:list.row.actions.html.twig
+                    template: CleverAgeEAVManagerAdminBundle:Data:partials/list.row.actions.html.twig
 
         image_browser:
             family: Image
@@ -97,11 +97,11 @@ sidus_eav_data_grid:
                 id:
                     label: '#'
                 imageFile:
-                    template: CleverAgeEAVManagerAdminBundle:Asset:browse.thumbnail.html.twig
+                    template: CleverAgeEAVManagerAdminBundle:Asset:partials/browse.thumbnail.html.twig
                 title:
-                    template: CleverAgeEAVManagerAdminBundle:Asset:browse.row.label.html.twig
+                    template: CleverAgeEAVManagerAdminBundle:Asset:partials/browse.row.label.html.twig
                 actions:
-                    template: CleverAgeEAVManagerAdminBundle:Asset:browse.row.actions.html.twig
+                    template: CleverAgeEAVManagerAdminBundle:Asset:partials/browse.row.actions.html.twig
             actions:
                 create:
                     form_type: CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink

@@ -33,7 +33,7 @@
                 if (typeof $ != 'undefined') {
                     var t = $('{{ target }}');
                     t.html('');
-                    {% if target == '#tg_modal' %}
+                    {% if isModal %}
                     t.modal('hide');
                     {% endif %}
                 }

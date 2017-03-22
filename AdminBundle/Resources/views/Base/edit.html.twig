@@ -10,8 +10,6 @@
     {% form_theme form 'CleverAgeEAVManagerLayoutBundle:Form:ajax_theme.html.twig' %}
 {% endif %}
 
-{% set isModal = isAjax and target is defined and target == '#tg_modal' %}
-
 {% block flash_messages %}
     {% if not isModal %}{{ utilities.flash_messages() }}{% endif %}
 {% endblock %}
@@ -31,4 +29,28 @@
         {{ utilities.update_datagrid_active_row(dataGridCode, data, data ? data.id, success, target) }}
     {% endif %}
     {{ utilities.lock_form(form.vars.attr.id, target) }}
+
+    {% if data and success|default(false) and app.request.get('inputId') %}
+        <script>
+            // Launched only when inputId is set
+            if (typeof $ != 'undefined') {
+                var inputId = '{{ app.request.get('inputId')|escape('js') }}';
+                var dataId = '{{ data.id|escape('js') }}';
+                var dataLabel = '{{ data|escape('js') }}';
+                var isModal = {{ isModal ? 'true' : 'false' }};
+                var target = '{{ target|escape('js') }}';
+
+                var $input = $('#' + inputId);
+                if ($input.length) {
+                    if ($input.is('select') && 0 == $input.find('option[value="' + dataId + '"]').length) {
+                        $input.append($('<option>', {value: dataId}).text(dataLabel));
+                    }
+                    $input.val(dataId);
+                }
+                if (isModal && target) {
+                    $(target).html('').modal('hide');
+                }
+            }
+        </script>
+    {% endif %}
 {% endblock %}

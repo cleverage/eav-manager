@@ -96,7 +96,11 @@ Locks the form attached to the modified input
         if (typeof $ != 'undefined') {
             {% if inputId %}
             // Lock navigation if form is updated
-            lockNavigationOnChange('#{{ inputId }}', '{{ 'form.abandon_changes.confirmation'|trans }}'{% if target %}, '{{ target }}'{% endif %});
+            lockNavigationOnChange(
+                    '#{{ inputId }}',
+                    '{{ 'form.abandon_changes.confirmation'|trans|escape('js') }}'
+                    {% if target %}, '{{ target|escape('js') }}'{% endif %}
+            );
             {% endif %}
         }
     </script>

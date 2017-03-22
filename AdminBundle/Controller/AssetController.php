@@ -2,16 +2,11 @@
 
 namespace CleverAge\EAVManager\AdminBundle\Controller;
 
-use CleverAge\EAVManager\AssetBundle\Entity\Document;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sidus\AdminBundle\Routing\AdminRouter;
 use Sidus\DataGridBundle\Model\DataGrid;
-use Sidus\EAVModelBundle\Entity\DataInterface;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Used to browse assets inside media selectors

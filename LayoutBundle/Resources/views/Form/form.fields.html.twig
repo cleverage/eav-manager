@@ -128,8 +128,8 @@
             </div>
         {% endif %}
         <div class="pull-left media-preview">
-            {% if data %}
-                {% set result = data %}
+            {% if eavData %}
+                {% set result = eavData %}
                 {{ block('media_preview') }}
             {% endif %}
         </div>
@@ -169,8 +169,9 @@
             {{ form_widget(form) }}
             {% if allowed_families|length == 1 %}
                 {% set family = allowed_families|first %}
-                <a href="{{ admin_path(admin, action, {familyCode: family.code, inputId: id}) }}"
-                   class="input-group-addon btn btn-default" data-target-element="{{ target }}">
+                <a href="{{ admin_path(admin, action, {familyCode: family.code, inputId: id, modal: 1}) }}"
+                   class="input-group-addon btn btn-default" data-target-element="#{{ target }}"
+                   data-auto-modal="{{ target }}">
                     <i class="fa fa-plus"></i> Create
                 </a>
             {% endif %}

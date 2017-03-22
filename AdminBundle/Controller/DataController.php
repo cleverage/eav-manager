@@ -115,10 +115,8 @@ class DataController extends AbstractAdminController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->saveEntity($data);
 
-            $parameters = ['success' => 1];
-            if ($request->get('target')) {
-                $parameters['target'] = $request->get('target');
-            }
+            $parameters = $request->query->all();
+            $parameters['success'] = 1;
 
             return $this->redirectToEntity($data, 'edit', $parameters);
         }

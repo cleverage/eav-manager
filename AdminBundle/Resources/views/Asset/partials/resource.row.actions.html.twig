@@ -2,7 +2,7 @@
     <div class="btn-group btn-group-xs btn-group-nowrap">
         {% block list_row_actions %}
             {% set link_title = tryTrans([
-            'admin.'~admin.code~'.delete.label',
+            'admin.'~viewParameters.admin.code~'.delete.label',
             'admin.action.delete.label',
             ], [], 'Delete') %}
             <a href="{{ entity_path(result, 'delete') }}"

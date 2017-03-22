@@ -51,7 +51,7 @@ function ajaxLoading($, el, e) {
         $(target).trigger(event);
     });
 
-    if (event.isPropagationStopped()) {
+    if (event.isDefaultPrevented()) {
         return;
     }
 
@@ -96,7 +96,7 @@ function ajaxLoading($, el, e) {
             }
         }
 
-        if (event.isPropagationStopped()) {
+        if (event.isDefaultPrevented()) {
             return;
         }
         if (e) {
@@ -122,7 +122,7 @@ function ajaxLoading($, el, e) {
             }
         }
 
-        if (event.isPropagationStopped()) {
+        if (event.isDefaultPrevented()) {
             return;
         }
 
@@ -152,10 +152,16 @@ window.onpopstate = function () {
     "use strict"; // jshint ;_;
 
     $(document).on('click', '[data-target-element]:not(form)', function (e) {
+        if (e.target !== this) { // Prevent error bubbling
+            return;
+        }
         ajaxLoading($, $(this), e);
     });
 
     $(document).on('submit', 'form[data-target-element]', function (e) {
+        if (e.target !== this) { // Prevent error bubbling
+            return;
+        }
         ajaxLoading($, $(this), e);
     });
 

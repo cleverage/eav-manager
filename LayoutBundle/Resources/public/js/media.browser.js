@@ -11,7 +11,6 @@
         var b = getMediaWidget(target);
         b.find('input[type="hidden"]').val(mediaId);
         b.find('.media-preview').html(imageHtml);
-        $('#tg_modal').html('').modal('hide');
     }
 
     /**
@@ -29,6 +28,7 @@
      */
     $(document).on('click', '.media-detach', function (e) {
         detachMedia($(this));
+
         e.preventDefault();
         e.stopPropagation();
     });
@@ -41,7 +41,10 @@
         var inputId = t.data('input-id');
         var mediaId = t.data('media-id');
         var imageHtml = t.data('media-preview');
+
         selectMedia($('#' + inputId), mediaId, imageHtml);
+        t.closest('.modal').html('').modal('hide');
+
         e.preventDefault();
         e.stopPropagation();
     });

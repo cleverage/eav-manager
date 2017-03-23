@@ -12,10 +12,6 @@ admin:
         edit:
             label: Edit
             title: Edit
-        browseThumbnail:
-            label: Thumbnail view
-        browse:
-            label: List view
         back:
             label: Back
         close:

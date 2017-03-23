@@ -14,4 +14,20 @@
         $(document.body).append(modal);
     });
 
+    function resolveCurrentModal(e) {
+        if (e.target !== this) { // Prevent error bubbling
+            return;
+        }
+        var t = $(this);
+        if (t.data('target-element') == '_CURRENT_MODAL') {
+            var currentModal = t.closest('.modal');
+            if (currentModal.length && currentModal.attr('id')) {
+                t.data('target-element', currentModal.attr('id'));
+            }
+        }
+    }
+
+    $(document).on('click', '[data-target-element]:not(form)', resolveCurrentModal);
+    $(document).on('submit', 'form[data-target-element]', resolveCurrentModal);
+
 }(window.jQuery);

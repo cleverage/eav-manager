@@ -40,7 +40,8 @@ function ajaxLoading($, el, e) {
     var event = jQuery.Event('before.ajaxloading', {
         relatedTarget: el,
         url: url,
-        parentEvent: e
+        parentEvent: e,
+        redirectFallback: true
     });
 
     // Iterate over each $targets
@@ -90,7 +91,7 @@ function ajaxLoading($, el, e) {
                 $(target).trigger(event);
             });
         } catch (error) {
-            if ($el.is('a')) {
+            if ($el.is('a') && event.redirectFallback) {
                 // Redirect to real URL on uncaught exceptions for link elements
                 window.location.href = event.url;
             }
@@ -116,7 +117,7 @@ function ajaxLoading($, el, e) {
                 $(target).trigger(event);
             });
         } catch (newError) {
-            if ($el.is('a')) {
+            if ($el.is('a') && event.redirectFallback) {
                 // Redirect to real URL on uncaught exceptions for link elements
                 window.location.href = event.url;
             }
@@ -126,7 +127,7 @@ function ajaxLoading($, el, e) {
             return;
         }
 
-        if ($el.is('a')) {
+        if ($el.is('a') && event.redirectFallback) {
             // Redirect to real URL on uncaught exceptions for link elements
             window.location.href = event.url;
         }

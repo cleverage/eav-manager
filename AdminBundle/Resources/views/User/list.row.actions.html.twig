@@ -6,7 +6,7 @@
         'admin.'~admin.code~'.resetPassword.label',
         'admin.action.resetPassword.label',
         ], [], 'Reset Password') %}
-        <a href="{{ entity_path(result, 'resetPassword') }}"
+        <a href="{{ admin_entity_path(viewParameters.admin, result, 'resetPassword') }}"
            class="btn btn-warning" data-target-element="#tg_right" title="{{ link_title }}">
             <i class="fa fa-unlock"></i>
         </a>

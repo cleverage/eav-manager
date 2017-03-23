@@ -106,49 +106,11 @@ sidus_eav_data_grid:
                 create:
                     form_type: CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink
                     label: admin.action.create.label
-                    action: createModal
+                    action: create
                     icon: plus
                     attr:
                         class: btn-primary
-                        data-target-element: "#tg_modal"
-                browseThumbnail:
-                    form_type: CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink
-                    label: admin.action.browseThumbnail.label
-                    action: browseThumbnail
-                    icon: th
-                    attr:
-                        class: btn-default
-                        data-target-element: "#tg_modal"
+                        data-target-element: "_CURRENT_MODAL"
             reset_button:
                 attr:
-                    data-target-element: "#tg_modal"
-
-        thumbnail_browser:
-            family: Image
-            filter_config:
-                results_per_page: 18
-                sortable: []
-                fields:
-                    title: ~
-                    tags: ~
-            columns: {}
-            actions:
-                create:
-                    form_type: CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink
-                    label: admin.action.create.label
-                    action: createModal
-                    icon: plus
-                    attr:
-                        class: btn-primary
-                        data-target-element: "#tg_modal"
-                browse:
-                    form_type: CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink
-                    label: admin.action.browse.label
-                    action: browse
-                    icon: list
-                    attr:
-                        class: btn-default
-                        data-target-element: "#tg_modal"
-            reset_button:
-                attr:
-                    data-target-element: "#tg_modal"
+                    data-target-element: "_CURRENT_MODAL"

@@ -31,6 +31,7 @@
             } else {
                 e.url += '&modal=1';
             }
+            e.redirectFallback = false;
         }
 
         var $el = $(e.relatedTarget);

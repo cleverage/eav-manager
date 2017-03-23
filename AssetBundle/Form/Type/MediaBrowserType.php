@@ -13,16 +13,6 @@ use Symfony\Component\Form\FormView;
 class MediaBrowserType extends AbstractType
 {
     /**
-     * @param FormView      $view
-     * @param FormInterface $form
-     * @param array         $options
-     */
-    public function buildView(FormView $view, FormInterface $form, array $options)
-    {
-        $view->vars['allowed_families'] = $options['allowed_families'];
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getBlockPrefix()

@@ -1,12 +1,13 @@
 {% set baseTemplate = baseTemplate|default('CleverAgeEAVManagerAdminBundle:Data:index.html.twig') %}
 {% extends 'CleverAgeEAVManagerAdminBundle:Base:list.html.twig' %}
 
-{% import "@SidusDataGrid/DataGrid/datagrid.html.twig" as DataGridHelper %}
-
 {% block tg_center %}
-    <h3>{{ tryTrans([admin_trans_key ~ '.title', 'admin.list_of'], {'%family%': family|trim}) }}</h3>
-    <hr>
-    {% block datagrid %}
-        {{ DataGridHelper.render(datagrid, {family: family, admin: admin}) }}
-    {% endblock %}
+    {% use '@CleverAgeEAVManagerAdmin/Data/partials/list.blocks.html.twig' %}
+    {% if isModal %}
+        {{ block('list_modal') }}
+    {% else %}
+        <h3>{{ block('list_title') }}</h3>
+        <hr>
+        {{ block('datagrid') }}
+    {% endif %}
 {% endblock %}

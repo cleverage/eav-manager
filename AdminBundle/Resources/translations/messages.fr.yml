@@ -12,10 +12,6 @@ admin:
         edit:
             label: Modifier
             title: Modification
-        browseThumbnail:
-            label: Vue compacte
-        browse:
-            label: Vue en liste
         back:
             label: Retour
         close:

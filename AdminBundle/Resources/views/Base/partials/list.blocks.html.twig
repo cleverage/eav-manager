@@ -1,8 +1,5 @@
-{% block datagrid %}
-    {{ DataGridHelper.render(datagrid, {admin: admin}) }}
-{% endblock %}
-
 {% block list_modal %}
+    {% import "CleverAgeEAVManagerLayoutBundle:Macros:utilities.html.twig" as utilities %}
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -20,6 +17,11 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block datagrid %}
+    {% import "SidusDataGridBundle:DataGrid:datagrid.html.twig" as DataGridHelper %}
+    {{ DataGridHelper.render(datagrid, {admin: admin}) }}
 {% endblock %}
 
 {% block list_title %}

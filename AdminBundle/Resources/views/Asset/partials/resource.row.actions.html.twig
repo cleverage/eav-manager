@@ -5,7 +5,7 @@
             'admin.'~viewParameters.admin.code~'.delete.label',
             'admin.action.delete.label',
             ], [], 'Delete') %}
-            <a href="{{ entity_path(result, 'delete') }}"
+            <a href="{{ admin_entity_path(viewParameters.admin, result, 'delete') }}"
                class="btn btn-danger" data-target-element="#tg_right" title="{{ link_title }}">
                 <i class="fa fa-remove"></i>
             </a>

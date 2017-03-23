@@ -2,13 +2,10 @@
 {% extends isAjax ? 'CleverAgeEAVManagerLayoutBundle::empty_layout.html.twig'
 : baseTemplate|default('CleverAgeEAVManagerLayoutBundle::layout.html.twig') %}
 
-{% import "SidusDataGridBundle:DataGrid:datagrid.html.twig" as DataGridHelper %}
-
 {% set admin_trans_key = 'admin.' ~ admin.code ~ '.' ~ admin.currentAction.code ~ '.' %}
 
-{% use '@CleverAgeEAVManagerAdmin/Base/partials/list.blocks.html.twig' %}
-
 {% block tg_center %}
+    {% use '@CleverAgeEAVManagerAdmin/Base/partials/list.blocks.html.twig' %}
     {% if isModal %}
         {{ block('list_modal') }}
     {% else %}

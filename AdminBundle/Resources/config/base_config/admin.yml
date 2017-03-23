@@ -2,7 +2,7 @@ sidus_admin:
     fallback_template: CleverAgeEAVManagerAdminBundle:Base
     configurations:
         media:
-            controller: CleverAgeEAVManagerAdminBundle:Asset
+            controller: CleverAgeEAVManagerAdminBundle:Data
             entity: '%sidus_data_class%'
             prefix: /medias
             default_form_type: Sidus\EAVBootstrapBundle\Form\Type\TabbedDataType
@@ -17,19 +17,33 @@ sidus_admin:
                     path:     /{familyCode}/{id}/edit
                 delete:
                     path:     /{familyCode}/{id}/delete
-                browse:
-                    path:     /{familyCode}/browse/{inputId}
-                browseThumbnail:
-                    path:     /{familyCode}/browseThumbnail/{inputId}
-                createModal:
-                    path:     /{familyCode}/browse/create/{inputId}
-                editModal:
-                    path:     /{familyCode}/browse/{id}/edit/{inputId}
             options:
                 hidden: true
                 families:
                     Image: ~
                     Document: ~
+
+        media_browser:
+            controller: CleverAgeEAVManagerAdminBundle:Data
+            entity: '%sidus_data_class%'
+            prefix: /medias_browser
+            default_form_type: Sidus\EAVBootstrapBundle\Form\Type\TabbedDataType
+            actions:
+                list:
+                    path:     /{familyCode}/list
+                create:
+                    path:     /{familyCode}/create
+                edit:
+                    path:     /{familyCode}/{id}/edit
+                delete:
+                    path:     /{familyCode}/{id}/delete
+            options:
+                hidden: true
+                families:
+                    Image:
+                        datagrid: image_browser
+                    Document:
+                        datagrid: document_browser
 
         resource:
             controller: CleverAgeEAVManagerAdminBundle:GenericAdmin
@@ -114,9 +128,5 @@ sidus_admin:
                     path:     /{familyCode}/{id}/edit
                 delete:
                     path:     /{familyCode}/{id}/delete
-                createModal:
-                    path:     /{familyCode}/modal/create/{inputId}
-                editModal:
-                    path:     /{familyCode}/modal/{id}/edit/{inputId}
             options:
                 hidden: true

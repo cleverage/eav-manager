@@ -6,7 +6,7 @@
             'admin.'~admin.code~'.edit.label',
             'admin.action.edit.label',
             ], [], 'Edit') %}
-            <a href="{{ entity_path(result, 'edit') }}"
+            <a href="{{ admin_entity_path(admin, result, 'edit') }}"
                class="btn btn-primary" data-target-element="#tg_right" title="{{ link_title }}">
                 <i class="fa fa-edit"></i>
             </a>
@@ -14,7 +14,7 @@
             'admin.'~admin.code~'.delete.label',
             'admin.action.delete.label',
             ], [], 'Delete') %}
-            <a href="{{ entity_path(result, 'delete') }}"
+            <a href="{{ admin_entity_path(admin, result, 'delete') }}"
                class="btn btn-danger" data-target-element="#tg_right" title="{{ link_title }}">
                 <i class="fa fa-remove"></i>
             </a>

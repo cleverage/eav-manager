@@ -152,3 +152,33 @@ sidus_eav_data_grid:
             reset_button:
                 attr:
                     data-target: tg_modal
+
+        document_browser:
+            family: Document
+            filter_config:
+                results_per_page: 5
+                sortable:
+                    - id
+                    - title
+                fields:
+                    title: ~
+                    tags: ~
+            columns:
+                id:
+                    label: "#"
+                title:
+                    template: "CleverAgeEAVManagerAdminBundle:Asset:browse.row.label.html.twig"
+                actions:
+                    template: "CleverAgeEAVManagerAdminBundle:Asset:browse.row.actions.html.twig"
+            actions:
+                create:
+                    form_type: admin_link
+                    label: admin.action.create.label
+                    action: createModal
+                    icon: plus
+                    attr:
+                        class: btn-primary
+                        data-target: tg_modal
+            reset_button:
+                attr:
+                    data-target: tg_modal

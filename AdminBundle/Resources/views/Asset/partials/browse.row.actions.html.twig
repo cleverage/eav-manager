@@ -7,15 +7,15 @@
             'admin.'~viewParameters.admin.code~'.edit.label',
             'admin.action.edit.label',
             ], [], 'Edit') %}
-            <a href="{{ admin_entity_path(viewParameters.admin, result, 'edit', app.request.query.all) }}"
-               class="btn btn-default" data-target-element="_CURRENT_MODAL" title="{{ link_title }}">
+            <a href="{{ admin_entity_path(viewParameters.admin, result, 'edit') }}"
+               class="btn btn-default" data-target-element="_CURRENT_MODAL"
+               title="{{ link_title|escape('html_attr') }}">
                 <i class="fa fa-edit"></i>
             </a>
         {% endif %}
-        <a href="#" class="btn btn-info media-select" data-input-id="{{ app.request.query.get('inputId') }}"
-           data-media-id="{{ result.id }}"
+        <a href="#" class="btn btn-info media-select" data-media-id="{{ result.id }}"
            data-media-preview="{{ block('media_preview')|escape('html_attr') }}"
-           title="{{ 'admin.media.select.title' | trans }}">
+           title="{{ 'admin.media.select.title'|trans|escape('html_attr') }}">
             <i class="fa fa-thumb-tack"></i>
         </a>
     </div>

@@ -116,9 +116,9 @@
             <div class="pull-left btn-group-vertical">
                 {% for family in allowed_families %}
                     {% set title = 'admin.media.select.label' | trans({'%family%': family.label}) %}
-                    <a data-href="{{ admin_path('media_browser', 'list', {familyCode: family.code, inputId: id}) }}"
-                       type="button" class="btn btn-primary" data-target-element="#{{ target }}"
-                       data-auto-modal="{{ target }}" title="{{ title }}">
+                    <a data-href="{{ admin_path('media_browser', 'list', {familyCode: family.code}) }}"
+                       type="button" class="btn btn-primary" title="{{ title }}" data-auto-modal="{{ target }}"
+                       data-media-input-id="{{ id }}" data-target-element="#{{ target }}">
                         <i class="fa fa-image"></i> {{ title }}
                     </a>
                 {% endfor %}
@@ -169,9 +169,9 @@
             {{ form_widget(form) }}
             {% if allowed_families|length == 1 %}
                 {% set family = allowed_families|first %}
-                <a href="{{ admin_path(admin, action, {familyCode: family.code, inputId: id, modal: 1}) }}"
+                <a href="{{ admin_path(admin, action, {familyCode: family.code}) }}"
                    class="input-group-addon btn btn-default" data-target-element="#{{ target }}"
-                   data-auto-modal="{{ target }}">
+                   data-auto-modal="{{ target }}" data-input-id="{{ id }}">
                     <i class="fa fa-plus"></i> Create
                 </a>
             {% endif %}

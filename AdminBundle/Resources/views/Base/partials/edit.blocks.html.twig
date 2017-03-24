@@ -1,14 +1,16 @@
 {% block edit_form_class %}{% endblock %}
 
 {% block form_actions %}
+    {% set backAction = admin.option('allow_back')|default(isAjax) %}
     <div class="btn-group pull-right">
         {% if listPath is defined and listPath %}
-            <a href="{{ listPath }}" {% if isAjax %}data-close-target="{{ target }}"{% endif %}
-               class="btn btn-default">
-                {% if isAjax %}
-                    {{ tryTrans([admin_trans_key ~ 'close.label', 'admin.action.close.label'], [], 'Close') }}
-                {% else %}
+            <a href="{{ listPath }}" class="btn btn-default"
+               {% if not backAction %}data-close-target="{{ target }}"{% elseif isModal %}
+                data-target-element="{{ target }}"{% endif %}>
+                {% if backAction %}
                     {{ tryTrans([admin_trans_key ~ 'back.label', 'admin.action.back.label'], [], 'Back') }}
+                {% else %}
+                    {{ tryTrans([admin_trans_key ~ 'close.label', 'admin.action.close.label'], [], 'Close') }}
                 {% endif %}
             </a>
         {% elseif isAjax %}

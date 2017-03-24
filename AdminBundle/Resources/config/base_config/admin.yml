@@ -39,6 +39,7 @@ sidus_admin:
                     path:     /{familyCode}/{id}/delete
             options:
                 hidden: true
+                allow_back: true
                 families:
                     Image:
                         datagrid: image_browser

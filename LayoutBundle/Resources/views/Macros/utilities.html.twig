@@ -56,35 +56,22 @@ Displays an admin menu link with a FA icon
 {#
 Changes the current active datagrid row
 #}
-{% macro update_datagrid_active_row(dataGridCode, data, id, success, target) %}
-    {% if target %}
-        <script>
-            // Launched only on ajax calls when jQuery is already defined: used to update datagrid's row
-            if (typeof $ != 'undefined') {
-                {% if data is defined and id %}
-                // Current element reference in datagrid
-                document.activeDataGridRowRef = '#datagrid_row_{{ dataGridCode }}__{{ id }}';
-                {% if success and target != '#tg_center' %}
-                // Update datagrid if form was successfully submitted
-                var form = $('#tg_center').find('form[data-target-element]');
-                if (form.length) {
-                    form.submit();
-                }
-                {% else %}
-                // Select active element in datagrid if present
-                $(document.activeDataGridRowRef).addClass('info').siblings().removeClass('info');
-                {% endif %}
-                {% else %}
-                // On creation, unselect active element in datagrid if any
-                if (document.activeDataGridRowRef) {
-                    var a = $(document.activeDataGridRowRef);
-                    a.removeClass('info');
-                    document.activeDataGridRowRef = null;
-                }
-                {% endif %}
-            }
-        </script>
-    {% endif %}
+{% macro triggerDataEvent(admin, data, id, success, target) %}
+    <script>
+        // Launched only on ajax calls when jQuery is already defined: used to update datagrid's row
+        if (typeof $ != 'undefined') {
+            {% set parameters = {
+            dataId: data.id,
+            dataLabel: data|trim,
+            action: admin.currentAction.code,
+            success: success,
+            target: target,
+            currentTarget: target
+            } %}
+            var event = new $.Event('{{ admin.currentAction.code }}.admindata', {{ parameters|json_encode|raw }});
+            $('{{ target ?: 'document' }}').trigger(event);
+        }
+    </script>
 {% endmacro %}
 
 {#

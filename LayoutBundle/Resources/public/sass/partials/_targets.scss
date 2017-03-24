@@ -8,6 +8,7 @@
   vertical-align: top;
   position: relative;
   min-height: 95vh;
+  @include transition(width 0.5s); // @todo not working why ?
   &:empty {
     display: none;
   }
@@ -21,13 +22,9 @@
 
 #tg_right {
   border-left: 1px solid $table-border-color;
-  min-width: 625px;
+  min-width: 700px;
   background-color: white;
-  position: absolute;
-  max-width: 1500px;
-  right: 0;
-  box-shadow: rgba(60, 60, 60, 0.6) 0 0 20px 8px;
-  z-index: 10;
+  max-width: 2300px;
 }
 
 #tg_center {

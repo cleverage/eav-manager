@@ -67,7 +67,6 @@ abstract class AbstractAdminController extends BaseAdminController
             'target' => $request->get('target'),
             'success' => $request->get('success'),
             'isModal' => $request->isXmlHttpRequest() && $request->get('modal'),
-            'dataGridCode' => $this->getDataGridConfigCode(),
             'listPath' => $this->getAdminListPath($data),
             'admin' => $this->admin,
         ];

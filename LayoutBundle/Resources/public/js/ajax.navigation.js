@@ -27,6 +27,10 @@ function ajaxLoading($, el, e) {
     if (0 === $targets.length) {
         return;
     }
+
+    // Once we're here, we prevent event bubbling because the event is handled
+    e.stopPropagation();
+
     var response;
     var url = $el.data('href'); // Test data-href
 
@@ -37,7 +41,7 @@ function ajaxLoading($, el, e) {
         url = $el.attr('action'); // Fallback to action
     }
 
-    var event = jQuery.Event('before.ajaxloading', {
+    var event = $.Event('before.ajaxloading', {
         relatedTarget: el,
         url: url,
         parentEvent: e,
@@ -153,16 +157,10 @@ window.onpopstate = function () {
     "use strict"; // jshint ;_;
 
     $(document).on('click', '[data-target-element]:not(form)', function (e) {
-        if (e.target !== this) { // Prevent error bubbling
-            return;
-        }
         ajaxLoading($, $(this), e);
     });
 
     $(document).on('submit', 'form[data-target-element]', function (e) {
-        if (e.target !== this) { // Prevent error bubbling
-            return;
-        }
         ajaxLoading($, $(this), e);
     });
 

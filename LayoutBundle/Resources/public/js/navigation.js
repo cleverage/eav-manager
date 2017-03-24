@@ -15,6 +15,9 @@
      */
     $(document).on('before.ajaxloading', function (e) {
         var $tg = $(e.target);
+        var $el = $(e.relatedTarget);
+
+        // Automatically append the target id to the link
         var targetId = $tg.attr('id');
         if (targetId) {
             if (e.url.search('\\?') === -1) {
@@ -34,7 +37,7 @@
             e.redirectFallback = false;
         }
 
-        var $el = $(e.relatedTarget);
+        // If the element that triggered the action is a form and a submit button was clicked
         if ($el.is('form') && document.activeElement) {
             // Fixes jQuery default behavior when serializing form without sending data about the clicked button
             var a = $(document.activeElement);
@@ -43,6 +46,15 @@
                     .attr('name', a.attr('name'))
                     .val(a.val() ? a.val() : 1));
             }
+        }
+
+        // If the element that triggered the action has an data-input-id, copy it on the target element
+        if ($el.data('input-id')) {
+            $tg.data('input-id', $el.data('input-id'));
+        }
+        // Same for medias (although the "picking" logic is a little bit different)
+        if ($el.data('media-input-id')) {
+            $tg.data('media-input-id', $el.data('media-input-id'));
         }
     });
 
@@ -83,6 +95,12 @@
         if (e.target !== this) { // Prevent error bubbling
             return;
         }
+
+        // Don't push new state if it's the same URL
+        if (window.location.href.search(e.url.replace(/([()[{*+.$^\\|?])/g, '\\$1')) != -1) {
+            return;
+        }
+
         var $tg = $(e.target);
         var state = {
             previousState: history.state,
@@ -90,13 +108,6 @@
             previousUrl: window.location.href
         };
         history.pushState(state, $tg.find('h2.ajax-title').text(), e.url);
-
-        // @todo Check if this is really necessary ?
-        // if (document.activeDataGridRowRef) {
-        //     var a = $(document.activeDataGridRowRef);
-        //     a.addClass('info');
-        //     document.activeDataGridRowRef = null;
-        // }
     });
 
     /*
@@ -113,10 +124,6 @@
             return;
         }
         $tg.html('');
-        if (document.activeDataGridRowRef) {
-            $(document.activeDataGridRowRef).removeClass('info');
-            document.activeDataGridRowRef = null;
-        }
         if ($tg.hasClass('modal')) {
             $tg.modal('hide');
         } else {

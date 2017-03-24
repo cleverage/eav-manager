@@ -38,12 +38,13 @@
      */
     $(document).on('click', '.media-select', function (e) {
         var t = $(this);
-        var inputId = t.data('input-id');
+        var modal = t.closest('.modal');
+        var inputId = modal.data('media-input-id');
         var mediaId = t.data('media-id');
         var imageHtml = t.data('media-preview');
 
         selectMedia($('#' + inputId), mediaId, imageHtml);
-        t.closest('.modal').html('').modal('hide');
+        modal.html('').modal('hide');
 
         e.preventDefault();
         e.stopPropagation();

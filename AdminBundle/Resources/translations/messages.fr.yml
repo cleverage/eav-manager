@@ -41,6 +41,9 @@ admin:
             submit:
                 label: Supprimer
 
+        menu:
+            title: Utilisateurs et groupes
+
         form:
             username:
                 label: Nom d'utilisateur

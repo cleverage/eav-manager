@@ -63,6 +63,7 @@ Changes the current active datagrid row
             {% set parameters = {
             dataId: data.id,
             dataLabel: data|trim,
+            admin: admin.code,
             action: admin.currentAction.code,
             success: success,
             target: target,
@@ -146,7 +147,7 @@ Displays a link button to an entity, checking permissions and with configurable 
         {% endif %}
         <a href="{{ admin_entity_path(admin, entity, actionName) }}" title="{{ title }}"
            class="{{ options.class|default('btn btn-default') }}"
-           data-target-element="{{ options.target|default('#tg_right') }}" >
+           data-target-element="{{ options.target|default('#tg_right') }}">
             <i class="fa fa-{{ options.icon is defined ? options.icon : actionName }}"></i>
         </a>
     {% endif %}

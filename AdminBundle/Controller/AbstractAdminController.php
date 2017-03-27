@@ -110,6 +110,7 @@ abstract class AbstractAdminController extends BaseAdminController
             [
                 'attr' => [
                     'data-target-element' => $this->getTarget($request),
+                    'data-admin-code' => $this->admin->getCode(),
                 ],
             ],
             $formOptions

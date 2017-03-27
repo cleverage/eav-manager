@@ -41,6 +41,9 @@ admin:
             submit:
                 label: Delete
 
+        menu:
+            title: Users & Groups
+
         form:
             username:
                 label: Username

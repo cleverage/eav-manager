@@ -3,10 +3,11 @@
 namespace CleverAge\EAVManager\AdminBundle\Controller;
 
 use CleverAge\EAVManager\Component\Controller\EAVDataControllerTrait;
+use Sidus\DataGridBundle\Model\DataGrid;
 use Sidus\EAVModelBundle\Entity\AbstractData;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sidus\AdminBundle\Admin\Action;
-use Sidus\EAVDataGridBundle\Model\DataGrid;
+use Sidus\EAVDataGridBundle\Model\DataGrid as EAVDataGrid;
 use Sidus\EAVModelBundle\Entity\DataInterface;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
 use Symfony\Component\Form\Form;
@@ -29,6 +30,11 @@ class EAVDataController extends AbstractAdminController
      */
     public function indexAction(Request $request)
     {
+        /** @noinspection LoopWhichDoesNotLoopInspection */
+        foreach ($this->admin->getOption('families', []) as $family => $options) {
+            return $this->redirectToAction('list', ['familyCode' => $family]);
+        }
+
         return $this->renderAction(
             [
                 'admin' => $this->admin,
@@ -209,7 +215,7 @@ class EAVDataController extends AbstractAdminController
     protected function getDataGrid()
     {
         $datagrid = parent::getDataGrid();
-        if ($datagrid instanceof DataGrid) {
+        if ($datagrid instanceof EAVDataGrid) {
             $datagrid->setFamily($this->family);
         }
 

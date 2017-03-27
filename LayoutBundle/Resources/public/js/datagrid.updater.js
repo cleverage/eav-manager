@@ -4,12 +4,14 @@
     /**
      * Listens to edition, creation or deletion events to update concerned datagrids
      */
-    $(document).on('edit.admindata create.admindata delete.admindata', function (e) {
-        var rowRef = '.datagrid-row[data-entity-id="'+e.dataId+'"]';
-        var $row = $(rowRef);
+    $(document).on('create.admindata edit.admindata delete.admindata', function (e) {
+        var formRef = 'form[data-admin-code="'+e.admin+'"]';
+        var $formRef = $(formRef);
         if (e.success) {
-            $row.closest('form').trigger('submit');
+            $formRef.trigger('submit');
         } else {
+            var rowRef = '.datagrid-row[data-entity-id="'+e.dataId+'"]';
+            var $row = $(rowRef);
             if (document.activeDataGridRowRef) {
                 $(document.activeDataGridRowRef).removeClass('info');
             }

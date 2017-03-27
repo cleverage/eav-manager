@@ -41,7 +41,7 @@ class UserController extends GenericAdminController
                 ];
             }
 
-            return $this->redirectToAdmin($this->admin, 'list');
+            return $this->redirectToAction('list');
         }
 
         return $this->renderAction(

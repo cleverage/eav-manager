@@ -23,7 +23,7 @@ sidus_data_grid:
                     property_path: data.lastName
                 firstName:
                     property_path: data.firstName
-                roles: ~
+                printableRoles: ~
                 createdAt: ~
                 actions:
                     template: CleverAgeEAVManagerAdminBundle:User:partials/list.row.actions.html.twig

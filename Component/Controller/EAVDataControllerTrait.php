@@ -18,7 +18,7 @@ use UnexpectedValueException;
  * @method addFlash($key, $message)
  * @property ContainerInterface $container
  */
-trait DataControllerTrait
+trait EAVDataControllerTrait
 {
     /** @var FamilyInterface */
     protected $family;

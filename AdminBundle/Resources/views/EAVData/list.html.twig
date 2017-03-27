@@ -1,8 +1,8 @@
-{% set baseTemplate = baseTemplate|default('CleverAgeEAVManagerAdminBundle:Data:index.html.twig') %}
+{% set baseTemplate = baseTemplate|default('CleverAgeEAVManagerAdminBundle:EAVData:index.html.twig') %}
 {% extends 'CleverAgeEAVManagerAdminBundle:Base:list.html.twig' %}
 
 {% block tg_center %}
-    {% use '@CleverAgeEAVManagerAdmin/Data/partials/list.blocks.html.twig' %}
+    {% use '@CleverAgeEAVManagerAdmin/EAVData/partials/list.blocks.html.twig' %}
     {% if isModal %}
         {{ block('list_modal') }}
     {% else %}

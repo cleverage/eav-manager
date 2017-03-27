@@ -2,7 +2,7 @@
 
 namespace CleverAge\EAVManager\AdminBundle\Controller;
 
-use CleverAge\EAVManager\Component\Controller\DataControllerTrait;
+use CleverAge\EAVManager\Component\Controller\EAVDataControllerTrait;
 use Sidus\EAVModelBundle\Entity\AbstractData;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sidus\AdminBundle\Admin\Action;
@@ -16,9 +16,9 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @Security("is_granted('ROLE_DATA_MANAGER')")
  */
-class DataController extends AbstractAdminController
+class EAVDataController extends AbstractAdminController
 {
-    use DataControllerTrait;
+    use EAVDataControllerTrait;
 
     /**
      * @param Request $request
@@ -115,7 +115,7 @@ class DataController extends AbstractAdminController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->saveEntity($data);
 
-            $parameters = $request->query->all();
+            $parameters = $request->query->all(); // @todo is this necessary ?
             $parameters['success'] = 1;
 
             return $this->redirectToEntity($data, 'edit', $parameters);

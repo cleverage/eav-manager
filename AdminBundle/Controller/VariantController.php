@@ -2,7 +2,7 @@
 
 namespace CleverAge\EAVManager\AdminBundle\Controller;
 
-use CleverAge\EAVManager\Component\Controller\DataControllerTrait;
+use CleverAge\EAVManager\Component\Controller\EAVDataControllerTrait;
 use CleverAge\EAVManager\EAVModelBundle\Entity\AbstractData;
 use Doctrine\ORM\EntityManager;
 use Elastica\Query;
@@ -15,6 +15,7 @@ use Sidus\EAVModelBundle\Model\FamilyInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use UnexpectedValueException;
 
 /**
@@ -22,7 +23,7 @@ use UnexpectedValueException;
  */
 class VariantController extends AbstractAdminController
 {
-    use DataControllerTrait;
+    use EAVDataControllerTrait;
 
     /**
      * @param AttributeInterface $attribute
@@ -58,7 +59,7 @@ class VariantController extends AbstractAdminController
                 $parameters['target'] = $request->get('target');
             }
 
-            return $this->redirectToAdmin($this->admin->getCode(), 'create', $parameters);
+            return $this->redirectToAction('create', $parameters);
         }
 
         $parameters = $this->getViewParameters($request, $form, null);
@@ -179,7 +180,7 @@ class VariantController extends AbstractAdminController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->deleteEntity($data);
 
-            return $this->redirectToEntity($parentData, 'edit');
+            return $this->redirect($this->getParentDataPath($data->getParent()));
         }
 
         return $this->renderAction(

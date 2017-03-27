@@ -529,6 +529,24 @@ class User implements UserInterface, \Serializable
     }
 
     /**
+     * @return array
+     */
+    public function getPrintableRoles()
+    {
+        $roles = [];
+        foreach ($this->getRoles() as $role) {
+            if ($role === 'ROLE_USER') {
+                continue;
+            }
+            $role = strtolower(str_replace('ROLE_', '', $role));
+            $label = ucwords(trim(preg_replace(['/([A-Z])/', '/[_\s]+/'], ['_$1', ' '], $role)));
+            $roles[$role] = $label;
+        }
+
+        return $roles;
+    }
+
+    /**
      * @param Group $group
      *
      * @return User

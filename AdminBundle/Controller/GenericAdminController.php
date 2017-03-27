@@ -24,12 +24,10 @@ class GenericAdminController extends AbstractAdminController
         $this->bindDataGridRequest($dataGrid, $request);
 
         return $this->renderAction(
-            [
-                'datagrid' => $dataGrid,
-                'isAjax' => $request->isXmlHttpRequest(),
-                'target' => $this->getTarget($request),
-                'admin' => $this->admin,
-            ]
+            array_merge(
+                $this->getViewParameters($request),
+                ['datagrid' => $dataGrid]
+            )
         );
     }
 
@@ -64,12 +62,9 @@ class GenericAdminController extends AbstractAdminController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->saveEntity($data);
-            $parameters = [
-                'success' => 1,
-            ];
-            if ($request->get('target')) {
-                $parameters['target'] = $request->get('target');
-            }
+
+            $parameters = $request->query->all(); // @todo is this necessary ?
+            $parameters['success'] = 1;
 
             return $this->redirectToEntity($data, 'edit', $parameters);
         }
@@ -95,22 +90,26 @@ class GenericAdminController extends AbstractAdminController
             $this->deleteEntity($data);
             if ($request->isXmlHttpRequest()) {
                 return $this->renderAction(
-                    [
-                        'dataId' => $dataId,
-                        'isAjax' => 1,
-                        'target' => $request->get('target'),
-                        'success' => 1,
-                    ]
+                    array_merge(
+                        $this->getViewParameters($request, $form),
+                        [
+                            'dataId' => $dataId,
+                            'success' => 1,
+                        ]
+                    )
                 );
             }
 
-            return $this->redirectToAdmin($this->admin, 'list');
+            return $this->redirectToAction($this->getAdminListPath());
         }
 
         return $this->renderAction(
-            $this->getViewParameters($request, $form, $data) + [
-                'dataId' => $dataId,
-            ]
+            array_merge(
+                $this->getViewParameters($request, $form, $data),
+                [
+                    'dataId' => $dataId,
+                ]
+            )
         );
     }
 }

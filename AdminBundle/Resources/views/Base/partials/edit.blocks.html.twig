@@ -1,7 +1,7 @@
 {% block edit_form_class %}{% endblock %}
 
 {% block form_actions %}
-    {% set backAction = admin.option('allow_back')|default(isAjax) %}
+    {% set backAction = admin.option('allow_back')|default(not isAjax) %}
     <div class="btn-group pull-right">
         {% if listPath is defined and listPath %}
             <a href="{{ listPath }}" class="btn btn-default"

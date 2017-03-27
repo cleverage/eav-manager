@@ -56,3 +56,18 @@
     }
   }
 }
+
+.dropdown.input-group-addon {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: none;
+  & > .btn {
+    padding-top: 7px;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    border-left: 0;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+  }
+}

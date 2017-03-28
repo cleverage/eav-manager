@@ -4,6 +4,8 @@ imports:
     - { resource: base_config/admin.yml }
     - { resource: base_config/assets.yml }
     - { resource: base_config/datagrid.yml }
+    - { resource: base_config/eav_config.yml }
     - { resource: base_config/eav_datagrid.yml }
+    - { resource: base_config/parameters.yml }
     - { resource: base_config/upload.yml }
     - { resource: base_config/wysiwyg.yml }

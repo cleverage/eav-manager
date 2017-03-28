@@ -1,23 +1,15 @@
 {% spaceless %}
+    {% import "CleverAgeEAVManagerLayoutBundle:Macros:utilities.html.twig" as utilities %}
     <div class="btn-group btn-group-xs btn-group-nowrap">
         {% set admin = viewParameters.admin %}
         {% block list_row_actions %}
-            {% set link_title = tryTrans([
-            'admin.'~admin.code~'.edit.label',
-            'admin.action.edit.label',
-            ], [], 'Edit') %}
-            <a href="{{ admin_entity_path(admin, result, 'edit') }}"
-               class="btn btn-primary" data-target-element="#tg_right" title="{{ link_title }}">
-                <i class="fa fa-edit"></i>
-            </a>
-            {% set link_title = tryTrans([
-            'admin.'~admin.code~'.delete.label',
-            'admin.action.delete.label',
-            ], [], 'Delete') %}
-            <a href="{{ admin_entity_path(admin, result, 'delete') }}"
-               class="btn btn-danger" data-target-element="#tg_right" title="{{ link_title }}">
-                <i class="fa fa-remove"></i>
-            </a>
+            {{ utilities.action_button(admin, result, 'edit', {
+                class: 'btn btn-primary',
+            }) }}
+            {{ utilities.action_button(admin, result, 'delete', {
+                class: 'btn btn-danger',
+                icon: 'remove',
+            }) }}
         {% endblock %}
     </div>
 {% endspaceless %}

@@ -1,0 +1,16 @@
+parameters:
+    clickable.template: CleverAgeEAVManagerAdminBundle:Base:partials/clickable.column.html.twig
+    eav_datagrid.actions: CleverAgeEAVManagerAdminBundle:EAVData:partials/list.row.actions.html.twig
+    datagrid.actions: CleverAgeEAVManagerAdminBundle:Base:partials/list.row.actions.html.twig
+    eav_form.type: Sidus\EAVBootstrapBundle\Form\Type\TabbedDataType
+    eav.controller: CleverAgeEAVManagerAdminBundle:EAVData
+
+    # Admin buttons
+    create.button:
+        form_type: CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink
+        label: admin.action.create.label
+        action: create
+        icon: plus
+        attr:
+            class: btn-primary
+            data-target-element: '#tg_right'

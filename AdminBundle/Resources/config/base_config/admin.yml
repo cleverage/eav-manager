@@ -2,7 +2,7 @@ sidus_admin:
     fallback_template_directory: CleverAgeEAVManagerAdminBundle:Base
     configurations:
         media:
-            controller: CleverAgeEAVManagerAdminBundle:EAVData
+            controller: '%eav.controller%'
             entity: '%sidus_data_class%'
             prefix: /medias
             actions:
@@ -12,10 +12,10 @@ sidus_admin:
                     path:     /{familyCode}/list
                 create:
                     path:     /{familyCode}/create
-                    form_type: Sidus\EAVBootstrapBundle\Form\Type\TabbedDataType
+                    form_type: '%eav_form.type%'
                 edit:
                     path:     /{familyCode}/{id}/edit
-                    form_type: Sidus\EAVBootstrapBundle\Form\Type\TabbedDataType
+                    form_type: '%eav_form.type%'
                 delete:
                     path:     /{familyCode}/{id}/delete
             options:
@@ -25,7 +25,7 @@ sidus_admin:
                     Document: ~
 
         media_browser:
-            controller: CleverAgeEAVManagerAdminBundle:EAVData
+            controller: '%eav.controller%'
             entity: '%sidus_data_class%'
             prefix: /medias_browser
             actions:
@@ -33,10 +33,10 @@ sidus_admin:
                     path:     /{familyCode}/list
                 create:
                     path:     /{familyCode}/create
-                    form_type: Sidus\EAVBootstrapBundle\Form\Type\TabbedDataType
+                    form_type: '%eav_form.type%'
                 edit:
                     path:     /{familyCode}/{id}/edit
-                    form_type: Sidus\EAVBootstrapBundle\Form\Type\TabbedDataType
+                    form_type: '%eav_form.type%'
                 delete:
                     path:     /{familyCode}/{id}/delete
             options:
@@ -123,16 +123,16 @@ sidus_admin:
                 datagrid: base
 
         _data:
-            controller: CleverAgeEAVManagerAdminBundle:EAVData
+            controller: '%eav.controller%'
             entity: '%sidus_data_class%'
             prefix: /_data
             actions:
                 create:
                     path:     /{familyCode}/create
-                    form_type: Sidus\EAVBootstrapBundle\Form\Type\TabbedDataType
+                    form_type: '%eav_form.type%'
                 edit:
                     path:     /{familyCode}/{id}/edit
-                    form_type: Sidus\EAVBootstrapBundle\Form\Type\TabbedDataType
+                    form_type: '%eav_form.type%'
                 delete:
                     path:     /{familyCode}/{id}/delete
             options:

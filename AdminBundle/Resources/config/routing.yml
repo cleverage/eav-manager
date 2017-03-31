@@ -25,9 +25,11 @@ eavmanager_user:
 eavmanager_asset:
     resource: '@CleverAgeEAVManagerAssetBundle/Resources/config/routing.yml'
 
+sidus_autocomplete_api:
+    resource: '@SidusEAVBootstrapBundle/Resources/config/routing.yml'
+
 sidus_file_upload:
     resource: '@SidusFileUploadBundle/Resources/config/routing.yml'
 
 _liip_imagine:
     resource: '@LiipImagineBundle/Resources/config/routing.xml'
-

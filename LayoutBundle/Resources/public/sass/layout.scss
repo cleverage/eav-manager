@@ -1,6 +1,6 @@
 @import "compass";
-@import "siduseavbootstrap/sass/bootstrap";
-@import "siduseavbootstrap/sass/common";
+@import "sidus/eav-bootstrap-bundle/Resources/public/sass/bootstrap";
+@import "sidus/eav-bootstrap-bundle/Resources/public/sass/common";
 /*!
  * EAVManager specific css theming
  */
@@ -11,4 +11,4 @@
 @import "partials/compatibility";
 @import "partials/media";
 /* Additional third-party theming */
-@import "sidusfileupload/sass/fileupload";
+@import "sidus/file-upload-bundle/Resources/public/sass/fileupload";

@@ -7,7 +7,23 @@
 function bindGlobalEvents(target) {
     // Autocomplete
     $(target).find('.select2').each(function () {
-        $(this).samsonSelect2();
+        var $t = $(this);
+        if ($t.data('query-uri')) {
+            $t.select2({
+                ajax: {
+                    delay: 250,
+                    url: $t.data('query-uri'),
+                    processResults: function (data) {
+                        console.log(data);
+                        return {
+                            results: data.items
+                        };
+                    }
+                }
+            });
+        } else {
+            $t.select2();
+        }
     });
 
     // DatePickers

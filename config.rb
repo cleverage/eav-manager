@@ -12,4 +12,4 @@ output_style = :compressed
 relative_assets = true
 line_comments = false
 
-add_import_path "../../../web/bundles";
+add_import_path "../../";

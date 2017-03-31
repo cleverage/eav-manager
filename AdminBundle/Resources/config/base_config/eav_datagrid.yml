@@ -25,10 +25,10 @@ sidus_eav_data_grid:
                     icon: plus
                     attr:
                         class: btn-primary
-                        data-target-element: "#tg_right"
+                        data-target-element: '#tg_right'
             reset_button:
                 attr:
-                    data-target-element: "#tg_center"
+                    data-target-element: '#tg_center'
 
         document:
             family: Document
@@ -110,7 +110,37 @@ sidus_eav_data_grid:
                     icon: plus
                     attr:
                         class: btn-primary
-                        data-target-element: "_CURRENT_MODAL"
+                        data-target-element: '_CURRENT_MODAL'
             reset_button:
                 attr:
-                    data-target-element: "_CURRENT_MODAL"
+                    data-target-element: '_CURRENT_MODAL'
+
+        document_browser:
+            family: Document
+            filter_config:
+                results_per_page: 5
+                sortable:
+                    - id
+                    - title
+                fields:
+                    title: ~
+                    tags: ~
+            columns:
+                id:
+                    label: '#'
+                title:
+                    template: 'CleverAgeEAVManagerAdminBundle:Asset:browse.row.label.html.twig'
+                actions:
+                    template: 'CleverAgeEAVManagerAdminBundle:Asset:browse.row.actions.html.twig'
+            actions:
+                create:
+                    form_type: CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink
+                    label: admin.action.create.label
+                    action: create
+                    icon: plus
+                    attr:
+                        class: btn-primary
+                        data-target-element: '_CURRENT_MODAL'
+            reset_button:
+                attr:
+                    data-target-element: '_CURRENT_MODAL'

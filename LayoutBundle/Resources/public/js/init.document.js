@@ -14,10 +14,7 @@ function bindGlobalEvents(target) {
                     delay: 250,
                     url: $t.data('query-uri'),
                     processResults: function (data) {
-                        console.log(data);
-                        return {
-                            results: data.items
-                        };
+                        return data;
                     }
                 }
             });

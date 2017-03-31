@@ -1,0 +1,6 @@
+services:
+    eavmanager_admin.listener.routing.cache:
+        class: CleverAge\EAVManager\AdminBundle\Listener\Routing\CacheListener
+        arguments: ['@sidus_admin.configuration.admin.handler', '@logger']
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }

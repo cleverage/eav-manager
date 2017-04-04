@@ -2,7 +2,7 @@ services:
     eavmanager_user.form.user.type:
         class: CleverAge\EAVManager\UserBundle\Form\Type\UserType
         arguments:
-            - '@sidus_eav_model.family_configuration.handler'
+            - '@sidus_eav_model.family.registry'
             - '@security.token_storage'
             - '@security.authorization_checker'
         tags:

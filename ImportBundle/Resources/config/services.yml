@@ -2,7 +2,7 @@ services:
     eavmanager_import.eav_data_importer:
         class: CleverAge\EAVManager\ImportBundle\Import\EAVDataImporter
         arguments:
-            - '@sidus_eav_model.family_configuration.handler'
+            - '@sidus_eav_model.family.registry'
             - '@validator'
             - '@doctrine.orm.entity_manager'
             -

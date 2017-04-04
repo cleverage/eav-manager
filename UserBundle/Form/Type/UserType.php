@@ -9,7 +9,7 @@ use CleverAge\EAVManager\UserBundle\Entity\User;
 use Mopa\Bundle\BootstrapBundle\Form\Type\TabType;
 use Sidus\EAVBootstrapBundle\Form\Type\BootstrapCollectionType;
 use Sidus\EAVBootstrapBundle\Form\Type\SwitchType;
-use Sidus\EAVModelBundle\Configuration\FamilyConfigurationHandler;
+use Sidus\EAVModelBundle\Registry\FamilyRegistry;
 use Sidus\EAVModelBundle\Form\Type\DataType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -28,8 +28,8 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class UserType extends AbstractType
 {
-    /** @var FamilyConfigurationHandler */
-    protected $familyConfigurationHandler;
+    /** @var FamilyRegistry */
+    protected $familyRegistry;
 
     /** @var TokenStorageInterface */
     protected $tokenStorage;
@@ -38,16 +38,16 @@ class UserType extends AbstractType
     protected $authorizationChecker;
 
     /**
-     * @param FamilyConfigurationHandler    $familyConfigurationHandler
+     * @param FamilyRegistry    $familyRegistry
      * @param TokenStorageInterface         $tokenStorage
      * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
-        FamilyConfigurationHandler $familyConfigurationHandler,
+        FamilyRegistry $familyRegistry,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
-        $this->familyConfigurationHandler = $familyConfigurationHandler;
+        $this->familyRegistry = $familyRegistry;
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
     }
@@ -204,7 +204,7 @@ class UserType extends AbstractType
                 ];
 
                 if ($user && !$user->getData()) {
-                    $dataOptions['data'] = $this->familyConfigurationHandler->getFamily('User')->createData();
+                    $dataOptions['data'] = $this->familyRegistry->getFamily('User')->createData();
                 }
                 $form->get('__tab_info')->add('data', DataType::class, $dataOptions);
             }

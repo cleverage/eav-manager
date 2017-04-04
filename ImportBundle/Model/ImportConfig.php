@@ -4,7 +4,7 @@ namespace CleverAge\EAVManager\ImportBundle\Model;
 
 use CleverAge\EAVManager\ImportBundle\Import\EAVDataImporter;
 use CleverAge\EAVManager\ImportBundle\Transformer\EAVDataTransformerInterface;
-use Sidus\EAVModelBundle\Configuration\FamilyConfigurationHandler;
+use Sidus\EAVModelBundle\Registry\FamilyRegistry;
 use Sidus\EAVModelBundle\Exception\MissingFamilyException;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
 use Symfony\Component\PropertyAccess\Exception\AccessException;
@@ -45,7 +45,7 @@ class ImportConfig
      * ImportConfig constructor.
      *
      * @param string                     $code
-     * @param FamilyConfigurationHandler $familyConfigurationHandler
+     * @param FamilyRegistry $familyRegistry
      * @param array                      $configuration
      *
      * @throws MissingFamilyException
@@ -53,11 +53,11 @@ class ImportConfig
      * @throws InvalidArgumentException
      * @throws UnexpectedTypeException
      */
-    public function __construct($code, FamilyConfigurationHandler $familyConfigurationHandler, $configuration)
+    public function __construct($code, FamilyRegistry $familyRegistry, $configuration)
     {
         $this->code = $code;
 
-        $this->family = $familyConfigurationHandler->getFamily($configuration['family']);
+        $this->family = $familyRegistry->getFamily($configuration['family']);
         unset($configuration['family']);
 
         $accessor = PropertyAccess::createPropertyAccessor();

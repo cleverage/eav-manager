@@ -31,7 +31,7 @@ trait EAVDataControllerTrait
      */
     protected function getFamily($familyCode)
     {
-        return $this->container->get('sidus_eav_model.family_configuration.handler')->getFamily($familyCode);
+        return $this->container->get('sidus_eav_model.family.registry')->getFamily($familyCode);
     }
 
     /**

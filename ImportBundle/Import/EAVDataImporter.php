@@ -18,7 +18,7 @@ use Doctrine\ORM\ORMInvalidArgumentException;
 use Exception;
 use Oneup\UploaderBundle\Uploader\Response\EmptyResponse;
 use RuntimeException;
-use Sidus\EAVModelBundle\Configuration\FamilyConfigurationHandler;
+use Sidus\EAVModelBundle\Registry\FamilyRegistry;
 use Sidus\EAVModelBundle\Entity\DataInterface;
 use Sidus\EAVModelBundle\Entity\DataRepository;
 use Sidus\EAVModelBundle\Model\AttributeInterface;
@@ -47,8 +47,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EAVDataImporter
 {
-    /** @var FamilyConfigurationHandler */
-    protected $familyConfigurationHandler;
+    /** @var FamilyRegistry */
+    protected $familyRegistry;
 
     /** @var ValidatorInterface */
     protected $validator;
@@ -78,20 +78,20 @@ class EAVDataImporter
     protected $lastFlushTime;
 
     /**
-     * @param FamilyConfigurationHandler    $familyConfigurationHandler
+     * @param FamilyRegistry    $familyRegistry
      * @param ValidatorInterface            $validator
      * @param EntityManager                 $manager
      * @param array                         $uploadManagers
      * @param DirectoryConfigurationHandler $directoryConfigurationHandler
      */
     public function __construct(
-        FamilyConfigurationHandler $familyConfigurationHandler,
+        FamilyRegistry $familyRegistry,
         ValidatorInterface $validator,
         EntityManager $manager,
         array $uploadManagers,
         DirectoryConfigurationHandler $directoryConfigurationHandler
     ) {
-        $this->familyConfigurationHandler = $familyConfigurationHandler;
+        $this->familyRegistry = $familyRegistry;
         $this->validator = $validator;
         $this->manager = $manager;
         $this->uploadManagers = $uploadManagers;
@@ -118,7 +118,7 @@ class EAVDataImporter
         /** @var array $datas */
         foreach ($dump as $familyCode => $datas) {
             $i = 0;
-            $family = $this->familyConfigurationHandler->getFamily($familyCode);
+            $family = $this->familyRegistry->getFamily($familyCode);
             if ($this->output) {
                 $this->output->writeln("<info>Importing family {$family->getCode()}</info>");
                 $progress = new ProgressBar($this->output, count($datas));
@@ -563,7 +563,7 @@ class EAVDataImporter
             throw new \LogicException($e);
         }
         reset($familyCodes);
-        $family = $this->familyConfigurationHandler->getFamily(current($familyCodes));
+        $family = $this->familyRegistry->getFamily(current($familyCodes));
 
         // Case where the reference is actually an embed data
         if (is_array($reference)) {

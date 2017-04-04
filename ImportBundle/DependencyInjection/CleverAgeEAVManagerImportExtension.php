@@ -56,7 +56,7 @@ class CleverAgeEAVManagerImportExtension extends Extension
         }
         $definitionOptions = [
             $code,
-            new Reference('sidus_eav_model.family_configuration.handler'),
+            new Reference('sidus_eav_model.family.registry'),
             $importConfiguration,
         ];
         $definition = new Definition(new Parameter('eavmanager_import.import_config.class'), $definitionOptions);

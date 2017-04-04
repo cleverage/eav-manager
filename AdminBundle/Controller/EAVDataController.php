@@ -94,7 +94,7 @@ class EAVDataController extends AbstractAdminController
     }
 
     /**
-     * Security check is done manually in the code : handles the
+     * Security check is done manually in the code : handles the read-only role
      *
      * @param FamilyInterface $family
      * @param DataInterface   $data

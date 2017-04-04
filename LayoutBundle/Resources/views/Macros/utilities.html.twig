@@ -61,7 +61,7 @@ Changes the current active datagrid row
         // Launched only on ajax calls when jQuery is already defined: used to update datagrid's row
         if (typeof $ != 'undefined') {
             {% set parameters = {
-            dataId: data.id,
+            dataId: id,
             dataLabel: data|trim,
             admin: admin.code,
             action: admin.currentAction.code,

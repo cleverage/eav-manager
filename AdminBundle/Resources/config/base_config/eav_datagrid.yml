@@ -129,9 +129,9 @@ sidus_eav_data_grid:
                 id:
                     label: '#'
                 title:
-                    template: 'CleverAgeEAVManagerAdminBundle:Asset:browse.row.label.html.twig'
+                    template: 'CleverAgeEAVManagerAdminBundle:Asset:partials/browse.row.label.html.twig'
                 actions:
-                    template: 'CleverAgeEAVManagerAdminBundle:Asset:browse.row.actions.html.twig'
+                    template: 'CleverAgeEAVManagerAdminBundle:Asset:partials/browse.row.actions.html.twig'
             actions:
                 create:
                     form_type: CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink

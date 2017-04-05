@@ -28,7 +28,10 @@ sidus_eav_model:
             parent: BaseAsset
             attributeAsLabel: title
             attributes:
-                imageFile: ~
+                imageFile:
+                    group: content
+                    required: true
+                    type: image
                 altText:
                     group: meta
                     form_options:
@@ -40,47 +43,7 @@ sidus_eav_model:
             parent: BaseAsset
             attributeAsLabel: title
             attributes:
-                documentFile: ~
-
-    attributes:
-        # Relations : Use them in your custom families
-        image:
-            group: content
-            type: media_browser
-            options:
-                allowed_families:
-                    - Image
-
-        images:
-            group: content
-            type: media_browser
-            multiple: true
-            options:
-                allowed_families:
-                    - Image
-
-        document:
-            group: content
-            type: media_browser
-            options:
-                allowed_families:
-                    - Document
-
-        documents:
-            group: content
-            type: media_browser
-            multiple: true
-            options:
-                allowed_families:
-                    - Document
-
-        # Custom Attributes => link to uploaded file
-        documentFile:
-            group: content
-            type: document
-            required: true
-
-        imageFile:
-            group: content
-            required: true
-            type: image
+                documentFile:
+                    group: content
+                    type: document
+                    required: true

@@ -3,7 +3,6 @@
 namespace CleverAge\EAVManager\AdminBundle\Controller;
 
 use CleverAge\EAVManager\Component\Controller\BaseControllerTrait;
-use Elastica\Query;
 use Sidus\AdminBundle\Admin\Action;
 use Sidus\AdminBundle\Controller\AbstractAdminController as BaseAdminController;
 use Sidus\DataGridBundle\Model\DataGrid;

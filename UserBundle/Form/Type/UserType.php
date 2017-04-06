@@ -38,7 +38,7 @@ class UserType extends AbstractType
     protected $authorizationChecker;
 
     /**
-     * @param FamilyRegistry    $familyRegistry
+     * @param FamilyRegistry                $familyRegistry
      * @param TokenStorageInterface         $tokenStorage
      * @param AuthorizationCheckerInterface $authorizationChecker
      */
@@ -67,7 +67,9 @@ class UserType extends AbstractType
                 'inherit_data' => true,
             ]
         );
-        $builder->get('__tab_main')
+        /** @var FormBuilderInterface $mainTab */
+        $mainTab = $builder->get('__tab_main');
+        $mainTab
             ->add(
                 'username',
                 TextType::class,
@@ -84,7 +86,7 @@ class UserType extends AbstractType
             );
 
         if ($this->getUser() && $this->authorizationChecker->isGranted('ROLE_ADMIN', $this->getUser())) {
-            $builder->get('__tab_main')
+            $mainTab
                 ->add(
                     'enabled',
                     SwitchType::class,
@@ -122,7 +124,9 @@ class UserType extends AbstractType
                     'inherit_data' => true,
                 ]
             );
-            $builder->get('__tab_groups')
+            /** @var FormBuilderInterface $groupsTab */
+            $groupsTab = $builder->get('__tab_groups');
+            $groupsTab
                 ->add(
                     'groups',
                     EntityType::class,
@@ -201,12 +205,15 @@ class UserType extends AbstractType
                     'label' => false,
                     'widget_form_group_attr' => false,
                     'horizontal_input_wrapper_class' => false,
+                    'family' => 'User',
                 ];
 
                 if ($user && !$user->getData()) {
                     $dataOptions['data'] = $this->familyRegistry->getFamily('User')->createData();
                 }
-                $form->get('__tab_info')->add('data', DataType::class, $dataOptions);
+                /** @var FormBuilderInterface $infoTab */
+                $infoTab = $form->get('__tab_info');
+                $infoTab->add('data', DataType::class, $dataOptions);
             }
         );
     }

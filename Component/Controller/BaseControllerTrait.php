@@ -2,7 +2,6 @@
 
 namespace CleverAge\EAVManager\Component\Controller;
 
-use CleverAge\EAVManager\UserBundle\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;

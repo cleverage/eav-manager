@@ -2,7 +2,6 @@
 
 namespace CleverAge\EAVManager\EAVModelBundle\Form\Extension;
 
-use Sidus\EAVModelBundle\Form\Type\SimpleDataSelectorType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -13,6 +12,17 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class DataSelectorTypeExtension extends AbstractTypeExtension
 {
+    /** @var string */
+    protected $extendedType;
+
+    /**
+     * @param string $extendedType
+     */
+    public function __construct($extendedType)
+    {
+        $this->extendedType = $extendedType;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -47,6 +57,6 @@ class DataSelectorTypeExtension extends AbstractTypeExtension
      */
     public function getExtendedType()
     {
-        return SimpleDataSelectorType::class;
+        return $this->extendedType;
     }
 }

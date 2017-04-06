@@ -47,6 +47,7 @@ class UserMailer
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
+     * @throws \Symfony\Component\Translation\Exception\InvalidArgumentException
      */
     public function sendNewUserMail(User $user)
     {
@@ -73,6 +74,7 @@ class UserMailer
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
+     * @throws \Symfony\Component\Translation\Exception\InvalidArgumentException
      */
     public function sendResetPasswordMail(User $user)
     {

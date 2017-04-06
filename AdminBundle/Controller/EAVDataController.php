@@ -3,7 +3,6 @@
 namespace CleverAge\EAVManager\AdminBundle\Controller;
 
 use CleverAge\EAVManager\Component\Controller\EAVDataControllerTrait;
-use Sidus\DataGridBundle\Model\DataGrid;
 use Sidus\EAVModelBundle\Entity\AbstractData;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sidus\AdminBundle\Admin\Action;
@@ -145,7 +144,9 @@ class EAVDataController extends AbstractAdminController
     {
         $this->initDataFamily($family, $data);
 
-        $builder = $this->createFormBuilder(null, $this->getDefaultFormOptions($request, $data->getId()));
+        $formOptions = $this->getDefaultFormOptions($request, $data->getId());
+        unset($formOptions['family']);
+        $builder = $this->createFormBuilder(null, $formOptions);
         $form = $builder->getForm();
         $dataId = $data->getId();
 
@@ -237,6 +238,7 @@ class EAVDataController extends AbstractAdminController
             $action = $this->admin->getCurrentAction();
         }
         $formOptions = parent::getDefaultFormOptions($request, $dataId, $action);
+        $formOptions['family'] = $this->family;
         $formOptions['label'] = $this->tryTranslate(
             [
                 "admin.family.{$this->family->getCode()}.{$action->getCode()}.title",

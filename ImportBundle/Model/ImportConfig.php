@@ -44,9 +44,9 @@ class ImportConfig
     /**
      * ImportConfig constructor.
      *
-     * @param string                     $code
+     * @param string         $code
      * @param FamilyRegistry $familyRegistry
-     * @param array                      $configuration
+     * @param array          $configuration
      *
      * @throws MissingFamilyException
      * @throws AccessException

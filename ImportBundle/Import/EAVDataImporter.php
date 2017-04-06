@@ -78,7 +78,7 @@ class EAVDataImporter
     protected $lastFlushTime;
 
     /**
-     * @param FamilyRegistry    $familyRegistry
+     * @param FamilyRegistry                $familyRegistry
      * @param ValidatorInterface            $validator
      * @param EntityManager                 $manager
      * @param array                         $uploadManagers

@@ -1,5 +1,7 @@
 services:
     eavmanager.form.extension.data_selector:
         class: CleverAge\EAVManager\EAVModelBundle\Form\Extension\DataSelectorTypeExtension
+        arguments:
+            - Sidus\EAVModelBundle\Form\Type\SimpleDataSelectorType
         tags:
             - { name: form.type_extension, extended_type: Sidus\EAVModelBundle\Form\Type\SimpleDataSelectorType }

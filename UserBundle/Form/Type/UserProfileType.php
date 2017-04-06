@@ -30,7 +30,9 @@ class UserProfileType extends UserType
                 'inherit_data' => true,
             ]
         );
-        $builder->get('__tab_password')
+        /** @var FormBuilderInterface $passwordTab */
+        $passwordTab = $builder->get('__tab_password');
+        $passwordTab
             ->add(
                 'plainPassword',
                 RepeatedType::class,

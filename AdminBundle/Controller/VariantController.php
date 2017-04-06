@@ -5,7 +5,6 @@ namespace CleverAge\EAVManager\AdminBundle\Controller;
 use CleverAge\EAVManager\Component\Controller\EAVDataControllerTrait;
 use CleverAge\EAVManager\EAVModelBundle\Entity\AbstractData;
 use Doctrine\ORM\EntityManager;
-use Elastica\Query;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sidus\AdminBundle\Routing\AdminRouter;
@@ -15,7 +14,6 @@ use Sidus\EAVModelBundle\Model\FamilyInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use UnexpectedValueException;
 
 /**
@@ -184,9 +182,12 @@ class VariantController extends AbstractAdminController
         }
 
         return $this->renderAction(
-            $this->getViewParameters($request, $form, $data) + [
-                'dataId' => $dataId,
-            ]
+            array_merge(
+                $this->getViewParameters($request, $form, $data),
+                [
+                    'dataId' => $dataId,
+                ]
+            )
         );
     }
 

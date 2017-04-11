@@ -31,67 +31,64 @@ NEVER points to this layout directly !
 </head>
 
 <body class="{% block body_class %}{% endblock %}">
-{% block main_menu %}
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                {% block main_menu_home_link %}
-                    <a class="navbar-brand" href="{{ path('eavmanager_layout.dashboard') }}">CleverAge/EAVManager</a>
-                {% endblock %}
-            </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                {% block main_menu_application %}
-                    <ul class="nav navbar-nav">
-                        {% if is_granted('ROLE_DATA_MANAGER') %}
-                            {% for admin in get_admins() %}
-                                {# @var admin \Sidus\AdminBundle\Admin\Admin #}
-                                {% if not admin.option('hidden') %}
-                                    {% set adminLabel = tryTrans(['admin.'~admin.code~'.title'], [], admin.code|humanize) %}
-                                    {{ utilities.admin_menu_icon_link(admin.option('icon'), adminLabel, admin, 'index') }}
-                                {% endif %}
-                            {% endfor %}
-                            {% if is_granted('ROLE_MEDIA_MANAGER') %}
-                                {{ utilities.admin_menu_icon_link('image', 'Medias', 'media', 'list', {familyCode: 'Image'}) }}
-                            {% endif %}
-                        {% endif %}
-                        {% if is_granted('ROLE_USER_MANAGER') %}
-                            {{ utilities.admin_menu_icon_link('users', 'Utilisateurs', 'user', 'list') }}
-                        {% endif %}
-                    </ul>
-                {% endblock %}
-                {% if app.user %}
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="dropdown">
-                            <a href="{{ path('eavmanager_user.profile.edit') }}" class="dropdown-toggle"
-                               data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-user"></i> {{ app.user }} <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a href="{{ path('eavmanager_user.profile.edit') }}">{{ 'user.profile.menu.title' | trans }}</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li><a href="{{ path('logout') }}" title="logout"><i class="fa fa-power-off"></i></a></li>
-                    </ul>
-                    {{ utilities.context_form() }}
-                {% endif %}
-            </div>
-        </div>
-    </nav>
-{% endblock %}
 {% block main_container %}
     <div class="container-fluid">
         {% block main_content %}
             <div class="row" id="main_content">
-                <div id="tg_left" class="sidebar sidebar-inverse with-loader autoload">{% block tg_left %}{% endblock %}</div>
+                <div id="tg_left" class="sidebar sidebar-inverse with-loader autoload">
+                    {% block tg_left %}
+                        {% block main_menu_home_link %}
+                            <a href="{{ path('eavmanager_layout.dashboard') }}">CleverAge/EAVManager</a>
+                        {% endblock %}
+                        <hr class="clear">
+                        {% block user_menu %}
+                            {% if app.user %}
+                                <ul class="nav">
+                                    <li class="{% if app.request.attributes.get('_route') == 'eavmanager_user.profile.edit' %} active{% endif %}">
+                                        <a href="{{ path('eavmanager_user.profile.edit') }}">
+                                            <i class="fa fa-user"></i> {{ app.user }}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('logout') }}" title="logout">
+                                            <i class="fa fa-power-off"></i> Logout
+                                        </a>
+                                    </li>
+                                </ul>
+                                {{ utilities.context_form() }}
+                            {% endif %}
+                        {% endblock %}
+                        {% block main_menu_application %}
+                            {% if is_granted('ROLE_DATA_MANAGER') %}
+                                {% for admin in get_admins() %}
+                                    {# @var admin \Sidus\AdminBundle\Admin\Admin #}
+                                    {% if not admin.option('hidden') %}
+                                        {{ utilities.admin_family_nav(admin, family is defined ? family) }}
+                                    {% endif %}
+                                {% endfor %}
+                                {% if is_granted('ROLE_MEDIA_MANAGER') %}
+                                    {{ utilities.admin_family_nav(admin('media'), family is defined ? family) }}
+                                {% endif %}
+                            {% endif %}
+                            {% if is_granted('ROLE_USER_MANAGER') %}
+                                {% set admin = admin('user') %}
+                                <a class="admin-nav" data-toggle="collapse" href="#admin_users">
+                                    <h5>
+                                        <i class="fa fa-users"></i>
+                                        {{ 'admin.user_groups.title'|trans }}
+                                        <span class="pull-right"><span class="caret"></span></span>
+                                    </h5>
+                                </a>
+                                <div id="admin_users" class="collapse{% if admin.hasRoute(app.request.attributes.get('_route')) %} in{% endif %}">
+                                    <ul class="nav nav-pills nav-stacked">
+                                        {{ utilities.admin_menu_icon_link('user', null, 'user', 'list') }}
+                                        {{ utilities.admin_menu_icon_link('users', null, 'group', 'list') }}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        {% endblock %}
+                    {% endblock %}
+                </div>
                 <div id="tg_center" class="with-loader autoload">
                     {{ utilities.flash_messages() }}
                     {% block tg_center %}{% endblock %}
@@ -100,9 +97,6 @@ NEVER points to this layout directly !
             </div>
         {% endblock %}
     </div>
-    {% block tg_modal %}
-        <div class="modal fade with-loader autoload" id="tg_modal" tabindex="-1" role="dialog"></div>
-    {% endblock %}
 {% endblock %}
 
 {% block javascripts %}

@@ -1,29 +1,39 @@
-
-body {
-  padding-top: 50px;
-  &.no-menu {
-    padding-top: $padding-base-horizontal;
-  }
-}
-
 .sidebar {
-  .nav {
+  .nav, .admin-nav h5 {
     margin-left: -$padding-base-horizontal;
     margin-right: -$padding-base-horizontal;
+  }
+  .admin-nav {
+    h5 {
+      padding: $padding-base-horizontal $padding-base-vertical;
+      margin-top: 0;
+      margin-bottom: 0;
+      border-top: 1px solid darken($body-bg, 5%);
+    }
+    &:hover, &:focus {
+      text-decoration: none;
+    }
   }
 }
 
 // Inverted navbar
 .sidebar-inverse {
+  a {
+    color: $navbar-inverse-link-color;
+  }
+  .active {
+    a:hover {
+      color: white;
+    }
+  }
   color: lighten($navbar-inverse-color, 20%);
-  @include gradient-vertical($start-color: lighten($navbar-inverse-bg, 10%), $end-color: $navbar-inverse-bg);
-  @include reset-filter; // Remove gradient in IE<10 to fix bug where dropdowns don't get triggered; see https://github.com/twbs/bootstrap/issues/10257
+  background-color: $navbar-inverse-bg;
   .nav {
-    & a {
+    a {
       border-radius: 0;
-      color: $navbar-inverse-link-color;
       &:hover {
-        text-shadow: none;
+        color: $text-color;
+        text-shadow: none !important;
       }
     }
     & > .open > a,
@@ -37,6 +47,11 @@ body {
     & .nav {
       margin: 0;
       padding-left: $padding-base-horizontal;
+    }
+  }
+  .admin-nav {
+    h5 {
+      border-top: 1px solid darken($navbar-inverse-bg, 5%);
     }
   }
 }

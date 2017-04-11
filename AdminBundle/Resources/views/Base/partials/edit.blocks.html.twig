@@ -1,36 +1,24 @@
+{# @var admin \Sidus\AdminBundle\Admin\Admin #}
+
 {% block edit_form_class %}{% endblock %}
 
 {% block form_actions %}
     {% set backAction = admin.option('allow_back')|default(not isAjax) %}
     <div class="btn-group pull-right">
-        {% if listPath is defined and listPath %}
-            <a href="{{ listPath }}" class="btn btn-default"
-               {% if not backAction %}data-close-target="{{ target }}"{% elseif isModal %}
-                data-target-element="{{ target }}"{% endif %}>
-                {% if backAction %}
-                    {{ tryTrans([admin_trans_key ~ 'back.label', 'admin.action.back.label'], [], 'Back') }}
-                {% else %}
-                    {{ tryTrans([admin_trans_key ~ 'close.label', 'admin.action.close.label'], [], 'Close') }}
-                {% endif %}
-            </a>
-        {% elseif isAjax %}
-            <a href="#" data-close-target="{{ target }}" class="btn btn-default">
-                {{ tryTrans([admin_trans_key ~ 'close.label', 'admin.action.close.label'], [], 'Close') }}
-            </a>
+        {{ block('back_button') }}
+        {{ block('submit_button') }}
+        {% if data|default(false) %}
+            {{ block('secondary_actions_button') }}
         {% endif %}
-        {% block submit_button %}
-            <button type="submit" class="btn btn-primary">
-                {{ tryTrans([admin_trans_key ~ 'submit.label', 'admin.action.submit.label'], [], 'Submit') }}
-            </button>
-        {% endblock %}
     </div>
-    <div class="clear"></div>
 {% endblock %}
 
 {% block edit_standard %}
     <div class="edit-form {{ block('edit_form_class') }}">
         {{ form_start(form) }}
         {{ block('form_actions') }}
+        {{ block('breadcrumb') }}
+        <div class="clear"></div>
         {{ form_widget(form) }}
         {{ block('form_actions') }}
         {{ form_end(form) }}
@@ -54,4 +42,89 @@
             {{ form_end(form) }}
         </div>
     </div>
+{% endblock %}
+
+{% block breadcrumb %}
+    <ol class="breadcrumb pull-left">
+        {% if admin.hasAction('index') %}
+            <li>
+                <a href="{{ admin_path(admin, 'index') }}">
+                    {{ tryTrans(['admin.'~admin.code~'.title'], [], admin.code|humanize) }}
+                </a>
+            </li>
+        {% else %}
+            {% if listPath is defined and listPath %}
+                <li>
+                    <a href="{{ listPath }}">
+                        {{ tryTrans(['admin.'~admin.code~'.title'], [], admin.code|humanize) }}
+                    </a>
+                </li>
+            {% else %}
+                <li>
+                    <a href="{{ admin_path(admin, 'list') }}">
+                        {{ tryTrans(['admin.'~admin.code~'.title'], [], admin.code|humanize) }}
+                    </a>
+                </li>
+            {% endif %}
+        {% endif %}
+        {% if data is defined and data|trim %}
+            <li>
+                <a href="{{ admin_entity_path(admin, data, 'edit') }}">
+                    {{ data|trim }}
+                </a>
+            </li>
+        {% endif %}
+        <li class="active">
+            {{ tryTrans([
+            admin_trans_key ~ admin.currentAction.code ~ '.title',
+            'admin.action.' ~ admin.currentAction.code ~ '.title'
+            ], [], admin.currentAction.code|humanize) }}
+        </li>
+    </ol>
+{% endblock %}
+
+{% block back_button %}
+    {% if listPath is defined and listPath %}
+        <a href="{{ listPath }}" class="btn btn-default"
+           {% if not backAction %}data-close-target="{{ target }}"{% elseif isModal %}
+            data-target-element="{{ target }}"{% endif %}>
+            {% if backAction %}
+                {{ tryTrans([admin_trans_key ~ 'back.label', 'admin.action.back.label'], [], 'Back') }}
+            {% else %}
+                {{ tryTrans([admin_trans_key ~ 'close.label', 'admin.action.close.label'], [], 'Close') }}
+            {% endif %}
+        </a>
+    {% elseif isAjax %}
+        <a href="#" data-close-target="{{ target }}" class="btn btn-default">
+            {{ tryTrans([admin_trans_key ~ 'close.label', 'admin.action.close.label'], [], 'Close') }}
+        </a>
+    {% endif %}
+{% endblock %}
+
+{% block submit_button %}
+    <button type="submit" class="btn btn-primary">
+        {{ tryTrans([admin_trans_key ~ 'submit.label', 'admin.action.submit.label'], [], 'Submit') }}
+    </button>
+{% endblock %}
+
+{% block secondary_actions_button %}
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+        <i class="fa fa-wrench"></i> <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+        {{ block('secondary_actions') }}
+    </ul>
+{% endblock %}
+
+{% block secondary_actions %}
+    <li class="bg-danger">
+        {{ block('delete_link') }}
+    </li>
+{% endblock %}
+
+{% block delete_link %}
+    <a href="{{ admin_entity_path(admin, data, 'delete') }}">
+        <i class="fa fa-trash"></i>
+        {{ tryTrans([admin_trans_key ~ 'delete.label', 'admin.action.delete.label'], [], 'Delete') }}
+    </a>
 {% endblock %}

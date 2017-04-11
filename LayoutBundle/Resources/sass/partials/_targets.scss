@@ -7,7 +7,7 @@
   padding: $padding-base-horizontal;
   vertical-align: top;
   position: relative;
-  min-height: 95vh;
+  min-height: 100vh;
   @include transition(width 0.5s); // @todo not working why ?
   &:empty {
     display: none;
@@ -16,15 +16,16 @@
 
 #tg_left {
   border-right: 1px solid $table-border-color;
-  width: 300px;
+  width: 250px;
   min-width: 250px;
+  max-width: 250px;
 }
 
 #tg_right {
   border-left: 1px solid $table-border-color;
-  min-width: 700px;
-  background-color: white;
-  max-width: 2300px;
+  min-width: 50%;
+  background-color: $body-bg;
+  max-width: 50%;
 }
 
 #tg_center {
@@ -43,4 +44,17 @@
 
 .modal .tg-loading {
   background: rgba(100, 100, 100, 0.5) image-url("ajax-loader.gif") no-repeat center center;
+}
+
+.tg-right-expanded {
+  #tg_center {
+    table.table {
+      th, td {
+        display: none;
+        &:nth-child(1), &:nth-child(2), &:nth-child(3), &:last-child {
+          display: table-cell;
+        }
+      }
+    }
+  }
 }

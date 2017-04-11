@@ -65,7 +65,11 @@
         if (e.target !== this) { // Prevent error bubbling
             return;
         }
-        $(e.target).prepend($('<div class="tg-loading">&nbsp;</div>'));
+        var $tg = $(e.target);
+        if ($tg.attr('id') == 'tg_right') {
+            $(document.body).addClass('tg-right-expanded');
+        }
+        $tg.prepend($('<div class="tg-loading">&nbsp;</div>'));
     });
 
     /**
@@ -131,6 +135,10 @@
                 previousTitle = history.state.previousUrl;
             }
             history.replaceState(previousState, previousTitle, previousUrl);
+        }
+
+        if ($tg.attr('id') == 'tg_right') {
+            $(document.body).removeClass('tg-right-expanded');
         }
     }
 

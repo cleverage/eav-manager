@@ -20,6 +20,7 @@ sidus_admin:
                     path:     /{familyCode}/{id}/delete
             options:
                 hidden: true
+                icon: image
                 families:
                     Image: ~
                     Document: ~
@@ -66,7 +67,6 @@ sidus_admin:
             controller: CleverAgeEAVManagerAdminBundle:User
             entity: CleverAge\EAVManager\UserBundle\Entity\User
             prefix: /users
-            base_template: CleverAgeEAVManagerAdminBundle:User:index.html.twig
             actions:
                 list:
                     path:     /
@@ -87,7 +87,6 @@ sidus_admin:
             controller: CleverAgeEAVManagerAdminBundle:User
             entity: CleverAge\EAVManager\UserBundle\Entity\Group
             prefix: /groups
-            base_template: CleverAgeEAVManagerAdminBundle:User:index.html.twig
             actions:
                 list:
                     path:     /

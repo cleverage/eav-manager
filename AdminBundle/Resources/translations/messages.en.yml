@@ -25,7 +25,11 @@ admin:
             label: Reset password
             title: Reset password
 
+    user_groups:
+        title: User & Groups
+
     user:
+        title: Users
         tab:
             main:
                 label: Base
@@ -40,9 +44,6 @@ admin:
                 label: Cancel
             submit:
                 label: Delete
-
-        menu:
-            title: Users & Groups
 
         form:
             username:
@@ -96,8 +97,7 @@ admin:
                 label: Delete
 
     media:
-        menu:
-            title: Media
+        title: Asset Manager
         select:
             label: Select
             title: Select a media

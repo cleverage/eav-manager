@@ -70,22 +70,24 @@ NEVER points to this layout directly !
                                     {{ utilities.admin_family_nav(admin('media'), family is defined ? family) }}
                                 {% endif %}
                             {% endif %}
-                            {% if is_granted('ROLE_USER_MANAGER') %}
-                                {% set admin = admin('user') %}
-                                <a class="admin-nav" data-toggle="collapse" href="#admin_users">
-                                    <h5>
-                                        <i class="fa fa-users"></i>
-                                        {{ 'admin.user_groups.title'|trans }}
-                                        <span class="pull-right"><span class="caret"></span></span>
-                                    </h5>
-                                </a>
-                                <div id="admin_users" class="collapse{% if admin.hasRoute(app.request.attributes.get('_route')) %} in{% endif %}">
-                                    <ul class="nav nav-pills nav-stacked">
-                                        {{ utilities.admin_menu_icon_link('user', null, 'user', 'list') }}
-                                        {{ utilities.admin_menu_icon_link('users', null, 'group', 'list') }}
-                                    </ul>
-                                </div>
-                            {% endif %}
+                            {% block user_manager_menu %}
+                                {% if is_granted('ROLE_USER_MANAGER') %}
+                                    {% set admin = admin('user') %}
+                                    <a class="admin-nav" data-toggle="collapse" href="#admin_users">
+                                        <h5>
+                                            <i class="fa fa-expeditedssl"></i>
+                                            {{ 'admin.user_groups.title'|trans }}
+                                            <span class="pull-right"><span class="caret"></span></span>
+                                        </h5>
+                                    </a>
+                                    <div id="admin_users" class="collapse{% if admin.hasRoute(app.request.attributes.get('_route')) %} in{% endif %}">
+                                        <ul class="nav nav-pills nav-stacked">
+                                            {{ utilities.admin_menu_icon_link('user', null, 'user', 'list') }}
+                                            {{ utilities.admin_menu_icon_link('users', null, 'group', 'list') }}
+                                        </ul>
+                                    </div>
+                                {% endif %}
+                            {% endblock %}
                         {% endblock %}
                     {% endblock %}
                 </div>

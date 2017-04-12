@@ -3,6 +3,8 @@
 
 {% set admin_trans_key = 'admin.' ~ admin.code ~ '.' ~ admin.currentAction.code ~ '.' %}
 
+{% import "CleverAgeEAVManagerLayoutBundle:Macros:utilities.html.twig" as utilities %}
+
 {% if isAjax and form is defined %}
     {% form_theme form 'CleverAgeEAVManagerLayoutBundle:Form:ajax_theme.html.twig' %}
 {% endif %}

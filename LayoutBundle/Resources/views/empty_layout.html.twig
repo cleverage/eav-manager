@@ -11,6 +11,9 @@
 {% block tg_center %}{% endblock %}
 {% block tg_right %}{% endblock %}
 {% block additionnal_javascript %}
+    <div style="display:none;">
+        {% block title %}CleverAge/EAVManager{{ title is defined ? ' - ' ~ title }}{% endblock %}
+    </div>
     {% if isAjax %}
         <script>
             // Launched only on ajax calls when jQuery is already defined: used to update datagrid's row

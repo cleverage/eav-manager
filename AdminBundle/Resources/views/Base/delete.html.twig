@@ -1,5 +1,7 @@
 {% extends 'CleverAgeEAVManagerAdminBundle:Base:edit.html.twig' %}
 
+{% import "CleverAgeEAVManagerLayoutBundle:Macros:utilities.html.twig" as utilities %}
+
 {% block flash_messages %}
     {{ not success ? utilities.flash_messages() }}
 {% endblock %}

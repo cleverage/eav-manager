@@ -30,8 +30,9 @@ Displays a menu link
 Displays a menu link with an icon
 #}
 {% macro menu_icon_link(icon, title, route, routes, parameters) %}
+    {% import _self as current %}
     {% set title = ('<i class="fa fa-' ~ icon ~ '"></i> ') ~ title %}
-    {{ _self.menu_link(title, route, routes, parameters) }}
+    {{ current.menu_link(title, route, routes, parameters) }}
 {% endmacro %}
 
 {#
@@ -47,8 +48,9 @@ Displays an admin menu link
 Displays an admin menu link with a FA icon
 #}
 {% macro admin_menu_icon_link(icon, title, admin, action, parameters) %}
+    {% import _self as current %}
     {% set title = ('<i class="fa fa-' ~ icon ~ '"></i> ') ~ title %}
-    {{ _self.admin_menu_link(title, admin, action, parameters) }}
+    {{ current.admin_menu_link(title, admin, action, parameters) }}
 {% endmacro %}
 
 {#
@@ -104,6 +106,7 @@ Locks the form attached to the modified input
 Used to generate a menu for the given families
 #}
 {% macro family_menu(admin, families, activeFamily) %}
+    {% import _self as current %}
     {% if families is defined and families | length > 0 %}
         <ul class="nav nav-pills nav-stacked">
             {% for f in families %}
@@ -111,7 +114,7 @@ Used to generate a menu for the given families
                 {% if f.instantiable and (is_granted('list', f) or is_granted('ROLE_DATA_ADMIN')) %}
                     <li {% if activeFamily and activeFamily.code == f.code %}class="active"{% endif %}>
                         <a href="{{ admin_path(admin, 'list', {familyCode: f.code}) }}">{{ f }}</a>
-                        {{ _self.family_menu(admin, f.children, activeFamily) }}
+                        {{ current.family_menu(admin, f.children, activeFamily) }}
                     </li>
                 {% endif %}
             {% endfor %}

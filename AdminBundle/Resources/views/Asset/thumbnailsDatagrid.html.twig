@@ -22,6 +22,7 @@
 {# Recopy of macro from "parent" template, the only modification is the call to the "table" macro #}
 {% macro render(datagrid, viewParameters) %}
     {% import "@SidusDataGrid/DataGrid/datagrid.html.twig" as parent %}
+    {% import _self as current %}
     {% set form = datagrid.formView %}
 
     {% form_theme form datagrid.formTheme %}
@@ -35,7 +36,7 @@
         {{ parent.actions(datagrid, viewParameters) }}
     {% endblock %}
 
-    {{ _self.table(datagrid, viewParameters) }}
+    {{ current.table(datagrid, viewParameters) }}
 
     {% if datagrid.filterConfig.pager.count > 10 %}
         {{ block('datagrid_actions') }}

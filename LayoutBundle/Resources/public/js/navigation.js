@@ -161,8 +161,8 @@
     /**
      * Close the target after deletion of an entity
      */
-    $(document).on('delete.admindata', function (e) {
-        if (e.success) {
+    $(document).on('delete_admindata', function (e) {
+        if (e.detail.success) {
             var $tg = $(e.target);
             if (0 === $tg.length) {
                 return;
@@ -170,21 +170,4 @@
             closeTarget($tg);
         }
     });
-
-    // /**
-    //  * Special case for pagination: we don't want to inject data-target for each link
-    //  * @todo fix me
-    //  */
-    // $(document).on('click', '#tg_center ul.pagination a, #tg_modal ul.pagination a', function (e) {
-    //     var t = $(this);
-    //     if (t.data('target')) {
-    //         return;
-    //     }
-    //     var target = '#' + t.parents('#tg_center, #tg_modal').first().attr('id');
-    //     t.attr('data-target-element', target);
-    //     e.preventDefault();
-    //     e.stopPropagation();
-    //     t.trigger('click');
-    // });
-
 }(window.jQuery);

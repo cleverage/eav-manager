@@ -12,6 +12,17 @@
     </button>
 {% endblock %}
 
+{% block secondary_actions %}
+    {% if data|default() and admin.hasAction('edit') %}
+        <li>
+            <a href="{{ admin_entity_path(admin, data, 'edit') }}">
+                <i class="fa fa-pencil"></i>
+                {{ tryTrans([admin_trans_key ~ 'edit.label', 'admin.action.edit.label'], [], 'Edit') }}
+            </a>
+        </li>
+    {% endif %}
+{% endblock %}
+
 {% block tg_center %}
     {% if form is defined %}
         <div class="edit-form {% block edit_form_class %}{% endblock %}">

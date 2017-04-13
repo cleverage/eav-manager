@@ -1,0 +1,14 @@
+{% block breadcrumb_list %}
+    {% if family is defined and family %}
+        {% if admin.hasAction('list') %}
+            <li>
+                <a href="{{ listPath is defined and listPath ? listPath : admin_path(admin, 'list', {familyCode: family.code}) }}">
+                    {{ family }}
+                </a>
+            </li>
+        {% endif %}
+    {% else %}
+        {% use '@CleverAgeEAVManagerAdmin/Base/partials/edit.blocks.html.twig' with breadcrumb_list as parent_breadcrumb_list %}
+        {{ block('parent_breadcrumb_list') }}
+    {% endif %}
+{% endblock %}

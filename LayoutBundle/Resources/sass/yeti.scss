@@ -5,3 +5,9 @@
 @import "partials/includes";
 
 @import "thomaspark/bootswatch/yeti/bootswatch";
+
+// Fixing theme strange issue @todo do a better fix !
+.table thead th .btn {
+  line-height: 1em;
+  padding: 1px 4px;
+}

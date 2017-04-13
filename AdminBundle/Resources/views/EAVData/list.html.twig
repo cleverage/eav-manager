@@ -1,6 +1,7 @@
 {% extends 'CleverAgeEAVManagerAdminBundle:Base:list.html.twig' %}
 
 {% block tg_center %}
+    {% use '@CleverAgeEAVManagerAdmin/Base/partials/list.blocks.html.twig' %}
     {% use '@CleverAgeEAVManagerAdmin/EAVData/partials/list.blocks.html.twig' %}
     {% if isModal %}
         {{ block('list_modal') }}

@@ -1,0 +1,11 @@
+{% extends '@CleverAgeEAVManagerAdmin/Base/edit.html.twig' %}
+
+{% block tg_center %}
+    {% use '@CleverAgeEAVManagerAdmin/Base/partials/edit.blocks.html.twig' %}
+    {% use '@CleverAgeEAVManagerAdmin/EAVData/partials/edit.blocks.html.twig' %}
+    {% if isModal %}
+        {{ block('edit_modal') }}
+    {% else %}
+        {{ block('edit_standard') }}
+    {% endif %}
+{% endblock %}

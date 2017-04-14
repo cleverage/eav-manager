@@ -31,7 +31,7 @@ class ResourceManager extends BaseResourceManager
             $resource
                 ->setFileModifiedAt($file->getMtime())
                 ->setFileSize($file->getSize())
-                ->setFileType($mimeType);
+                ->setMimeType($mimeType);
         }
         if ($resource instanceof Image) {
             $imageSize = getimagesizefromstring($file->getContent());

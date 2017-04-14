@@ -125,7 +125,7 @@ class AssetSubscriber implements EventSubscriber
         $data->setFileSize($resource->getFileSize());
         $this->valuesToPersist[] = $data->getValue($family->getAttribute('fileSize'));
 
-        $data->setMimeType($resource->getFileType());
+        $data->setMimeType($resource->getMimeType());
         $this->valuesToPersist[] = $data->getValue($family->getAttribute('mimeType'));
 
         $data->setFileName($resource->getOriginalFileName());

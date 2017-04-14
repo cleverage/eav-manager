@@ -75,11 +75,11 @@ sidus_data_grid:
                     - id
                     - originalFileName
                     - fileSize
-                    - fileType
+                    - mimeType
                     - fileModifiedAt
                 fields:
                     originalFileName: ~
-                    fileType:
+                    mimeType:
                         type: choice
                     fileModifiedAt:
                         type: date_range
@@ -89,7 +89,7 @@ sidus_data_grid:
                 originalFileName: ~
                 type: ~
                 fileSize: ~
-                fileType: ~
+                mimeType: ~
                 fileModifiedAt: ~
                 actions:
                     template: CleverAgeEAVManagerAdminBundle:Asset/partials:resource.row.actions.html.twig

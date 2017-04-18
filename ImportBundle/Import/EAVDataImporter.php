@@ -2,6 +2,7 @@
 
 namespace CleverAge\EAVManager\ImportBundle\Import;
 
+use Sidus\EAVModelBundle\Serializer\Denormalizer\EAVDataDenormalizer;
 use Sidus\FileUploadBundle\Controller\BlueimpController;
 use CleverAge\EAVManager\ImportBundle\Configuration\DirectoryConfigurationHandler;
 use CleverAge\EAVManager\ImportBundle\DataTransfer\ImportContext;
@@ -62,6 +63,9 @@ class EAVDataImporter
     /** @var DirectoryConfigurationHandler */
     protected $directoryConfigurationHandler;
 
+    /** @var EAVDataDenormalizer */
+    protected $dataDenormalizer;
+
     /** @var ImportContext */
     protected $importContext;
 
@@ -83,19 +87,22 @@ class EAVDataImporter
      * @param EntityManager                 $manager
      * @param array                         $uploadManagers
      * @param DirectoryConfigurationHandler $directoryConfigurationHandler
+     * @param EAVDataDenormalizer           $dataDenormalizer
      */
     public function __construct(
         FamilyRegistry $familyRegistry,
         ValidatorInterface $validator,
         EntityManager $manager,
         array $uploadManagers,
-        DirectoryConfigurationHandler $directoryConfigurationHandler
+        DirectoryConfigurationHandler $directoryConfigurationHandler,
+        EAVDataDenormalizer $dataDenormalizer
     ) {
         $this->familyRegistry = $familyRegistry;
         $this->validator = $validator;
         $this->manager = $manager;
         $this->uploadManagers = $uploadManagers;
         $this->directoryConfigurationHandler = $directoryConfigurationHandler;
+        $this->dataDenormalizer = $dataDenormalizer;
     }
 
     /**
@@ -245,25 +252,8 @@ class EAVDataImporter
      */
     public function loadData(FamilyInterface $family, array $data, $reference = null, ImportConfig $config = null)
     {
-        $accessor = PropertyAccess::createPropertyAccessor();
-        if ($config && $config->getOption('update_existing_only')) {
-            $entity = $this->getEntityByReference($family, $reference, true);
-            if (null === $entity) {
-                return null;
-            }
-        } else {
-            $entity = $this->getEntityOrCreate($family, $reference);
-        }
+        $entity = $this->dataDenormalizer->denormalize($data, $family->getCode());
 
-        foreach ($data as $attributeCode => $value) {
-            if ($family->hasAttribute($attributeCode)) {
-                // EAV Model property
-                $this->setEntityValue($entity, $family->getAttribute($attributeCode), $value, $config);
-            } else {
-                // Standard relational property
-                $accessor->setValue($entity, $attributeCode, $value);
-            }
-        }
         $violations = $this->validator->validate($entity);
         /** @var ConstraintViolationInterface $violation */
         /** @noinspection LoopWhichDoesNotLoopInspection */

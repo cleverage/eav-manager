@@ -252,9 +252,8 @@ class EAVDataImporter
      */
     public function loadData(FamilyInterface $family, array $data, $reference = null, ImportConfig $config = null)
     {
-        // TODO use the same properties than \Sidus\EAVModelBundle\Serializer\Denormalizer\EAVDataDenormalizer::getFamily
         if (!array_key_exists('family', $data)) {
-            $data['family'] = $family->getCode();
+            $data['family'] = $family;
         }
         $entity = $this->dataDenormalizer->denormalize($data, $family->getDataClass());
 

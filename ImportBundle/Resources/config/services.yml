@@ -1,3 +1,6 @@
+parameters:
+    eavmanager_import.import_config.class: CleverAge\EAVManager\ImportBundle\Model\ImportConfig
+
 services:
     eavmanager_import.eav_data_importer:
         class: CleverAge\EAVManager\ImportBundle\Import\EAVDataImporter

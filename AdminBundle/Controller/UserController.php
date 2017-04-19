@@ -33,12 +33,13 @@ class UserController extends GenericAdminController
             $this->saveEntity($user);
 
             if ($request->isXmlHttpRequest()) {
-                return [
-                    'dataId' => $user->getId(),
-                    'isAjax' => 1,
-                    'target' => $request->get('target'),
-                    'success' => 1,
-                ];
+                return array_merge(
+                    $this->getViewParameters($request, $form, $user),
+                    [
+                        'dataId' => $user->getId(),
+                        'success' => 1,
+                    ]
+                );
             }
 
             return $this->redirectToAction('list');

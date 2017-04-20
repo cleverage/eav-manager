@@ -122,6 +122,10 @@ class UserManager implements UserManagerInterface
      */
     public function save(User $user)
     {
+        if ($user->getPlainPassword()) {
+            $this->setPlainTextPassword($user, $user->getPlainPassword());
+        }
+
         /** @var EntityManager $em */
         $em = $this->doctrine->getManager();
         $em->persist($user);

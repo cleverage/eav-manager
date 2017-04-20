@@ -1,0 +1,12 @@
+{% extends '@CleverAgeEAVManagerAdmin/Base/edit.html.twig' %}
+
+{% block submit_button %}
+    <button type="submit" class="btn btn-primary">
+        {{ tryTrans([admin_trans_key ~ 'export.label', 'admin.action.export.label'], [], 'Export') }}
+    </button>
+{% endblock %}
+
+{% block additionnal_javascript %}
+    {% import "CleverAgeEAVManagerLayoutBundle:Macros:utilities.html.twig" as utilities %}
+    {{ utilities.lock_form(form.vars.attr.id, target) }}
+{% endblock %}

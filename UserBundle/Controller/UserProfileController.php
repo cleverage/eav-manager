@@ -41,9 +41,7 @@ class UserProfileController extends Controller
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getManager();
-            $em->persist($user);
-            $em->flush();
+            $this->get('eavmanager_user.user.manager')->save($user);
 
             $this->addFlash('success', 'eavmanager.flash.edit.success');
 

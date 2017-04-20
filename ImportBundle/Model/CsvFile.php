@@ -46,25 +46,45 @@ class CsvFile
      * @param string $enclosure
      * @param string $escape
      * @param array  $headers
+     * @param string $mode
      *
      * @throws \UnexpectedValueException
      */
-    public function __construct($filePath, $delimiter = ',', $enclosure = '"', $escape = '\\', array $headers = null)
-    {
+    public function __construct(
+        $filePath,
+        $delimiter = ',',
+        $enclosure = '"',
+        $escape = '\\',
+        array $headers = null,
+        $mode = 'r'
+    ) {
         $this->filePath = $filePath;
         $this->delimiter = $delimiter;
         $this->enclosure = $enclosure;
         $this->escape = $escape;
 
-        $this->handler = fopen($filePath, 'r');
-        if (null === $headers) {
+        $this->handler = fopen($filePath, $mode);
+        if (false === $this->handler) {
+            throw new \UnexpectedValueException("Unable to open file: '{$filePath}' in {$mode} mode");
+        }
+        if (null === $headers && in_array($mode, ['r', 'r+', 'w+', 'a+', 'x+', 'c+'], true)) {
             $this->headers = fgetcsv($this->handler, null, $delimiter, $enclosure, $escape);
+            if (false === $this->headers || 0 === count($this->headers)) {
+                throw new \UnexpectedValueException("Unable to read CSV headers for file: {$filePath}");
+            }
         } else {
             $this->manualHeaders = true;
+            if (null === $headers || !is_array($headers)) {
+                throw new \UnexpectedValueException(
+                    "Invalid headers for CSV file '{$filePath}', you need to pass the headers manually"
+                );
+            }
+            if (0 === count($headers)) {
+                throw new \UnexpectedValueException(
+                    "Empty headers for CSV file '{$filePath}', you need to pass the headers manually"
+                );
+            }
             $this->headers = $headers;
-        }
-        if (false === $this->headers || 0 === count($this->headers)) {
-            throw new \UnexpectedValueException("Unable to open file as CSV : {$filePath}");
         }
         $this->headers = array_map('trim', $this->headers); // Trimming headers
         $this->headerCount = count($this->headers);
@@ -212,6 +232,56 @@ class CsvFile
         }
 
         return array_combine($this->headers, $values);
+    }
+
+    /**
+     * Warning, this function will return exactly the same value as the fgetcsv() function
+     *
+     * @param array $fields
+     *
+     * @throws \RuntimeException
+     *
+     * @return int
+     */
+    public function writeRaw(array $fields)
+    {
+        $this->assertOpened();
+        $this->currentLine++;
+
+        return fputcsv($this->handler, $fields, $this->delimiter, $this->enclosure, $this->escape);
+    }
+
+    /**
+     * @param array $fields
+     *
+     * @throws \RuntimeException
+     *
+     * @return int
+     */
+    public function writeLine(array $fields)
+    {
+        $count = count($fields);
+        if ($count !== $this->headerCount) {
+            $message = "Trying to write an invalid number of columns for file {$this->filePath}: ";
+            $message .= "{$count} columns for {$this->headerCount} headers";
+            throw new \UnexpectedValueException($message);
+        }
+
+        $parsedFields = [];
+        foreach ($this->headers as $column) {
+            if (!array_key_exists($column, $fields)) {
+                $message = "Missing column {$column} in given fields for file {$this->filePath}";
+                throw new \UnexpectedValueException($message);
+            }
+            $parsedFields[$column] = $fields[$column];
+        }
+
+        $length = $this->writeRaw($parsedFields);
+        if (false === $length) {
+            throw new \RuntimeException("Unable to write CSV data to file '{$this->filePath}'");
+        }
+
+        return $length;
     }
 
     /**

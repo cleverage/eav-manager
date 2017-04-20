@@ -24,6 +24,9 @@ admin:
         resetPassword:
             label: Reset password
             title: Reset password
+        export:
+            label: Export
+            title: Export
 
     user_groups:
         title: User & Groups

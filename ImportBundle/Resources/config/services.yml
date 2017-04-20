@@ -13,6 +13,8 @@ services:
                 image: '@oneup_uploader.controller.image'
             - '@eavmanager_import.configuration.directory.handler'
             - '@sidus_eav_model.denormalizer.data'
+        calls:
+            - [ 'setContainer' , ['@service_container']]
 
     eavmanager_import.configuration.directory.handler:
         class: CleverAge\EAVManager\ImportBundle\Configuration\DirectoryConfigurationHandler

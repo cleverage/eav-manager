@@ -50,10 +50,13 @@ class CleverAgeEAVManagerImportExtension extends Extension
      */
     protected function addImportServiceDefinition($code, $importConfiguration, ContainerBuilder $container)
     {
-        $importConfiguration['service'] = $this->resolveServiceReference($importConfiguration['service']);
-        if (isset($importConfiguration['transformer'])) {
-            $importConfiguration['transformer'] = $this->resolveServiceReference($importConfiguration['transformer']);
+        // Resolve given references
+        foreach (['service', 'transformer', 'source'] as $key) {
+            if (isset($importConfiguration[$key])) {
+                $importConfiguration[$key] = $this->resolveServiceReference($importConfiguration[$key]);
+            }
         }
+
         $definitionOptions = [
             $code,
             new Reference('sidus_eav_model.family.registry'),

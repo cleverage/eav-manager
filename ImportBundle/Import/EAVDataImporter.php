@@ -111,6 +111,52 @@ class EAVDataImporter implements ContainerAwareInterface
         $this->container = $container;
     }
 
+    /**
+     * Import an array of data using the given configuration into the EAV manager
+     *
+     * @TODO Manage restart
+     * @TODO find a way to keep references...
+     *
+     * @param ImportConfig  $config
+     * @param callable|null $onProgress
+     *
+     * @throws Exception
+     */
+    public function import(ImportConfig $config, callable $onProgress = null)
+    {
+        $data = $config->getSource()->getData();
+
+        // By default import everything at once
+        $batchSize = $config->getOption('batch_size', count($data));
+
+        while (count($data)) {
+            $dataBatch = array_splice($data, 0, $batchSize);
+            $loadedEntities = [];
+            $this->manager->beginTransaction();
+
+            // Create the entities from the current batch
+            foreach ($dataBatch as $reference => $entityData) {
+                try {
+                    $entity = $this->loadData($config->getFamily(), $entityData, $reference, $config);
+                    $loadedEntities[$reference] = $entity;
+                } catch (Exception $e) {
+                    $this->manager->rollback();
+                    throw $e;
+                }
+            }
+
+            // Persist them and flush memory
+            $this->manager->flush();
+            $this->manager->commit();
+
+            gc_collect_cycles();
+
+            if ($onProgress) {
+                $onProgress($loadedEntities);
+            }
+        }
+    }
+
 
     /**
      * @deprecated

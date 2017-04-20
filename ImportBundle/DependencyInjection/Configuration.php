@@ -61,6 +61,7 @@ class Configuration implements ConfigurationInterface
             ->scalarNode('family')->isRequired()->end()
             ->scalarNode('service')->defaultValue('@eavmanager_import.eav_data_importer')->end()
             ->scalarNode('transformer')->end()
+            ->scalarNode('source')->end()
             ->variableNode('mapping')->end()
             ->variableNode('options')->end();
     }

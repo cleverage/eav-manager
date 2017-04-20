@@ -3,6 +3,7 @@
 namespace CleverAge\EAVManager\ImportBundle\Model;
 
 use CleverAge\EAVManager\ImportBundle\Import\EAVDataImporter;
+use CleverAge\EAVManager\ImportBundle\Source\DataSourceInterface;
 use CleverAge\EAVManager\ImportBundle\Transformer\EAVDataTransformerInterface;
 use Sidus\EAVModelBundle\Registry\FamilyRegistry;
 use Sidus\EAVModelBundle\Exception\MissingFamilyException;
@@ -40,6 +41,9 @@ class ImportConfig
 
     /** @var array */
     protected $options;
+
+    /** @var DataSourceInterface */
+    protected $source;
 
     /**
      * ImportConfig constructor.
@@ -223,4 +227,21 @@ class ImportConfig
 
         return false;
     }
+
+    /**
+     * @return DataSourceInterface
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
+
+    /**
+     * @param DataSourceInterface $source
+     */
+    public function setSource(DataSourceInterface $source)
+    {
+        $this->source = $source;
+    }
+
 }

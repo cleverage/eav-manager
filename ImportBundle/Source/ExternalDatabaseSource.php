@@ -23,32 +23,27 @@ class ExternalDatabaseSource implements DataSourceInterface
     /** @var  string */
     protected $idFieldName;
 
-    /** @var  string */
-    protected $customQuery;
-
     /**
      * ExternalDatabaseSource constructor.
      * @param RegistryInterface $doctrine
      * @param string            $connectionName
      * @param string            $tableName
      * @param string            $idFieldName
-     * @param string            $customQuery
      */
     public function __construct(
         RegistryInterface $doctrine,
         $connectionName,
         $tableName,
-        $idFieldName,
-        $customQuery = null
+        $idFieldName
     ) {
         $this->doctrine = $doctrine;
         $this->connectionName = $connectionName;
-        $this->query = $tableName;
+        $this->tableName = $tableName;
         $this->idFieldName = $idFieldName;
-        $this->customQuery = $customQuery;
     }
 
     /**
+     * @TODO may be there should not be a custom query but an overridable method...
      * {@inheritdoc}
      * @throws \InvalidArgumentException
      */
@@ -57,9 +52,7 @@ class ExternalDatabaseSource implements DataSourceInterface
         /** @var Connection $connection */
         $connection = $this->doctrine->getConnection($this->connectionName);
 
-        $query = $this->customQuery ?? "SELECT * from `{$this->tableName}`";
-
-        $data = $connection->fetchAll($query);
+        $data = $connection->fetchAll($this->getQuery());
         $dataSource = [];
 
         foreach ($data as $item) {
@@ -79,5 +72,15 @@ class ExternalDatabaseSource implements DataSourceInterface
         }
 
         return $dataSource;
+    }
+
+    /**
+     * Extensible SQL query used to fetch data
+     *
+     * @return string
+     */
+    protected function getQuery()
+    {
+        return "SELECT * from `{$this->tableName}`";
     }
 }

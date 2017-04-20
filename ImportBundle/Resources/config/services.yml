@@ -17,7 +17,7 @@ services:
     eavmanager_import.configuration.directory.handler:
         class: CleverAge\EAVManager\ImportBundle\Configuration\DirectoryConfigurationHandler
         arguments:
-            - ~
+            - '%kernel.cache_dir%'
             - ~
 
     eavmanager.import_configuration.handler:

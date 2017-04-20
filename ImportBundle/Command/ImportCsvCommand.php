@@ -206,6 +206,8 @@ class ImportCsvCommand extends ContainerAwareCommand
     }
 
     /**
+     * @deprecated : moved to \CleverAge\EAVManager\ImportBundle\Import\EAVDataImporter
+     *
      * @param $data
      *
      * @return array
@@ -229,6 +231,8 @@ class ImportCsvCommand extends ContainerAwareCommand
     }
 
     /**
+     * @deprecated : moved to \CleverAge\EAVManager\ImportBundle\Import\EAVDataImporter
+     *
      * @param array  $data
      * @param string $attributeCode
      * @param array  $config
@@ -260,6 +264,8 @@ class ImportCsvCommand extends ContainerAwareCommand
     }
 
     /**
+     * @deprecated : moved to \CleverAge\EAVManager\ImportBundle\Import\EAVDataImporter
+     *
      * @param string $attributeCode
      * @param mixed  $value
      * @param array  $config

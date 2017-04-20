@@ -2,35 +2,30 @@
 
 namespace CleverAge\EAVManager\ImportBundle\Import;
 
+use CleverAge\EAVManager\ImportBundle\Transformer\EAVValueTransformerInterface;
 use Sidus\EAVModelBundle\Serializer\Denormalizer\EAVDataDenormalizer;
 use Sidus\FileUploadBundle\Controller\BlueimpController;
 use CleverAge\EAVManager\ImportBundle\Configuration\DirectoryConfigurationHandler;
 use CleverAge\EAVManager\ImportBundle\DataTransfer\ImportContext;
-use CleverAge\EAVManager\ImportBundle\Exception\NonUniqueReferenceException;
-use CleverAge\EAVManager\ImportBundle\Exception\ReferenceNotFoundException;
 use CleverAge\EAVManager\ImportBundle\Model\ImportConfig;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Mapping\MappingException;
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
 use Doctrine\ORM\ORMInvalidArgumentException;
 use Exception;
-use Oneup\UploaderBundle\Uploader\Response\EmptyResponse;
 use RuntimeException;
 use Sidus\EAVModelBundle\Registry\FamilyRegistry;
 use Sidus\EAVModelBundle\Entity\DataInterface;
-use Sidus\EAVModelBundle\Entity\DataRepository;
-use Sidus\EAVModelBundle\Model\AttributeInterface;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
-use Sidus\FileUploadBundle\Entity\Resource as SidusResource;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
-use Symfony\Component\HttpFoundation\File\File as HttpFile;
-use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -46,7 +41,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * or directly from a flat array, specifying the family
  */
-class EAVDataImporter
+class EAVDataImporter implements ContainerAwareInterface
 {
     /** @var FamilyRegistry */
     protected $familyRegistry;
@@ -65,6 +60,9 @@ class EAVDataImporter
 
     /** @var EAVDataDenormalizer */
     protected $dataDenormalizer;
+
+    /** @var ContainerInterface */
+    protected $container;
 
     /** @var ImportContext */
     protected $importContext;
@@ -106,6 +104,17 @@ class EAVDataImporter
     }
 
     /**
+     * @param ContainerInterface $container
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
+
+
+    /**
+     * @deprecated
+     *
      * @param array        $dump
      * @param null         $filename
      * @param ImportConfig $importConfig
@@ -144,7 +153,7 @@ class EAVDataImporter
                     continue;
                 }
                 try {
-                    $this->loadData($family, $data, $reference);
+                    $this->loadData($family, $data, $reference, $importConfig);
                 } catch (Exception $e) {
                     $this->manager->rollback();
                     throw $e;
@@ -171,6 +180,8 @@ class EAVDataImporter
 
 
     /**
+     * @deprecated
+     *
      * @param FamilyInterface $family
      * @param array           $dump
      * @param ProgressBar     $progress
@@ -252,11 +263,23 @@ class EAVDataImporter
      */
     public function loadData(FamilyInterface $family, array $data, $reference = null, ImportConfig $config = null)
     {
+        // Compute the mapping
+        $data = $this->mapValues($data, $config);
+
+        // Global transformation
+        if ($config && $config->getTransformer()) {
+            $data = $config->getTransformer()->reverseTransform($family, $data);
+        }
+
+        // The denormalizer needs a reference to the family
         if (!array_key_exists('family', $data)) {
             $data['family'] = $family;
         }
+
+        // Entity creation from data, using the EAV denormalizer
         $entity = $this->dataDenormalizer->denormalize($data, $family->getDataClass());
 
+        // Data validation
         $violations = $this->validator->validate($entity);
         /** @var ConstraintViolationInterface $violation */
         /** @noinspection LoopWhichDoesNotLoopInspection */
@@ -267,6 +290,8 @@ class EAVDataImporter
             $message .= ", given '{$violation->getInvalidValue()}'";
             throw new \UnexpectedValueException($message);
         }
+
+        // Final save
         $this->persist($entity, $reference);
 
         if (null === $this->lastFlushTime) {
@@ -416,11 +441,20 @@ class EAVDataImporter
     /**
      * @param ImportConfig|null $importConfig
      *
+     * @throws InvalidConfigurationException
+     *
      * @return string
      */
     protected function getCurrentImportPath(ImportConfig $importConfig = null)
     {
         $baseDirectory = $this->directoryConfigurationHandler->getBaseDirectory();
+
+        if (!$baseDirectory) {
+            throw new InvalidConfigurationException(
+                'Base directory for eavmanager_import.configuration.directory.handler is not configured'
+            );
+        }
+
         if ($importConfig) {
             return "{$baseDirectory}/current_import-{$importConfig->getCode()}.json";
         }
@@ -441,5 +475,108 @@ class EAVDataImporter
         if (null !== $reference) {
             $this->referencesToSave[$reference] = $entity;
         }
+    }
+
+    /**
+     * @param array        $data
+     * @param ImportConfig $importConfig
+     *
+     * @return array
+     *
+     * @throws \LogicException
+     * @throws ServiceNotFoundException
+     * @throws ServiceCircularReferenceException
+     * @throws \UnexpectedValueException
+     */
+    protected function mapValues(array $data, ImportConfig $importConfig)
+    {
+        $mappedData = [];
+        foreach ($importConfig->getMapping() as $attributeCode => $config) {
+            if (isset($config['virtual']) && $config['virtual']) {
+                continue;
+            }
+
+            // The imported column may not match the attribute name
+            $importCode = $attributeCode;
+            if (isset($config['code'])) {
+                $importCode = $config['code'];
+            }
+
+            // Check column existence
+            if (!array_key_exists($importCode, $data)) {
+                $m = "Missing data '{$importCode}' in import to be mapped to '{$attributeCode}' attribute";
+                throw new \UnexpectedValueException($m);
+            }
+
+            $mappedData[$attributeCode] = $this->transformValue($attributeCode, $data[$importCode], $importConfig);
+        }
+
+        return $mappedData;
+    }
+
+    /**
+     * @param string       $attributeCode
+     * @param mixed        $value
+     * @param ImportConfig $importConfig
+     *
+     * @throws \LogicException
+     * @throws ServiceNotFoundException
+     * @throws ServiceCircularReferenceException
+     * @throws \UnexpectedValueException
+     *
+     * @return mixed
+     */
+    protected function transformValue($attributeCode, $value, ImportConfig $importConfig)
+    {
+        if ($value === '\\N' && $importConfig->getOption('ignore_mysql_null')) {
+            return null;
+        }
+        $attributeConfig = $importConfig->getMapping()[$attributeCode];
+
+        $transformer = null;
+        $attribute = null;
+        $family = $importConfig->getFamily();
+        if ($family->hasAttribute($attributeCode)) {
+            $attribute = $family->getAttribute($attributeCode);
+
+            // If we put this in a transformer
+            if ($attribute->isCollection()) {
+                $transformer = $this->container->get('eavmanager.import.transformer.collection');
+            }
+
+            // Default DataTransformer for dates
+            if (is_string($value) && !is_numeric($value)) {
+                if ($attribute->getType()->getDatabaseType() === 'dateValue') {
+                    $transformer = $this->container->get('eavmanager.import.transformer.simple_date');
+                }
+                if ($attribute->getType()->getDatabaseType() === 'datetimeValue') {
+                    $transformer = $this->container->get('eavmanager.import.transformer.simple_datetime');
+                }
+            }
+
+            // This default configuration will crash for multiple date/datetime attributes, @fixme
+        }
+
+        // Custom transformer in configuration
+        if (isset($attributeConfig['transformer'])) {
+            $transformer = $this->container->get(ltrim($attributeConfig['transformer'], '@'));
+            if (!$transformer instanceof DataTransformerInterface
+                && !$transformer instanceof EAVValueTransformerInterface
+            ) {
+                $m = "Transformer for attribute mapping '{$attributeCode}' must be a DataTransformerInterface";
+                $m .= ' or EAVValueTransformerInterface';
+                throw new \UnexpectedValueException($m);
+            }
+        }
+
+        if ($transformer) {
+            if ($transformer instanceof EAVValueTransformerInterface) {
+                $value = $transformer->reverseTransform($family, $attribute, $value, $attributeConfig);
+            } else {
+                $value = $transformer->reverseTransform($value);
+            }
+        }
+
+        return $value;
     }
 }

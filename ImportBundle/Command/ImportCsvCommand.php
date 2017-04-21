@@ -20,6 +20,7 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 
 /**
  * Import data from CSV file
+ * @deprecated
  */
 class ImportCsvCommand extends ContainerAwareCommand
 {

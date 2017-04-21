@@ -8,6 +8,7 @@ use CleverAge\EAVManager\ImportBundle\Model\CsvFile;
 
 /**
  * Import data from CSV Akeneo file with all families mixed up
+ * @deprecated
  */
 class ImportAkeneoCsvCommand extends ImportCsvCommand
 {

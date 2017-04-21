@@ -12,6 +12,7 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * Import EAV fixtures
+ * @deprecated
  */
 class ImportYmlFixturesCommand extends ContainerAwareCommand
 {

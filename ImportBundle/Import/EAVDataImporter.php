@@ -2,6 +2,7 @@
 
 namespace CleverAge\EAVManager\ImportBundle\Import;
 
+use CleverAge\EAVManager\ImportBundle\Entity\ImportHistory;
 use CleverAge\EAVManager\ImportBundle\Transformer\EAVValueTransformerInterface;
 use Sidus\EAVModelBundle\Serializer\Denormalizer\EAVDataDenormalizer;
 use Sidus\FileUploadBundle\Controller\BlueimpController;
@@ -121,40 +122,73 @@ class EAVDataImporter implements ContainerAwareInterface
      * @param callable|null $onProgress
      *
      * @throws Exception
+     *
+     * @return ImportHistory
      */
     public function import(ImportConfig $config, callable $onProgress = null)
     {
-        $data = $config->getSource()->getData();
+        $history = new ImportHistory();
+        $history->setStartedAt(new \DateTime());
+        $history->setImportCode($config->getCode());
+        $history->setStatus(ImportHistory::STATUS_IN_PROGRESS);
 
-        // By default import everything at once
-        $batchSize = $config->getOption('batch_size', count($data));
+        $this->manager->persist($history);
+        $this->manager->flush();
 
-        while (count($data)) {
-            $dataBatch = array_splice($data, 0, $batchSize);
-            $loadedEntities = [];
-            $this->manager->beginTransaction();
+        $totalCount = null;
+        $loadedCount = 0;
 
-            // Create the entities from the current batch
-            foreach ($dataBatch as $reference => $entityData) {
-                try {
-                    $entity = $this->loadData($config->getFamily(), $entityData, $reference, $config);
-                    $loadedEntities[$reference] = $entity;
-                } catch (Exception $e) {
-                    $this->manager->rollback();
-                    throw $e;
+        try {
+            $data = $config->getSource()->getData();
+            $totalCount = count($data);
+            $loadedCount = 0;
+
+            // By default import everything at once
+            $batchSize = $config->getOption('batch_size', $totalCount);
+
+            while (count($data)) {
+                $dataBatch = array_splice($data, 0, $batchSize);
+                $loadedEntities = [];
+                $this->manager->beginTransaction();
+
+                // Create the entities from the current batch
+                foreach ($dataBatch as $reference => $entityData) {
+                    try {
+                        $entity = $this->loadData($config->getFamily(), $entityData, $reference, $config);
+                        $loadedEntities[$reference] = $entity;
+                    } catch (Exception $e) {
+                        $this->manager->rollback();
+                        throw $e;
+                    }
+                }
+
+                $loadedCount += count($loadedEntities);
+                $history->setMessage("Loaded {$loadedCount}/{$totalCount} entities");
+
+                // Persist them and flush memory
+                $this->manager->persist($history);
+                $this->manager->flush();
+                $this->manager->commit();
+
+                gc_collect_cycles();
+
+                if ($onProgress) {
+                    $onProgress($loadedEntities);
                 }
             }
 
-            // Persist them and flush memory
-            $this->manager->flush();
-            $this->manager->commit();
-
-            gc_collect_cycles();
-
-            if ($onProgress) {
-                $onProgress($loadedEntities);
-            }
+            $history->setStatus(ImportHistory::STATUS_SUCCESS);
+        } catch (\Throwable $e) {
+            $history->setStatus(ImportHistory::STATUS_ERROR);
+            $history->setMessage("Error after {$loadedCount}/{$totalCount} loaded entities: ".$e->getMessage());
+            // TODO log the trace
         }
+
+        $history->setFinishedAt(new \DateTime());
+        $this->manager->persist($history);
+        $this->manager->flush();
+
+        return $history;
     }
 
 

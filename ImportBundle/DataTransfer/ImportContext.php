@@ -6,6 +6,7 @@ use DateTime;
 
 /**
  * Stores context information between each transaction during import
+ * @deprecated
  */
 class ImportContext implements \JsonSerializable
 {

@@ -57,11 +57,10 @@ class Configuration implements ConfigurationInterface
     protected function appendImportConfigDefinition(NodeBuilder $importConfigDefinition)
     {
         $importConfigDefinition
-            ->scalarNode('file_path')->isRequired()->end()
             ->scalarNode('family')->isRequired()->end()
+            ->scalarNode('source')->isRequired()->end()
             ->scalarNode('service')->defaultValue('@eavmanager_import.eav_data_importer')->end()
             ->scalarNode('transformer')->end()
-            ->scalarNode('source')->end()
             ->variableNode('mapping')->end()
             ->variableNode('options')->end();
     }

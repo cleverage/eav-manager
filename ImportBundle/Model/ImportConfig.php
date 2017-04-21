@@ -21,9 +21,6 @@ class ImportConfig
     /** @var string */
     protected $code;
 
-    /** @var string */
-    protected $filePath;
-
     /** @var FamilyInterface */
     protected $family;
 
@@ -76,22 +73,6 @@ class ImportConfig
     public function getCode()
     {
         return $this->code;
-    }
-
-    /**
-     * @return string
-     */
-    public function getFilePath()
-    {
-        return $this->filePath;
-    }
-
-    /**
-     * @param string $filePath
-     */
-    public function setFilePath($filePath)
-    {
-        $this->filePath = $filePath;
     }
 
     /**

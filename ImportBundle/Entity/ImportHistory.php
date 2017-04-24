@@ -183,7 +183,7 @@ class ImportHistory
     /**
      * @param ImportErrorLog $errorLogs
      */
-    public function addErrorLogs($errorLogs)
+    public function addErrorLog($errorLogs)
     {
         if (!$this->errorLogs) {
             $this->errorLogs = [];

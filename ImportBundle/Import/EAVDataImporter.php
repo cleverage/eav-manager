@@ -161,9 +161,8 @@ class EAVDataImporter implements ContainerAwareInterface
                         $entity = $this->loadData($config->getFamily(), $entityData, $reference, $config);
                         $loadedEntities[$reference] = $entity;
                     } catch (InvalidImportException $e) {
-                        $errorLog = new ImportErrorLog();
-                        $errorLog->setMessage($e->getMessage());
-                        $history->addErrorLogs($errorLog);
+                        $errorLog = ImportErrorLog::createFromError($e);
+                        $history->addErrorLog($errorLog);
                     } catch (Exception $e) {
                         $this->manager->rollback();
                         throw $e;
@@ -369,14 +368,8 @@ class EAVDataImporter implements ContainerAwareInterface
 
         // Data validation
         $violations = $this->validator->validate($entity);
-        /** @var ConstraintViolationInterface $violation */
-        /** @noinspection LoopWhichDoesNotLoopInspection */
-        foreach ($violations as $violation) {
-            /** @noinspection DisconnectedForeachInstructionInspection */
-            $message = "Invalid fixtures data for family '{$family->getCode()}' (reference: ";
-            $message .= "{$reference}) and property '{$violation->getPropertyPath()}' : '{$violation->getMessage()}'";
-            $message .= ", given '{$violation->getInvalidValue()}'";
-            throw new InvalidImportException($message);
+        if (count($violations)) {
+            throw InvalidImportException::create($family, $reference, $violations);
         }
 
         // Final save

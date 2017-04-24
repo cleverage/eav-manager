@@ -4,7 +4,7 @@
     /**
      * Listens to edition, creation or deletion events to update concerned datagrids
      */
-    $(document).on('create_admindata edit_admindata delete_admindata', function (e) {
+    $(document).on('create_admindata edit_admindata delete_admindata resetPassword_admindata', function (e) {
         var formRef = 'form[data-admin-code="'+e.detail.admin+'"]';
         var $formRef = $(formRef);
         if (e.detail.success) {

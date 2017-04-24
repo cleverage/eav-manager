@@ -452,6 +452,10 @@ class EAVDataController extends AbstractAdminController
                 /** @var DataRepository $repository */
                 $repository = $doctrine->getRepository($this->family->getDataClass());
                 $qb = $repository->createQueryBuilder('e');
+                $qb
+                    ->andWhere('e.family = :family')
+                    ->setParameter('family', $this->family)
+                ;
                 if ($config['onlySelectedEntities']) {
                     $selectedIds = explode('|', $config['selectedIds']);
                     $identifierAttribute = $this->family->getAttributeAsIdentifier();

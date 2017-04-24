@@ -454,7 +454,7 @@ class EAVDataController extends AbstractAdminController
                 $qb = $repository->createQueryBuilder('e');
                 $qb
                     ->andWhere('e.family = :family')
-                    ->setParameter('family', $this->family)
+                    ->setParameter('family', $this->family->getCode())
                 ;
                 if ($config['onlySelectedEntities']) {
                     $selectedIds = explode('|', $config['selectedIds']);

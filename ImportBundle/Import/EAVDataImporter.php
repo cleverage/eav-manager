@@ -2,7 +2,9 @@
 
 namespace CleverAge\EAVManager\ImportBundle\Import;
 
+use CleverAge\EAVManager\ImportBundle\Entity\ImportErrorLog;
 use CleverAge\EAVManager\ImportBundle\Entity\ImportHistory;
+use CleverAge\EAVManager\ImportBundle\Exception\InvalidImportException;
 use CleverAge\EAVManager\ImportBundle\Transformer\EAVValueTransformerInterface;
 use Sidus\EAVModelBundle\Serializer\Denormalizer\EAVDataDenormalizer;
 use Sidus\FileUploadBundle\Controller\BlueimpController;
@@ -147,7 +149,9 @@ class EAVDataImporter implements ContainerAwareInterface
             $batchSize = $config->getOption('batch_size', $totalCount);
 
             while (count($data)) {
-                $dataBatch = array_splice($data, 0, $batchSize);
+                $dataBatch = array_slice($data, 0, $batchSize, true);
+                $data = array_slice($data, $batchSize, null, true);
+
                 $loadedEntities = [];
                 $this->manager->beginTransaction();
 
@@ -156,6 +160,10 @@ class EAVDataImporter implements ContainerAwareInterface
                     try {
                         $entity = $this->loadData($config->getFamily(), $entityData, $reference, $config);
                         $loadedEntities[$reference] = $entity;
+                    } catch (InvalidImportException $e) {
+                        $errorLog = new ImportErrorLog();
+                        $errorLog->setMessage($e->getMessage());
+                        $history->addErrorLogs($errorLog);
                     } catch (Exception $e) {
                         $this->manager->rollback();
                         throw $e;
@@ -368,7 +376,7 @@ class EAVDataImporter implements ContainerAwareInterface
             $message = "Invalid fixtures data for family '{$family->getCode()}' (reference: ";
             $message .= "{$reference}) and property '{$violation->getPropertyPath()}' : '{$violation->getMessage()}'";
             $message .= ", given '{$violation->getInvalidValue()}'";
-            throw new \UnexpectedValueException($message);
+            throw new InvalidImportException($message);
         }
 
         // Final save

@@ -1,0 +1,89 @@
+<?php
+namespace CleverAge\EAVManager\ImportBundle\Entity;
+
+
+use Doctrine\ORM\Mapping as ORM;
+use CleverAge\EAVManager\ImportBundle\Entity\ImportHistory;
+
+/**
+ * Represent one import error, with a given reason
+ *
+ * @ORM\Entity
+ * @ORM\Table(name="eavmanager_import_error_log")
+ */
+class ImportErrorLog
+{
+    /**
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @var int
+     */
+    protected $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="ImportHistory", inversedBy="errorLogs")
+     * @ORM\JoinColumn(name="history_id", referencedColumnName="id", onDelete="cascade", nullable=false)
+     *
+     * @var ImportHistory
+     */
+    protected $history;
+
+    /**
+     * @ORM\Column
+     *
+     * @var string
+     */
+    protected $message;
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHistory()
+    {
+        return $this->history;
+    }
+
+    /**
+     * @param mixed $history
+     */
+    public function setHistory($history)
+    {
+        $this->history = $history;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMessage(): string
+    {
+        return $this->message;
+    }
+
+    /**
+     * @param string $message
+     */
+    public function setMessage(string $message)
+    {
+        $this->message = $message;
+    }
+
+
+}

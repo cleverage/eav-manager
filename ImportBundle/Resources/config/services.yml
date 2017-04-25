@@ -35,3 +35,6 @@ services:
 
     eavmanager.import.transformer.collection:
         class: CleverAge\EAVManager\ImportBundle\Transformer\CollectionAttributeTransformer
+
+    eavmanager.import.transformer.attribute_concat:
+        class: CleverAge\EAVManager\ImportBundle\Transformer\AttributeConcatTransformer

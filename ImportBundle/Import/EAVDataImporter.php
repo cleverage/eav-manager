@@ -188,10 +188,15 @@ class EAVDataImporter implements ContainerAwareInterface
         } catch (\Throwable $e) {
             $history->setStatus(ImportHistory::STATUS_ERROR);
             $history->setMessage("Error after {$loadedCount}/{$totalCount} loaded entities: ".$e->getMessage());
-            // TODO log the trace
+            $history->setFinishedAt(new \DateTime());
+
+            $this->manager->persist($history);
+            $this->manager->flush();
+            throw $e;
         }
 
         $history->setFinishedAt(new \DateTime());
+
         $this->manager->persist($history);
         $this->manager->flush();
 
@@ -350,7 +355,7 @@ class EAVDataImporter implements ContainerAwareInterface
      */
     public function loadData(FamilyInterface $family, array $data, $reference = null, ImportConfig $config = null)
     {
-        // Compute the mapping
+        // Extract the data using the mapping
         $data = $this->mapValues($data, $config);
 
         // Global transformation
@@ -583,13 +588,29 @@ class EAVDataImporter implements ContainerAwareInterface
                 $importCode = $config['code'];
             }
 
-            // Check column existence
-            if (!array_key_exists($importCode, $data)) {
-                $m = "Missing data '{$importCode}' in import to be mapped to '{$attributeCode}' attribute";
-                throw new \UnexpectedValueException($m);
+            // Always use an array
+            $codesToCheck = $importCode;
+            if (!is_array($codesToCheck)) {
+                $codesToCheck = [$codesToCheck];
             }
 
-            $mappedData[$attributeCode] = $this->transformValue($attributeCode, $data[$importCode], $importConfig);
+            // Check column existence
+            $valueMapping = [];
+            foreach ($codesToCheck as $code) {
+                if (!array_key_exists($code, $data)) {
+                    $m = "Missing data '{$code}' in import to be mapped to '{$attributeCode}' attribute";
+                    // TODO use ImportErrorException
+                    throw new \UnexpectedValueException($m);
+                }
+                $valueMapping[$code] = $data[$code];
+            }
+
+            $value = $valueMapping;
+            if (count($valueMapping) === 1) {
+                $value = reset($valueMapping);
+            }
+
+            $mappedData[$attributeCode] = $this->transformValue($attributeCode, $value, $importConfig);
         }
 
         return $mappedData;
@@ -609,14 +630,23 @@ class EAVDataImporter implements ContainerAwareInterface
      */
     protected function transformValue($attributeCode, $value, ImportConfig $importConfig)
     {
-        if ($value === '\\N' && $importConfig->getOption('ignore_mysql_null')) {
+        // Check and filter out null values
+        $currentFilterCallback = function ($item) use ($importConfig) {
+            return $this->filterNullValue($item, $importConfig);
+        };
+        if (is_array($value) && !count(array_filter($value, $currentFilterCallback))) {
             return null;
         }
-        $attributeConfig = $importConfig->getMapping()[$attributeCode];
+        if (!$this->filterNullValue($value, $importConfig)) {
+            return null;
+        }
 
+        $attributeConfig = $importConfig->getMapping()[$attributeCode];
         $transformer = null;
         $attribute = null;
         $family = $importConfig->getFamily();
+
+        // Find default transformers
         if ($family->hasAttribute($attributeCode)) {
             $attribute = $family->getAttribute($attributeCode);
 
@@ -635,6 +665,10 @@ class EAVDataImporter implements ContainerAwareInterface
                 }
             }
 
+            if (is_array($value)) {
+                $transformer = $this->container->get('eavmanager.import.transformer.attribute_concat');
+            }
+
             // This default configuration will crash for multiple date/datetime attributes, @fixme
         }
 
@@ -646,10 +680,12 @@ class EAVDataImporter implements ContainerAwareInterface
             ) {
                 $m = "Transformer for attribute mapping '{$attributeCode}' must be a DataTransformerInterface";
                 $m .= ' or EAVValueTransformerInterface';
+                // TODO use ImportErrorException
                 throw new \UnexpectedValueException($m);
             }
         }
 
+        // Apply the transformer
         if ($transformer) {
             if ($transformer instanceof EAVValueTransformerInterface) {
                 $value = $transformer->reverseTransform($family, $attribute, $value, $attributeConfig);
@@ -659,5 +695,18 @@ class EAVDataImporter implements ContainerAwareInterface
         }
 
         return $value;
+    }
+
+    /**
+     * Helper method to use as a callback
+     * Return false if the value is a NULL that should be ignored
+     *
+     * @param string       $value
+     * @param ImportConfig $importConfig
+     * @return bool
+     */
+    public function filterNullValue($value, ImportConfig $importConfig)
+    {
+        return !($value === '\\N' && $importConfig->getOption('ignore_mysql_null'));
     }
 }

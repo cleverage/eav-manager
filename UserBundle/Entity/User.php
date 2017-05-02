@@ -136,7 +136,7 @@ class User implements UserInterface, \Serializable
 
     /**
      * @var DataInterface
-     * @ORM\OneToOne(targetEntity="Sidus\EAVModelBundle\Entity\DataInterface", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="Sidus\EAVModelBundle\Entity\DataInterface", cascade={"persist", "remove"})
      */
     protected $data;
 

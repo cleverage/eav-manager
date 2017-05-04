@@ -30,6 +30,7 @@ class CleverAgeEAVManagerUserExtension extends Extension
         $loader->load('forms.yml');
         $loader->load('mailer.yml');
         $loader->load('managers.yml');
+        $loader->load('normalizer.yml');
         $loader->load('security.yml');
     }
 

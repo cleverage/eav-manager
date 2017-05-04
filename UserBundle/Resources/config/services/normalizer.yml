@@ -1,0 +1,17 @@
+parameters:
+    eavmanager_user.normalizer.user.ignored_attributes:
+        - password
+        - plainPassword
+        - salt
+        - authenticationToken
+        - rawRoles
+        - combinedFamilyPermissions
+
+services:
+    eavmanager_user.normalizer.user:
+        parent: serializer.normalizer.object
+        class: CleverAge\EAVManager\UserBundle\Serializer\Normalizer\UserNormalizer
+        calls:
+            - [setIgnoredAttributes, ['%eavmanager_user.normalizer.user.ignored_attributes%']]
+        tags:
+            - { name: serializer.normalizer }

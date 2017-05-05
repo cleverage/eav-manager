@@ -23,6 +23,10 @@ class CleverAgeEAVManagerApiPlatformExtension extends Extension
         // Load normalizers only if ApiPlatformBundle is enabled
         if (array_key_exists('ApiPlatformBundle', $container->getParameter('kernel.bundles'))) {
             $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config/services'));
+            $loader->load('metadata.yml');
+            $loader->load('provider.yml');
+
+            // Normalizers
             $loader->load('normalizer/attribute.yml');
             $loader->load('normalizer/data.yml');
             $loader->load('normalizer/family.yml');

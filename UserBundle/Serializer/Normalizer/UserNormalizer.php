@@ -17,12 +17,13 @@ class UserNormalizer extends ObjectNormalizer
      */
     public function normalize($object, $format = null, array $context = [])
     {
+        /** @var User $object */
         $byShortReference = false;
         if (array_key_exists(EAVDataNormalizer::BY_SHORT_REFERENCE_KEY, $context)) {
             $byShortReference = $context[EAVDataNormalizer::BY_SHORT_REFERENCE_KEY];
         }
         if ($byShortReference) {
-            return $object->getIdentifier();
+            return $object->getId();
         }
 
         $byReference = false;
@@ -30,7 +31,6 @@ class UserNormalizer extends ObjectNormalizer
             $byReference = $context[EAVDataNormalizer::BY_REFERENCE_KEY];
         }
         if ($byReference) {
-            /** @var User $object */
             return [
                 'id' => $object->getId(),
                 'username' => $object->getUsername(),
@@ -40,7 +40,7 @@ class UserNormalizer extends ObjectNormalizer
         try {
             return parent::normalize($object, $format, $context);
         } catch (CircularReferenceException $e) {
-            return $object->getCode();
+            return $object->getId();
         }
     }
 

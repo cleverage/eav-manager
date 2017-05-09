@@ -16,6 +16,8 @@ interface EAVValueTransformerInterface
      * @param mixed              $value
      * @param array              $config
      *
+     * @throws \UnexpectedValueException
+     *
      * @return mixed
      */
     public function transform(FamilyInterface $family, AttributeInterface $attribute, $value, array $config = null);
@@ -25,6 +27,8 @@ interface EAVValueTransformerInterface
      * @param AttributeInterface $attribute
      * @param mixed              $value
      * @param array              $config
+     *
+     * @throws \UnexpectedValueException
      *
      * @return mixed
      */

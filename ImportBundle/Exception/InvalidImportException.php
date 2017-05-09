@@ -9,6 +9,7 @@ use Throwable;
 
 /**
  * Represent a single error for a row during import
+ * @TODO : refator without using the constructor
  */
 class InvalidImportException extends \UnexpectedValueException implements \JsonSerializable
 {

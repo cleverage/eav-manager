@@ -25,7 +25,7 @@ class EAVKernelBundleLoader
             // Required by SidusFileUploadBundle
             new \Oneup\UploaderBundle\OneupUploaderBundle(),
             // Required by SidusFileUploadBundle
-            new \Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
+            new \Oneup\FlysystemBundle\OneupFlysystemBundle(),
             // Required by SidusPublishingBundle
             new \Circle\RestClientBundle\CircleRestClientBundle(),
 

@@ -1,7 +1,7 @@
 {% spaceless %}
     {% if result.get(column.propertyPath) %}
         {% set image = result.get(column.propertyPath) %}
-        <img src="{{ image.fileName | imagine_filter('tiny') }}"
+        <img src="{{ image.path | imagine_filter('tiny') }}"
              class="img-thumbnail" {{ image_size_attrs(image, 'tiny') }}>
     {% endif %}
 {% endspaceless %}

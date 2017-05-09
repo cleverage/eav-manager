@@ -34,6 +34,6 @@ class MediaController extends Controller
             return $this->createNotFoundException("No actual media associated to image #{$data->getId()}");
         }
 
-        return $this->get('liip_imagine.controller')->filterAction($request, $image->getFileName(), $filter);
+        return $this->get('liip_imagine.controller')->filterAction($request, $image->getPath(), $filter);
     }
 }

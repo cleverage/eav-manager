@@ -54,7 +54,7 @@
     {# @var image \CleverAge\EAVManager\AssetBundle\Entity\Image #}
     {% if data %}
         {% set image = data %}
-        <img src="{{ image.fileName | imagine_filter('thumbnail') }}"
+        <img src="{{ image.path | imagine_filter('thumbnail') }}"
              class="pull-right img-thumbnail" {{ image_size_attrs(image, 'thumbnail') }}>
     {% endif %}
     <div class="well well-sm pull-left">

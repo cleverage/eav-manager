@@ -163,6 +163,18 @@ class EAVDataImporter implements ContainerAwareInterface
                     } catch (InvalidImportException $e) {
                         $errorLog = ImportErrorLog::createFromError($e);
                         $history->addErrorLog($errorLog);
+                    } catch (\UnexpectedValueException $e) {
+                        $errorLog = new ImportErrorLog();
+                        $errorLog->setMessage($e->getMessage());
+                        $errorLog->setErrorJson(
+                            json_encode(
+                                [
+                                    'reference' => $reference,
+                                    'entity_data' => $entityData,
+                                ]
+                            )
+                        );
+                        $history->addErrorLog($errorLog);
                     } catch (Exception $e) {
                         $this->manager->rollback();
                         throw $e;
@@ -186,12 +198,15 @@ class EAVDataImporter implements ContainerAwareInterface
 
             $history->setStatus(ImportHistory::STATUS_SUCCESS);
         } catch (\Throwable $e) {
-            $history->setStatus(ImportHistory::STATUS_ERROR);
-            $history->setMessage("Error after {$loadedCount}/{$totalCount} loaded entities: ".$e->getMessage());
-            $history->setFinishedAt(new \DateTime());
+            if ($this->manager->isOpen()) {
+                $history->setStatus(ImportHistory::STATUS_ERROR);
+                $history->setMessage("Error after {$loadedCount}/{$totalCount} loaded entities: ".$e->getMessage());
+                $history->setFinishedAt(new \DateTime());
 
-            $this->manager->persist($history);
-            $this->manager->flush();
+                $this->manager->persist($history);
+                $this->manager->flush();
+            }
+
             throw $e;
         }
 
@@ -584,29 +599,39 @@ class EAVDataImporter implements ContainerAwareInterface
 
             // The imported column may not match the attribute name
             $importCode = $attributeCode;
-            if (isset($config['code'])) {
+            if ($config && array_key_exists('code', $config)) {
+                // Note that the null value is allowed
                 $importCode = $config['code'];
             }
 
-            // Always use an array
+            // Always use an array for checking
             $codesToCheck = $importCode;
+            $hasMultipleCodes = true;
             if (!is_array($codesToCheck)) {
+                $hasMultipleCodes = false;
                 $codesToCheck = [$codesToCheck];
             }
 
             // Check column existence
             $valueMapping = [];
             foreach ($codesToCheck as $code) {
-                if (!array_key_exists($code, $data)) {
+                if ($code === null) {
+                    // Special case to allow the usage of 'code: ~' in config
+                    $originalValue = false;
+                } elseif (!$code || !array_key_exists($code, $data)) {
                     $m = "Missing data '{$code}' in import to be mapped to '{$attributeCode}' attribute";
                     // TODO use ImportErrorException
                     throw new \UnexpectedValueException($m);
+                } else {
+                    $originalValue = $data[$code];
                 }
-                $valueMapping[$code] = $data[$code];
+                $valueMapping[$code] = $originalValue;
             }
 
-            $value = $valueMapping;
-            if (count($valueMapping) === 1) {
+            // We may flatten the array if it was flat at first
+            if ($hasMultipleCodes) {
+                $value = $valueMapping;
+            } else {
                 $value = reset($valueMapping);
             }
 

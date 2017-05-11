@@ -66,7 +66,7 @@ class FamilyRelationTransformer implements EAVValueTransformerInterface
     ) {
         $this->currentAttribute = $attribute;
 
-        return is_array($value) ? array_map([$this, 'resolveRelation'], $value) : $this->resolveRelation($value);
+        return $this->resolveRelation($value);
     }
 
     /**
@@ -78,8 +78,12 @@ class FamilyRelationTransformer implements EAVValueTransformerInterface
      *
      * @return DataInterface
      */
-    public function resolveRelation($value): DataInterface
+    public function resolveRelation($value)
     {
+        if (is_array($value)) {
+            return array_map([$this, 'resolveRelation'], $value);
+        }
+
         if ($this->currentAttribute->getType()->isRelation()) {
             $families = $this->currentAttribute->getOption('allowed_families');
 

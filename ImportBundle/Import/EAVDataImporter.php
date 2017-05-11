@@ -133,7 +133,7 @@ class EAVDataImporter implements ContainerAwareInterface
         $history->setImportCode($config->getCode());
         $history->setStatus(ImportHistory::STATUS_IN_PROGRESS);
 
-        $this->manager->persist($history);
+        //$this->manager->persist($history);
         $this->manager->flush();
 
         $totalCount = null;
@@ -184,9 +184,10 @@ class EAVDataImporter implements ContainerAwareInterface
                 $history->setMessage("Loaded {$loadedCount}/{$totalCount} entities");
 
                 // Persist them and flush memory
-                $this->manager->persist($history);
+                //$this->manager->persist($history);
                 $this->manager->flush();
                 $this->manager->commit();
+                $this->manager->clear();
 
                 gc_collect_cycles();
 
@@ -213,6 +214,7 @@ class EAVDataImporter implements ContainerAwareInterface
 
         $this->manager->persist($history);
         $this->manager->flush();
+        $this->manager->clear();
 
         return $history;
     }
@@ -731,6 +733,11 @@ class EAVDataImporter implements ContainerAwareInterface
         // Apply the transformer
         if ($transformer) {
             if ($transformer instanceof EAVValueTransformerInterface) {
+                if (!$attribute) {
+                    throw new \Exception(
+                        "Attribute {$attributeCode} does not exists in family {$family}"
+                    );
+                }
                 $value = $transformer->reverseTransform($family, $attribute, $value, $attributeConfig);
             } else {
                 $value = $transformer->reverseTransform($value);

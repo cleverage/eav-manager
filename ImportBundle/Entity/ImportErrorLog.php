@@ -2,7 +2,6 @@
 
 namespace CleverAge\EAVManager\ImportBundle\Entity;
 
-
 use CleverAge\EAVManager\ImportBundle\Exception\InvalidImportException;
 use Doctrine\ORM\Mapping as ORM;
 use CleverAge\EAVManager\ImportBundle\Entity\ImportHistory;
@@ -50,7 +49,7 @@ class ImportErrorLog
      * @param InvalidImportException $exception
      * @return ImportErrorLog
      */
-    public static function createFromError(InvalidImportException $exception)
+    public static function createFromError(InvalidImportException $exception): ImportErrorLog
     {
         $errorLog = new ImportErrorLog();
         $errorLog->setMessage($exception->getMessage());

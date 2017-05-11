@@ -2,7 +2,6 @@
 
 namespace CleverAge\EAVManager\ImportBundle\Transformer;
 
-
 use Sidus\EAVModelBundle\Entity\DataInterface;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
 

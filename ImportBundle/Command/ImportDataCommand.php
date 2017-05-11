@@ -2,7 +2,6 @@
 
 namespace CleverAge\EAVManager\ImportBundle\Command;
 
-
 use CleverAge\EAVManager\ImportBundle\Entity\ImportHistory;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -34,7 +33,6 @@ class ImportDataCommand extends ContainerAwareCommand
      *
      * @throws \Exception
      * @throws \UnexpectedValueException
-     * @throws \RuntimeException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -64,7 +62,7 @@ class ImportDataCommand extends ContainerAwareCommand
             }
         }
 
-        $output->writeln("<info>Import is over</info>");
+        $output->writeln('<info>Import is over</info>');
     }
 
     /**
@@ -74,6 +72,7 @@ class ImportDataCommand extends ContainerAwareCommand
      *
      * @param array $dataBatch
      */
+    // @codingStandardsIgnoreLine
     public function onProgress(array $dataBatch)
     {
         $this->progress->advance(count($dataBatch));
@@ -82,7 +81,7 @@ class ImportDataCommand extends ContainerAwareCommand
     /**
      * @return array
      */
-    protected function getImportCodes(InputInterface $input)
+    protected function getImportCodes(InputInterface $input): array
     {
         return $input->getArgument('import_code');
     }

@@ -25,6 +25,7 @@ class ExternalDatabaseSource implements DataSourceInterface
 
     /**
      * ExternalDatabaseSource constructor.
+     *
      * @param RegistryInterface $doctrine
      * @param string            $connectionName
      * @param string            $tableName
@@ -47,7 +48,7 @@ class ExternalDatabaseSource implements DataSourceInterface
      * {@inheritdoc}
      * @throws \InvalidArgumentException
      */
-    public function getData()
+    public function getData(): array
     {
         /** @var Connection $connection */
         $connection = $this->doctrine->getConnection($this->connectionName);
@@ -77,9 +78,11 @@ class ExternalDatabaseSource implements DataSourceInterface
     /**
      * Extensible SQL query used to fetch data
      *
+     * @TODO use a dql not a string !
+     *
      * @return string
      */
-    protected function getQuery()
+    protected function getQuery(): string
     {
         return "SELECT * from `{$this->tableName}`";
     }

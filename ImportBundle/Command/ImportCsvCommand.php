@@ -20,7 +20,8 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 
 /**
  * Import data from CSV file
- * @deprecated
+ *
+ * @deprecated remove this once migration to the new system is done
  */
 class ImportCsvCommand extends ContainerAwareCommand
 {

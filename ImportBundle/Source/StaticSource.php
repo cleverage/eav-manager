@@ -1,9 +1,10 @@
 <?php
+
 namespace CleverAge\EAVManager\ImportBundle\Source;
 
-
-use CleverAge\EAVManager\ImportBundle\Source\DataSourceInterface;
-
+/**
+ * Simple container for a static array
+ */
 class StaticSource implements DataSourceInterface
 {
     /** @var array */
@@ -21,7 +22,7 @@ class StaticSource implements DataSourceInterface
     /**
      * @return array
      */
-    public function getData()
+    public function getData(): array
     {
         return $this->data;
     }

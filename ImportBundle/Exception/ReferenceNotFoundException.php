@@ -16,7 +16,7 @@ class ReferenceNotFoundException extends \UnexpectedValueException
      *
      * @return ReferenceNotFoundException
      */
-    public static function create(FamilyInterface $family, $reference, \Exception $e = null)
+    public static function create(FamilyInterface $family, $reference, \Exception $e = null): ReferenceNotFoundException
     {
         $m = "Reference not found {$reference} for family {$family->getCode()}";
 

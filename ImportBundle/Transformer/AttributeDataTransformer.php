@@ -7,6 +7,8 @@ use Sidus\EAVModelBundle\Model\FamilyInterface;
 
 /**
  * Allow to use a Value Transformer on place of a Data transformer (during global transformation)
+ *
+ * @deprecated it should not be needed
  */
 class AttributeDataTransformer implements EAVDataTransformerInterface
 {
@@ -19,6 +21,7 @@ class AttributeDataTransformer implements EAVDataTransformerInterface
 
     /**
      * AttributeDataTransformer constructor.
+     *
      * @param EAVValueTransformerInterface $eavValueTransformer
      * @param string                       $attributeCode
      */
@@ -31,6 +34,9 @@ class AttributeDataTransformer implements EAVDataTransformerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Sidus\EAVModelBundle\Exception\EAVExceptionInterface
+     * @throws \UnexpectedValueException
      */
     public function transform(FamilyInterface $family, DataInterface $data, array $config = null)
     {
@@ -49,6 +55,7 @@ class AttributeDataTransformer implements EAVDataTransformerInterface
 
     /**
      * {@inheritdoc}
+     * @throws \UnexpectedValueException
      */
     public function reverseTransform(FamilyInterface $family, $data, array $config = null)
     {

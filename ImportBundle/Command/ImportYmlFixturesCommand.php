@@ -12,7 +12,8 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * Import EAV fixtures
- * @deprecated
+ *
+ * @deprecated remove this once migration to the new system is done
  */
 class ImportYmlFixturesCommand extends ContainerAwareCommand
 {

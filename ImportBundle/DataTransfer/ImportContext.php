@@ -6,7 +6,8 @@ use DateTime;
 
 /**
  * Stores context information between each transaction during import
- * @deprecated
+ *
+ * @deprecated remove this once migration to the new system is done
  */
 class ImportContext implements \JsonSerializable
 {
@@ -263,13 +264,15 @@ class ImportContext implements \JsonSerializable
 
     /**
      * @return array
+     * @throws \ReflectionException
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         $class = new \ReflectionClass(self::class);
         $result = [];
         foreach ($class->getProperties() as $property) {
-            $result[$property->getName()] = $this->{$property->getName()};
+            $propertyName = $property->getName();
+            $result[$propertyName] = $this->{$propertyName};
         }
 
         return $result;

@@ -119,7 +119,7 @@ class ImportHistory
     /**
      * @return int
      */
-    public function getStatus()
+    public function getStatus(): int
     {
         return $this->status;
     }

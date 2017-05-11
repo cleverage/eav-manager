@@ -2,10 +2,9 @@
 
 namespace CleverAge\EAVManager\ImportBundle\Transformer;
 
-
+use CleverAge\EAVManager\ImportBundle\Exception\TransformerNotImplementedException;
 use Sidus\EAVModelBundle\Model\AttributeInterface;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
-use Symfony\Component\Intl\Exception\MethodNotImplementedException;
 
 /**
  * Transform a value array into a string, with a specific glue
@@ -29,7 +28,7 @@ class AttributeConcatTransformer implements EAVValueTransformerInterface
      */
     public function transform(FamilyInterface $family, AttributeInterface $attribute, $value, array $config = null)
     {
-        throw new MethodNotImplementedException(__METHOD__);
+        throw new TransformerNotImplementedException(__METHOD__);
     }
 
     /**

@@ -14,9 +14,13 @@ class NonUniqueReferenceException extends \UnexpectedValueException
      * @param mixed           $reference
      * @param \Exception      $e
      *
-     * @return ReferenceNotFoundException
+     * @return NonUniqueReferenceException
      */
-    public static function create(FamilyInterface $family, $reference, \Exception $e = null)
+    public static function create(
+        FamilyInterface $family,
+        $reference,
+        \Exception $e = null
+    ): NonUniqueReferenceException
     {
         $m = "Non-unique result exception for family {$family->getCode()} and reference {$reference}";
 

@@ -9,7 +9,8 @@ use Throwable;
 
 /**
  * Represent a single error for a row during import
- * @TODO : refator without using the constructor
+ *
+ * @TODO : refactor without using the constructor
  */
 class InvalidImportException extends \UnexpectedValueException implements \JsonSerializable
 {
@@ -25,6 +26,7 @@ class InvalidImportException extends \UnexpectedValueException implements \JsonS
 
     /**
      * InvalidImportException constructor.
+     *
      * @param FamilyInterface                  $family
      * @param string                           $reference
      * @param ConstraintViolationListInterface $violations
@@ -50,7 +52,7 @@ class InvalidImportException extends \UnexpectedValueException implements \JsonS
      *
      * @return InvalidImportException
      */
-    public static function create($family, $reference, $violations, Throwable $previous = null)
+    public static function create($family, $reference, $violations, Throwable $previous = null): InvalidImportException
     {
         return new InvalidImportException($family, $reference, $violations, $previous);
     }
@@ -58,7 +60,7 @@ class InvalidImportException extends \UnexpectedValueException implements \JsonS
     /**
      * @return string
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): string
     {
         $data = [
             'message' => $this->message,

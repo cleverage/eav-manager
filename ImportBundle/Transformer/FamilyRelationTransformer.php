@@ -2,15 +2,16 @@
 
 namespace CleverAge\EAVManager\ImportBundle\Transformer;
 
-
 use CleverAge\EAVManager\EAVModelBundle\Entity\DataRepository;
 use Sidus\EAVModelBundle\Entity\DataInterface;
 use Sidus\EAVModelBundle\Model\AttributeInterface;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
 use Sidus\EAVModelBundle\Registry\FamilyRegistry;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Component\Intl\Exception\NotImplementedException;
 
+/**
+ * Parse an ID and transform it into a real Entity
+ */
 class FamilyRelationTransformer implements EAVValueTransformerInterface
 {
 
@@ -28,6 +29,7 @@ class FamilyRelationTransformer implements EAVValueTransformerInterface
 
     /**
      * FamilyRelationTransformer constructor.
+     *
      * @param RegistryInterface $doctrine
      * @param FamilyRegistry    $familyRegistry
      */
@@ -68,19 +70,22 @@ class FamilyRelationTransformer implements EAVValueTransformerInterface
     }
 
     /**
-     * @TODO ADD CACHE
+     * @TODO add cache for this transformer !
      *
      * @param mixed $value
      *
+     * @throws \UnexpectedValueException
+     *
      * @return DataInterface
      */
-    public function resolveRelation($value)
+    public function resolveRelation($value): DataInterface
     {
         if ($this->currentAttribute->getType()->isRelation()) {
             $families = $this->currentAttribute->getOption('allowed_families');
 
-            if (count($families) != 1) {
-                throw new NotImplementedException("Not yet implemented");
+            $familyCount = count($families);
+            if ($familyCount !== 1) {
+                throw new \UnexpectedValueException("Only one family can be at once, {$familyCount} detected");
             }
 
             $targetFamily = $this->familyRegistry->getFamily($families[0]);

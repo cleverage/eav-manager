@@ -36,7 +36,7 @@ class CsvSource implements DataSourceInterface
      * {@inheritdoc}
      * @throws \Exception
      */
-    public function getData()
+    public function getData(): array
     {
         $data = [];
         $csvFile = $this->getFile($this->filePath);
@@ -61,7 +61,7 @@ class CsvSource implements DataSourceInterface
      *
      * @return CsvFile
      */
-    protected function getFile($filePath)
+    protected function getFile($filePath): CsvFile
     {
         $delimiter = $this->options['delimiter'] ?? ';';
         $enclosure = $this->options['enclosure'] ?? '"';

@@ -12,7 +12,7 @@ services:
                 document: '@oneup_uploader.controller.document'
                 image: '@oneup_uploader.controller.image'
             - '@eavmanager_import.configuration.directory.handler'
-            - '@sidus_eav_model.denormalizer.data'
+            - '@serializer'
         calls:
             - [ 'setContainer' , ['@service_container']]
 

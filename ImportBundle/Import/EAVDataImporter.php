@@ -6,7 +6,6 @@ use CleverAge\EAVManager\ImportBundle\Entity\ImportErrorLog;
 use CleverAge\EAVManager\ImportBundle\Entity\ImportHistory;
 use CleverAge\EAVManager\ImportBundle\Exception\InvalidImportException;
 use CleverAge\EAVManager\ImportBundle\Transformer\EAVValueTransformerInterface;
-use Sidus\EAVModelBundle\Serializer\Denormalizer\EAVDataDenormalizer;
 use Sidus\FileUploadBundle\Controller\BlueimpController;
 use CleverAge\EAVManager\ImportBundle\Configuration\DirectoryConfigurationHandler;
 use CleverAge\EAVManager\ImportBundle\DataTransfer\ImportContext;
@@ -29,7 +28,7 @@ use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\Validator\ConstraintViolationInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -61,8 +60,8 @@ class EAVDataImporter implements ContainerAwareInterface
     /** @var DirectoryConfigurationHandler */
     protected $directoryConfigurationHandler;
 
-    /** @var EAVDataDenormalizer */
-    protected $dataDenormalizer;
+    /** @var DenormalizerInterface */
+    protected $denormalizer;
 
     /** @var ContainerInterface */
     protected $container;
@@ -88,7 +87,7 @@ class EAVDataImporter implements ContainerAwareInterface
      * @param EntityManager                 $manager
      * @param array                         $uploadManagers
      * @param DirectoryConfigurationHandler $directoryConfigurationHandler
-     * @param EAVDataDenormalizer           $dataDenormalizer
+     * @param DenormalizerInterface         $dataDenormalizer
      */
     public function __construct(
         FamilyRegistry $familyRegistry,
@@ -96,14 +95,14 @@ class EAVDataImporter implements ContainerAwareInterface
         EntityManager $manager,
         array $uploadManagers,
         DirectoryConfigurationHandler $directoryConfigurationHandler,
-        EAVDataDenormalizer $dataDenormalizer
+        DenormalizerInterface $dataDenormalizer
     ) {
         $this->familyRegistry = $familyRegistry;
         $this->validator = $validator;
         $this->manager = $manager;
         $this->uploadManagers = $uploadManagers;
         $this->directoryConfigurationHandler = $directoryConfigurationHandler;
-        $this->dataDenormalizer = $dataDenormalizer;
+        $this->denormalizer = $dataDenormalizer;
     }
 
     /**
@@ -123,7 +122,7 @@ class EAVDataImporter implements ContainerAwareInterface
      * @param ImportConfig  $config
      * @param callable|null $onProgress
      *
-     * @throws Exception
+     * @throws \Exception
      *
      * @return ImportHistory
      */
@@ -175,7 +174,7 @@ class EAVDataImporter implements ContainerAwareInterface
                             )
                         );
                         $history->addErrorLog($errorLog);
-                    } catch (Exception $e) {
+                    } catch (\Exception $e) {
                         $this->manager->rollback();
                         throw $e;
                     }
@@ -220,13 +219,13 @@ class EAVDataImporter implements ContainerAwareInterface
 
 
     /**
-     * @deprecated
+     * @deprecated remove it once fully migrated into the new system
      *
      * @param array        $dump
      * @param null         $filename
      * @param ImportConfig $importConfig
      *
-     * @throws Exception
+     * @throws \Exception
      *
      * @return bool
      */
@@ -261,7 +260,7 @@ class EAVDataImporter implements ContainerAwareInterface
                 }
                 try {
                     $this->loadData($family, $data, $reference, $importConfig);
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $this->manager->rollback();
                     throw $e;
                 }
@@ -287,7 +286,7 @@ class EAVDataImporter implements ContainerAwareInterface
 
 
     /**
-     * @deprecated
+     * @deprecated remove it once fully migrated into the new system
      *
      * @param FamilyInterface $family
      * @param array           $dump
@@ -334,6 +333,8 @@ class EAVDataImporter implements ContainerAwareInterface
     }
 
     /**
+     * @deprecated remove it once fully migrated into the new system
+     *
      * @throws RuntimeException
      */
     public function terminate()
@@ -351,6 +352,8 @@ class EAVDataImporter implements ContainerAwareInterface
     }
 
     /**
+     * @deprecated remove it once fully migrated into the new system
+     *
      * @param OutputInterface $output
      */
     public function setOutput(OutputInterface $output)
@@ -384,7 +387,8 @@ class EAVDataImporter implements ContainerAwareInterface
         }
 
         // Entity creation from data, using the EAV denormalizer
-        $entity = $this->dataDenormalizer->denormalize($data, $family->getDataClass());
+        /** @var DataInterface $entity */
+        $entity = $this->denormalizer->denormalize($data, $family->getDataClass());
 
         // Data validation
         $violations = $this->validator->validate($entity);
@@ -404,6 +408,8 @@ class EAVDataImporter implements ContainerAwareInterface
     }
 
     /**
+     * @deprecated remove it once fully migrated into the new system
+     *
      * @param bool $flush
      *
      * @throws RuntimeException
@@ -450,6 +456,8 @@ class EAVDataImporter implements ContainerAwareInterface
     }
 
     /**
+     * @deprecated remove it once fully migrated into the new system
+     *
      * @param ImportConfig $importConfig
      *
      * @throws \UnexpectedValueException
@@ -472,6 +480,8 @@ class EAVDataImporter implements ContainerAwareInterface
     }
 
     /**
+     * @deprecated remove it once fully migrated into the new system
+     *
      * @throws \UnexpectedValueException
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
@@ -494,6 +504,8 @@ class EAVDataImporter implements ContainerAwareInterface
     }
 
     /**
+     * @deprecated remove it once fully migrated into the new system
+     *
      * @param int $count
      *
      * @throws \RuntimeException
@@ -523,6 +535,8 @@ class EAVDataImporter implements ContainerAwareInterface
     }
 
     /**
+     * @deprecated remove it once fully migrated into the new system
+     *
      * @param string $filePath
      *
      * @throws \UnexpectedValueException
@@ -540,6 +554,8 @@ class EAVDataImporter implements ContainerAwareInterface
     }
 
     /**
+     * @deprecated remove it once fully migrated into the new system
+     *
      * @param ImportConfig|null $importConfig
      *
      * @throws InvalidConfigurationException
@@ -697,6 +713,8 @@ class EAVDataImporter implements ContainerAwareInterface
             // This default configuration will crash for multiple date/datetime attributes, @fixme
         }
 
+        // @TODO throw an error for an undefined attribtue ?
+
         // Custom transformer in configuration
         if (isset($attributeConfig['transformer'])) {
             $transformer = $this->container->get(ltrim($attributeConfig['transformer'], '@'));
@@ -728,9 +746,11 @@ class EAVDataImporter implements ContainerAwareInterface
      *
      * @param string       $value
      * @param ImportConfig $importConfig
+     *
      * @return bool
      */
-    public function filterNullValue($value, ImportConfig $importConfig)
+    // @codingStandardsIgnoreLine
+    public function filterNullValue($value, ImportConfig $importConfig): bool
     {
         return !($value === '\\N' && $importConfig->getOption('ignore_mysql_null'));
     }

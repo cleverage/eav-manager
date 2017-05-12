@@ -1,6 +1,8 @@
 <?php
 
-namespace CleverAge\EAVManager\ProcessBundle\Process;
+namespace CleverAge\EAVManager\ProcessBundle\Process\Generic;
+
+use CleverAge\EAVManager\ProcessBundle\Process\ProcessInterface;
 
 /**
  * @TODO describe class usage

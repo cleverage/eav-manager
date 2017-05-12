@@ -31,3 +31,8 @@ services:
 
     eavmanager.import.transformer.attribute_concat:
         class: CleverAge\EAVManager\ImportBundle\Transformer\AttributeConcatTransformer
+
+    eavmanager.import.process:
+        class: CleverAge\EAVManager\ImportBundle\Process\ImportProcess
+        arguments:
+            - '@eavmanager.import_configuration.handler'

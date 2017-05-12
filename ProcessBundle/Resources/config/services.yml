@@ -1,0 +1,10 @@
+parameters:
+    eavmanager_process.process_configuration.class: CleverAge\EAVManager\ProcessBundle\Process\ProcessConfiguration
+
+
+services:
+    eavmanager.process_config.registry:
+        class: CleverAge\EAVManager\ProcessBundle\Process\ProcessConfigurationRegistry
+
+    eavmanager.process_manager:
+        class: CleverAge\EAVManager\ProcessBundle\Process\ProcessManager

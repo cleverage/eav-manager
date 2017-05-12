@@ -68,6 +68,7 @@ class EAVKernelBundleLoader
             new \CleverAge\EAVManager\SecurityBundle\CleverAgeEAVManagerSecurityBundle(),
             new \CleverAge\EAVManager\AssetBundle\CleverAgeEAVManagerAssetBundle(),
             new \CleverAge\EAVManager\ImportBundle\CleverAgeEAVManagerImportBundle(),
+            new \CleverAge\EAVManager\ProcessBundle\CleverAgeEAVManagerProcessBundle(),
 
             // ApiPlatformBundle support for EAV manager
             new \CleverAge\EAVManager\ApiPlatformBundle\CleverAgeEAVManagerApiPlatformBundle(),

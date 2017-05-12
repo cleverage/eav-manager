@@ -173,6 +173,22 @@ class EAVDataController extends AbstractAdminController
     }
 
     /**
+     * Clone an existing data
+     *
+     * @param FamilyInterface $family
+     * @param DataInterface   $data
+     * @param Request         $request
+     *
+     * @throws \Exception
+     *
+     * @return Response
+     */
+    public function cloneAction(FamilyInterface $family, DataInterface $data, Request $request)
+    {
+        return $this->editAction($family, clone $data, $request);
+    }
+
+    /**
      * @Security("is_granted('delete', family) or is_granted('ROLE_DATA_ADMIN')")
      *
      * @param FamilyInterface $family

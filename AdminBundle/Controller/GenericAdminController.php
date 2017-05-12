@@ -74,6 +74,18 @@ class GenericAdminController extends AbstractAdminController
 
     /**
      * @param Request $request
+     * @param mixed   $data
+     *
+     * @return array|RedirectResponse
+     * @throws \Exception
+     */
+    public function cloneAction(Request $request, $data = null)
+    {
+        return $this->editAction($request, clone $data);
+    }
+
+    /**
+     * @param Request $request
      *
      * @return array|RedirectResponse
      * @throws \Exception

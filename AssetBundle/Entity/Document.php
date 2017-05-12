@@ -19,10 +19,9 @@ class Document extends Resource
 
     /**
      * Mime type
-     * @todo migrate the column to "mime_type"
      *
      * @var string
-     * @ORM\Column(name="file_type", type="string", length=128, nullable=true)
+     * @ORM\Column(name="mime_type", type="string", length=128, nullable=true)
      */
     protected $mimeType;
 

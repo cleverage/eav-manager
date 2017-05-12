@@ -24,6 +24,7 @@ class CleverAgeEAVManagerAssetExtension extends Extension
         $loader->load('events.yml');
         $loader->load('forms.yml');
         $loader->load('managers.yml');
+        $loader->load('normalizer.yml');
         $loader->load('twig.yml');
     }
 }

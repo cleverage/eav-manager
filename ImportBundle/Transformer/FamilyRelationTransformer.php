@@ -84,6 +84,11 @@ class FamilyRelationTransformer implements EAVValueTransformerInterface
             return array_map([$this, 'resolveRelation'], $value);
         }
 
+        if (!$value) {
+            // TODO what should we do with the "0" ID ?
+            return null;
+        }
+
         if ($this->currentAttribute->getType()->isRelation()) {
             $families = $this->currentAttribute->getOption('allowed_families');
 

@@ -55,6 +55,7 @@ class ImportDataCommand extends ContainerAwareCommand
                 $this->progress->finish();
                 $output->writeln('');
                 $output->writeln('<info>This import have been processed with success</info>');
+                $output->writeln($history->getMessage());
             } else {
                 $output->writeln('');
                 $output->writeln('<error>Something went wrong with this import</error>');
@@ -70,12 +71,13 @@ class ImportDataCommand extends ContainerAwareCommand
      *
      * @TODO save data in a context file
      *
-     * @param array $dataBatch
+     * @param array $proceededData
+     * @param array $resultingData
      */
     // @codingStandardsIgnoreLine
-    public function onProgress(array $dataBatch)
+    public function onProgress(array $proceededData, array $resultingData)
     {
-        $this->progress->advance(count($dataBatch));
+        $this->progress->advance(count($proceededData));
     }
 
     /**

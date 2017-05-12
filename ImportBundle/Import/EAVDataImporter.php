@@ -133,7 +133,7 @@ class EAVDataImporter implements ContainerAwareInterface
         $history->setImportCode($config->getCode());
         $history->setStatus(ImportHistory::STATUS_IN_PROGRESS);
 
-        //$this->manager->persist($history);
+        $this->manager->persist($history);
         $this->manager->flush();
 
         $totalCount = null;
@@ -183,17 +183,21 @@ class EAVDataImporter implements ContainerAwareInterface
                 $loadedCount += count($loadedEntities);
                 $history->setMessage("Loaded {$loadedCount}/{$totalCount} entities");
 
-                // Persist them and flush memory
-                //$this->manager->persist($history);
+                // Persist them
+                $this->manager->persist($history);
                 $this->manager->flush();
                 $this->manager->commit();
-                $this->manager->clear();
-
-                gc_collect_cycles();
 
                 if ($onProgress) {
-                    $onProgress($loadedEntities);
+                    $onProgress($dataBatch, $loadedEntities);
                 }
+
+                // Flush memory
+                foreach ($loadedEntities as $loadedEntity) {
+                    $this->manager->detach($loadedEntity);
+                }
+
+                gc_collect_cycles();
             }
 
             $history->setStatus(ImportHistory::STATUS_SUCCESS);

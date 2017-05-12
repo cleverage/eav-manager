@@ -48,7 +48,6 @@ class ImportDataCommand extends ContainerAwareCommand
 
             $output->writeln("<info>Importing family {$importConfig->getFamily()->getCode()}</info>");
             $eavImporter = $importConfig->getService();
-            $eavImporter->setOutput($output);
 
             $history = $eavImporter->import($importConfig, [$this, 'onProgress']);
             if ($history->getStatus() === ImportHistory::STATUS_SUCCESS) {

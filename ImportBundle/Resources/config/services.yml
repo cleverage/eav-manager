@@ -11,16 +11,9 @@ services:
             -
                 document: '@oneup_uploader.controller.document'
                 image: '@oneup_uploader.controller.image'
-            - '@eavmanager_import.configuration.directory.handler'
             - '@serializer'
         calls:
             - [ 'setContainer' , ['@service_container']]
-
-    eavmanager_import.configuration.directory.handler:
-        class: CleverAge\EAVManager\ImportBundle\Configuration\DirectoryConfigurationHandler
-        arguments:
-            - '%kernel.cache_dir%'
-            - ~
 
     eavmanager.import_configuration.handler:
         class: CleverAge\EAVManager\ImportBundle\Configuration\ImportConfigurationHandler

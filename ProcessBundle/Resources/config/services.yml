@@ -8,3 +8,20 @@ services:
 
     eavmanager.process_manager:
         class: CleverAge\EAVManager\ProcessBundle\Process\ProcessManager
+
+    eavmanager.process.eav_data_source:
+        class: CleverAge\EAVManager\ProcessBundle\Process\Generic\EAVDataSourceProcess
+        arguments:
+            - '@sidus_eav_model.finder'
+            - '@sidus_eav_model.family.registry'
+
+    eavmanager.process.normalizer:
+        class: CleverAge\EAVManager\ProcessBundle\Process\Generic\NormalizerProcess
+        arguments:
+            - '@serializer'
+
+    eavmanager.process.denormalizer:
+        class: CleverAge\EAVManager\ProcessBundle\Process\Generic\NormalizerProcess
+        arguments:
+            - '@serializer'
+            - false

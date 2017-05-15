@@ -32,33 +32,65 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root($this->root);
-        $importConfigDefinition = $rootNode
-            ->children()
-            ->arrayNode('process_list')
-            ->useAttributeAsKey('code')
-            ->prototype('array')
-            ->performNoDeepMerging()
-            ->cannotBeOverwritten()
+        $definition = $rootNode
             ->children();
 
-        $this->appendProcessConfigDefinition($importConfigDefinition);
+        // Process list
+        $processListDefinition = $definition->arrayNode('process_list')->useAttributeAsKey('code')
+            ->prototype('array')->performNoDeepMerging()->cannotBeOverwritten()
+            ->children();
 
-        $importConfigDefinition
-            ->end()
+        $this->appendProcessConfigDefinition($processListDefinition);
+
+        $processListDefinition->end()
             ->end()
             ->end();
+
+        // Transformer list
+        $transformerListDefinition = $definition->arrayNode('transformer_list')->useAttributeAsKey('code')
+            ->prototype('array')->performNoDeepMerging()->cannotBeOverwritten()
+            ->children();
+
+        $this->appendTransformerConfigDefinition($transformerListDefinition);
+
+        $transformerListDefinition->end()
+            ->end()
+            ->end();
+
+        $definition->end();
 
         return $treeBuilder;
     }
 
     /**
-     * @param NodeBuilder $importConfigDefinition
+     * @param NodeBuilder $definition
      */
-    protected function appendProcessConfigDefinition(NodeBuilder $importConfigDefinition)
+    protected function appendProcessConfigDefinition(NodeBuilder $definition)
     {
-        $importConfigDefinition
-            ->scalarNode('service')->defaultValue('@eavmanager.process_manager')->end()
+        $definition->scalarNode('service')->defaultValue('@eavmanager.process_manager')->end()
             // TODO use more accurate modelisation with arrayNode ?
             ->variableNode('subprocess')->end();
+    }
+
+    /**
+     * @param NodeBuilder $definition
+     */
+    protected function appendTransformerConfigDefinition(NodeBuilder $definition)
+    {
+        $transformerConfigDefintion = $definition
+            ->scalarNode('service')->defaultValue('@eavmanager.transformer_manager')->end()
+            ->arrayNode('mapping')->useAttributeAsKey('code')->isRequired()
+            ->prototype('array')->performNoDeepMerging()->cannotBeOverwritten()
+            ->children();
+
+        $transformerConfigDefintion
+            ->scalarNode('code')->end()
+            ->scalarNode('constant')->end()
+            ->variableNode('transformer')->end();
+
+        $definition
+            ->end()
+            ->end()
+            ->end();
     }
 }

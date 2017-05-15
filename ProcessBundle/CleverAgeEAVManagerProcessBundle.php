@@ -26,5 +26,12 @@ class CleverAgeEAVManagerProcessBundle extends Bundle
                 'addProcessConfiguration'
             )
         );
+        $container->addCompilerPass(
+            new GenericCompilerPass(
+                'eavmanager.transformer_config.registry',
+                'eavmanager.transformer_config',
+                'addTransformerConfiguration'
+            )
+        );
     }
 }

@@ -1,5 +1,6 @@
 parameters:
     eavmanager_process.process_configuration.class: CleverAge\EAVManager\ProcessBundle\Process\ProcessConfiguration
+    eavmanager_process.transformer_configuration.class: CleverAge\EAVManager\ProcessBundle\Transformer\TransformerConfiguration
 
 
 services:
@@ -25,3 +26,9 @@ services:
         arguments:
             - '@serializer'
             - false
+
+    eavmanager.transformer_manager:
+        class: CleverAge\EAVManager\ProcessBundle\Transformer\TransformerManager
+
+    eavmanager.transformer_config.registry:
+        class: CleverAge\EAVManager\ProcessBundle\Transformer\TransformerConfigurationRegistry

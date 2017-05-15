@@ -79,7 +79,7 @@ class Configuration implements ConfigurationInterface
     {
         $transformerConfigDefintion = $definition
             ->scalarNode('service')->defaultValue('@eavmanager.transformer_manager')->end()
-            ->arrayNode('mapping')->useAttributeAsKey('code')->isRequired()
+            ->arrayNode('mapping')->isRequired()
             ->prototype('array')->performNoDeepMerging()->cannotBeOverwritten()
             ->children();
 

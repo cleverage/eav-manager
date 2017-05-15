@@ -13,6 +13,9 @@ class CsvWriterProcess implements ProcessInterface
     /** @var string */
     protected $filePath;
 
+    /** @var bool */
+    protected $forceEnclosures;
+
     /** @var array */
     protected $dataToProceed;
 
@@ -20,10 +23,12 @@ class CsvWriterProcess implements ProcessInterface
      * CsvWriterProcess constructor.
      *
      * @param string $filePath
+     * @param bool   $forceEnclosures
      */
-    public function __construct($filePath)
+    public function __construct($filePath, bool $forceEnclosures = false)
     {
         $this->filePath = $filePath;
+        $this->forceEnclosures = $forceEnclosures;
     }
 
     /**
@@ -48,25 +53,24 @@ class CsvWriterProcess implements ProcessInterface
         $headers = array_fill_keys(array_keys($headers), null); // Unset useless values
         $csvData = [];
 
-        // Check input data
+        // Check input data (only strings are accepted)
         foreach ($this->dataToProceed as $item) {
             $csvData[] = array_filter(
                 $item,
                 function ($value) {
-                    // For now, only output strings
                     return is_string($value);
                 }
             );
         }
 
         // Write CSV
-        fputcsv($handler, array_keys($headers));
+        $this->fputcsv($handler, array_keys($headers), ';', '"');
         foreach ($csvData as $csvRow) {
             $dataRow = [];
             foreach (array_keys($headers) as $header) {
                 $dataRow[] = $csvRow[$header] ?? '';
             }
-            fputcsv($handler, $dataRow);
+            $this->fputcsv($handler, $dataRow, ';', '"', $this->forceEnclosures);
         }
         fclose($handler);
     }
@@ -77,6 +81,60 @@ class CsvWriterProcess implements ProcessInterface
     public function getOutput()
     {
         // TODO: Implement getOutput() method.
+    }
+
+    /**
+     * Replicate php's native fputcsv to allow overrides
+     *
+     * @see http://php.net/manual/en/function.fputcsv.php#77866
+     *
+     * @param resource $handle
+     * @param array    $fields
+     * @param string   $delimiter
+     * @param string   $enclosure
+     * @param bool     $forceEnclosures
+     *
+     * @return bool|int
+     */
+    public function fputcsv(&$handle, array $fields = [], $delimiter = ',', $enclosure = '"', $forceEnclosures = false)
+    {
+        $str = '';
+        $escapeChar = '\\';
+        /** @var string $value */
+        foreach ($fields as $value) {
+            if ($forceEnclosures ||
+                strpos($value, $delimiter) !== false ||
+                strpos($value, $enclosure) !== false ||
+                strpos($value, "\n") !== false ||
+                strpos($value, "\r") !== false ||
+                strpos($value, "\t") !== false ||
+                strpos($value, ' ') !== false
+            ) {
+                $str2 = $enclosure;
+                $escaped = 0;
+                $len = strlen($value);
+                for ($i = 0; $i < $len; $i++) {
+                    if ($value[$i] == $escapeChar) {
+                        $escaped = 1;
+                    } else {
+                        if (!$escaped && $value[$i] == $enclosure) {
+                            $str2 .= $enclosure;
+                        } else {
+                            $escaped = 0;
+                        }
+                    }
+                    $str2 .= $value[$i];
+                }
+                $str2 .= $enclosure;
+                $str .= $str2.$delimiter;
+            } else {
+                $str .= $value.$delimiter;
+            }
+        }
+        $str = substr($str, 0, -1);
+        $str .= "\n";
+
+        return fwrite($handle, $str);
     }
 
 }

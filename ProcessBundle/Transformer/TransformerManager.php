@@ -42,11 +42,13 @@ class TransformerManager
                     $origCode = $config['code'];
                 }
 
+                // TODO implement multi origin values
                 if (isset($item[$origCode])) {
                     $value = $item[$origCode];
                 }
             }
 
+            // TODO implement default transformer ?
             if (isset($config['transformer'])) {
                 $value = $this->transformValue($value, $config['transformer']);
             }

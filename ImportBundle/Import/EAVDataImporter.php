@@ -336,8 +336,10 @@ class EAVDataImporter implements ContainerAwareInterface
         $attribute = null;
         $family = $importConfig->getFamily();
 
-        // Find default transformers
-        if ($family->hasAttribute($attributeCode)) {
+        // Find default transformers if no transformer is provided
+        if ($family->hasAttribute($attributeCode) &&
+            !(is_array($attributeConfig) && array_key_exists('transformer', $attributeConfig))
+        ) {
             $attribute = $family->getAttribute($attributeCode);
 
             // If we put this in a transformer

@@ -31,6 +31,10 @@ class CsvWriterProcess implements ProcessInterface
      */
     public function setInput($data)
     {
+        if (!count($data)) {
+            throw new \Exception('There is no data to export in a CSV file');
+        }
+
         $this->dataToProceed = $data;
     }
 

@@ -12,6 +12,9 @@ admin:
         edit:
             label: Edit
             title: Edit
+        clone:
+            label: Clone
+            title: Clone
         back:
             label: Back
         close:

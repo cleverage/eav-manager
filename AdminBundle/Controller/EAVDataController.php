@@ -36,7 +36,7 @@ class EAVDataController extends AbstractAdminController
      */
     public function indexAction(Request $request)
     {
-        /** @noinspection LoopWhichDoesNotLoopInspection */
+        /* @noinspection LoopWhichDoesNotLoopInspection */
         foreach ($this->admin->getOption('families', []) as $family => $options) {
             return $this->redirectToAction('list', ['familyCode' => $family]);
         }
@@ -136,7 +136,7 @@ class EAVDataController extends AbstractAdminController
     }
 
     /**
-     * Security check is done manually in the code : handles the read-only role
+     * Security check is done manually in the code : handles the read-only role.
      *
      * @param FamilyInterface $family
      * @param DataInterface   $data
@@ -173,7 +173,7 @@ class EAVDataController extends AbstractAdminController
     }
 
     /**
-     * Clone an existing data
+     * Clone an existing data.
      *
      * @param FamilyInterface $family
      * @param DataInterface   $data
@@ -239,7 +239,7 @@ class EAVDataController extends AbstractAdminController
     }
 
     /**
-     * Resolve datagrid code
+     * Resolve datagrid code.
      *
      * @throws \UnexpectedValueException
      *
@@ -250,7 +250,7 @@ class EAVDataController extends AbstractAdminController
         if ($this->family) {
             // If datagrid code set in options, use it
             $familyCode = $this->family->getCode();
-            /** @noinspection UnSafeIsSetOverArrayInspection */
+            /* @noinspection UnSafeIsSetOverArrayInspection */
             if (isset($this->admin->getOption('families')[$familyCode]['datagrid'])) {
                 return $this->admin->getOption('families')[$familyCode]['datagrid'];
             }
@@ -470,8 +470,7 @@ class EAVDataController extends AbstractAdminController
                 $qb = $repository->createQueryBuilder('e');
                 $qb
                     ->andWhere('e.family = :family')
-                    ->setParameter('family', $this->family->getCode())
-                ;
+                    ->setParameter('family', $this->family->getCode());
                 if ($config['onlySelectedEntities']) {
                     $selectedIds = explode('|', $config['selectedIds']);
                     $identifierAttribute = $this->family->getAttributeAsIdentifier();
@@ -517,7 +516,7 @@ class EAVDataController extends AbstractAdminController
 
                     $csvFile->writeLine($writableData);
 
-                    /** @noinspection DisconnectedForeachInstructionInspection */
+                    /* @noinspection DisconnectedForeachInstructionInspection */
                     $doctrine->getManager()->clear();
                 }
 

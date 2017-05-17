@@ -7,11 +7,11 @@ use Doctrine\Common\Util\ClassUtils;
 use Sidus\EAVModelBundle\Entity\DataInterface;
 use Sidus\EAVModelBundle\Exception\EAVExceptionInterface;
 use Sidus\EAVModelBundle\Model\AttributeInterface;
-use \CleverAge\EAVManager\AssetBundle\Serializer\Normalizer\EAVAssetNormalizer as BaseEAVDataNormalizer;
+use CleverAge\EAVManager\AssetBundle\Serializer\Normalizer\EAVAssetNormalizer as BaseEAVDataNormalizer;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 
 /**
- * Overriding relation handling
+ * Overriding relation handling.
  */
 class EAVDataNormalizer extends BaseEAVDataNormalizer
 {
@@ -59,7 +59,7 @@ class EAVDataNormalizer extends BaseEAVDataNormalizer
 
     /**
      * We must override this method because we cannot expect the normalizer to work normally with collection with
-     * the API Platform framework
+     * the API Platform framework.
      *
      * @param DataInterface $object
      * @param string        $attribute
@@ -95,7 +95,7 @@ class EAVDataNormalizer extends BaseEAVDataNormalizer
 
     /**
      * We must override this method because we cannot expect the normalizer to work normally with collection with
-     * the API Platform framework
+     * the API Platform framework.
      *
      * @param DataInterface      $object
      * @param AttributeInterface $attribute
@@ -140,7 +140,7 @@ class EAVDataNormalizer extends BaseEAVDataNormalizer
     protected function getAttributeContext(
         DataInterface $object,
         $attribute,
-        /** @noinspection PhpUnusedParameterInspection */
+        /* @noinspection PhpUnusedParameterInspection */
         $rawValue,
         array $context
     ) {
@@ -167,7 +167,7 @@ class EAVDataNormalizer extends BaseEAVDataNormalizer
     protected function getEAVAttributeContext(
         DataInterface $object,
         AttributeInterface $attribute,
-        /** @noinspection PhpUnusedParameterInspection */
+        /* @noinspection PhpUnusedParameterInspection */
         $rawValue,
         array $context
     ) {

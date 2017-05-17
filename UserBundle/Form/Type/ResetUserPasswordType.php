@@ -8,7 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * Permet à l'utilisateur de réinitialiser son mot de passe
+ * Permet à l'utilisateur de réinitialiser son mot de passe.
  */
 class ResetUserPasswordType extends AbstractType
 {

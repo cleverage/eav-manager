@@ -9,7 +9,7 @@ use Sidus\FileUploadBundle\Manager\ResourceManager as BaseResourceManager;
 use Sidus\FileUploadBundle\Model\ResourceInterface;
 
 /**
- * Extends the standard resource manager to append more info to the resource entities
+ * Extends the standard resource manager to append more info to the resource entities.
  */
 class ResourceManager extends BaseResourceManager
 {

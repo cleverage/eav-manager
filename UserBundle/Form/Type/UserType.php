@@ -24,7 +24,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
- * User edition form
+ * User edition form.
  */
 class UserType extends AbstractType
 {

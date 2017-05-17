@@ -17,10 +17,12 @@ class UserController extends GenericAdminController
     /**
      * @Security("is_granted('ROLE_ADMIN')")
      * @Template()
+     *
      * @param Request $request
      * @param User    $user
      *
      * @return Response
+     *
      * @throws \Exception
      */
     public function resetPasswordAction(Request $request, User $user)
@@ -68,7 +70,7 @@ class UserController extends GenericAdminController
         while ($i < $count) {
             $char = $possible[mt_rand(0, strlen($possible) - 1)];
             $passwd .= $char;
-            $i++;
+            ++$i;
         }
 
         return $passwd;

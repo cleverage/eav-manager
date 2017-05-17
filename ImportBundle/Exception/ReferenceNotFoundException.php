@@ -5,7 +5,7 @@ namespace CleverAge\EAVManager\ImportBundle\Exception;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
 
 /**
- * Thrown when a reference is missing during an import
+ * Thrown when a reference is missing during an import.
  */
 class ReferenceNotFoundException extends \UnexpectedValueException
 {
@@ -16,7 +16,7 @@ class ReferenceNotFoundException extends \UnexpectedValueException
      *
      * @return ReferenceNotFoundException
      */
-    public static function create(FamilyInterface $family, $reference, \Exception $e = null)
+    public static function create(FamilyInterface $family, $reference, \Exception $e = null): ReferenceNotFoundException
     {
         $m = "Reference not found {$reference} for family {$family->getCode()}";
 

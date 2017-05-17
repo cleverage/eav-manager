@@ -18,7 +18,7 @@ class Document extends Resource
     protected $fileSize;
 
     /**
-     * Mime type
+     * Mime type.
      *
      * @var string
      * @ORM\Column(name="mime_type", type="string", length=128, nullable=true)
@@ -26,7 +26,7 @@ class Document extends Resource
     protected $mimeType;
 
     /**
-     * File's last modification date
+     * File's last modification date.
      *
      * @var \DateTime
      * @ORM\Column(name="file_modified_at", type="datetime", nullable=true)
@@ -93,6 +93,7 @@ class Document extends Resource
      * @param \DateTime|int|string|null $fileModifiedAt
      *
      * @return Document
+     *
      * @throws \UnexpectedValueException
      */
     public function setFileModifiedAt($fileModifiedAt)
@@ -103,7 +104,7 @@ class Document extends Resource
     }
 
     /**
-     * Serialize automatically the entity when passed to json_encode
+     * Serialize automatically the entity when passed to json_encode.
      *
      * @return array
      */

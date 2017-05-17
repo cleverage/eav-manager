@@ -70,7 +70,7 @@ class Image extends Document
     }
 
     /**
-     * Serialize automatically the entity when passed to json_encode
+     * Serialize automatically the entity when passed to json_encode.
      *
      * @return array
      */

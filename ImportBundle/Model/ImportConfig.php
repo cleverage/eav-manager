@@ -3,6 +3,7 @@
 namespace CleverAge\EAVManager\ImportBundle\Model;
 
 use CleverAge\EAVManager\ImportBundle\Import\EAVDataImporter;
+use CleverAge\EAVManager\ImportBundle\Source\DataSourceInterface;
 use CleverAge\EAVManager\ImportBundle\Transformer\EAVDataTransformerInterface;
 use Sidus\EAVModelBundle\Registry\FamilyRegistry;
 use Sidus\EAVModelBundle\Exception\MissingFamilyException;
@@ -13,15 +14,12 @@ use Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
- * Handle import configuration
+ * Handle import configuration.
  */
 class ImportConfig
 {
     /** @var string */
     protected $code;
-
-    /** @var string */
-    protected $filePath;
 
     /** @var FamilyInterface */
     protected $family;
@@ -41,9 +39,10 @@ class ImportConfig
     /** @var array */
     protected $options;
 
+    /** @var DataSourceInterface */
+    protected $source;
+
     /**
-     * ImportConfig constructor.
-     *
      * @param string         $code
      * @param FamilyRegistry $familyRegistry
      * @param array          $configuration
@@ -72,22 +71,6 @@ class ImportConfig
     public function getCode()
     {
         return $this->code;
-    }
-
-    /**
-     * @return string
-     */
-    public function getFilePath()
-    {
-        return $this->filePath;
-    }
-
-    /**
-     * @param string $filePath
-     */
-    public function setFilePath($filePath)
-    {
-        $this->filePath = $filePath;
     }
 
     /**
@@ -222,5 +205,21 @@ class ImportConfig
         }
 
         return false;
+    }
+
+    /**
+     * @return DataSourceInterface
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
+
+    /**
+     * @param DataSourceInterface $source
+     */
+    public function setSource(DataSourceInterface $source)
+    {
+        $this->source = $source;
     }
 }

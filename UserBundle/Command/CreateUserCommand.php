@@ -16,12 +16,12 @@ use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 /**
- * Commande servant à créer des utilisateurs
+ * Commande servant à créer des utilisateurs.
  */
 class CreateUserCommand extends ContainerAwareCommand
 {
     /**
-     * Configuration de la commande
+     * Configuration de la commande.
      *
      * @throws InvalidArgumentException
      */

@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Sidus\EAVModelBundle\Entity\AbstractValue as AbstractBaseValue;
 
 /**
- * Adding relations to images and documents to values
+ * Adding relations to images and documents to values.
  */
 abstract class AbstractValue extends AbstractBaseValue
 {

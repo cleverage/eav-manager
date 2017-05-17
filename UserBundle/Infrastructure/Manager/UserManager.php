@@ -20,7 +20,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Gère la création, la suppression et la mise à jour des utilisateurs
+ * Gère la création, la suppression et la mise à jour des utilisateurs.
  */
 class UserManager implements UserManagerInterface
 {

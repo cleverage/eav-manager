@@ -18,7 +18,7 @@ use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
 use Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException;
 
 /**
- * Doctrine subscriber to fill certain values normally held by the Resource entity in the EAV model (for indexing)
+ * Doctrine subscriber to fill certain values normally held by the Resource entity in the EAV model (for indexing).
  */
 class AssetSubscriber implements EventSubscriber
 {

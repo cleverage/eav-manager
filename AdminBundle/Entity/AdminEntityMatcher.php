@@ -7,7 +7,7 @@ use Sidus\AdminBundle\Entity\AdminEntityMatcher as BaseAdminEntityMatcher;
 use Sidus\EAVModelBundle\Entity\DataInterface;
 
 /**
- * Overrides the base entity matcher to use options inside the admin configurations
+ * Overrides the base entity matcher to use options inside the admin configurations.
  */
 class AdminEntityMatcher extends BaseAdminEntityMatcher
 {
@@ -15,6 +15,7 @@ class AdminEntityMatcher extends BaseAdminEntityMatcher
      * @param mixed $entity
      *
      * @return Admin
+     *
      * @throws \UnexpectedValueException
      */
     public function getAdminForEntity($entity)

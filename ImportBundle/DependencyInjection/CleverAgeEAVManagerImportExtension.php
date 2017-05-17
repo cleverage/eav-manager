@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\Loader;
 /**
  * This is the class that loads and manages your bundle configuration.
  *
- * @link http://symfony.com/doc/current/cookbook/bundles/extension.html
+ * @see http://symfony.com/doc/current/cookbook/bundles/extension.html
  */
 class CleverAgeEAVManagerImportExtension extends Extension
 {
@@ -23,6 +23,7 @@ class CleverAgeEAVManagerImportExtension extends Extension
 
     /**
      * {@inheritdoc}
+     *
      * @throws BadMethodCallException
      * @throws \Exception
      */
@@ -50,10 +51,13 @@ class CleverAgeEAVManagerImportExtension extends Extension
      */
     protected function addImportServiceDefinition($code, $importConfiguration, ContainerBuilder $container)
     {
-        $importConfiguration['service'] = $this->resolveServiceReference($importConfiguration['service']);
-        if (isset($importConfiguration['transformer'])) {
-            $importConfiguration['transformer'] = $this->resolveServiceReference($importConfiguration['transformer']);
+        // Resolve given references
+        foreach (['service', 'transformer', 'source'] as $key) {
+            if (isset($importConfiguration[$key])) {
+                $importConfiguration[$key] = $this->resolveServiceReference($importConfiguration[$key]);
+            }
         }
+
         $definitionOptions = [
             $code,
             new Reference('sidus_eav_model.family.registry'),

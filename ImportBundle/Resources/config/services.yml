@@ -11,13 +11,9 @@ services:
             -
                 document: '@oneup_uploader.controller.document'
                 image: '@oneup_uploader.controller.image'
-            - '@eavmanager_import.configuration.directory.handler'
-
-    eavmanager_import.configuration.directory.handler:
-        class: CleverAge\EAVManager\ImportBundle\Configuration\DirectoryConfigurationHandler
-        arguments:
-            - ~
-            - ~
+            - '@serializer'
+        calls:
+            - [ 'setContainer' , ['@service_container']]
 
     eavmanager.import_configuration.handler:
         class: CleverAge\EAVManager\ImportBundle\Configuration\ImportConfigurationHandler
@@ -32,3 +28,11 @@ services:
 
     eavmanager.import.transformer.collection:
         class: CleverAge\EAVManager\ImportBundle\Transformer\CollectionAttributeTransformer
+
+    eavmanager.import.transformer.attribute_concat:
+        class: CleverAge\EAVManager\ImportBundle\Transformer\AttributeConcatTransformer
+
+    eavmanager.import.process:
+        class: CleverAge\EAVManager\ImportBundle\Process\ImportProcess
+        arguments:
+            - '@eavmanager.import_configuration.handler'

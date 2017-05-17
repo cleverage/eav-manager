@@ -26,6 +26,7 @@ class Configuration implements ConfigurationInterface
 
     /**
      * {@inheritdoc}
+     *
      * @throws \RuntimeException
      */
     public function getConfigTreeBuilder()
@@ -57,8 +58,8 @@ class Configuration implements ConfigurationInterface
     protected function appendImportConfigDefinition(NodeBuilder $importConfigDefinition)
     {
         $importConfigDefinition
-            ->scalarNode('file_path')->isRequired()->end()
             ->scalarNode('family')->isRequired()->end()
+            ->scalarNode('source')->isRequired()->end()
             ->scalarNode('service')->defaultValue('@eavmanager_import.eav_data_importer')->end()
             ->scalarNode('transformer')->end()
             ->variableNode('mapping')->end()

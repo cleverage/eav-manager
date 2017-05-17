@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Export configuration builder
+ * Export configuration builder.
  */
 class AttributeExportConfigType extends AbstractType
 {

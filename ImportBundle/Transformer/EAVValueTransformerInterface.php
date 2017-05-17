@@ -6,7 +6,7 @@ use Sidus\EAVModelBundle\Model\AttributeInterface;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
 
 /**
- * Transforms data for the EAV model
+ * Transforms data for the EAV model.
  */
 interface EAVValueTransformerInterface
 {
@@ -15,6 +15,8 @@ interface EAVValueTransformerInterface
      * @param AttributeInterface $attribute
      * @param mixed              $value
      * @param array              $config
+     *
+     * @throws \UnexpectedValueException
      *
      * @return mixed
      */
@@ -25,6 +27,8 @@ interface EAVValueTransformerInterface
      * @param AttributeInterface $attribute
      * @param mixed              $value
      * @param array              $config
+     *
+     * @throws \UnexpectedValueException
      *
      * @return mixed
      */

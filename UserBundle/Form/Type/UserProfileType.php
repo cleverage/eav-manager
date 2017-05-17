@@ -8,7 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * User profile
+ * User profile.
  */
 class UserProfileType extends UserType
 {

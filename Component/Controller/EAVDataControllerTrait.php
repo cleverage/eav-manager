@@ -16,6 +16,7 @@ use UnexpectedValueException;
  * @method Registry getDoctrine
  * @method User getUser
  * @method addFlash($key, $message)
+ *
  * @property ContainerInterface $container
  */
 trait EAVDataControllerTrait
@@ -27,6 +28,7 @@ trait EAVDataControllerTrait
      * @param string $familyCode
      *
      * @return FamilyInterface
+     *
      * @throws Exception
      */
     protected function getFamily($familyCode)
@@ -39,6 +41,7 @@ trait EAVDataControllerTrait
      * @param FamilyInterface|null $family
      *
      * @return DataInterface
+     *
      * @throws Exception
      */
     protected function getData($id, FamilyInterface $family = null)
@@ -70,6 +73,7 @@ trait EAVDataControllerTrait
      * @param DataInterface   $data
      *
      * @return FamilyInterface
+     *
      * @throws LogicException
      * @throws UnexpectedValueException
      */

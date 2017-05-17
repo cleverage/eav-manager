@@ -50,13 +50,13 @@ function bindGlobalEvents(target) {
         e.preventDefault();
         e.stopPropagation();
         var formName = $(this).data('select-all');
-        $('input[type=checkbox][name^="'+formName+'"]').prop('checked', true);
+        $('input[type=checkbox][name^="' + formName + '"]').prop('checked', true);
     });
     $(target).find('button[data-select-none]').on('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
         var formName = $(this).data('select-none');
-        $('input[type=checkbox][name^="'+formName+'"]').prop('checked', false);
+        $('input[type=checkbox][name^="' + formName + '"]').prop('checked', false);
     });
 }
 

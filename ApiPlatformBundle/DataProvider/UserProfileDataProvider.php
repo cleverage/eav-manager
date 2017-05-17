@@ -2,17 +2,13 @@
 
 namespace CleverAge\EAVManager\ApiPlatformBundle\DataProvider;
 
-use ApiPlatform\Core\DataProvider\CollectionDataProviderInterface;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
-use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use ApiPlatform\Core\Exception\ResourceClassNotSupportedException;
-use Sidus\EAVModelBundle\Model\FamilyInterface;
-use Sidus\EAVModelBundle\Registry\FamilyRegistry;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * Provides access to family registry through Api Platform
+ * Provides access to family registry through Api Platform.
  */
 class UserProfileDataProvider implements ItemDataProviderInterface
 {

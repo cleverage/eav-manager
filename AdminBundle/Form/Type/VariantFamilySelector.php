@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\Exception\AccessException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Select a "variant" family
+ * Select a "variant" family.
  */
 class VariantFamilySelector extends AbstractType
 {

@@ -8,7 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Override this controller to create a custom dashboard
+ * Override this controller to create a custom dashboard.
  */
 class DashboardController extends Controller
 {

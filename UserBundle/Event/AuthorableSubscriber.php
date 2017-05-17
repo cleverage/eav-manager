@@ -18,8 +18,6 @@ class AuthorableSubscriber implements EventSubscriber
     protected $tokenStorage;
 
     /**
-     * AuthorableSubscriber constructor.
-     *
      * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(TokenStorageInterface $tokenStorage)

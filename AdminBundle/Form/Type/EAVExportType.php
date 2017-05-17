@@ -12,7 +12,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Export configuration builder
+ * Export configuration builder.
  */
 class EAVExportType extends AbstractType
 {

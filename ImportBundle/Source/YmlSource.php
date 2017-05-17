@@ -9,13 +9,10 @@ use Symfony\Component\Yaml\Yaml;
  */
 class YmlSource implements DataSourceInterface
 {
-
     /** @var string */
     protected $filePath;
 
     /**
-     * YmlSource constructor.
-     *
      * @param string $filePath
      */
     public function __construct($filePath)
@@ -25,11 +22,11 @@ class YmlSource implements DataSourceInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Symfony\Component\Yaml\Exception\ParseException
      */
     public function getData(): array
     {
         return Yaml::parse(file_get_contents($this->filePath));
     }
-
-
 }

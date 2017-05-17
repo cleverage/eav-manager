@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
 /**
- * Form type to browse media data
+ * Form type to browse media data.
  */
 class MediaBrowserType extends AbstractType
 {

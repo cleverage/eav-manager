@@ -8,7 +8,7 @@ use CleverAge\EAVManager\ImportBundle\Model\ImportConfig;
 use CleverAge\EAVManager\ProcessBundle\Process\ProcessInterface;
 
 /**
- * @TODO describe class usage
+ * @TODO describes class usage
  */
 class ImportProcess implements ProcessInterface
 {
@@ -22,8 +22,6 @@ class ImportProcess implements ProcessInterface
     protected $importHistory;
 
     /**
-     * ImportProcess constructor.
-     *
      * @param ImportConfigurationHandler $importConfigurationHandler
      */
     public function __construct(ImportConfigurationHandler $importConfigurationHandler)
@@ -33,6 +31,8 @@ class ImportProcess implements ProcessInterface
 
     /**
      * @param array|string $data Import code to process
+     *
+     * @throws \UnexpectedValueException
      */
     public function setInput($data)
     {
@@ -60,7 +60,7 @@ class ImportProcess implements ProcessInterface
     }
 
     /**
-     * Run an import configuration
+     * Run an import configuration.
      *
      * @param ImportConfig $importConfig
      *

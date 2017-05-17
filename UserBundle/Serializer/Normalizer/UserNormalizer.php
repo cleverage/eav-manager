@@ -8,7 +8,7 @@ use Symfony\Component\Serializer\Exception\CircularReferenceException;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 /**
- * Custom User normalizer, removing sensitive informations
+ * Custom User normalizer, removing sensitive informations.
  */
 class UserNormalizer extends ObjectNormalizer
 {

@@ -7,7 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * Saisie de l'email de l'utilisateur en vue de reset son mot de passe
+ * Saisie de l'email de l'utilisateur en vue de reset son mot de passe.
  */
 class LostUserPasswordType extends AbstractType
 {

@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\Loader;
 /**
  * This is the class that loads and manages your bundle configuration.
  *
- * @link http://symfony.com/doc/current/cookbook/bundles/extension.html
+ * @see http://symfony.com/doc/current/cookbook/bundles/extension.html
  */
 class CleverAgeEAVManagerProcessExtension extends Extension
 {
@@ -23,6 +23,7 @@ class CleverAgeEAVManagerProcessExtension extends Extension
 
     /**
      * {@inheritdoc}
+     *
      * @throws BadMethodCallException
      * @throws \Exception
      */

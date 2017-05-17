@@ -8,7 +8,7 @@ use ApiPlatform\Core\Metadata\Property\PropertyMetadata;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
 
 /**
- * Used to change the identifier property of the family serializer
+ * Used to change the identifier property of the family serializer.
  */
 class FamilyPropertyMetadataFactory implements PropertyMetadataFactoryInterface
 {

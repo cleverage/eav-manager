@@ -5,11 +5,10 @@ namespace CleverAge\EAVManager\ImportBundle\Source;
 use CleverAge\EAVManager\ImportBundle\Model\CsvFile;
 
 /**
- * Provide data from a CSV file
+ * Provide data from a CSV file.
  */
 class CsvSource implements DataSourceInterface
 {
-
     /** @var string */
     protected $filePath;
 
@@ -20,7 +19,6 @@ class CsvSource implements DataSourceInterface
     protected $options;
 
     /**
-     * CsvSource constructor.
      * @param string $filePath
      * @param string $idColumn
      * @param array  $options
@@ -34,6 +32,7 @@ class CsvSource implements DataSourceInterface
 
     /**
      * {@inheritdoc}
+     *
      * @throws \Exception
      */
     public function getData(): array
@@ -69,5 +68,4 @@ class CsvSource implements DataSourceInterface
 
         return new CsvFile($filePath, $delimiter, $enclosure, $escape);
     }
-
 }

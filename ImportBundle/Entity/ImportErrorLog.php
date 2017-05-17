@@ -4,10 +4,9 @@ namespace CleverAge\EAVManager\ImportBundle\Entity;
 
 use CleverAge\EAVManager\ImportBundle\Exception\InvalidImportException;
 use Doctrine\ORM\Mapping as ORM;
-use CleverAge\EAVManager\ImportBundle\Entity\ImportHistory;
 
 /**
- * Represent one import error, with a given reason
+ * Represent one import error, with a given reason.
  *
  * @ORM\Entity
  * @ORM\Table(name="eavmanager_import_error_log")
@@ -24,7 +23,7 @@ class ImportErrorLog
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="ImportHistory", inversedBy="errorLogs")
+     * @ORM\ManyToOne(targetEntity="CleverAge\EAVManager\ImportBundle\Entity\ImportHistory", inversedBy="errorLogs")
      * @ORM\JoinColumn(name="history_id", referencedColumnName="id", onDelete="cascade", nullable=false)
      *
      * @var ImportHistory
@@ -47,11 +46,12 @@ class ImportErrorLog
 
     /**
      * @param InvalidImportException $exception
+     *
      * @return ImportErrorLog
      */
     public static function createFromError(InvalidImportException $exception): ImportErrorLog
     {
-        $errorLog = new ImportErrorLog();
+        $errorLog = new self();
         $errorLog->setMessage($exception->getMessage());
         $errorLog->setErrorJson($exception->jsonSerialize());
 
@@ -121,6 +121,4 @@ class ImportErrorLog
     {
         $this->errorJson = $errorJson;
     }
-
-
 }

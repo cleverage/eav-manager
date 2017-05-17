@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Profile edition
+ * Profile edition.
  */
 class UserProfileController extends Controller
 {
@@ -18,9 +18,11 @@ class UserProfileController extends Controller
 
     /**
      * @Template()
+     *
      * @param Request $request
      *
      * @return array|RedirectResponse
+     *
      * @throws \Exception
      */
     public function editAction(Request $request)

@@ -12,8 +12,6 @@ class StaticOutputProcess implements ProcessInterface
     protected $output;
 
     /**
-     * StaticOutputProcess constructor.
-     *
      * @param mixed $output
      */
     public function __construct($output)

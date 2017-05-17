@@ -7,7 +7,7 @@ use Sidus\EAVModelBundle\Model\AttributeInterface;
 use Sidus\EAVModelBundle\Serializer\Normalizer\EAVDataNormalizer;
 
 /**
- * Normalize assets directly with the link to the resource
+ * Normalize assets directly with the link to the resource.
  */
 class EAVAssetNormalizer extends EAVDataNormalizer
 {
@@ -34,5 +34,4 @@ class EAVAssetNormalizer extends EAVDataNormalizer
             $context
         );
     }
-
 }

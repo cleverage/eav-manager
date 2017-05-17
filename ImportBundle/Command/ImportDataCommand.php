@@ -10,16 +10,17 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Generic CLI to start an import
+ * Generic CLI to start an import.
  */
 class ImportDataCommand extends ContainerAwareCommand
 {
-
     /** @var ProgressBar */
     protected $progress;
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
      */
     protected function configure()
     {
@@ -29,10 +30,12 @@ class ImportDataCommand extends ContainerAwareCommand
     }
 
     /**
-     * {@inheritdoc}
+     * @param InputInterface  $input
+     * @param OutputInterface $output
      *
      * @throws \Exception
-     * @throws \UnexpectedValueException
+     *
+     * @return int|null|void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -66,26 +69,27 @@ class ImportDataCommand extends ContainerAwareCommand
     }
 
     /**
-     * Advance and save the progress
+     * Advance and save the progress.
      *
      * @TODO save data in a context file
      *
      * @param array $proceededData
      * @param array $resultingData
      */
-    // @codingStandardsIgnoreLine
     public function onProgress(array $proceededData, array $resultingData)
     {
         $this->progress->advance(count($proceededData));
     }
 
     /**
+     * @param InputInterface $input
+     *
+     * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
+     *
      * @return array
      */
     protected function getImportCodes(InputInterface $input): array
     {
         return $input->getArgument('import_code');
     }
-
-
 }

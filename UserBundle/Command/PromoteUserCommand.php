@@ -11,12 +11,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 /**
- * Commande servant à promouvoir des utilisateurs en admin
+ * Commande servant à promouvoir des utilisateurs en admin.
  */
 class PromoteUserCommand extends ContainerAwareCommand
 {
     /**
-     * Configuration de la commande
+     * Configuration de la commande.
      *
      * @throws InvalidArgumentException
      */

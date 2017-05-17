@@ -11,7 +11,7 @@
             return;
         }
 
-        var $input = $('#'+$tg.data('input-id'));
+        var $input = $('#' + $tg.data('input-id'));
         if ($input.length) {
             if ($input.is('select') && 0 == $input.find('option[value="' + e.detail.dataId + '"]').length) {
                 $input.append($('<option>', {value: e.detail.dataId}).text(e.detail.dataLabel));

@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Security\Core\Role\Role;
 
 /**
- * Used to work with roles and permissions
+ * Used to work with roles and permissions.
  */
 class LeafRole extends Role
 {

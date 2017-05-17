@@ -5,7 +5,7 @@ namespace CleverAge\EAVManager\ImportBundle\Exception;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
 
 /**
- * Thrown when a reference is missing during an import
+ * Thrown when a reference is missing during an import.
  */
 class NonUniqueReferenceException extends \UnexpectedValueException
 {

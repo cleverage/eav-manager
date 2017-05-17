@@ -6,7 +6,7 @@ use Sidus\EAVModelBundle\Model\AttributeInterface;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
 
 /**
- * Simple transformer for collection attributes
+ * Simple transformer for collection attributes.
  *
  * @deprecated we may use the new exploder transformer
  */

@@ -10,6 +10,9 @@ class ProcessConfigurationRegistry
     /** @var ProcessConfiguration[] */
     protected $processConfigurations = [];
 
+    /**
+     * @param ProcessConfiguration $processConfig
+     */
     public function addProcessConfiguration(ProcessConfiguration $processConfig)
     {
         $this->processConfigurations[$processConfig->getCode()] = $processConfig;
@@ -23,6 +26,13 @@ class ProcessConfigurationRegistry
         return $this->processConfigurations;
     }
 
+    /**
+     * @param string $code
+     *
+     * @throws \Exception
+     *
+     * @return ProcessConfiguration
+     */
     public function getProcessConfiguration(string $code)
     {
         if (!array_key_exists($code, $this->processConfigurations)) {

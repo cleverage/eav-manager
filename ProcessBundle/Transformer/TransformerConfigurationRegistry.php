@@ -7,7 +7,6 @@ namespace CleverAge\EAVManager\ProcessBundle\Transformer;
  */
 class TransformerConfigurationRegistry
 {
-
     /** @var array TransformerConfiguration[] */
     protected $configs = [];
 

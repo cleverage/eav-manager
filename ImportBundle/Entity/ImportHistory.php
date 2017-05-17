@@ -3,17 +3,15 @@
 namespace CleverAge\EAVManager\ImportBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use CleverAge\EAVManager\ImportBundle\Entity\ImportErrorLog;
 
 /**
- * Represent one import that is or have been processed
+ * Represent one import that is or have been processed.
  *
  * @ORM\Entity
  * @ORM\Table(name="eavmanager_import_history")
  */
 class ImportHistory
 {
-
     const STATUS_SUCCESS = 0;
     const STATUS_IN_PROGRESS = 1;
     const STATUS_ERROR = 2;
@@ -64,6 +62,7 @@ class ImportHistory
 
     /**
      * @ORM\OneToMany(targetEntity="ImportErrorLog", mappedBy="history", cascade={"persist", "remove"})
+     *
      * @var ImportErrorLog[]
      */
     protected $errorLogs;
@@ -191,5 +190,4 @@ class ImportHistory
         $errorLogs->setHistory($this);
         $this->errorLogs[] = $errorLogs;
     }
-
 }

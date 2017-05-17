@@ -14,7 +14,7 @@ use Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
- * Handle import configuration
+ * Handle import configuration.
  */
 class ImportConfig
 {
@@ -43,8 +43,6 @@ class ImportConfig
     protected $source;
 
     /**
-     * ImportConfig constructor.
-     *
      * @param string         $code
      * @param FamilyRegistry $familyRegistry
      * @param array          $configuration
@@ -224,5 +222,4 @@ class ImportConfig
     {
         $this->source = $source;
     }
-
 }

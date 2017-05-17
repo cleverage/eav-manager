@@ -8,13 +8,12 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Throwable;
 
 /**
- * Represent a single error for a row during import
+ * Represent a single error for a row during import.
  *
  * @TODO : refactor without using the constructor
  */
 class InvalidImportException extends \UnexpectedValueException implements \JsonSerializable
 {
-
     /** @var ConstraintViolationListInterface */
     protected $violations;
 
@@ -25,8 +24,6 @@ class InvalidImportException extends \UnexpectedValueException implements \JsonS
     protected $reference;
 
     /**
-     * InvalidImportException constructor.
-     *
      * @param FamilyInterface                  $family
      * @param string                           $reference
      * @param ConstraintViolationListInterface $violations
@@ -43,7 +40,6 @@ class InvalidImportException extends \UnexpectedValueException implements \JsonS
         $this->reference = $reference;
     }
 
-
     /**
      * @param FamilyInterface                  $family
      * @param string                           $reference
@@ -54,7 +50,7 @@ class InvalidImportException extends \UnexpectedValueException implements \JsonS
      */
     public static function create($family, $reference, $violations, Throwable $previous = null): InvalidImportException
     {
-        return new InvalidImportException($family, $reference, $violations, $previous);
+        return new self($family, $reference, $violations, $previous);
     }
 
     /**
@@ -89,5 +85,4 @@ class InvalidImportException extends \UnexpectedValueException implements \JsonS
     {
         return $this->violations;
     }
-
 }

@@ -3,7 +3,7 @@
 namespace CleverAge\EAVManager\ImportBundle\Source;
 
 /**
- * Simple container for a static array
+ * Simple container for a static array.
  */
 class StaticSource implements DataSourceInterface
 {
@@ -11,7 +11,6 @@ class StaticSource implements DataSourceInterface
     protected $data;
 
     /**
-     * StaticSource constructor.
      * @param array $data
      */
     public function __construct(array $data)
@@ -26,5 +25,4 @@ class StaticSource implements DataSourceInterface
     {
         return $this->data;
     }
-
 }

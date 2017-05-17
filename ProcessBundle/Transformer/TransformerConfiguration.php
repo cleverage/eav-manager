@@ -14,8 +14,6 @@ class TransformerConfiguration
     protected $mapping;
 
     /**
-     * TransformerConfiguration constructor.
-     *
      * @param string $code
      * @param array  $config
      */
@@ -49,5 +47,4 @@ class TransformerConfiguration
     {
         return $this->mapping;
     }
-
 }

@@ -9,9 +9,6 @@ interface ProcessInterface
      */
     public function setInput($data);
 
-    /**
-     *
-     */
     public function execute();
 
     /**

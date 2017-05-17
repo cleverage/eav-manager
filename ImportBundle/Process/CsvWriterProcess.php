@@ -6,10 +6,11 @@ use CleverAge\EAVManager\ProcessBundle\Process\ProcessInterface;
 
 /**
  * @TODO describe class usage
+ *
+ * @todo : Use CsvFile and extend it
  */
 class CsvWriterProcess implements ProcessInterface
 {
-
     /** @var string */
     protected $filePath;
 
@@ -20,8 +21,6 @@ class CsvWriterProcess implements ProcessInterface
     protected $dataToProceed;
 
     /**
-     * CsvWriterProcess constructor.
-     *
      * @param string $filePath
      * @param bool   $forceEnclosures
      */
@@ -84,7 +83,7 @@ class CsvWriterProcess implements ProcessInterface
     }
 
     /**
-     * Replicate php's native fputcsv to allow overrides
+     * Replicate php's native fputcsv to allow overrides.
      *
      * @see http://php.net/manual/en/function.fputcsv.php#77866
      *
@@ -113,7 +112,7 @@ class CsvWriterProcess implements ProcessInterface
                 $str2 = $enclosure;
                 $escaped = 0;
                 $len = strlen($value);
-                for ($i = 0; $i < $len; $i++) {
+                for ($i = 0; $i < $len; ++$i) {
                     if ($value[$i] == $escapeChar) {
                         $escaped = 1;
                     } else {
@@ -136,5 +135,4 @@ class CsvWriterProcess implements ProcessInterface
 
         return fwrite($handle, $str);
     }
-
 }

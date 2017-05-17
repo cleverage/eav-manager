@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Add the ability to create data directly in modal from a data selector
+ * Add the ability to create data directly in modal from a data selector.
  */
 class DataSelectorTypeExtension extends AbstractTypeExtension
 {
@@ -42,12 +42,14 @@ class DataSelectorTypeExtension extends AbstractTypeExtension
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'allow_add' => false,
-            'admin' => '_data',
-            'action' => 'create',
-            'target' => null,
-        ]);
+        $resolver->setDefaults(
+            [
+                'allow_add' => false,
+                'admin' => '_data',
+                'action' => 'create',
+                'target' => null,
+            ]
+        );
     }
 
     /**

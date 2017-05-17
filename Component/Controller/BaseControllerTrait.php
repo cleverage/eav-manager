@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @method string generateUrl($route, $parameters = [], $referenceType)
  * @method Registry getDoctrine
+ *
  * @property ContainerInterface $container
  */
 trait BaseControllerTrait
@@ -19,6 +20,7 @@ trait BaseControllerTrait
      * @param array   $parameters
      *
      * @return string
+     *
      * @throws \InvalidArgumentException
      */
     protected function getCurrentUri(Request $request, array $parameters = [])
@@ -32,11 +34,12 @@ trait BaseControllerTrait
     }
 
     /**
-     * Alias to return the entity manager
+     * Alias to return the entity manager.
      *
      * @param string|null $persistentManagerName
      *
      * @return EntityManager
+     *
      * @throws \InvalidArgumentException
      * @throws \LogicException
      */

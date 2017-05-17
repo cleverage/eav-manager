@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\Exception\AccessException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Edit families permissions
+ * Edit families permissions.
  */
 class FamilyPermissionType extends AbstractType
 {

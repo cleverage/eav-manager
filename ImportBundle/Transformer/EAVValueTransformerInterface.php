@@ -6,7 +6,7 @@ use Sidus\EAVModelBundle\Model\AttributeInterface;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
 
 /**
- * Transforms data for the EAV model
+ * Transforms data for the EAV model.
  */
 interface EAVValueTransformerInterface
 {

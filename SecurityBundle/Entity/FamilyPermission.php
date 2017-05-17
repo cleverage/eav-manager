@@ -92,6 +92,7 @@ class FamilyPermission
      * @param string $permission
      *
      * @return bool
+     *
      * @throws \Exception
      */
     public function hasPermission($permission)
@@ -199,7 +200,7 @@ class FamilyPermission
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isList()
     {
@@ -207,7 +208,7 @@ class FamilyPermission
     }
 
     /**
-     * @param boolean $list
+     * @param bool $list
      *
      * @return FamilyPermission
      */
@@ -219,7 +220,7 @@ class FamilyPermission
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isRead()
     {
@@ -227,7 +228,7 @@ class FamilyPermission
     }
 
     /**
-     * @param boolean $read
+     * @param bool $read
      *
      * @return FamilyPermission
      */
@@ -239,7 +240,7 @@ class FamilyPermission
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isCreate()
     {
@@ -247,7 +248,7 @@ class FamilyPermission
     }
 
     /**
-     * @param boolean $create
+     * @param bool $create
      *
      * @return FamilyPermission
      */
@@ -259,7 +260,7 @@ class FamilyPermission
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isEdit()
     {
@@ -267,7 +268,7 @@ class FamilyPermission
     }
 
     /**
-     * @param boolean $edit
+     * @param bool $edit
      *
      * @return FamilyPermission
      */
@@ -279,7 +280,7 @@ class FamilyPermission
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isDelete()
     {
@@ -287,7 +288,7 @@ class FamilyPermission
     }
 
     /**
-     * @param boolean $delete
+     * @param bool $delete
      *
      * @return FamilyPermission
      */
@@ -299,7 +300,7 @@ class FamilyPermission
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isPublish()
     {
@@ -307,7 +308,7 @@ class FamilyPermission
     }
 
     /**
-     * @param boolean $publish
+     * @param bool $publish
      *
      * @return FamilyPermission
      */

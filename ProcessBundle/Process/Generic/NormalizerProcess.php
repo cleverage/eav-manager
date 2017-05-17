@@ -11,8 +11,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class NormalizerProcess implements ProcessInterface
 {
-
-    /** @var  NormalizerInterface|DenormalizerInterface */
+    /** @var NormalizerInterface|DenormalizerInterface */
     protected $serializer;
 
     /** @var bool */
@@ -25,8 +24,6 @@ class NormalizerProcess implements ProcessInterface
     protected $proceededData = [];
 
     /**
-     * NormalizerProcess constructor.
-     *
      * @param DenormalizerInterface|NormalizerInterface $serializer
      * @param bool                                      $doNormalize
      */
@@ -65,5 +62,4 @@ class NormalizerProcess implements ProcessInterface
     {
         return $this->proceededData;
     }
-
 }

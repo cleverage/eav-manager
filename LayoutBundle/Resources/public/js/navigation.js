@@ -85,7 +85,7 @@
     /**
      * Loads the actual HTML response in the target div, only for autoload targets
      */
-    $(document).on('success.ajaxloading', '.autoload', function(e) {
+    $(document).on('success.ajaxloading', '.autoload', function (e) {
         if (e.target !== this) { // Prevent error bubbling
             return;
         }
@@ -95,7 +95,7 @@
     /**
      * Pushes the url of the clicked element inside the history stack if the target is in autoload and NOT a modal
      */
-    $(document).on('complete.ajaxloading', '.autoload:not(.modal)', function(e) {
+    $(document).on('complete.ajaxloading', '.autoload:not(.modal)', function (e) {
         if (e.target !== this) { // Prevent error bubbling
             return;
         }

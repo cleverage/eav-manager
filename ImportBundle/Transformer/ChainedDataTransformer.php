@@ -6,16 +6,14 @@ use Sidus\EAVModelBundle\Entity\DataInterface;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
 
 /**
- * Allow to chain a few Data transformers
+ * Allow to chain a few Data transformers.
  */
 class ChainedDataTransformer implements EAVDataTransformerInterface
 {
-
     /** @var EAVDataTransformerInterface[] */
     protected $transformers;
 
     /**
-     * ChainedDataTransformer constructor.
      * @param EAVDataTransformerInterface[] ...$transformers
      */
     public function __construct(EAVDataTransformerInterface ...$transformers)
@@ -49,5 +47,4 @@ class ChainedDataTransformer implements EAVDataTransformerInterface
 
         return $data;
     }
-
 }

@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 use ApiPlatform\Core\Exception\InvalidArgumentException;
 
 /**
- * JsonLdNormalizer is final in API Platform so we are forced to copy a lot of code
+ * JsonLdNormalizer is final in API Platform so we are forced to copy a lot of code.
  */
 class JsonLdApiNormalizer extends BaseApiNormalizer
 {
@@ -77,6 +77,7 @@ class JsonLdApiNormalizer extends BaseApiNormalizer
 
     /**
      * {@inheritdoc}
+     *
      * @throws \ApiPlatform\Core\Exception\RuntimeException
      * @throws InvalidArgumentException
      * @throws \ApiPlatform\Core\Exception\ResourceClassNotFoundException

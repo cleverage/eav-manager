@@ -3,7 +3,7 @@
 namespace CleverAge\EAVManager\ImportBundle\Model;
 
 /**
- * Read CSV
+ * Read CSV.
  */
 class CsvFile
 {
@@ -140,7 +140,7 @@ class CsvFile
         if (null === $this->lineCount) {
             $line = 0;
             while (!$this->isEndOfFile()) {
-                $line++;
+                ++$line;
                 $this->readRaw();
             }
             $this->rewind();
@@ -188,7 +188,7 @@ class CsvFile
     }
 
     /**
-     * Warning, this function will return exactly the same value as the fgetcsv() function
+     * Warning, this function will return exactly the same value as the fgetcsv() function.
      *
      * @param null|int $length
      *
@@ -199,7 +199,7 @@ class CsvFile
     public function readRaw($length = null)
     {
         $this->assertOpened();
-        $this->currentLine++;
+        ++$this->currentLine;
 
         return fgetcsv($this->handler, $length, $this->delimiter, $this->enclosure, $this->escape);
     }
@@ -235,7 +235,7 @@ class CsvFile
     }
 
     /**
-     * Warning, this function will return exactly the same value as the fgetcsv() function
+     * Warning, this function will return exactly the same value as the fgetcsv() function.
      *
      * @param array $fields
      *
@@ -246,7 +246,7 @@ class CsvFile
     public function writeRaw(array $fields)
     {
         $this->assertOpened();
-        $this->currentLine++;
+        ++$this->currentLine;
 
         return fputcsv($this->handler, $fields, $this->delimiter, $this->enclosure, $this->escape);
     }
@@ -285,7 +285,7 @@ class CsvFile
     }
 
     /**
-     * This methods rewinds the file to the first line of data, skipping the headers
+     * This methods rewinds the file to the first line of data, skipping the headers.
      *
      * @throws \RuntimeException
      *
@@ -344,7 +344,7 @@ class CsvFile
     }
 
     /**
-     * Closes the resource when the object is destroyed
+     * Closes the resource when the object is destroyed.
      */
     public function __destruct()
     {

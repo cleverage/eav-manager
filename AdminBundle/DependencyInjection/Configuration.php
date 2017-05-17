@@ -6,7 +6,7 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * General configuration for EAVManager
+ * General configuration for EAVManager.
  */
 class Configuration implements ConfigurationInterface
 {
@@ -23,6 +23,7 @@ class Configuration implements ConfigurationInterface
 
     /**
      * {@inheritdoc}
+     *
      * @throws \RuntimeException
      */
     public function getConfigTreeBuilder()

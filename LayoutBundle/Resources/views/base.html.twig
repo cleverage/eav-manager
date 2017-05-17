@@ -80,7 +80,8 @@ NEVER points to this layout directly !
                                             <span class="pull-right"><span class="caret"></span></span>
                                         </h5>
                                     </a>
-                                    <div id="admin_users" class="collapse{% if admin.hasRoute(app.request.attributes.get('_route')) %} in{% endif %}">
+                                    <div id="admin_users"
+                                         class="collapse{% if admin.hasRoute(app.request.attributes.get('_route')) %} in{% endif %}">
                                         <ul class="nav nav-pills nav-stacked">
                                             {{ utilities.admin_menu_icon_link('user', null, 'user', 'list') }}
                                             {{ utilities.admin_menu_icon_link('users', null, 'group', 'list') }}

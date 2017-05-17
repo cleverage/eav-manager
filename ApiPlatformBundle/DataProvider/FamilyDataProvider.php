@@ -10,7 +10,7 @@ use Sidus\EAVModelBundle\Model\FamilyInterface;
 use Sidus\EAVModelBundle\Registry\FamilyRegistry;
 
 /**
- * Provides access to family registry through Api Platform
+ * Provides access to family registry through Api Platform.
  */
 class FamilyDataProvider implements CollectionDataProviderInterface, ItemDataProviderInterface
 {

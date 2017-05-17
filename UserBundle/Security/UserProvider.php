@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
- * Charge l'utilisateur pour le firewall
+ * Charge l'utilisateur pour le firewall.
  */
 class UserProvider implements UserProviderInterface
 {
@@ -58,10 +58,9 @@ class UserProvider implements UserProviderInterface
      * @param UserInterface $user
      *
      * @throws UsernameNotFoundException
-     * @throws UnsupportedUserException if the account is not supported
+     * @throws UnsupportedUserException  if the account is not supported
      *
      * @return UserInterface
-     *
      */
     public function refreshUser(UserInterface $user)
     {

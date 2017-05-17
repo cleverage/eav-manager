@@ -28,7 +28,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *              'attributeCode => '...',
  *          ],
  *      ],
- * ];
+ * ];.
  *
  * or directly from a flat array, specifying the family
  */
@@ -88,7 +88,7 @@ class EAVDataImporter implements ContainerAwareInterface
     }
 
     /**
-     * Import an array of data using the given configuration into the EAV manager
+     * Import an array of data using the given configuration into the EAV manager.
      *
      * @TODO Manage restart
      * @TODO find a way to keep references...
@@ -396,7 +396,7 @@ class EAVDataImporter implements ContainerAwareInterface
 
     /**
      * Helper method to use as a callback
-     * Return false if the value is a NULL that should be ignored
+     * Return false if the value is a NULL that should be ignored.
      *
      * @param string       $value
      * @param ImportConfig $importConfig

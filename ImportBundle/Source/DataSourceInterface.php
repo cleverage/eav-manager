@@ -21,7 +21,7 @@ interface DataSourceInterface
      *         old_attribute_code => value,
      *         old_attribute_code => value,
      *     ],
-     * ]
+     * ].
      *
      * @TODO manage batching
      *

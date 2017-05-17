@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Sidus\EAVModelBundle\Entity\AbstractData as AbstractBaseData;
 
 /**
- * Adding authoring information on the Data entities
+ * Adding authoring information on the Data entities.
  */
 abstract class AbstractData extends AbstractBaseData implements AuthorableInterface
 {

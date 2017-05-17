@@ -10,11 +10,10 @@ use Sidus\EAVModelBundle\Registry\FamilyRegistry;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
- * Parse an ID and transform it into a real Entity
+ * Parse an ID and transform it into a real Entity.
  */
 class FamilyRelationTransformer implements EAVValueTransformerInterface
 {
-
     /** @var RegistryInterface */
     protected $doctrine;
 
@@ -28,8 +27,6 @@ class FamilyRelationTransformer implements EAVValueTransformerInterface
     protected $currentAttribute;
 
     /**
-     * FamilyRelationTransformer constructor.
-     *
      * @param RegistryInterface $doctrine
      * @param FamilyRegistry    $familyRegistry
      */
@@ -120,5 +117,4 @@ class FamilyRelationTransformer implements EAVValueTransformerInterface
 
         throw new \UnexpectedValueException("Attribute {$this->currentAttribute->getCode()} is not a relation");
     }
-
 }

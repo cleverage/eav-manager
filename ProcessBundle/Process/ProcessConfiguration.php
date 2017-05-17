@@ -16,8 +16,6 @@ class ProcessConfiguration
     protected $subprocess;
 
     /**
-     * ProcessConfiguration constructor.
-     *
      * @param string $code
      * @param array  $configuration
      */

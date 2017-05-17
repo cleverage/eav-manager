@@ -9,7 +9,7 @@ use Sidus\EAVModelBundle\Entity\DataInterface;
 use Sidus\EAVModelBundle\Registry\FamilyRegistry;
 
 /**
- * Overriding property name collection factory for EAV data to remove "values" and inject EAV attributes
+ * Overriding property name collection factory for EAV data to remove "values" and inject EAV attributes.
  */
 class EAVPropertyNameCollectionFactory implements PropertyNameCollectionFactoryInterface
 {

@@ -11,9 +11,8 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class CleverAgeEAVManagerProcessBundle extends Bundle
 {
-
     /**
-     * Adding compiler passes to inject services into configuration handlers
+     * Adding compiler passes to inject services into configuration handlers.
      *
      * @param ContainerBuilder $container
      */

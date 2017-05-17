@@ -7,7 +7,7 @@ use CleverAge\EAVManager\UserBundle\Entity\User;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
- * Handles mailing to users for security steps (account creation, password reset)
+ * Handles mailing to users for security steps (account creation, password reset).
  */
 class UserMailer
 {

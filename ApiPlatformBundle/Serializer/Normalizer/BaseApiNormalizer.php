@@ -3,7 +3,6 @@
 namespace CleverAge\EAVManager\ApiPlatformBundle\Serializer\Normalizer;
 
 use ApiPlatform\Core\Serializer\AbstractItemNormalizer;
-
 use ApiPlatform\Core\Exception\InvalidArgumentException;
 use ApiPlatform\Core\Serializer\ContextTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
@@ -14,7 +13,7 @@ use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * Removing any attributes from the Api Platform normalizer
+ * Removing any attributes from the Api Platform normalizer.
  */
 class BaseApiNormalizer extends AbstractItemNormalizer
 {

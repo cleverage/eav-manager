@@ -9,7 +9,6 @@ use CleverAge\EAVManager\ProcessBundle\Process\ProcessInterface;
  */
 class TransformerProcess implements ProcessInterface
 {
-
     /** @var TransformerConfiguration */
     protected $transformerConfig;
 
@@ -20,8 +19,6 @@ class TransformerProcess implements ProcessInterface
     protected $transformedData;
 
     /**
-     * TransformerProcess constructor.
-     *
      * @param TransformerConfigurationRegistry $transformerConfigRegistry
      * @param string                           $transformerConfigName
      */
@@ -57,5 +54,4 @@ class TransformerProcess implements ProcessInterface
     {
         return $this->transformedData;
     }
-
 }

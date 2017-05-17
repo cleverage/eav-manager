@@ -12,7 +12,6 @@ use Sidus\EAVModelBundle\Registry\FamilyRegistry;
  */
 class EAVDataSourceProcess implements ProcessInterface
 {
-
     /** @var EAVFinder */
     protected $eavFinder;
 
@@ -26,8 +25,6 @@ class EAVDataSourceProcess implements ProcessInterface
     protected $eavEntities;
 
     /**
-     * EAVDataSourceProcess constructor.
-     *
      * @param EAVFinder      $eavFinder
      * @param FamilyRegistry $familyRegistry
      */
@@ -36,7 +33,6 @@ class EAVDataSourceProcess implements ProcessInterface
         $this->eavFinder = $eavFinder;
         $this->familyRegistry = $familyRegistry;
     }
-
 
     /**
      * {@inheritdoc}
@@ -62,5 +58,4 @@ class EAVDataSourceProcess implements ProcessInterface
     {
         return $this->eavEntities;
     }
-
 }

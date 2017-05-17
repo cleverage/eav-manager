@@ -6,7 +6,7 @@ use UnexpectedValueException;
 use CleverAge\EAVManager\ImportBundle\Model\ImportConfig;
 
 /**
- * Container for all import configurations
+ * Container for all import configurations.
  */
 class ImportConfigurationHandler
 {
@@ -33,6 +33,7 @@ class ImportConfigurationHandler
      * @param string $code
      *
      * @return ImportConfig
+     *
      * @throws UnexpectedValueException
      */
     public function getImport($code)

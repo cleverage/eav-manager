@@ -5,14 +5,17 @@ namespace CleverAge\EAVManager\AssetBundle\Serializer\Normalizer;
 use Sidus\EAVModelBundle\Serializer\Normalizer\EAVDataNormalizer;
 use Sidus\FileUploadBundle\Manager\ResourceManager;
 use Sidus\FileUploadBundle\Model\ResourceInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 /**
- * Normalize assets directly with the link to the resource
+ * Normalize assets directly with the link to the resource.
  */
 class ResourceNormalizer extends ObjectNormalizer
 {
+    const OPTION_KEY = 'resource_options';
+
     /** @var ResourceManager */
     protected $resourceManager;
 
@@ -45,15 +48,16 @@ class ResourceNormalizer extends ObjectNormalizer
             $byReference = $context[EAVDataNormalizer::BY_REFERENCE_KEY];
         }
         if ($byReference) {
-            return [
-                'id' => $object->getIdentifier(),
+            $normalizedData = [
+                'identifier' => $object->getIdentifier(),
                 'originalFileName' => $object->getOriginalFileName(),
                 'type' => $object->getType(),
-                '@url' => $this->resourceManager->getFileUrl($object, UrlGeneratorInterface::ABSOLUTE_URL),
             ];
+        } else {
+            $normalizedData = parent::normalize($object, $format, $context);
         }
 
-        return parent::normalize($object, $format, $context);
+        return $this->handleCustomFields($object, $format, $context, $normalizedData);
     }
 
     /**
@@ -81,5 +85,51 @@ class ResourceNormalizer extends ObjectNormalizer
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof ResourceInterface;
+    }
+
+    /**
+     * @param ResourceInterface $resource
+     * @param                   $format
+     * @param array             $context
+     * @param array             $normalizedData
+     *
+     * @throws \Exception
+     *
+     * @return array
+     */
+    protected function handleCustomFields(ResourceInterface $resource, $format, array $context, array $normalizedData)
+    {
+        $resolver = new OptionsResolver();
+        $this->configureOptions($resolver);
+        $options = $resolver->resolve(array_key_exists(self::OPTION_KEY, $context) ? $context[self::OPTION_KEY] : []);
+
+        if ($options['url']) {
+            $normalizedData['@url'] = $this->resourceManager->getFileUrl(
+                $resource,
+                UrlGeneratorInterface::ABSOLUTE_URL
+            );
+        }
+        if ($options['path']) {
+            $file = $this->resourceManager->getFile($resource);
+            $normalizedData['path'] = $file->getPath();
+        }
+
+        return $normalizedData;
+    }
+
+    /**
+     * @param OptionsResolver $resolver
+     *
+     * @throws \Symfony\Component\OptionsResolver\Exception\AccessException
+     */
+    protected function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(
+            [
+                'url' => true,
+                'path' => false,
+                'absolute_path' => false,
+            ]
+        );
     }
 }

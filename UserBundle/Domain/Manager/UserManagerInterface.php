@@ -7,7 +7,7 @@ use CleverAge\EAVManager\UserBundle\Exception\BadUsernameException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
- * Interface pour la manipulation des utilisateurs
+ * Interface pour la manipulation des utilisateurs.
  */
 interface UserManagerInterface extends UserProviderInterface
 {
@@ -21,7 +21,7 @@ interface UserManagerInterface extends UserProviderInterface
     public function createUser($username);
 
     /**
-     * Modifie le mot de passe de l'utilisateur
+     * Modifie le mot de passe de l'utilisateur.
      *
      * @param User   $user
      * @param string $password
@@ -36,14 +36,14 @@ interface UserManagerInterface extends UserProviderInterface
     public function requestNewPassword(User $user);
 
     /**
-     * Sauvegarde l'utilisateur
+     * Sauvegarde l'utilisateur.
      *
      * @param User $user
      */
     public function save(User $user);
 
     /**
-     * Supprime l'utilisateur complètement
+     * Supprime l'utilisateur complètement.
      *
      * @param User $user
      *

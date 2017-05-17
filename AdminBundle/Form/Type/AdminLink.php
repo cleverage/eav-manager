@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Special type to create a link inside a form
+ * Special type to create a link inside a form.
  */
 class AdminLink extends AbstractType
 {

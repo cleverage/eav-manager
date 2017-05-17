@@ -6,13 +6,10 @@ use Sidus\EAVModelBundle\DependencyInjection\Compiler\GenericCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-/**
- * @package CleverAge\EAVManager\ImportBundle
- */
 class CleverAgeEAVManagerImportBundle extends Bundle
 {
     /**
-     * Adding compiler passes to inject services into configuration handlers
+     * Adding compiler passes to inject services into configuration handlers.
      *
      * @param ContainerBuilder $container
      */

@@ -7,11 +7,10 @@ use Sidus\EAVModelBundle\Model\AttributeInterface;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
 
 /**
- * Transform a value array into a string, with a specific glue
+ * Transform a value array into a string, with a specific glue.
  */
 class AttributeConcatTransformer implements EAVValueTransformerInterface
 {
-
     /** @var string */
     protected $glue = '';
 
@@ -42,5 +41,4 @@ class AttributeConcatTransformer implements EAVValueTransformerInterface
     ) {
         return implode($this->glue, $values);
     }
-
 }

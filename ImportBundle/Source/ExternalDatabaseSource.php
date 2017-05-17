@@ -6,26 +6,23 @@ use Doctrine\DBAL\Connection;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
- * Fetch import data from an external database
+ * Fetch import data from an external database.
  */
 class ExternalDatabaseSource implements DataSourceInterface
 {
-
-    /** @var  RegistryInterface */
+    /** @var RegistryInterface */
     protected $doctrine;
 
-    /** @var  string */
+    /** @var string */
     protected $connectionName;
 
-    /** @var  string */
+    /** @var string */
     protected $tableName;
 
-    /** @var  string */
+    /** @var string */
     protected $idFieldName;
 
     /**
-     * ExternalDatabaseSource constructor.
-     *
      * @param RegistryInterface $doctrine
      * @param string            $connectionName
      * @param string            $tableName
@@ -46,6 +43,7 @@ class ExternalDatabaseSource implements DataSourceInterface
     /**
      * @TODO may be there should not be a custom query but an overridable method...
      * {@inheritdoc}
+     *
      * @throws \InvalidArgumentException
      */
     public function getData(): array
@@ -76,7 +74,7 @@ class ExternalDatabaseSource implements DataSourceInterface
     }
 
     /**
-     * Extensible SQL query used to fetch data
+     * Extensible SQL query used to fetch data.
      *
      * @TODO use a dql not a string !
      *

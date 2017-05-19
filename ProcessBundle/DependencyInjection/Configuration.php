@@ -84,7 +84,7 @@ class Configuration implements ConfigurationInterface
             ->children();
 
         $transformerConfigDefintion
-            ->scalarNode('code')->end()
+            ->variableNode('code')->end()
             ->scalarNode('constant')->end()
             ->variableNode('transformer')->end();
 

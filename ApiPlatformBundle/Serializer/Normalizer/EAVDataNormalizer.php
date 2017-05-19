@@ -49,7 +49,7 @@ class EAVDataNormalizer extends BaseEAVDataNormalizer
         // Do the same for 'by_reference' ?
         if (
         $this->iriConverter
-        && array_key_exists(self::BY_SHORT_REFERENCE_KEY, $context) ? $context[self::BY_SHORT_REFERENCE_KEY] : false
+        && $this->byReferenceHandler->isByShortReference($context)
         ) {
             return $this->iriConverter->getIriFromItem($object);
         }

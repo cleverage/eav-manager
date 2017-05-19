@@ -2,11 +2,16 @@
 
 namespace CleverAge\EAVManager\AssetBundle\Serializer\Normalizer;
 
-use Sidus\EAVModelBundle\Serializer\Normalizer\EAVDataNormalizer;
+use Sidus\EAVModelBundle\Serializer\ByReferenceHandler;
+use Sidus\EAVModelBundle\Serializer\MaxDepthHandler;
 use Sidus\FileUploadBundle\Manager\ResourceManager;
 use Sidus\FileUploadBundle\Model\ResourceInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
+use Symfony\Component\PropertyInfo\PropertyTypeExtractorInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
+use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 /**
@@ -19,35 +24,52 @@ class ResourceNormalizer extends ObjectNormalizer
     /** @var ResourceManager */
     protected $resourceManager;
 
+    /** @var MaxDepthHandler */
+    protected $maxDepthHandler;
+
+    /** @var ByReferenceHandler */
+    protected $byReferenceHandler;
+
     /**
-     * @param ResourceManager $resourceManager
+     * @param ClassMetadataFactoryInterface|null  $classMetadataFactory
+     * @param NameConverterInterface|null         $nameConverter
+     * @param PropertyAccessorInterface|null      $propertyAccessor
+     * @param PropertyTypeExtractorInterface|null $propertyTypeExtractor
+     * @param ResourceManager                     $resourceManager
+     * @param MaxDepthHandler                     $maxDepthHandler
+     * @param ByReferenceHandler                  $byReferenceHandler
      */
-    public function setResourceManager($resourceManager)
-    {
+    public function __construct(
+        ClassMetadataFactoryInterface $classMetadataFactory = null,
+        NameConverterInterface $nameConverter = null,
+        PropertyAccessorInterface $propertyAccessor = null,
+        PropertyTypeExtractorInterface $propertyTypeExtractor = null,
+        ResourceManager $resourceManager,
+        MaxDepthHandler $maxDepthHandler,
+        ByReferenceHandler $byReferenceHandler
+    ) {
+        parent::__construct($classMetadataFactory, $nameConverter, $propertyAccessor, $propertyTypeExtractor);
         $this->resourceManager = $resourceManager;
+        $this->maxDepthHandler = $maxDepthHandler;
+        $this->byReferenceHandler = $byReferenceHandler;
     }
 
     /**
      * {@inheritdoc}
      *
      * @throws \Exception
+     * @throws \Symfony\Component\Serializer\Exception\RuntimeException
      */
     public function normalize($object, $format = null, array $context = [])
     {
+        $this->maxDepthHandler->handleMaxDepth($context);
+
         /** @var ResourceInterface $object */
-        $byShortReference = false;
-        if (array_key_exists(EAVDataNormalizer::BY_SHORT_REFERENCE_KEY, $context)) {
-            $byShortReference = $context[EAVDataNormalizer::BY_SHORT_REFERENCE_KEY];
-        }
-        if ($byShortReference) {
+        if ($this->byReferenceHandler->isByShortReference($context)) {
             return $object->getIdentifier();
         }
 
-        $byReference = false;
-        if (array_key_exists(EAVDataNormalizer::BY_REFERENCE_KEY, $context)) {
-            $byReference = $context[EAVDataNormalizer::BY_REFERENCE_KEY];
-        }
-        if ($byReference) {
+        if ($this->byReferenceHandler->isByReference($context)) {
             $normalizedData = [
                 'identifier' => $object->getIdentifier(),
                 'originalFileName' => $object->getOriginalFileName(),

@@ -2,6 +2,10 @@ services:
     sidus_eav_model.normalizer.data:
         parent: serializer.normalizer.object
         class: CleverAge\EAVManager\ApiPlatformBundle\Serializer\Normalizer\EAVDataNormalizer
+        arguments:
+            - '@sidus_eav_model.serializer.handler.max_depth'
+            - '@sidus_eav_model.serializer.handler.circular_reference'
+            - '@sidus_eav_model.serializer.handler.by_reference'
         calls:
             - [setIgnoredAttributes, ['%sidus_eav_model.normalizer.data.ignored_attributes%']]
             - [setReferenceAttributes, ['%sidus_eav_model.normalizer.data.reference_attributes%']]

@@ -11,6 +11,9 @@ services:
     eavmanager_user.normalizer.user:
         parent: serializer.normalizer.object
         class: CleverAge\EAVManager\UserBundle\Serializer\Normalizer\UserNormalizer
+        arguments:
+            - '@sidus_eav_model.serializer.handler.max_depth'
+            - '@sidus_eav_model.serializer.handler.by_reference'
         calls:
             - [setIgnoredAttributes, ['%eavmanager_user.normalizer.user.ignored_attributes%']]
         tags:

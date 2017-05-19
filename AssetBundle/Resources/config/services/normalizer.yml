@@ -1,18 +1,10 @@
 services:
-    # Extends base EAV normalizer, injecting imageFile and documentFile when EAV Data is an image or a Document
-    sidus_eav_model.normalizer.data:
-        parent: serializer.normalizer.object
-        class: CleverAge\EAVManager\AssetBundle\Serializer\Normalizer\EAVAssetNormalizer
-        calls:
-            - [setIgnoredAttributes, ['%sidus_eav_model.normalizer.data.ignored_attributes%']]
-            - [setReferenceAttributes, ['%sidus_eav_model.normalizer.data.reference_attributes%']]
-        tags:
-            - { name: serializer.normalizer }
-
     eavmanager_asset.normalizer.resource:
         parent: serializer.normalizer.object
         class: CleverAge\EAVManager\AssetBundle\Serializer\Normalizer\ResourceNormalizer
-        calls:
-            - [setResourceManager, ['@sidus_file_upload.resource.manager']]
+        arguments:
+            - '@sidus_file_upload.resource.manager'
+            - '@sidus_eav_model.serializer.handler.max_depth'
+            - '@sidus_eav_model.serializer.handler.by_reference'
         tags:
             - { name: serializer.normalizer }

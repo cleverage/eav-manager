@@ -25,7 +25,7 @@ class ImportDataCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this->setName('eavmanager:import')
-            ->setDescription('Import the webactu data from the old database')
+            ->setDescription('Import data from various sources')
             ->addArgument('import_code', InputArgument::IS_ARRAY + InputArgument::REQUIRED);
     }
 

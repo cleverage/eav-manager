@@ -3,7 +3,7 @@
 namespace CleverAge\EAVManager\ProcessBundle\Process\Generic;
 
 use CleverAge\EAVManager\ProcessBundle\Process\ProcessInterface;
-use Nelmio\Alice\FixtureBuilder\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -14,8 +14,14 @@ class NormalizerProcess implements ProcessInterface
     /** @var NormalizerInterface|DenormalizerInterface */
     protected $serializer;
 
-    /** @var bool */
-    protected $doNormalize;
+    /** @var array */
+    protected $format;
+
+    /** @var array */
+    protected $context;
+
+    /** @var string */
+    protected $denormalizeClass;
 
     /** @var array */
     protected $dataToProcess;
@@ -25,13 +31,18 @@ class NormalizerProcess implements ProcessInterface
 
     /**
      * @param DenormalizerInterface|NormalizerInterface $serializer
-     * @param bool                                      $doNormalize
+     * @param array                                     $format
+     * @param array                                     $context
+     * @param string                                    $denormalizeClass
      */
-    public function __construct($serializer, $doNormalize = true)
+    public function __construct($serializer, $format = [], array $context = [], $denormalizeClass = null)
     {
         $this->serializer = $serializer;
-        $this->doNormalize = $doNormalize;
+        $this->format = $format;
+        $this->context = $context;
+        $this->denormalizeClass = $denormalizeClass;
     }
+
 
     /**
      * {@inheritdoc}
@@ -46,11 +57,16 @@ class NormalizerProcess implements ProcessInterface
      */
     public function execute()
     {
-        foreach ($this->dataToProcess as $item) {
-            if ($this->doNormalize) {
-                $this->proceededData[] = $this->serializer->normalize($item);
+        foreach ($this->dataToProcess as $key => $item) {
+            if (!$this->denormalizeClass) {
+                $this->proceededData[$key] = $this->serializer->normalize($item, $this->format, $this->context);
             } else {
-                $this->proceededData[] = $this->serializer->denormalize($item);
+                $this->proceededData[$key] = $this->serializer->denormalize(
+                    $item,
+                    $this->denormalizeClass,
+                    $this->format,
+                    $this->context
+                );
             }
         }
     }

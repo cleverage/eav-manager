@@ -6,6 +6,8 @@ use CleverAge\EAVManager\ImportBundle\Model\CsvFile;
 
 /**
  * Provide data from a CSV file.
+ *
+ * @deprecated : copied into the process bundle
  */
 class CsvSource implements DataSourceInterface
 {

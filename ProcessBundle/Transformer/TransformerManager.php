@@ -16,8 +16,8 @@ class TransformerManager
     public function transform(array $mapping, array $data): array
     {
         $result = [];
-        foreach ($data as $item) {
-            $result[] = $this->mapValues($mapping, $item);
+        foreach ($data as $key => $item) {
+            $result[$key] = $this->mapValues($mapping, $item);
         }
 
         return $result;

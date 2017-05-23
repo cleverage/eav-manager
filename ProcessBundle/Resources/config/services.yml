@@ -21,14 +21,22 @@ services:
         arguments:
             - '@serializer'
 
-    eavmanager.process.denormalizer:
-        class: CleverAge\EAVManager\ProcessBundle\Process\Generic\NormalizerProcess
+    eavmanager.process.entity_validator:
+        class: CleverAge\EAVManager\ProcessBundle\Process\Generic\ValidatorProcess
         arguments:
-            - '@serializer'
-            - false
+            - '@validator'
+
+    eavmanager.process.entity_persister:
+        class: CleverAge\EAVManager\ProcessBundle\Process\Generic\DoctrinePersisterProcess
+        arguments:
+            - '@doctrine.orm.entity_manager'
 
     eavmanager.transformer_manager:
         class: CleverAge\EAVManager\ProcessBundle\Transformer\TransformerManager
 
     eavmanager.transformer_config.registry:
         class: CleverAge\EAVManager\ProcessBundle\Transformer\TransformerConfigurationRegistry
+
+    # Should be used only in "dev"
+    eavmanager.process.debug:
+        class: CleverAge\EAVManager\ProcessBundle\Process\Generic\DebugProcess

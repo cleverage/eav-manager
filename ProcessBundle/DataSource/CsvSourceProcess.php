@@ -1,18 +1,21 @@
 <?php
 
-namespace CleverAge\EAVManager\ImportBundle\Source;
+namespace CleverAge\EAVManager\ProcessBundle\DataSource;
 
 use CleverAge\EAVManager\ImportBundle\Model\CsvFile;
+use CleverAge\EAVManager\ProcessBundle\Process\ProcessInterface;
 
 /**
  * Provide data from a CSV file
- *
- * @deprecated : copied into the process bundle
  */
-class CsvSource implements DataSourceInterface
+class CsvSourceProcess implements ProcessInterface
 {
 
-    /** @var string */
+    /**
+     * Can be provided from input or from constructor
+     *
+     * @var string
+     */
     protected $filePath;
 
     /** @var string */
@@ -21,8 +24,12 @@ class CsvSource implements DataSourceInterface
     /** @var array */
     protected $options;
 
+    /** @var array */
+    protected $parsedData;
+
     /**
      * CsvSource constructor.
+     *
      * @param string $filePath
      * @param string $idColumn
      * @param array  $options
@@ -36,21 +43,52 @@ class CsvSource implements DataSourceInterface
 
     /**
      * {@inheritdoc}
+     */
+    public function setInput($data)
+    {
+        if ($data) {
+            $this->filePath = $data;
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function execute()
+    {
+        $this->parsedData = $this->getData();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOutput()
+    {
+        return $this->parsedData;
+    }
+
+
+    /**
+     * {@inheritdoc}
      * @throws \Exception
      */
-    public function getData(): array
+    protected function getData(): array
     {
         $data = [];
         $csvFile = $this->getFile($this->filePath);
         while (!$csvFile->isEndOfFile()) {
             $row = $csvFile->readLine();
-            if (!array_key_exists($this->idColumn, $row)) {
-                throw new \InvalidArgumentException(
-                    "The column {$this->idColumn} does not exists inside file {$this->filePath}"
-                );
-            }
 
-            $data[$row[$this->idColumn]] = $row;
+            // Ignore empty lines
+            if ($row) {
+                if (!array_key_exists($this->idColumn, $row)) {
+                    throw new \InvalidArgumentException(
+                        "The column {$this->idColumn} does not exists inside file {$this->filePath}"
+                    );
+                }
+
+                $data[$row[$this->idColumn]] = $row;
+            }
         }
 
         return $data;

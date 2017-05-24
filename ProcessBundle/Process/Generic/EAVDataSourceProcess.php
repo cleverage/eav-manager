@@ -43,7 +43,9 @@ class EAVDataSourceProcess implements ProcessInterface
      */
     public function setInput($data)
     {
-        $this->familyCode = $data;
+        if ($data) {
+            $this->familyCode = $data;
+        }
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace CleverAge\EAVManager\ProcessBundle\Process\Generic;
+namespace CleverAge\EAVManager\ProcessBundle\DataSource;
 
 use CleverAge\EAVManager\ProcessBundle\Process\ProcessInterface;
 use Sidus\EAVModelBundle\Doctrine\EAVFinder;
@@ -24,6 +24,9 @@ class EAVDataSourceProcess implements ProcessInterface
 
     /** @var DataInterface[] */
     protected $eavEntities;
+
+    /** @var array */
+    protected $filterBy = [];
 
     /**
      * EAVDataSourceProcess constructor.
@@ -54,7 +57,7 @@ class EAVDataSourceProcess implements ProcessInterface
     public function execute()
     {
         $family = $this->familyRegistry->getFamily($this->familyCode);
-        $this->eavEntities = $this->eavFinder->findBy($family, []);
+        $this->eavEntities = $this->eavFinder->findBy($family, $this->filterBy);
     }
 
     /**
@@ -65,4 +68,11 @@ class EAVDataSourceProcess implements ProcessInterface
         return $this->eavEntities;
     }
 
+    /**
+     * @param array $filterBy
+     */
+    public function setFilterBy(array $filterBy)
+    {
+        $this->filterBy = $filterBy;
+    }
 }

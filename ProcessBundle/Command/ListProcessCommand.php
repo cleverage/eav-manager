@@ -25,7 +25,7 @@ class ListProcessCommand extends ContainerAwareCommand
             'eavmanager.process_config.registry'
         )->getProcessConfigurations();
         $processConfigurationCount = count($processConfigurations);
-        $output->writeln("<info>There is {$processConfigurationCount} process configurations defined :</info>");
+        $output->writeln("<info>There are {$processConfigurationCount} process configurations defined :</info>");
         foreach ($processConfigurations as $processConfiguration) {
             $countSubprocess = count($processConfiguration->getSubprocess());
             $output->writeln(

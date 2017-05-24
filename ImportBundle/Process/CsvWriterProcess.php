@@ -79,7 +79,7 @@ class CsvWriterProcess implements ProcessInterface
      */
     public function getOutput()
     {
-        return $this->filePath;
+        return [$this->filePath];
     }
 
     /**

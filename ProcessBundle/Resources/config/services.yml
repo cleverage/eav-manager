@@ -11,7 +11,7 @@ services:
         class: CleverAge\EAVManager\ProcessBundle\Process\ProcessManager
 
     eavmanager.process.eav_data_source:
-        class: CleverAge\EAVManager\ProcessBundle\Process\Generic\EAVDataSourceProcess
+        class: CleverAge\EAVManager\ProcessBundle\DataSource\EAVDataSourceProcess
         arguments:
             - '@sidus_eav_model.finder'
             - '@sidus_eav_model.family.registry'

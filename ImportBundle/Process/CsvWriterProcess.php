@@ -80,7 +80,7 @@ class CsvWriterProcess implements ProcessInterface
      */
     public function getOutput()
     {
-        // TODO: Implement getOutput() method.
+        return $this->dataToProceed;
     }
 
     /**

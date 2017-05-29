@@ -36,7 +36,7 @@ NEVER points to this layout directly !
         {% block main_content %}
             <div class="row" id="main_content">
                 <div id="tg_left" class="sidebar sidebar-inverse with-loader autoload">
-                    {% block tg_left %}
+                    {%- block tg_left %}
                         {% block main_menu_home_link %}
                             <a href="{{ path('eavmanager_layout.dashboard') }}">CleverAge/EAVManager</a>
                         {% endblock %}
@@ -90,7 +90,7 @@ NEVER points to this layout directly !
                                 {% endif %}
                             {% endblock %}
                         {% endblock %}
-                    {% endblock %}
+                    {% endblock -%}
                 </div>
                 <div id="tg_center" class="with-loader autoload">
                     {{ utilities.flash_messages() }}

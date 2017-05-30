@@ -7,7 +7,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Sidus\EAVModelBundle\Entity\DataInterface;
 use Sidus\EAVModelBundle\Exception\EAVExceptionInterface;
 use Sidus\EAVModelBundle\Model\AttributeInterface;
-use CleverAge\EAVManager\AssetBundle\Serializer\Normalizer\EAVAssetNormalizer as BaseEAVDataNormalizer;
+use Sidus\EAVModelBundle\Serializer\Normalizer\EAVDataNormalizer as BaseEAVDataNormalizer;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 
 /**

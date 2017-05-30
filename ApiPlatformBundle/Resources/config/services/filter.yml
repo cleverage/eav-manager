@@ -1,0 +1,18 @@
+services:
+    eavmanager_api_platform.filter.abstract_eav:
+        abstract: true
+        class: CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\AbstractEAVFilter
+        arguments:
+            - '@request_stack'
+            - '@sidus_eav_model.family.registry'
+
+    eavmanager_api_platform.filter.search:
+        abstract: true
+        class: CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\SearchFilter
+        parent: eavmanager_api_platform.filter.abstract_eav
+        arguments:
+            - ['string']
+
+    # Overriding stuff because FUCK YOU
+    api_platform.doctrine.orm.query_extension.filter_eager_loading:
+        abstract: true

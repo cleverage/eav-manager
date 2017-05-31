@@ -132,37 +132,7 @@ abstract class AbstractEAVFilter implements FilterInterface
                 continue;
             }
 
-            if (!$attribute->getType()->isRelation() && !$attribute->getType()->isEmbedded()) {
-                $strategy = $strategy ?: BaseSearchFilter::STRATEGY_EXACT;
-                $filterParameterNames = [$property];
-
-                if (BaseSearchFilter::STRATEGY_EXACT === $strategy) {
-                    $filterParameterNames[] = $property.'[]';
-                }
-
-                foreach ($filterParameterNames as $filterParameterName) {
-                    $description[$filterParameterName] = [
-                        'property' => $property,
-                        'type' => $typeOfField,
-                        'required' => false,
-                        'strategy' => $strategy,
-                    ];
-                }
-            } else {
-                $filterParameterNames = [
-                    $property,
-                    $property.'[]',
-                ];
-
-                foreach ($filterParameterNames as $filterParameterName) {
-                    $description[$filterParameterName] = [
-                        'property' => $property,
-                        'type' => 'string',
-                        'required' => false,
-                        'strategy' => BaseSearchFilter::STRATEGY_EXACT,
-                    ];
-                }
-            }
+            $this->appendFilterDescription($description, $attribute, $property, $typeOfField, $strategy);
         }
 
         return $description;
@@ -171,9 +141,10 @@ abstract class AbstractEAVFilter implements FilterInterface
     /**
      * Passes a property through the filter.
      *
+     * @param QueryBuilder       $queryBuilder
      * @param AttributeInterface $attribute
      * @param mixed              $value
-     * @param QueryBuilder       $queryBuilder
+     * @param null               $strategy
      * @param string|null        $operationName
      */
     abstract protected function filterAttribute(
@@ -194,6 +165,53 @@ abstract class AbstractEAVFilter implements FilterInterface
     protected function extractProperties(Request $request): array
     {
         return $request->query->all();
+    }
+
+    /**
+     * @param array              $description
+     * @param AttributeInterface $attribute
+     * @param string             $property
+     * @param string             $typeOfField
+     * @param string             $strategy
+     */
+    protected function appendFilterDescription(
+        array &$description,
+        AttributeInterface $attribute,
+        $property,
+        $typeOfField,
+        $strategy = null
+    ) {
+        if ($attribute->getType()->isRelation() || $attribute->getType()->isEmbedded()) {
+            $filterParameterNames = [
+                $property,
+                $property.'[]',
+            ];
+
+            foreach ($filterParameterNames as $filterParameterName) {
+                $description[$filterParameterName] = [
+                    'property' => $property,
+                    'type' => 'string',
+                    'required' => false,
+                    'strategy' => BaseSearchFilter::STRATEGY_EXACT,
+                ];
+            }
+        }
+
+        $strategy = $strategy ?: BaseSearchFilter::STRATEGY_EXACT;
+        $filterParameterNames = [$property];
+
+        if (BaseSearchFilter::STRATEGY_EXACT === $strategy) {
+            $filterParameterNames[] = $property.'[]';
+        }
+
+        foreach ($filterParameterNames as $filterParameterName) {
+            $description[$filterParameterName] = [
+                'property' => $property,
+                'type' => $typeOfField,
+                'required' => false,
+                'strategy' => $strategy,
+            ];
+        }
     }
 
     /**

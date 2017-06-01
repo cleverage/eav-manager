@@ -27,8 +27,6 @@
         "liip/imagine-bundle": "^1.7",
         "exercise/htmlpurifier-bundle": "0.2.*",
         "thomaspark/bootswatch": "^3.3.7",
-        "phpseclib/phpseclib": "^2.0",
-
         "sidus/eav-model-bundle": "dev-v1.2.x-dev",
         "sidus/eav-bootstrap-bundle": "dev-v1.2.x-dev",
         "sidus/filter-bundle": "dev-v1.2.x-dev",

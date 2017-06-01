@@ -7,6 +7,7 @@ use CleverAge\EAVManager\ProcessBundle\Process\ProcessInterface;
 
 /**
  * Provide data from a CSV file
+ * TODO : implement StreamableProcessInterface
  */
 class CsvSourceProcess implements ProcessInterface
 {

@@ -9,6 +9,7 @@ use Sidus\EAVModelBundle\Registry\FamilyRegistry;
 
 /**
  * @TODO describe class usage
+ * TODO : implement StreamableProcessInterface
  */
 class EAVDataSourceProcess implements ProcessInterface
 {

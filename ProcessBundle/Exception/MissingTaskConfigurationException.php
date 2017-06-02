@@ -2,12 +2,8 @@
 
 namespace CleverAge\EAVManager\ProcessBundle\Exception;
 
-use ProcessBundle\Exception\ProcessExceptionInterface;
-
 /**
  * Exception thrown when trying to fetch a missing task configuration
- *
- * @author Vincent Chalnot <vincent@sidus.fr>
  */
 class MissingTaskConfigurationException extends \UnexpectedValueException implements ProcessExceptionInterface
 {

@@ -1,0 +1,40 @@
+services:
+    eavmanager_process.task.constant_output:
+        class: CleverAge\EAVManager\ProcessBundle\Task\ConstantOutputTask
+        shared: false
+
+    eavmanager_process.task.debug:
+        class: CleverAge\EAVManager\ProcessBundle\Task\DebugTask
+        shared: false
+
+    eavmanager_process.task.validator:
+        class: CleverAge\EAVManager\ProcessBundle\Task\ValidatorTask
+        arguments: ['@validator']
+        shared: false
+
+    eavmanager_process.task.nornalizer:
+        class: CleverAge\EAVManager\ProcessBundle\Task\NormalizerTask
+        arguments: ['@serializer']
+        shared: false
+
+    eavmanager_process.task.property_setter:
+        class: CleverAge\EAVManager\ProcessBundle\Task\PropertySetterTask
+        arguments: ['@property_accessor']
+        shared: false
+
+    eavmanager_process.task.csv_reader:
+        class: CleverAge\EAVManager\ProcessBundle\Task\CsvReaderTask
+        shared: false
+
+    eavmanager_process.task.csv_writer:
+        class: CleverAge\EAVManager\ProcessBundle\Task\CsvWriterTask
+        shared: false
+
+    eavmanager_process.task.doctrine_reader:
+        class: CleverAge\EAVManager\ProcessBundle\Task\DoctrineReaderTask
+        arguments: ['@doctrine.orm.entity_manager']
+        shared: false
+
+    eavmanager_process.task.stat_counter:
+        class: CleverAge\EAVManager\ProcessBundle\Task\StatCounterTask
+        shared: false

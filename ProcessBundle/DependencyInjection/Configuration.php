@@ -2,6 +2,7 @@
 
 namespace CleverAge\EAVManager\ProcessBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\NodeBuilder;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -33,31 +34,24 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root($this->root);
-        $definition = $rootNode
-            ->children();
+        $definition = $rootNode->children();
+
+        /** @var ArrayNodeDefinition $configurationsArrayDefinition */
+        $configurationsArrayDefinition = $definition
+            ->arrayNode('configurations')
+            ->useAttributeAsKey('code')
+            ->prototype('array');
 
         // Process list
-        $processListDefinition = $definition->arrayNode('process_list')->useAttributeAsKey('code')
-            ->prototype('array')->performNoDeepMerging()->cannotBeOverwritten()
+        $processListDefinition = $configurationsArrayDefinition
+            ->performNoDeepMerging()
+            ->cannotBeOverwritten()
             ->children();
 
         $this->appendProcessConfigDefinition($processListDefinition);
 
-        $processListDefinition->end()
-            ->end()
-            ->end();
-
-        // Transformer list
-        $transformerListDefinition = $definition->arrayNode('transformer_list')->useAttributeAsKey('code')
-            ->prototype('array')->performNoDeepMerging()->cannotBeOverwritten()
-            ->children();
-
-        $this->appendTransformerConfigDefinition($transformerListDefinition);
-
-        $transformerListDefinition->end()
-            ->end()
-            ->end();
-
+        $processListDefinition->end();
+        $configurationsArrayDefinition->end();
         $definition->end();
 
         return $treeBuilder;
@@ -68,30 +62,37 @@ class Configuration implements ConfigurationInterface
      */
     protected function appendProcessConfigDefinition(NodeBuilder $definition)
     {
-        $definition->scalarNode('service')->defaultValue('@eavmanager.process_manager')->end()
-            // TODO use more accurate modelisation with arrayNode ?
-            ->variableNode('subprocess')->end();
+        $definition
+            ->scalarNode('entry_point')->defaultNull()->end()
+            ->arrayNode('options')->prototype('variable')->end()->end()
+        ;
+
+        /** @var ArrayNodeDefinition $tasksArrayDefinition */
+        $tasksArrayDefinition = $definition
+            ->arrayNode('tasks')
+            ->useAttributeAsKey('code')
+            ->prototype('array');
+
+        // Process list
+        $taskListDefinition = $tasksArrayDefinition
+            ->performNoDeepMerging()
+            ->cannotBeOverwritten()
+            ->children();
+
+        $this->appendTaskConfigDefinition($taskListDefinition);
+
+        $taskListDefinition->end();
+        $tasksArrayDefinition->end();
     }
 
     /**
      * @param NodeBuilder $definition
      */
-    protected function appendTransformerConfigDefinition(NodeBuilder $definition)
+    protected function appendTaskConfigDefinition(NodeBuilder $definition)
     {
-        $transformerConfigDefintion = $definition
-            ->scalarNode('service')->defaultValue('@eavmanager.transformer_manager')->end()
-            ->arrayNode('mapping')->isRequired()
-            ->prototype('array')->performNoDeepMerging()->cannotBeOverwritten()
-            ->children();
-
-        $transformerConfigDefintion
-            ->variableNode('code')->end()
-            ->scalarNode('constant')->end()
-            ->variableNode('transformer')->end();
-
         $definition
-            ->end()
-            ->end()
-            ->end();
+            ->scalarNode('service')->isRequired()->end()
+            ->arrayNode('inputs')->prototype('scalar')->defaultValue([])->end()->end()
+            ->arrayNode('options')->prototype('variable')->end()->end();
     }
 }

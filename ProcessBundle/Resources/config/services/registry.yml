@@ -1,0 +1,5 @@
+services:
+    eavmanager_process.registry.process_configuration:
+        class: CleverAge\EAVManager\ProcessBundle\Registry\ProcessConfigurationRegistry
+        arguments:
+            - ~

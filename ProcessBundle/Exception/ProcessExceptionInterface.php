@@ -1,11 +1,9 @@
 <?php
 
-namespace ProcessBundle\Exception;
+namespace CleverAge\EAVManager\ProcessBundle\Exception;
 
 /**
  * Common interface for process exception
- *
- * @author Vincent Chalnot <vincent@sidus.fr>
  */
 interface ProcessExceptionInterface extends \Throwable
 {

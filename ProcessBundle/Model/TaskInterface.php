@@ -2,7 +2,7 @@
 
 namespace CleverAge\EAVManager\ProcessBundle\Model;
 
-use ProcessBundle\Model\ProcessState;
+use CleverAge\EAVManager\ProcessBundle\Model\ProcessState;
 
 /**
  * Must be implemented by tasks services

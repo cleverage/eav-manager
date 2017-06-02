@@ -2,7 +2,7 @@
 
 namespace CleverAge\EAVManager\ProcessBundle\Model;
 
-use ProcessBundle\Model\ProcessState;
+use CleverAge\EAVManager\ProcessBundle\Model\ProcessState;
 
 /**
  * Allow the task to be initialized before any execution is done

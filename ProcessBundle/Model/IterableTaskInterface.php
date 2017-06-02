@@ -3,7 +3,7 @@
 namespace CleverAge\EAVManager\ProcessBundle\Model;
 
 /**
- * Allow the task to
+ * Allow the task to be iterated over until "next" returns false
  */
 interface IterableTaskInterface extends TaskInterface
 {
@@ -12,7 +12,9 @@ interface IterableTaskInterface extends TaskInterface
      * return true if the task has a next element
      * return false if the task has terminated it's iteration
      *
+     * @param ProcessState $processState
+     *
      * @return bool
      */
-    public function next();
+    public function next(ProcessState $processState);
 }

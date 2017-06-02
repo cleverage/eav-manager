@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 /**
  * @TODO describe class usage
  */
-class DoctrinePersisterProcess implements ProcessInterface
+class DoctrinePersisterTask implements ProcessInterface
 {
 
     /** @var EntityManagerInterface */

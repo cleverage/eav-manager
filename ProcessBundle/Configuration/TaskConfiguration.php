@@ -2,6 +2,8 @@
 
 namespace CleverAge\EAVManager\ProcessBundle\Configuration;
 
+use CleverAge\EAVManager\ProcessBundle\Model\TaskInterface;
+
 /**
  * Represents a task configuration inside a process
  */
@@ -11,7 +13,10 @@ class TaskConfiguration
     protected $code;
 
     /** @var string */
-    protected $service;
+    protected $serviceReference;
+
+    /** @var TaskInterface */
+    protected $task;
 
     /** @var array */
     protected $options = [];
@@ -21,14 +26,14 @@ class TaskConfiguration
 
     /**
      * @param string $code
-     * @param string $service
+     * @param string $serviceReference
      * @param array  $options
      * @param array  $inputs
      */
-    public function __construct($code, $service, array $options, array $inputs)
+    public function __construct($code, $serviceReference, array $options, array $inputs)
     {
         $this->code = $code;
-        $this->service = $service;
+        $this->serviceReference = $serviceReference;
         $this->options = $options;
         $this->inputs = $inputs;
     }
@@ -36,7 +41,7 @@ class TaskConfiguration
     /**
      * @return string
      */
-    public function getCode()
+    public function getCode(): string
     {
         return $this->code;
     }
@@ -44,15 +49,31 @@ class TaskConfiguration
     /**
      * @return string
      */
-    public function getService()
+    public function getServiceReference(): string
     {
-        return $this->service;
+        return $this->serviceReference;
+    }
+
+    /**
+     * @return TaskInterface
+     */
+    public function getTask(): TaskInterface
+    {
+        return $this->task;
+    }
+
+    /**
+     * @param TaskInterface $task
+     */
+    public function setTask(TaskInterface $task)
+    {
+        $this->task = $task;
     }
 
     /**
      * @return array
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         return $this->options;
     }
@@ -75,7 +96,7 @@ class TaskConfiguration
     /**
      * @return array
      */
-    public function getInputs()
+    public function getInputs(): array
     {
         return $this->inputs;
     }

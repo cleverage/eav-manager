@@ -2,18 +2,19 @@
 
 namespace CleverAge\EAVManager\ProcessBundle\Command;
 
-use CleverAge\EAVManager\ProcessBundle\Process\ProcessConfigurationRegistry;
+use CleverAge\EAVManager\ProcessBundle\Manager\ProcessManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * @TODO describes class usage
+ * Run a process from the command line interface
  */
 class ExecuteProcessCommand extends ContainerAwareCommand
 {
-    /** @var ProcessConfigurationRegistry */
-    protected $processConfigRegistry;
+    /** @var ProcessManager */
+    protected $processManager;
 
     /**
      * {@inheritdoc}
@@ -23,7 +24,7 @@ class ExecuteProcessCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this->setName('eavmanager:process:execute');
-        $this->addArgument('process_code');
+        $this->addArgument('processCode', InputArgument::REQUIRED, 'The code of the process to execute');
     }
 
     /**
@@ -36,19 +37,19 @@ class ExecuteProcessCommand extends ContainerAwareCommand
      */
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        $this->processConfigRegistry = $this->getContainer()->get('eavmanager.process_config.registry');
+        $this->processManager = $this->getContainer()->get('eavmanager_process.manager.process');
     }
 
     /**
-     * {@inheritdoc}
-     * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     *
+     * @throws \Exception
+     *
+     * @return int|null
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $code = $input->getArgument('process_code');
-        $config = $this->processConfigRegistry->getProcessConfiguration($code);
-
-        $config->getProcessManagerService()->execute($config->getSubprocess());
-        // @todo return code !
+        return $this->processManager->execute($input->getArgument('processCode'), $output);
     }
 }

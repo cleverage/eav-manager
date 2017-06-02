@@ -1,11 +1,12 @@
 <?php
 
-namespace ProcessBundle\Model;
+namespace CleverAge\EAVManager\ProcessBundle\Model;
 
 use CleverAge\EAVManager\ProcessBundle\Configuration\ProcessConfiguration;
 use CleverAge\EAVManager\ProcessBundle\Configuration\TaskConfiguration;
-use ProcessBundle\Entity\ProcessHistory;
-use ProcessBundle\Entity\TaskHistory;
+use CleverAge\EAVManager\ProcessBundle\Entity\ProcessHistory;
+use CleverAge\EAVManager\ProcessBundle\Entity\TaskHistory;
+use Psr\Log\LogLevel;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -42,6 +43,9 @@ class ProcessState
 
     /** @var OutputInterface */
     protected $consoleOutput;
+
+    /** @var int */
+    protected $returnCode;
 
     /**
      * @param ProcessConfiguration $processConfiguration
@@ -87,11 +91,11 @@ class ProcessState
 
     /**
      * @param string $message
-     * @param int    $level
+     * @param string $level
      * @param string $reference
      * @param array  $context
      */
-    public function log(string $message, int $level = E_ERROR, string $reference = null, array $context = [])
+    public function log(string $message, string $level = LogLevel::ERROR, string $reference = null, array $context = [])
     {
         $taskHistory = new TaskHistory($this->getProcessHistory(), $this->getTaskConfiguration());
         $taskHistory->setMessage($message);
@@ -103,7 +107,7 @@ class ProcessState
     }
 
     /**
-     * @return \ProcessBundle\Entity\TaskHistory[]
+     * @return TaskHistory[]
      */
     public function getTaskHistories(): array
     {
@@ -167,6 +171,15 @@ class ProcessState
     }
 
     /**
+     * @param \Exception $e
+     */
+    public function stop(\Exception $e = null)
+    {
+        $this->setException($e);
+        $this->setStopped(true);
+    }
+
+    /**
      * @return boolean
      */
     public function isStopped(): bool
@@ -185,7 +198,7 @@ class ProcessState
     /**
      * @return \Exception
      */
-    public function getException(): \Exception
+    public function getException()
     {
         return $this->exception;
     }
@@ -201,7 +214,7 @@ class ProcessState
     /**
      * @return OutputInterface
      */
-    public function getConsoleOutput(): OutputInterface
+    public function getConsoleOutput()
     {
         return $this->consoleOutput;
     }
@@ -212,5 +225,25 @@ class ProcessState
     public function setConsoleOutput(OutputInterface $consoleOutput)
     {
         $this->consoleOutput = $consoleOutput;
+    }
+
+    /**
+     * @return int
+     */
+    public function getReturnCode()
+    {
+        if (null !== $this->returnCode) {
+            return $this->returnCode;
+        }
+
+        return 0;
+    }
+
+    /**
+     * @param int $returnCode
+     */
+    public function setReturnCode(int $returnCode)
+    {
+        $this->returnCode = $returnCode;
     }
 }

@@ -1,0 +1,8 @@
+services:
+    eavmanager_process.manager.process:
+        class: CleverAge\EAVManager\ProcessBundle\Manager\ProcessManager
+        arguments:
+            - '@service_container'
+            - '@logger'
+            - '@doctrine.orm.default_entity_manager'
+            - '@eavmanager_process.registry.process_configuration'

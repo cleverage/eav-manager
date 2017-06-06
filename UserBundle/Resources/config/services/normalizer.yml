@@ -18,3 +18,11 @@ services:
             - [setIgnoredAttributes, ['%eavmanager_user.normalizer.user.ignored_attributes%']]
         tags:
             - { name: serializer.normalizer }
+
+    eavmanager_user.normalizer.user.flat:
+        class: Sidus\EAVModelBundle\Serializer\Normalizer\Flat\FlatNormalizer
+        arguments:
+            - '@eavmanager_user.normalizer.user'
+            - [csv]
+        tags:
+            - { name: serializer.normalizer, priority: 1 }

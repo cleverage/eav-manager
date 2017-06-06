@@ -4,7 +4,7 @@ namespace CleverAge\EAVManager\AdminBundle\Controller;
 
 use CleverAge\EAVManager\Component\Controller\EAVDataControllerTrait;
 use CleverAge\EAVManager\EAVModelBundle\Entity\DataRepository;
-use CleverAge\EAVManager\ImportBundle\Model\CsvFile;
+use CleverAge\ProcessBundle\Filesystem\CsvFile;
 use Sidus\DataGridBundle\Model\DataGrid;
 use Sidus\EAVModelBundle\Doctrine\EAVQueryBuilder;
 use Sidus\EAVModelBundle\Entity\AbstractData;

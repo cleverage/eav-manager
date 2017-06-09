@@ -110,6 +110,9 @@ admin:
         detach:
             label: Detach
 
+    process:
+        title: Processes History
+
     flash:
         create:
             success: Element created with success

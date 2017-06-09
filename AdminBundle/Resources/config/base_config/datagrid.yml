@@ -77,6 +77,8 @@ sidus_data_grid:
                     - fileSize
                     - mimeType
                     - fileModifiedAt
+                default_sort:
+                    id: DESC
                 fields:
                     originalFileName: ~
                     mimeType:
@@ -93,3 +95,65 @@ sidus_data_grid:
                 fileModifiedAt: ~
                 actions:
                     template: CleverAgeEAVManagerAdminBundle:Asset/partials:resource.row.actions.html.twig
+
+        process:
+            filter_config:
+                entity: CleverAge\ProcessBundle\Entity\ProcessHistory
+                sortable:
+                    - processCode
+                    - startDate
+                    - endDate
+                    - state
+                default_sort:
+                    startDate: DESC
+                fields:
+                    processCode:
+                        type: choice
+                    startDate:
+                        type: date_range
+                    endDate:
+                        type: date_range
+                    state:
+                        type: choice
+            columns:
+                processCode: ~
+                startDate: ~
+                endDate: ~
+                state: ~
+                actions:
+                    template: CleverAgeEAVManagerAdminBundle:Process/partials:process.row.actions.html.twig
+
+        task:
+            filter_config:
+                entity: CleverAge\ProcessBundle\Entity\TaskHistory
+                sortable:
+                    - taskCode
+                    - message
+                    - loggedAt
+                    - level
+                    - reference
+                default_sort:
+                    loggedAt: DESC
+                fields:
+#                    processHistory:
+#                        type: choice
+#                        form_options:
+#                            multiple: true
+                    taskCode:
+                        type: choice
+                    message: ~
+                    loggedAt:
+                        type: date_range
+                    level:
+                        type: choice
+                    reference: ~
+            columns:
+                processCode:
+                    property_path: processHistory.processCode
+                taskCode:
+                message: ~
+                loggedAt: ~
+                level: ~
+                reference: ~
+                actions:
+                    template: CleverAgeEAVManagerAdminBundle:Process/partials:task.row.actions.html.twig

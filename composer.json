@@ -28,16 +28,16 @@
         "exercise/htmlpurifier-bundle": "0.2.*",
         "thomaspark/bootswatch": "^3.3.7",
         "friendsofsymfony/jsrouting-bundle": "1.6.*",
-        "sidus/eav-model-bundle": "dev-v1.2.x-dev",
-        "sidus/eav-bootstrap-bundle": "dev-v1.2.x-dev",
-        "sidus/filter-bundle": "dev-v1.2.x-dev",
-        "sidus/eav-filter-bundle": "dev-v1.2.x-dev",
-        "sidus/datagrid-bundle": "dev-v1.2.x-dev",
-        "sidus/eav-datagrid-bundle": "dev-v1.2.x-dev",
-        "sidus/eav-variant-bundle": "dev-v1.2.x-dev",
-        "sidus/publishing-bundle": "dev-v1.2.x-dev",
-        "sidus/file-upload-bundle": "dev-v1.2.x-dev",
-        "sidus/admin-bundle": "dev-v1.2.x-dev",
-        "cleverage/process-bundle": "dev-master"
+        "sidus/eav-model-bundle": "1.2.*",
+        "sidus/eav-bootstrap-bundle": "1.2.*",
+        "sidus/filter-bundle": "1.2.*",
+        "sidus/eav-filter-bundle": "1.2.*",
+        "sidus/datagrid-bundle": "1.2.*",
+        "sidus/eav-datagrid-bundle": "1.2.*",
+        "sidus/eav-variant-bundle": "1.2.*",
+        "sidus/publishing-bundle": "1.2.*",
+        "sidus/file-upload-bundle": "1.2.*",
+        "sidus/admin-bundle": "1.2.*",
+        "cleverage/process-bundle": "1.0.*"
     }
 }

@@ -127,6 +127,7 @@ NEVER points to this layout directly !
     {% javascripts
     'assets/jquery/jquery.min.js'
     'assets/jquery-ui/jquery-ui.min.js'
+    '@FOSJsRoutingBundle/Resources/public/js/router.js'
     '@MopaBootstrapBundle/Resources/public/bootstrap-sass/assets/javascripts/bootstrap.js'
     '@MopaBootstrapBundle/Resources/public/js/mopabootstrap-subnav.js'
     '@MopaBootstrapBundle/Resources/public/components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.js'
@@ -139,6 +140,7 @@ NEVER points to this layout directly !
     '@SidusFileUploadBundle/Resources/public/js/jquery.fileupload.sidus.js'
     '@PinanoSelect2Bundle/Resources/public/js/select2.min.js'
     '@PinanoSelect2Bundle/Resources/public/js/i18n/fr.js'
+    '@SidusEAVBootstrapBundle/Resources/public/js/autocomplete.selector.js'
     '@SidusEAVBootstrapBundle/Resources/public/js/autocomplete.combo.selector.js'
     '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/init.datepickers.js'
     '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/edit.inline.js'
@@ -154,6 +156,7 @@ NEVER points to this layout directly !
     filter='?uglifyjs2' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
     {{ tinymce_init() }}
 {% endblock %}
 {% block additionnal_javascript %}{% endblock %}

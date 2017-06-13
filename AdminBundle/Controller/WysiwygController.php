@@ -96,7 +96,7 @@ class WysiwygController extends Controller
             'data',
             MediaBrowserType::class,
             [
-                'allowed_families' => 'Image',
+                'allowed_families' => ['Image'],
             ]
         );
 

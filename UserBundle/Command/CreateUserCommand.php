@@ -1,4 +1,21 @@
 <?php
+/*
+ *    CleverAge/EAVManager
+ *    Copyright (C) 2015-2017 Clever-Age
+ *
+ *    This program is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *
+ *    This program is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License
+ *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 namespace CleverAge\EAVManager\UserBundle\Command;
 
@@ -16,7 +33,9 @@ use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 /**
- * Commande servant à créer des utilisateurs.
+ * Use this command to create users
+ *
+ * @author Vincent Chalnot <vchalnot@clever-age.com>
  */
 class CreateUserCommand extends ContainerAwareCommand
 {
@@ -29,15 +48,20 @@ class CreateUserCommand extends ContainerAwareCommand
     {
         $this
             ->setName('eavmanager:create-user')
-            ->setDescription('Crée ou modifie un utilisateur et le persiste en BDD')
-            ->addArgument('username', InputArgument::REQUIRED, "Le username de l'utilisateur")
-            ->addOption('password', 'p', InputOption::VALUE_OPTIONAL, 'Set le mot de passe immédiatement')
-            ->addOption('admin', 'a', InputOption::VALUE_NONE, 'Active le role admin')
-            ->addOption('if-not-exists', null, InputOption::VALUE_NONE, "Seulement si l'utilisateur n'existe pas déjà");
+            ->setDescription('Create users in the database')
+            ->addArgument('username', InputArgument::REQUIRED, 'The username which is also the email')
+            ->addOption(
+                'password',
+                'p',
+                InputOption::VALUE_OPTIONAL,
+                'The password, if omitted the user will receive an email with a random password'
+            )
+            ->addOption('admin', 'a', InputOption::VALUE_NONE, 'Set the user as super-admin')
+            ->addOption('if-not-exists', null, InputOption::VALUE_NONE, 'Only if the user does not already exists');
     }
 
     /**
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
      *
      * @throws InvalidArgumentException

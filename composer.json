@@ -9,7 +9,7 @@
     ],
     "homepage": "https://git.clever-age.net/clever-age-practice-manager/eav-manager",
     "type": "library",
-    "license": "proprietary",
+    "license": "GPL-3.0",
     "authors": [
         {
             "name": "Vincent Chalnot",

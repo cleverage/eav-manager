@@ -24,7 +24,7 @@
      * This is a real simplified trick to unselect the active datagrid row, this wont work in many cases where multiple
      * targets are loaded in the same page
      */
-    $(document).on('click', '[data-close-target]', function (e) {
+    $(document).on('click', '[data-close-target]', function () {
         if (document.activeDataGridRowRef) {
             $(document.activeDataGridRowRef).removeClass('info');
             document.activeDataGridRowRef = null;

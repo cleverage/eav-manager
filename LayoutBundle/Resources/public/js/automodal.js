@@ -14,7 +14,7 @@
         $(document.body).append(modal);
     });
 
-    function resolveCurrentModal(e) {
+    function resolveCurrentModal() {
         var t = $(this);
         if (t.data('target-element') == '_CURRENT_MODAL') {
             var currentModal = t.closest('.modal');
@@ -24,7 +24,7 @@
         }
     }
 
-    function fixMultiModal(e) {
+    function fixMultiModal() {
         if ($('.modal:visible').length) {
             $(document.body).addClass('modal-open');
         }

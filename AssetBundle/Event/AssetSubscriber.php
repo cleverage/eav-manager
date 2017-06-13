@@ -1,4 +1,21 @@
 <?php
+/*
+ *    CleverAge/EAVManager
+ *    Copyright (C) 2015-2017 Clever-Age
+ *
+ *    This program is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *
+ *    This program is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License
+ *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 namespace CleverAge\EAVManager\AssetBundle\Event;
 
@@ -13,12 +30,11 @@ use Sidus\EAV\Document;
 use Sidus\EAV\Image;
 use Sidus\EAVModelBundle\Entity\DataInterface;
 use Sidus\EAVModelBundle\Entity\ValueInterface;
-use Symfony\Component\PropertyAccess\Exception\AccessException;
-use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
-use Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException;
 
 /**
  * Doctrine subscriber to fill certain values normally held by the Resource entity in the EAV model (for indexing).
+ *
+ * @author Vincent Chalnot <vchalnot@clever-age.com>
  */
 class AssetSubscriber implements EventSubscriber
 {
@@ -51,10 +67,7 @@ class AssetSubscriber implements EventSubscriber
     /**
      * @param PreUpdateEventArgs $event
      *
-     * @throws AccessException
-     * @throws InvalidArgumentException
-     * @throws UnexpectedTypeException
-     * @throws \UnexpectedValueException
+     * @throws \Exception
      */
     public function preUpdate(PreUpdateEventArgs $event)
     {
@@ -64,10 +77,7 @@ class AssetSubscriber implements EventSubscriber
     /**
      * @param LifecycleEventArgs $event
      *
-     * @throws AccessException
-     * @throws InvalidArgumentException
-     * @throws UnexpectedTypeException
-     * @throws \UnexpectedValueException
+     * @throws \Exception
      */
     public function prePersist(LifecycleEventArgs $event)
     {
@@ -96,10 +106,7 @@ class AssetSubscriber implements EventSubscriber
     /**
      * @param DataInterface|mixed $data
      *
-     * @throws AccessException
-     * @throws InvalidArgumentException
-     * @throws UnexpectedTypeException
-     * @throws \UnexpectedValueException
+     * @throws \Exception
      */
     protected function updateEntity($data)
     {

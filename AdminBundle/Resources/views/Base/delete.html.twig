@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block secondary_actions %}
-    {% if data|default() and admin.hasAction('edit') %}
+    {% if data is defined and data and admin.hasAction('edit') %}
         <li>
             <a href="{{ admin_entity_path(admin, data, 'edit') }}">
                 <i class="fa fa-pencil"></i>
@@ -36,5 +36,5 @@
 {% endblock %}
 
 {% block additionnal_javascript %}
-    {{ utilities.triggerDataEvent(admin, data|default(), dataId, success, target) }}
+    {{ utilities.triggerDataEvent(admin, data is defined ? data, dataId, success, target) }}
 {% endblock %}

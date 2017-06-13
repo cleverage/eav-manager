@@ -44,13 +44,14 @@
     /**
      * Close the target after deletion of an entity + resetPassword
      */
-    $(document).on('delete_admindata resetPassword_admindata', function (e) {
-        if (e.detail.success) {
-            var $tg = $(e.target);
-            if (0 === $tg.length) {
-                return;
-            }
-            closeTarget($tg);
+    $(document).on('clever_admindata', function (e) {
+        if (!e.detail.success || -1 === ['delete', 'resetPassword'].indexOf(e.detail.action)) {
+            return;
         }
+        var $tg = $(e.target);
+        if (0 === $tg.length) {
+            return;
+        }
+        closeTarget($tg);
     });
 }(jQuery);

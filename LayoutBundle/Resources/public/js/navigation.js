@@ -93,6 +93,16 @@
     });
 
     /**
+     * Loads the actual HTML response in the target div, only for autoload targets
+     */
+    $(document).on('fail.ajaxloading', '.autoload', function (e) {
+        if (e.target !== this) { // Prevent error bubbling
+            return;
+        }
+        $(e.target).html($('#error-template').html());
+    });
+
+    /**
      * Pushes the url of the clicked element inside the history stack if the target is in autoload and NOT a modal
      */
     $(document).on('complete.ajaxloading', '.autoload:not(.modal)', function (e) {

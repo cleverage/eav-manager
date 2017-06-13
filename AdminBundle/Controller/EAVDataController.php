@@ -34,8 +34,10 @@ class EAVDataController extends AbstractAdminController
      *
      * @return Response
      */
-    public function indexAction(Request $request)
-    {
+    public function indexAction(
+        /** @noinspection PhpUnusedParameterInspection */
+        Request $request
+    ) {
         /* @noinspection LoopWhichDoesNotLoopInspection */
         foreach ($this->admin->getOption('families', []) as $family => $options) {
             return $this->redirectToAction('list', ['familyCode' => $family]);
@@ -58,7 +60,7 @@ class EAVDataController extends AbstractAdminController
      *
      * @return Response
      */
-    public function listAction(FamilyInterface $family, Request $request)
+    public function listAction(Request $request, FamilyInterface $family)
     {
         $this->family = $family;
         $dataGrid = $this->getDataGrid();
@@ -127,12 +129,12 @@ class EAVDataController extends AbstractAdminController
      *
      * @return Response
      */
-    public function createAction(FamilyInterface $family, Request $request)
+    public function createAction(Request $request, FamilyInterface $family)
     {
         /** @var DataInterface $data */
         $data = $family->createData();
 
-        return $this->editAction($family, $data, $request);
+        return $this->editAction($request, $data, $family);
     }
 
     /**
@@ -146,9 +148,9 @@ class EAVDataController extends AbstractAdminController
      *
      * @return Response
      */
-    public function editAction(FamilyInterface $family, DataInterface $data, Request $request)
+    public function editAction(Request $request, DataInterface $data, FamilyInterface $family = null)
     {
-        $this->initDataFamily($family, $data);
+        $this->initDataFamily($data, $family);
 
         $options = [];
         if ($this->admin->getCurrentAction() === 'edit' && !$this->isGranted('edit', $family)
@@ -163,7 +165,7 @@ class EAVDataController extends AbstractAdminController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->saveEntity($data);
 
-            $parameters = $request->query->all(); // @todo is this necessary ?
+            $parameters = $request->query->all();
             $parameters['success'] = 1;
 
             return $this->redirectToEntity($data, 'edit', $parameters);
@@ -183,9 +185,9 @@ class EAVDataController extends AbstractAdminController
      *
      * @return Response
      */
-    public function cloneAction(FamilyInterface $family, DataInterface $data, Request $request)
+    public function cloneAction(Request $request, DataInterface $data, FamilyInterface $family = null)
     {
-        return $this->editAction($family, clone $data, $request);
+        return $this->editAction($request, clone $data, $family);
     }
 
     /**
@@ -199,9 +201,9 @@ class EAVDataController extends AbstractAdminController
      *
      * @return Response
      */
-    public function deleteAction(FamilyInterface $family, DataInterface $data, Request $request)
+    public function deleteAction(Request $request, DataInterface $data, FamilyInterface $family = null)
     {
-        $this->initDataFamily($family, $data);
+        $this->initDataFamily($data, $family);
 
         $formOptions = $this->getDefaultFormOptions($request, $data->getId());
         unset($formOptions['family']);
@@ -439,8 +441,9 @@ class EAVDataController extends AbstractAdminController
      * @throws \UnexpectedValueException
      *
      * @return StreamedResponse
+     * @throws \Sidus\EAVModelBundle\Exception\MissingAttributeException
      */
-    public function generateExport(array $config)
+    protected function generateExport(array $config)
     {
         $response = new StreamedResponse();
         $response->setCallback(
@@ -502,7 +505,7 @@ class EAVDataController extends AbstractAdminController
                             $serializedColumn = $attributeConfig['serializedColumn'];
                         }
 
-                        if ($attribute->isCollection() && is_array($value)) {
+                        if (is_array($value) && $attribute->isCollection()) {
                             $values = [];
                             foreach ($value as $item) {
                                 $values[] = $this->normalizeRelation($entity, $serializedColumn, $item);

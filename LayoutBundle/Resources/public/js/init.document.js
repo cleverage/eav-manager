@@ -29,6 +29,9 @@ function bindGlobalEvents(target) {
     // Sortable collections
     sortableCollections(target);
 
+    // Edit inline widget
+    initEditInline($, target);
+
     if (target != document) {
         // TinyMCE
         initTinyMCE();

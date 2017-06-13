@@ -24,7 +24,7 @@ sidus_admin:
                     Document: ~
 
         media_browser:
-            controller: '%eav.controller%'
+            controller: CleverAgeEAVManagerAdminBundle:EAVData # Absolute reference in case it's overriden in the app
             entity: '%sidus_data_class%'
             prefix: /medias_browser
             actions:
@@ -148,7 +148,7 @@ sidus_admin:
                 datagrid: base
 
         _data:
-            controller: '%eav.controller%'
+            controller: CleverAgeEAVManagerAdminBundle:InlineEAVData
             entity: '%sidus_data_class%'
             prefix: /_data
             actions:
@@ -157,6 +157,9 @@ sidus_admin:
                     form_type: '%eav_form.type%'
                 edit:
                     path:     /{familyCode}/{id}/edit
+                    form_type: '%eav_form.type%'
+                editInline:
+                    path:     /{id}/edit
                     form_type: '%eav_form.type%'
                 delete:
                     path:     /{familyCode}/{id}/delete

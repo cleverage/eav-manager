@@ -29,6 +29,7 @@ class DataSelectorTypeExtension extends AbstractTypeExtension
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['allow_add'] = $options['allow_add'];
+        $view->vars['allow_edit'] = $options['allow_edit'];
         $view->vars['allowed_families'] = $options['allowed_families'];
         $view->vars['admin'] = $options['admin'];
         $view->vars['action'] = $options['action'];
@@ -45,6 +46,7 @@ class DataSelectorTypeExtension extends AbstractTypeExtension
         $resolver->setDefaults(
             [
                 'allow_add' => false,
+                'allow_edit' => false,
                 'admin' => '_data',
                 'action' => 'create',
                 'target' => null,

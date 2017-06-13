@@ -164,33 +164,43 @@
 {% endblock %}
 
 {% block sidus_simple_data_selector_widget %}
-    {% if allow_add %}
+    {% if allow_add or allow_edit %}
         <div class="input-group">
             {{ form_widget(form) }}
-            {% if allowed_families|length == 1 %}
-                {% set family = allowed_families|first %}
-                <a href="{{ admin_path(admin, action, {familyCode: family.code}) }}"
-                   class="input-group-addon btn" data-target-element="#{{ target }}"
-                   data-auto-modal="{{ target }}" data-input-id="{{ id }}">
-                    <i class="fa fa-plus"></i> Create
+            {% if allow_edit %}
+                {#<!--suppress HtmlUnknownAnchorTarget -->#}
+                <a href="{{ admin_path(admin, 'editInline', {id: '__ID__'}) }}"
+                   class="input-group-addon btn disabled" data-target-element="#{{ target }}"
+                   data-auto-modal="{{ target }}" data-input-id="{{ id }}" data-edit-in-place="{{ admin }}">
+                    <i class="fa fa-edit"></i> {{ 'admin.action.edit.label'|trans }}
                 </a>
-            {% else %}
-                <div class="dropdown input-group-addon">
-                    <button type="button" class="btn" data-toggle="dropdown">
+            {% endif %}
+            {% if allow_add %}
+                {% if allowed_families|length == 1 %}
+                    {% set family = allowed_families|first %}
+                    <a href="{{ admin_path(admin, action, {familyCode: family.code}) }}"
+                       class="input-group-addon btn" data-target-element="#{{ target }}"
+                       data-auto-modal="{{ target }}" data-input-id="{{ id }}">
                         <i class="fa fa-plus"></i> Create
-                    </button>
-                    <ul class="dropdown-menu">
-                        {% for family in allowed_families %}
-                            <li>
-                                <a href="{{ admin_path(admin, action, {familyCode: family.code}) }}"
-                                   data-target-element="#{{ target }}"
-                                   data-auto-modal="{{ target }}" data-input-id="{{ id }}">
-                                    {{ family }}
-                                </a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
+                    </a>
+                {% else %}
+                    <div class="dropdown input-group-addon">
+                        <button type="button" class="btn" data-toggle="dropdown">
+                            <i class="fa fa-plus"></i> {{ 'admin.action.create.label'|trans }}
+                        </button>
+                        <ul class="dropdown-menu">
+                            {% for family in allowed_families %}
+                                <li>
+                                    <a href="{{ admin_path(admin, action, {familyCode: family.code}) }}"
+                                       data-target-element="#{{ target }}"
+                                       data-auto-modal="{{ target }}" data-input-id="{{ id }}">
+                                        {{ family }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
             {% endif %}
         </div>
     {% else %}

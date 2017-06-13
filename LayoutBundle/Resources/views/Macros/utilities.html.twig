@@ -71,10 +71,10 @@ Changes the current active datagrid row
         } %}
         var event;
         if (typeof CustomEvent == 'function') {
-            event = new Event('{{ admin.currentAction.code }}_admindata', {bubbles: true, cancelable: true});
+            event = new Event('clever_admindata', {bubbles: true, cancelable: true});
         } else {
             event = document.createEvent('Event');
-            event.initEvent('{{ admin.currentAction.code }}_admindata', true, true);
+            event.initEvent('clever_admindata', true, true);
         }
         event.detail = {{ parameters|json_encode|raw }};
         var target = document.getElementById('{{ target }}'.replace('#', ''));

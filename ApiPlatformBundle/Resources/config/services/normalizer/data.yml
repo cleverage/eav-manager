@@ -1,0 +1,31 @@
+services:
+    sidus_eav_model.normalizer.data:
+        parent: serializer.normalizer.object
+        class: CleverAge\EAVManager\ApiPlatformBundle\Serializer\Normalizer\EAVDataNormalizer
+        arguments:
+            - '@sidus_eav_model.serializer.handler.max_depth'
+            - '@sidus_eav_model.serializer.handler.circular_reference'
+            - '@sidus_eav_model.serializer.handler.by_reference'
+        calls:
+            - [setIgnoredAttributes, ['%sidus_eav_model.normalizer.data.ignored_attributes%']]
+            - [setReferenceAttributes, ['%sidus_eav_model.normalizer.data.reference_attributes%']]
+            - [setIriConverter, ['@api_platform.iri_converter']]
+        tags:
+            - { name: serializer.normalizer }
+
+    eavmanager_api_platform.normalizer.base.data:
+        class: CleverAge\EAVManager\ApiPlatformBundle\Serializer\Normalizer\BaseApiNormalizer
+        parent: api_platform.serializer.normalizer.item
+        calls:
+            - [setNormalizer, ['@sidus_eav_model.normalizer.data']]
+        tags:
+            - { name: serializer.normalizer, priority: 1 }
+
+    # JsonLD Support
+    eavmanager_api_platform.normalizer.json_ld.data:
+        class: CleverAge\EAVManager\ApiPlatformBundle\Serializer\Normalizer\JsonLdApiNormalizer
+        parent: api_platform.jsonld.normalizer.item
+        calls:
+            - [setNormalizer, ['@sidus_eav_model.normalizer.data']]
+        tags:
+            - { name: serializer.normalizer, priority: 9 }

@@ -23,7 +23,7 @@ NEVER points to this layout directly !
         {% stylesheets
         'bundles/pinanoselect2/css/select2.css'
         'bundles/mopabootstrap/components/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css'
-        'bundles/cleverageeavmanagerlayout/css/layout.css'
+        'bundles/cleverageeavmanagerlayout/css/yeti.css'
         filter='?uglifycss' filter='cssrewrite' %}
         <link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen"/>
         {% endstylesheets %}
@@ -36,7 +36,7 @@ NEVER points to this layout directly !
         {% block main_content %}
             <div class="row" id="main_content">
                 <div id="tg_left" class="sidebar sidebar-inverse with-loader autoload">
-                    {% block tg_left %}
+                    {%- block tg_left %}
                         {% block main_menu_home_link %}
                             <a href="{{ path('eavmanager_layout.dashboard') }}">CleverAge/EAVManager</a>
                         {% endblock %}
@@ -70,24 +70,46 @@ NEVER points to this layout directly !
                                     {{ utilities.admin_family_nav(admin('media'), family is defined ? family) }}
                                 {% endif %}
                             {% endif %}
-                            {% if is_granted('ROLE_USER_MANAGER') %}
-                                {% set admin = admin('user') %}
-                                <a class="admin-nav" data-toggle="collapse" href="#admin_users">
-                                    <h5>
-                                        <i class="fa fa-users"></i>
-                                        {{ 'admin.user_groups.title'|trans }}
-                                        <span class="pull-right"><span class="caret"></span></span>
-                                    </h5>
-                                </a>
-                                <div id="admin_users" class="collapse{% if admin.hasRoute(app.request.attributes.get('_route')) %} in{% endif %}">
-                                    <ul class="nav nav-pills nav-stacked">
-                                        {{ utilities.admin_menu_icon_link('user', null, 'user', 'list') }}
-                                        {{ utilities.admin_menu_icon_link('users', null, 'group', 'list') }}
-                                    </ul>
-                                </div>
-                            {% endif %}
+                            {% block process_menu %}
+                                {% if is_granted('ROLE_PROCESS_MANAGER') %}
+                                    {% set admin = admin('process') %}
+                                    <a class="admin-nav" data-toggle="collapse" href="#admin_process">
+                                        <h5>
+                                            <i class="fa fa-tasks"></i>
+                                            {{ 'admin.process.title'|trans }}
+                                            <span class="pull-right"><span class="caret"></span></span>
+                                        </h5>
+                                    </a>
+                                    <div id="admin_process"
+                                         class="collapse{% if admin.hasRoute(app.request.attributes.get('_route')) %} in{% endif %}">
+                                        <ul class="nav nav-pills nav-stacked">
+                                            {{ utilities.admin_menu_icon_link('process', null, 'process', 'list') }}
+                                            {{ utilities.admin_menu_icon_link('task', null, 'task', 'list') }}
+                                        </ul>
+                                    </div>
+                                {% endif %}
+                            {% endblock %}
+                            {% block user_manager_menu %}
+                                {% if is_granted('ROLE_USER_MANAGER') %}
+                                    {% set admin = admin('user') %}
+                                    <a class="admin-nav" data-toggle="collapse" href="#admin_users">
+                                        <h5>
+                                            <i class="fa fa-expeditedssl"></i>
+                                            {{ 'admin.user_groups.title'|trans }}
+                                            <span class="pull-right"><span class="caret"></span></span>
+                                        </h5>
+                                    </a>
+                                    <div id="admin_users"
+                                         class="collapse{% if admin.hasRoute(app.request.attributes.get('_route')) %} in{% endif %}">
+                                        <ul class="nav nav-pills nav-stacked">
+                                            {{ utilities.admin_menu_icon_link('user', null, 'user', 'list') }}
+                                            {{ utilities.admin_menu_icon_link('users', null, 'group', 'list') }}
+                                        </ul>
+                                    </div>
+                                {% endif %}
+                            {% endblock %}
                         {% endblock %}
-                    {% endblock %}
+                    {% endblock -%}
                 </div>
                 <div id="tg_center" class="with-loader autoload">
                     {{ utilities.flash_messages() }}
@@ -122,6 +144,7 @@ NEVER points to this layout directly !
     '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/automodal.js'
     '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/input.picker.js'
     '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/datagrid.updater.js'
+    '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/autoclose.js'
     '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/ajax.navigation.js'
     '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/navigation.js'
     '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/init.document.js'

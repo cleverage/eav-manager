@@ -20,7 +20,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Role\Role;
 
 /**
- * Edit roles for users and groups
+ * Edit roles for users and groups.
  */
 class RoleHierarchyType extends AbstractType
 {

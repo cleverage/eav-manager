@@ -1,11 +1,10 @@
 @import "sidus/eav-bootstrap-bundle/Resources/sass/sidus";
-
 // EAVManager specific css theming
 @import "theme";
+@import "navigation";
 @import "targets";
 @import "datagrid";
 @import "compatibility";
 @import "media";
-
 // Additional third-party theming
 @import "sidus/file-upload-bundle/Resources/sass/fileupload";

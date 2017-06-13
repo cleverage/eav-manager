@@ -18,7 +18,7 @@ use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
 use Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException;
 
 /**
- * Doctrine subscriber to fill certain values normally held by the Resource entity in the EAV model (for indexing)
+ * Doctrine subscriber to fill certain values normally held by the Resource entity in the EAV model (for indexing).
  */
 class AssetSubscriber implements EventSubscriber
 {
@@ -125,7 +125,7 @@ class AssetSubscriber implements EventSubscriber
         $data->setFileSize($resource->getFileSize());
         $this->valuesToPersist[] = $data->getValue($family->getAttribute('fileSize'));
 
-        $data->setMimeType($resource->getFileType());
+        $data->setMimeType($resource->getMimeType());
         $this->valuesToPersist[] = $data->getValue($family->getAttribute('mimeType'));
 
         $data->setFileName($resource->getOriginalFileName());

@@ -7,7 +7,7 @@ use Doctrine\ORM\QueryBuilder;
 use Sidus\EAVModelBundle\Entity\DataRepository as BaseDataRepository;
 
 /**
- * Additional methods to data repositories
+ * Additional methods to data repositories.
  */
 class DataRepository extends BaseDataRepository
 {

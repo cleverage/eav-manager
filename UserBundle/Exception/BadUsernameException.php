@@ -6,7 +6,7 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
- * Lancé lors de la création d'un utilisateur si le username n'est pas valide
+ * Lancé lors de la création d'un utilisateur si le username n'est pas valide.
  */
 class BadUsernameException extends \RuntimeException
 {
@@ -23,6 +23,6 @@ class BadUsernameException extends \RuntimeException
             $messages[] = $violation->getMessage();
         }
 
-        return new BadUsernameException(implode("\n", $messages));
+        return new self(implode("\n", $messages));
     }
 }

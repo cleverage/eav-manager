@@ -1,0 +1,10 @@
+services:
+    eavmanager_asset.normalizer.resource:
+        parent: serializer.normalizer.object
+        class: CleverAge\EAVManager\AssetBundle\Serializer\Normalizer\ResourceNormalizer
+        arguments:
+            - '@sidus_file_upload.resource.manager'
+            - '@sidus_eav_model.serializer.handler.max_depth'
+            - '@sidus_eav_model.serializer.handler.by_reference'
+        tags:
+            - { name: serializer.normalizer }

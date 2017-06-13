@@ -62,19 +62,26 @@ Changes the current active datagrid row
 #}
 {% macro triggerDataEvent(admin, data, id, success, target) %}
     <script>
-        // Launched only on ajax calls when jQuery is already defined: used to update datagrid's row
-        if (typeof $ != 'undefined') {
-            {% set parameters = {
-            dataId: id,
-            dataLabel: data|trim,
-            admin: admin.code,
-            action: admin.currentAction.code,
-            success: success,
-            target: target,
-            currentTarget: target
-            } %}
-            var event = new $.Event('{{ admin.currentAction.code }}.admindata', {{ parameters|json_encode|raw }});
-            $('{{ target ?: 'document' }}').trigger(event);
+        {% set parameters = {
+        dataId: id,
+        dataLabel: data|trim,
+        admin: admin.code,
+        action: admin.currentAction.code,
+        success: success,
+        } %}
+        var event;
+        if (typeof CustomEvent == 'function') {
+            event = new Event('{{ admin.currentAction.code }}_admindata', {bubbles: true, cancelable: true});
+        } else {
+            event = document.createEvent('Event');
+            event.initEvent('{{ admin.currentAction.code }}_admindata', true, true);
+        }
+        event.detail = {{ parameters|json_encode|raw }};
+        var target = document.getElementById('{{ target }}'.replace('#', ''));
+        if (target) {
+            target.dispatchEvent(event);
+        } else {
+            document.dispatchEvent(event);
         }
     </script>
 {% endmacro %}

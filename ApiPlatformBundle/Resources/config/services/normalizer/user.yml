@@ -1,0 +1,17 @@
+services:
+    eavmanager_api_platform.normalizer.base.user:
+        class: CleverAge\EAVManager\ApiPlatformBundle\Serializer\Normalizer\BaseApiNormalizer
+        parent: api_platform.serializer.normalizer.item
+        calls:
+            - [setNormalizer, ['@eavmanager_user.normalizer.user']]
+        tags:
+            - { name: serializer.normalizer, priority: 1 }
+
+    # JsonLD Support
+    eavmanager_api_platform.normalizer.json_ld.user:
+        class: CleverAge\EAVManager\ApiPlatformBundle\Serializer\Normalizer\JsonLdApiNormalizer
+        parent: api_platform.jsonld.normalizer.item
+        calls:
+            - [setNormalizer, ['@eavmanager_user.normalizer.user']]
+        tags:
+            - { name: serializer.normalizer, priority: 9 }

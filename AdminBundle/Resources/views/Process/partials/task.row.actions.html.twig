@@ -1,0 +1,14 @@
+{% spaceless %}
+    <div class="btn-group btn-group-xs btn-group-nowrap">
+        {% block list_row_actions %}
+            {% set link_title = tryTrans([
+            'admin.'~viewParameters.admin.code~'.show.label',
+            'admin.action.show.label',
+            ], [], 'Show') %}
+            <a href="{{ admin_entity_path(viewParameters.admin, result, 'show') }}"
+               class="btn btn-primary" data-target-element="#tg_right" title="{{ link_title }}">
+                <i class="fa fa-eye"></i>
+            </a>
+        {% endblock %}
+    </div>
+{% endspaceless %}

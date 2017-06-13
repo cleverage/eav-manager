@@ -10,7 +10,7 @@ use CleverAge\EAVManager\SecurityBundle\Entity\FamilyPermission;
 use CleverAge\EAVManager\UserBundle\Entity\User;
 
 /**
- * Allows the access to a family based on the family permissions of a user
+ * Allows the access to a family based on the family permissions of a user.
  */
 class FamilyVoter implements VoterInterface
 {
@@ -24,6 +24,7 @@ class FamilyVoter implements VoterInterface
 
     /**
      * {@inheritdoc}
+     *
      * @throws \Exception
      */
     public function vote(TokenInterface $token, $object, array $attributes)
@@ -68,6 +69,7 @@ class FamilyVoter implements VoterInterface
      * @param TokenInterface $token
      *
      * @return FamilyPermission[]|Collection
+     *
      * @throws \UnexpectedValueException
      */
     protected function extractPermissions(TokenInterface $token)

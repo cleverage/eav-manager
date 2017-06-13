@@ -14,7 +14,7 @@ use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Add no-cache header to all Http Reponses from the admin
+ * Add no-cache header to all Http Reponses from the admin.
  */
 class CacheListener
 {
@@ -63,11 +63,13 @@ class CacheListener
         $admin = $this->adminConfigurationHandler->getAdmin($adminCode);
 
         $resolver = new OptionsResolver();
-        $resolver->setDefaults([
-            'Cache-Control' => 'private, no-cache, no-store, must-revalidate',
-            'Pragma' => 'private',
-            'Expires' => 0,
-        ]);
+        $resolver->setDefaults(
+            [
+                'Cache-Control' => 'private, no-cache, no-store, must-revalidate',
+                'Pragma' => 'private',
+                'Expires' => 0,
+            ]
+        );
 
         $headers = $resolver->resolve($admin->getOption('http_cache', []));
         $event->getResponse()->headers->add($headers);

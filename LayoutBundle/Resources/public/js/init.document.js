@@ -44,6 +44,20 @@ function bindGlobalEvents(target) {
 
     // Tooltips
     $(target).find('[data-toggle="tooltip"]').tooltip();
+
+    // Auto select all / none : @todo refactor me
+    $(target).find('button[data-select-all]').on('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var formName = $(this).data('select-all');
+        $('input[type=checkbox][name^="' + formName + '"]').prop('checked', true);
+    });
+    $(target).find('button[data-select-none]').on('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var formName = $(this).data('select-none');
+        $('input[type=checkbox][name^="' + formName + '"]').prop('checked', false);
+    });
 }
 
 !function ($) {
@@ -52,7 +66,7 @@ function bindGlobalEvents(target) {
     /**
      * Binds all required events when loading ajax content
      */
-    $(document).on('complete.ajaxloading', '.autoload', function(e) {
+    $(document).on('complete.ajaxloading', '.autoload', function (e) {
         if (e.target !== this) {
             return;
         }

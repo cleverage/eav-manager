@@ -20,7 +20,7 @@ services:
             - { name: sidus.attribute_type }
 
     eavmanager_eav_model.attribute_type.media_browser:
-        class: '%sidus_eav_model.attribute_type.relation.class%'
+        class: '%sidus_eav_model.attribute_type.eav_relation.class%'
         arguments:
             - media_browser
             - dataValue

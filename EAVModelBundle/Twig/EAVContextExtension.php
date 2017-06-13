@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Twig_Extension;
 
 /**
- * Display context form in twig templates
+ * Display context form in twig templates.
  */
 class EAVContextExtension extends Twig_Extension
 {
@@ -35,6 +35,7 @@ class EAVContextExtension extends Twig_Extension
 
     /**
      * @return null|FormView
+     *
      * @throws InvalidOptionsException
      */
     public function getContextForm()

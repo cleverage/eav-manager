@@ -1,8 +1,3 @@
-{% block list_modal %}
-    {% use '@CleverAgeEAVManagerAdmin/Base/partials/list.blocks.html.twig' with list_modal as parent_list_modal %}
-    {{ block('parent_list_modal') }}
-{% endblock %}
-
 {% block datagrid %}
     {% import "SidusDataGridBundle:DataGrid:datagrid.html.twig" as DataGridHelper %}
     {{ DataGridHelper.render(datagrid, {family: family, admin: admin}) }}

@@ -23,7 +23,7 @@ security:
                 check_path: login
                 csrf_token_generator: security.csrf.token_manager
             logout:
-                path:   /logout
+                path:   logout
                 target: /
 
     access_control:
@@ -37,6 +37,7 @@ security:
             - ROLE_DATA_ADMIN
             - ROLE_USER_MANAGER
             - ROLE_MEDIA_MANAGER
+            - ROLE_PROCESS_MANAGER
             - ROLE_USER
         ROLE_SUPER_ADMIN:
             - ROLE_ADMIN

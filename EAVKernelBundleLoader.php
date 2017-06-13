@@ -3,12 +3,12 @@
 namespace CleverAge\EAVManager;
 
 /**
- * Allow simple loading of all necessary bundles
+ * Allow simple loading of all necessary bundles.
  */
 class EAVKernelBundleLoader
 {
     /**
-     * Return the required bundles
+     * Return the required bundles.
      *
      * @return array
      */
@@ -25,7 +25,7 @@ class EAVKernelBundleLoader
             // Required by SidusFileUploadBundle
             new \Oneup\UploaderBundle\OneupUploaderBundle(),
             // Required by SidusFileUploadBundle
-            new \Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
+            new \Oneup\FlysystemBundle\OneupFlysystemBundle(),
             // Required by SidusPublishingBundle
             new \Circle\RestClientBundle\CircleRestClientBundle(),
 
@@ -60,6 +60,9 @@ class EAVKernelBundleLoader
             new \Exercise\HTMLPurifierBundle\ExerciseHTMLPurifierBundle(),
             new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
 
+            // Clever Process Bundle
+            new \CleverAge\ProcessBundle\CleverAgeProcessBundle(),
+
             // CleverAge EAVManager
             new \CleverAge\EAVManager\EAVModelBundle\CleverAgeEAVManagerEAVModelBundle(),
             new \CleverAge\EAVManager\LayoutBundle\CleverAgeEAVManagerLayoutBundle(),
@@ -67,7 +70,9 @@ class EAVKernelBundleLoader
             new \CleverAge\EAVManager\UserBundle\CleverAgeEAVManagerUserBundle(),
             new \CleverAge\EAVManager\SecurityBundle\CleverAgeEAVManagerSecurityBundle(),
             new \CleverAge\EAVManager\AssetBundle\CleverAgeEAVManagerAssetBundle(),
-            new \CleverAge\EAVManager\ImportBundle\CleverAgeEAVManagerImportBundle(),
+
+            // ApiPlatformBundle support for EAV manager
+            new \CleverAge\EAVManager\ApiPlatformBundle\CleverAgeEAVManagerApiPlatformBundle(),
         ];
     }
 }

@@ -60,7 +60,7 @@ class Group
     protected $roles = [];
 
     /**
-     * Building default values
+     * Building default values.
      */
     public function __construct()
     {
@@ -160,7 +160,7 @@ class Group
     }
 
     /**
-     * Returns the user roles
+     * Returns the user roles.
      *
      * @return array The roles
      */
@@ -179,7 +179,7 @@ class Group
      *
      * @param string $role
      *
-     * @return boolean
+     * @return bool
      */
     public function hasRole($role)
     {

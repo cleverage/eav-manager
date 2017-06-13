@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 /**
- * Gestion de l'authentification et de la perte/création de mot de passe
+ * Gestion de l'authentification et de la perte/création de mot de passe.
  *
  * @todo translate everything !
  */
@@ -60,9 +60,13 @@ class SecurityController extends Controller
         if ($this->getUser()) {
             return $this->redirectToRoute($this->get('eavmanager_user.config.holder')->getHomeRoute());
         }
-        $form = $this->createForm(LostUserPasswordType::class, null, [
-            'show_legend' => false,
-        ]);
+        $form = $this->createForm(
+            LostUserPasswordType::class,
+            null,
+            [
+                'show_legend' => false,
+            ]
+        );
         $form->handleRequest($request);
 
         $error = null;

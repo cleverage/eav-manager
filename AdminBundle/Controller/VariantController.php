@@ -28,9 +28,11 @@ class VariantController extends AbstractAdminController
      * @param DataInterface      $parentData
      * @ParamConverter("parentData", class="CleverAge\EAVManager\EAVModelBundle\Entity\Data", options={"id" =
      *                               "parentId"})
+     *
      * @param Request            $request
      *
      * @return Response
+     *
      * @throws \Exception
      */
     public function selectAction(AttributeInterface $attribute, DataInterface $parentData, Request $request)
@@ -71,10 +73,12 @@ class VariantController extends AbstractAdminController
      * @param DataInterface      $parentData
      * @ParamConverter("parentData", class="CleverAge\EAVManager\EAVModelBundle\Entity\Data", options={"id" =
      *                               "parentId"})
+     *
      * @param FamilyInterface    $family
      * @param Request            $request
      *
      * @return Response
+     *
      * @throws \Exception
      */
     public function createAction(
@@ -101,6 +105,7 @@ class VariantController extends AbstractAdminController
      * @param Request            $request
      *
      * @return array
+     *
      * @throws \Exception
      */
     public function editAction(
@@ -148,6 +153,7 @@ class VariantController extends AbstractAdminController
 
     /**
      * @Security("is_granted('delete', family) or is_granted('ROLE_DATA_ADMIN')")
+     *
      * @param AttributeInterface $attribute
      * @param int|DataInterface  $parentId
      * @param FamilyInterface    $family
@@ -155,6 +161,7 @@ class VariantController extends AbstractAdminController
      * @param Request            $request
      *
      * @return array|RedirectResponse
+     *
      * @throws \Exception
      */
     public function deleteAction(
@@ -192,7 +199,7 @@ class VariantController extends AbstractAdminController
     }
 
     /**
-     * Attach variant to original parent data if not already attached
+     * Attach variant to original parent data if not already attached.
      *
      * @param DataInterface      $data
      * @param AttributeInterface $attribute
@@ -254,6 +261,7 @@ class VariantController extends AbstractAdminController
      * @param array         $parameters
      *
      * @return string
+     *
      * @throws \Exception
      */
     protected function getParentDataPath(DataInterface $parentData, array $parameters = [])

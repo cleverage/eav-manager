@@ -83,6 +83,8 @@ sidus_eav_data_grid:
                 sortable:
                     - id
                     - title
+                default_sort:
+                    id: DESC
                 fields:
                     title: ~
                     tags: ~
@@ -115,6 +117,8 @@ sidus_eav_data_grid:
                 sortable:
                     - id
                     - title
+                default_sort:
+                    id: DESC
                 fields:
                     title: ~
                     tags: ~

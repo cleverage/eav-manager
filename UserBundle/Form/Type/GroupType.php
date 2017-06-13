@@ -15,7 +15,7 @@ use Symfony\Component\OptionsResolver\Exception\AccessException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * User group type
+ * User group type.
  */
 class GroupType extends AbstractType
 {

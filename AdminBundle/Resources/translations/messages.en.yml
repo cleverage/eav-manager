@@ -12,6 +12,9 @@ admin:
         edit:
             label: Edit
             title: Edit
+        clone:
+            label: Clone
+            title: Clone
         back:
             label: Back
         close:
@@ -24,6 +27,9 @@ admin:
         resetPassword:
             label: Reset password
             title: Reset password
+        export:
+            label: Export
+            title: Export
 
     user_groups:
         title: User & Groups
@@ -103,6 +109,9 @@ admin:
             title: Select a media
         detach:
             label: Detach
+
+    process:
+        title: Processes History
 
     flash:
         create:

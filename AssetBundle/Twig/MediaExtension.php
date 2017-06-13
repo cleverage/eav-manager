@@ -9,7 +9,7 @@ use Sidus\FileUploadBundle\Utilities\BinarySizeUtility;
 use Twig_Extension;
 
 /**
- * Allows twig templates to gather information about image size
+ * Allows twig templates to gather information about image size.
  */
 class MediaExtension extends Twig_Extension
 {
@@ -49,6 +49,7 @@ class MediaExtension extends Twig_Extension
      * @param string $filter
      *
      * @return string
+     *
      * @throws NonExistingFilterException
      */
     public function getImageSizeAttrs(Image $image, $filter)
@@ -82,6 +83,7 @@ class MediaExtension extends Twig_Extension
      * @param int $size
      *
      * @return string
+     *
      * @throws \UnexpectedValueException
      */
     public function formatFileSize($size)

@@ -17,8 +17,6 @@ class Configuration implements ConfigurationInterface
     protected $root;
 
     /**
-     * Configuration constructor.
-     *
      * @param string $root
      */
     public function __construct($root = 'clever_age_eav_manager_user')
@@ -26,9 +24,9 @@ class Configuration implements ConfigurationInterface
         $this->root = $root;
     }
 
-
     /**
      * {@inheritdoc}
+     *
      * @throws \RuntimeException
      */
     public function getConfigTreeBuilder()
@@ -47,6 +45,7 @@ class Configuration implements ConfigurationInterface
 
     /**
      * @return NodeDefinition
+     *
      * @throws \RuntimeException
      */
     protected function getMailerConfigurationTreeBuilder()

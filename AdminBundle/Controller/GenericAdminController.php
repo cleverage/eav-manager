@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Generic admin controller for non-EAV data
+ * Generic admin controller for non-EAV data.
  */
 class GenericAdminController extends AbstractAdminController
 {
@@ -15,6 +15,7 @@ class GenericAdminController extends AbstractAdminController
      * @param Request $request
      *
      * @return array
+     *
      * @throws \Exception
      */
     public function listAction(Request $request)
@@ -35,6 +36,7 @@ class GenericAdminController extends AbstractAdminController
      * @param Request $request
      *
      * @return Response
+     *
      * @throws \Exception
      */
     public function createAction(Request $request)
@@ -50,6 +52,7 @@ class GenericAdminController extends AbstractAdminController
      * @param mixed   $data
      *
      * @return array|RedirectResponse
+     *
      * @throws \Exception
      */
     public function editAction(Request $request, $data = null)
@@ -74,8 +77,22 @@ class GenericAdminController extends AbstractAdminController
 
     /**
      * @param Request $request
+     * @param mixed   $data
      *
      * @return array|RedirectResponse
+     *
+     * @throws \Exception
+     */
+    public function cloneAction(Request $request, $data = null)
+    {
+        return $this->editAction($request, clone $data);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return array|RedirectResponse
+     *
      * @throws \Exception
      */
     public function deleteAction(Request $request)

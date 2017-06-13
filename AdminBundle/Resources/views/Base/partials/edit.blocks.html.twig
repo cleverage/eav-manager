@@ -46,41 +46,56 @@
 
 {% block breadcrumb %}
     <ol class="breadcrumb pull-left">
-        {% if admin.hasAction('index') %}
-            <li>
-                <a href="{{ admin_path(admin, 'index') }}">
-                    {{ tryTrans(['admin.'~admin.code~'.title'], [], admin.code|humanize) }}
-                </a>
-            </li>
-        {% else %}
-            {% if listPath is defined and listPath %}
-                <li>
-                    <a href="{{ listPath }}">
-                        {{ tryTrans(['admin.'~admin.code~'.title'], [], admin.code|humanize) }}
-                    </a>
-                </li>
-            {% else %}
-                <li>
-                    <a href="{{ admin_path(admin, 'list') }}">
-                        {{ tryTrans(['admin.'~admin.code~'.title'], [], admin.code|humanize) }}
-                    </a>
-                </li>
-            {% endif %}
-        {% endif %}
-        {% if data is defined and data|trim %}
-            <li>
-                <a href="{{ admin_entity_path(admin, data, 'edit') }}">
-                    {{ data|trim }}
-                </a>
-            </li>
-        {% endif %}
-        <li class="active">
-            {{ tryTrans([
-            admin_trans_key ~ admin.currentAction.code ~ '.title',
-            'admin.action.' ~ admin.currentAction.code ~ '.title'
-            ], [], admin.currentAction.code|humanize) }}
-        </li>
+        {{ block('breadcrumb_index') }}
+        {{ block('breadcrumb_list') }}
+        {{ block('breadcrumb_data') }}
+        {{ block('breadcrumb_action') }}
     </ol>
+{% endblock %}
+
+{% block breadcrumb_index %}
+    {% if admin.hasAction('index') %}
+        <li>
+            <a href="{{ admin_path(admin, 'index') }}">
+                {{ tryTrans([
+                'admin.' ~ admin.code ~ 'index.title',
+                'admin.index.title'
+                ], [], admin.code|humanize) }}
+            </a>
+        </li>
+    {% endif %}
+{% endblock %}
+
+{% block breadcrumb_list %}
+    {% if admin.hasAction('list') %}
+        <li>
+            <a href="{{ listPath is defined and listPath ? listPath : admin_path(admin, 'list') }}">
+                {{ tryTrans([
+                'admin.' ~ admin.code ~ 'list.title',
+                'admin.list.title'
+                ], [], 'List') }}
+            </a>
+        </li>
+    {% endif %}
+{% endblock %}
+
+{% block breadcrumb_data %}
+    {% if admin.hasAction('edit') and admin.currentAction != 'create' and data|default() and data.id %}
+        <li>
+            <a href="{{ admin_entity_path(admin, data, 'edit') }}">
+                {{ data|trim }}
+            </a>
+        </li>
+    {% endif %}
+{% endblock %}
+
+{% block breadcrumb_action %}
+    <li class="active">
+        {{ tryTrans([
+        admin_trans_key ~ '.title',
+        'admin.action.' ~ admin.currentAction.code ~ '.title'
+        ], [], admin.currentAction.code|humanize) }}
+    </li>
 {% endblock %}
 
 {% block back_button %}
@@ -117,14 +132,16 @@
 {% endblock %}
 
 {% block secondary_actions %}
-    <li class="bg-danger">
-        {{ block('delete_link') }}
-    </li>
+    {{ block('delete_link') }}
 {% endblock %}
 
 {% block delete_link %}
-    <a href="{{ admin_entity_path(admin, data, 'delete') }}">
-        <i class="fa fa-trash"></i>
-        {{ tryTrans([admin_trans_key ~ 'delete.label', 'admin.action.delete.label'], [], 'Delete') }}
-    </a>
+    {% if admin.hasAction('delete') and admin.currentAction != 'create' and data|default() and data.id %}
+        <li class="bg-danger">
+            <a href="{{ admin_entity_path(admin, data, 'delete') }}">
+                <i class="fa fa-trash"></i>
+                {{ tryTrans([admin_trans_key ~ 'delete.label', 'admin.action.delete.label'], [], 'Delete') }}
+            </a>
+        </li>
+    {% endif %}
 {% endblock %}

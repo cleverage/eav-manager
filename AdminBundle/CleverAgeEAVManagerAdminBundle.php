@@ -5,13 +5,10 @@ namespace CleverAge\EAVManager\AdminBundle;
 use CleverAge\EAVManager\AdminBundle\DependencyInjection\CleverAgeEAVManagerAdminExtension;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-/**
- * @package CleverAge\EAVManager\AdminBundle
- */
 class CleverAgeEAVManagerAdminBundle extends Bundle
 {
     /**
-     * Changing default root alias
+     * Changing default root alias.
      *
      * @return mixed
      */

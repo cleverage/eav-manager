@@ -9,9 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class MediaController
- *
- * @package CleverAge\EAVManager\AssetBundle\Controller
+ * Class MediaController.
  */
 class MediaController extends Controller
 {
@@ -21,6 +19,7 @@ class MediaController extends Controller
      * @param string        $filter
      *
      * @return Response
+     *
      * @throws \Exception
      */
     public function mediaUrlAction(Request $request, DataInterface $data, $filter)
@@ -34,6 +33,6 @@ class MediaController extends Controller
             return $this->createNotFoundException("No actual media associated to image #{$data->getId()}");
         }
 
-        return $this->get('liip_imagine.controller')->filterAction($request, $image->getFileName(), $filter);
+        return $this->get('liip_imagine.controller')->filterAction($request, $image->getPath(), $filter);
     }
 }

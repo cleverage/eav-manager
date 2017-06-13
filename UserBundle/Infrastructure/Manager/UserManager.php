@@ -20,7 +20,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Gère la création, la suppression et la mise à jour des utilisateurs
+ * Gère la création, la suppression et la mise à jour des utilisateurs.
  */
 class UserManager implements UserManagerInterface
 {
@@ -122,6 +122,10 @@ class UserManager implements UserManagerInterface
      */
     public function save(User $user)
     {
+        if ($user->getPlainPassword()) {
+            $this->setPlainTextPassword($user, $user->getPlainPassword());
+        }
+
         /** @var EntityManager $em */
         $em = $this->doctrine->getManager();
         $em->persist($user);

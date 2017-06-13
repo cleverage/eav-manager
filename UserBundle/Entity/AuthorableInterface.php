@@ -3,7 +3,7 @@
 namespace CleverAge\EAVManager\UserBundle\Entity;
 
 /**
- * Entities implementing this interface will be automatically "filled" with the current user info
+ * Entities implementing this interface will be automatically "filled" with the current user info.
  */
 interface AuthorableInterface
 {

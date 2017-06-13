@@ -6,7 +6,7 @@ use Sidus\FileUploadBundle\Form\Type\ResourceType;
 use Symfony\Component\Form\AbstractType;
 
 /**
- * Custom form type to upload images
+ * Custom form type to upload images.
  */
 class ImageType extends AbstractType
 {

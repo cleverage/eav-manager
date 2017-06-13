@@ -1,0 +1,53 @@
+services:
+    eavmanager_api_platform.filter.abstract_eav:
+        abstract: true
+        class: CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\AbstractEAVFilter
+        arguments:
+            - '@request_stack'
+            - '@sidus_eav_model.family.registry'
+
+    eavmanager_api_platform.filter.search:
+        abstract: true
+        class: CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\SearchFilter
+        parent: eavmanager_api_platform.filter.abstract_eav
+        arguments:
+            - [string]
+
+    eavmanager_api_platform.filter.boolean:
+        abstract: true
+        class: CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\BooleanFilter
+        parent: eavmanager_api_platform.filter.abstract_eav
+        arguments:
+            - [bool]
+
+    eavmanager_api_platform.filter.date:
+        abstract: true
+        class: CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\DateFilter
+        parent: eavmanager_api_platform.filter.abstract_eav
+        arguments:
+            - [DateTimeInterface]
+
+    eavmanager_api_platform.filter.numeric:
+        abstract: true
+        class: CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\NumericFilter
+        parent: eavmanager_api_platform.filter.abstract_eav
+        arguments:
+            - [float]
+
+    eavmanager_api_platform.filter.order:
+        abstract: true
+        class: CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\OrderFilter
+        parent: eavmanager_api_platform.filter.abstract_eav
+        arguments:
+            - [int, bool, DateTimeInterface, float, string]
+
+    eavmanager_api_platform.filter.range:
+        abstract: true
+        class: CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\RangeFilter
+        parent: eavmanager_api_platform.filter.abstract_eav
+        arguments:
+            - [int, DateTimeInterface, float]
+
+    # Overriding stuff because FUCK YOU
+    api_platform.doctrine.orm.query_extension.filter_eager_loading:
+        abstract: true

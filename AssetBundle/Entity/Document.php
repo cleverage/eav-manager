@@ -18,15 +18,15 @@ class Document extends Resource
     protected $fileSize;
 
     /**
-     * Mime type
+     * Mime type.
      *
      * @var string
-     * @ORM\Column(type="string", length=128, nullable=true)
+     * @ORM\Column(name="mime_type", type="string", length=128, nullable=true)
      */
-    protected $fileType;
+    protected $mimeType;
 
     /**
-     * File's last modification date
+     * File's last modification date.
      *
      * @var \DateTime
      * @ORM\Column(name="file_modified_at", type="datetime", nullable=true)
@@ -64,19 +64,19 @@ class Document extends Resource
     /**
      * @return string
      */
-    public function getFileType()
+    public function getMimeType()
     {
-        return $this->fileType;
+        return $this->mimeType;
     }
 
     /**
-     * @param string $fileType
+     * @param string $mimeType
      *
      * @return Document
      */
-    public function setFileType($fileType)
+    public function setMimeType($mimeType)
     {
-        $this->fileType = $fileType;
+        $this->mimeType = $mimeType;
 
         return $this;
     }
@@ -93,6 +93,7 @@ class Document extends Resource
      * @param \DateTime|int|string|null $fileModifiedAt
      *
      * @return Document
+     *
      * @throws \UnexpectedValueException
      */
     public function setFileModifiedAt($fileModifiedAt)
@@ -103,7 +104,7 @@ class Document extends Resource
     }
 
     /**
-     * Serialize automatically the entity when passed to json_encode
+     * Serialize automatically the entity when passed to json_encode.
      *
      * @return array
      */
@@ -111,7 +112,7 @@ class Document extends Resource
     {
         $json = parent::jsonSerialize();
         $json['fileSize'] = $this->getFileSize();
-        $json['fileType'] = $this->getFileType();
+        $json['mimeType'] = $this->getMimeType();
         $json['fileModifiedAt'] = $this->getFileModifiedAt();
         $json['type'] = static::getType();
 

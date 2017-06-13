@@ -12,7 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Enrich the WYSIWYG experience with in-place data selectors
+ * Enrich the WYSIWYG experience with in-place data selectors.
  */
 class WysiwygController extends Controller
 {
@@ -21,6 +21,7 @@ class WysiwygController extends Controller
      * @param string  $configName
      *
      * @return array
+     *
      * @throws \InvalidArgumentException
      */
     public function selectDataAction(Request $request, $configName)
@@ -52,9 +53,11 @@ class WysiwygController extends Controller
 
     /**
      * @Template()
+     *
      * @param Request $request
      *
      * @return array
+     *
      * @throws \Exception
      */
     public function selectMediaAction(Request $request)
@@ -109,6 +112,7 @@ class WysiwygController extends Controller
      * @param Request $request
      *
      * @return DataInterface|null
+     *
      * @throws \InvalidArgumentException
      */
     protected function getData(Request $request)

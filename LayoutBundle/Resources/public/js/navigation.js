@@ -85,7 +85,7 @@
     /**
      * Loads the actual HTML response in the target div, only for autoload targets
      */
-    $(document).on('success.ajaxloading', '.autoload', function(e) {
+    $(document).on('success.ajaxloading', '.autoload', function (e) {
         if (e.target !== this) { // Prevent error bubbling
             return;
         }
@@ -95,7 +95,7 @@
     /**
      * Pushes the url of the clicked element inside the history stack if the target is in autoload and NOT a modal
      */
-    $(document).on('complete.ajaxloading', '.autoload:not(.modal)', function(e) {
+    $(document).on('complete.ajaxloading', '.autoload:not(.modal)', function (e) {
         if (e.target !== this) { // Prevent error bubbling
             return;
         }
@@ -113,78 +113,4 @@
         };
         history.pushState(state, $tg.find('h2.ajax-title').text(), e.url);
     });
-
-    /*
-     * Events not directly related to ajax navigation
-     */
-
-    function closeTarget($tg, previousUrl) {
-        $tg.html('');
-        if ($tg.hasClass('modal')) {
-            $tg.modal('hide');
-        } else {
-            var previousState = {};
-            var previousTitle = document.title;
-            if (history.state.previousState) {
-                previousState = history.state.previousState;
-            }
-            if (history.state.previousTitle) {
-                previousTitle = history.state.previousTitle;
-            }
-            if (history.state.previousUrl) {
-                previousTitle = history.state.previousUrl;
-            }
-            history.replaceState(previousState, previousTitle, previousUrl);
-        }
-
-        if ($tg.attr('id') == 'tg_right') {
-            $(document.body).removeClass('tg-right-expanded');
-        }
-    }
-
-    /**
-     * Appends a hidden input with value corresponding to the clicked button (or input)
-     */
-    $(document).on('click', '[data-close-target]', function (e) {
-        var $el = $(this);
-        var $tg = $($el.data('close-target'));
-        if (0 === $tg.length) {
-            return;
-        }
-
-        closeTarget($tg, $el.attr('href'));
-
-        e.preventDefault();
-        e.stopPropagation();
-    });
-
-    /**
-     * Close the target after deletion of an entity
-     */
-    $(document).on('delete.admindata', function (e) {
-        if (e.success) {
-            var $tg = $(e.target);
-            if (0 === $tg.length) {
-                return;
-            }
-            closeTarget($tg);
-        }
-    });
-
-    // /**
-    //  * Special case for pagination: we don't want to inject data-target for each link
-    //  * @todo fix me
-    //  */
-    // $(document).on('click', '#tg_center ul.pagination a, #tg_modal ul.pagination a', function (e) {
-    //     var t = $(this);
-    //     if (t.data('target')) {
-    //         return;
-    //     }
-    //     var target = '#' + t.parents('#tg_center, #tg_modal').first().attr('id');
-    //     t.attr('data-target-element', target);
-    //     e.preventDefault();
-    //     e.stopPropagation();
-    //     t.trigger('click');
-    // });
-
 }(window.jQuery);

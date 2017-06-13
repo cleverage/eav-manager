@@ -62,7 +62,7 @@ class User implements UserInterface, \Serializable
     protected $salt;
 
     /**
-     * Date de demande de changement de mot de passe de l'utilisateur
+     * Date de demande de changement de mot de passe de l'utilisateur.
      *
      * @var DateTime
      *
@@ -73,7 +73,7 @@ class User implements UserInterface, \Serializable
     /**
      * Token utilisé pour la génération de lien de connexion:
      * - Si l'utilisateur vient d'être créé
-     * - Si l'utilisateur a perdu son mot de passe
+     * - Si l'utilisateur a perdu son mot de passe.
      *
      * @var string
      *
@@ -82,7 +82,7 @@ class User implements UserInterface, \Serializable
     protected $authenticationToken;
 
     /**
-     * Définit si l'utilisateur est nouveau ou non pour l'envoi de l'email
+     * Définit si l'utilisateur est nouveau ou non pour l'envoi de l'email.
      *
      * @var bool
      *
@@ -91,7 +91,7 @@ class User implements UserInterface, \Serializable
     protected $new = true;
 
     /**
-     * Defined the user as active, meaning the account is usable
+     * Defined the user as active, meaning the account is usable.
      *
      * @var bool
      *
@@ -100,7 +100,7 @@ class User implements UserInterface, \Serializable
     protected $enabled = true;
 
     /**
-     * Conserve l'information de l'email envoyé pour ne pas dupliquer les emails
+     * Conserve l'information de l'email envoyé pour ne pas dupliquer les emails.
      *
      * @var bool
      *
@@ -136,7 +136,7 @@ class User implements UserInterface, \Serializable
 
     /**
      * @var DataInterface
-     * @ORM\OneToOne(targetEntity="Sidus\EAVModelBundle\Entity\DataInterface", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="Sidus\EAVModelBundle\Entity\DataInterface", cascade={"persist", "remove"})
      */
     protected $data;
 
@@ -280,7 +280,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Returns the user roles
+     * Returns the user roles.
      *
      * @return array The roles
      */
@@ -308,7 +308,7 @@ class User implements UserInterface, \Serializable
      *
      * @param string $role
      *
-     * @return boolean
+     * @return bool
      */
     public function hasRole($role)
     {
@@ -437,7 +437,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isNew()
     {
@@ -445,7 +445,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @param boolean $new
+     * @param bool $new
      *
      * @return User
      */
@@ -457,7 +457,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isEnabled()
     {
@@ -465,7 +465,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @param boolean $enabled
+     * @param bool $enabled
      *
      * @return User
      */
@@ -477,7 +477,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isEmailSent()
     {
@@ -485,7 +485,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @param boolean $emailSent
+     * @param bool $emailSent
      *
      * @return User
      */
@@ -505,7 +505,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Returns the user roles
+     * Returns the user roles.
      *
      * @return array The roles
      */
@@ -515,7 +515,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Returns the user roles
+     * Returns the user roles.
      *
      * @param array $roles
      *
@@ -678,7 +678,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * String representation of object
+     * String representation of object.
      *
      * @see https://goo.gl/zds3Tm (Le lien était trop long)
      *
@@ -698,11 +698,9 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Constructs the object
+     * Constructs the object.
      *
-     * @param string $serialized The string representation of the object.
-     *
-     * @return void
+     * @param string $serialized the string representation of the object
      */
     public function unserialize($serialized)
     {
@@ -711,8 +709,7 @@ class User implements UserInterface, \Serializable
             $this->username,
             $this->password,
             $this->salt,
-            $this->roles,
-            ) = unserialize($serialized);
+            $this->roles) = unserialize($serialized);
     }
 
     /**

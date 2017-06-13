@@ -1,6 +1,3 @@
-parameters:
-    resources_dir: '%kernel.root_dir%/../var/resources'
-
 # one uploader
 oneup_uploader:
     mappings:
@@ -8,65 +5,73 @@ oneup_uploader:
             frontend: blueimp
             allowed_mimetypes: [ image/jpg, image/jpeg, image/png, image/gif ]
             storage:
-                type: gaufrette
-                filesystem: gaufrette.resources_filesystem
+                type: flysystem
+                filesystem: oneup_flysystem.images_filesystem
             max_size: 64000000
         document:
             frontend: blueimp
             storage:
-                type: gaufrette
-                filesystem: gaufrette.resources_filesystem
+                type: flysystem
+                filesystem: oneup_flysystem.documents_filesystem
             max_size: 64000000
 
-knp_gaufrette:
+oneup_flysystem:
     adapters:
         resources:
             local:
-                directory: '%resources_dir%'
+                directory: '%kernel.root_dir%/data/resources'
     filesystems:
-        resources:
-            adapter:    resources
+        images:
+            adapter: resources
+        documents:
+            adapter: resources
 
 sidus_file_upload:
-    filesystem_key: resources
     configurations:
         image: # must match oneup_uploader mapping key
             entity: CleverAge\EAVManager\AssetBundle\Entity\Image
+            filesystem: images
         document:
             entity: CleverAge\EAVManager\AssetBundle\Entity\Document
+            filesystem: documents
 
 liip_imagine:
     resolvers:
-        default:
-            web_path:
-                cache_prefix: images/cache
+       default:
+          web_path:
+            cache_prefix: "images/cache"
+
     loaders:
-        default:
-            filesystem:
-                # A modifier si on passe gaufrette sur autre chose que du filesytem
-                data_root: '%resources_dir%'
+        images:
+            flysystem:
+                filesystem_service: oneup_flysystem.images_filesystem
 
     filter_sets:
         tiny:
+            data_loader: images
             quality: 70
             filters:
                 auto_rotate: ~
                 thumbnail: { size: [64, 64], mode: outbound }
         thumbnail:
+            data_loader: images
             quality: 70
             filters:
                 auto_rotate: ~
                 thumbnail: { size: [128, 128], mode: outbound }
         small:
+            data_loader: images
             quality: 75
             filters:
                 thumbnail: { size: [300, 200], mode: outbound }
         preview:
+            data_loader: images
             quality: 80
             filters:
                 auto_rotate: ~
                 thumbnail: { size: [730, 730], mode: inset }
         large:
+            data_loader: images
             quality: 90
             filters:
                 auto_rotate: ~

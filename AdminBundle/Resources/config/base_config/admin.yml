@@ -6,8 +6,6 @@ sidus_admin:
             entity: '%sidus_data_class%'
             prefix: /medias
             actions:
-                index:
-                    path:     /
                 list:
                     path:     /{familyCode}/list
                 create:
@@ -56,8 +54,6 @@ sidus_admin:
             actions:
                 list:
                     path: /
-                index:
-                    path: /
                 delete:
                     path: /{id}/delete
             options:
@@ -99,6 +95,36 @@ sidus_admin:
                 delete:
                     path:     /{id}/delete
             options:
+                hidden: true
+
+        process:
+            controller: CleverAgeEAVManagerAdminBundle:GenericAdmin
+            entity: CleverAge\ProcessBundle\Entity\ProcessHistory
+            prefix: /process
+            actions:
+                list:
+                    path: /
+                show:
+                    path: /{id}/show
+                delete:
+                    path: /{id}/delete
+            options:
+                icon: history
+                hidden: true
+
+        task:
+            controller: CleverAgeEAVManagerAdminBundle:GenericAdmin
+            entity: CleverAge\ProcessBundle\Entity\TaskHistory
+            prefix: /task
+            actions:
+                list:
+                    path: /
+                show:
+                    path: /{id}/show
+                delete:
+                    path: /{id}/delete
+            options:
+                icon: tasks
                 hidden: true
 
         variant:

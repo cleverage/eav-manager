@@ -7,7 +7,7 @@ use Symfony\Component\Security\Core\Role\RoleHierarchy as BaseRoleHierarchy;
 use Doctrine\Common\Collections\Collection;
 
 /**
- * Used to work with roles
+ * Used to work with roles.
  */
 class RoleHierarchy extends BaseRoleHierarchy
 {

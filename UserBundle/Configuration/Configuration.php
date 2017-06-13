@@ -3,7 +3,7 @@
 namespace CleverAge\EAVManager\UserBundle\Configuration;
 
 /**
- * Handles the configuration of the user management system
+ * Handles the configuration of the user management system.
  */
 class Configuration
 {

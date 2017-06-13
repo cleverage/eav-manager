@@ -57,6 +57,7 @@ abstract class AbstractAdminController extends BaseAdminController
      * @param mixed   $data
      *
      * @return array
+     *
      * @throws \Exception
      */
     protected function getViewParameters(Request $request, Form $form = null, $data = null)

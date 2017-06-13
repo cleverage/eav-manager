@@ -2,22 +2,16 @@
 
 namespace CleverAge\EAVManager\Component\Controller;
 
-use CleverAge\EAVManager\UserBundle\Entity\User;
-use Doctrine\Bundle\DoctrineBundle\Registry;
-use Exception;
-use LogicException;
 use Sidus\EAVModelBundle\Entity\DataInterface;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use UnexpectedValueException;
 
 /**
- * @method Registry getDoctrine
- * @method User getUser
+ * @method \Doctrine\Bundle\DoctrineBundle\Registry getDoctrine
+ * @method \CleverAge\EAVManager\UserBundle\Entity\User getUser
  * @method addFlash($key, $message)
  *
- * @property ContainerInterface $container
+ * @property \Symfony\Component\DependencyInjection\ContainerInterface $container
  */
 trait EAVDataControllerTrait
 {
@@ -29,7 +23,7 @@ trait EAVDataControllerTrait
      *
      * @return FamilyInterface
      *
-     * @throws Exception
+     * @throws \Exception
      */
     protected function getFamily($familyCode)
     {
@@ -42,7 +36,7 @@ trait EAVDataControllerTrait
      *
      * @return DataInterface
      *
-     * @throws Exception
+     * @throws \Exception
      */
     protected function getData($id, FamilyInterface $family = null)
     {
@@ -74,15 +68,15 @@ trait EAVDataControllerTrait
      *
      * @return FamilyInterface
      *
-     * @throws LogicException
-     * @throws UnexpectedValueException
+     * @throws \LogicException
+     * @throws \UnexpectedValueException
      */
     protected function initDataFamily(DataInterface $data, FamilyInterface $family = null)
     {
         if (!$family) {
             $family = $data->getFamily();
         } elseif ($family->getCode() !== $data->getFamilyCode()) {
-            throw new UnexpectedValueException(
+            throw new \UnexpectedValueException(
                 "Data family '{$data->getFamilyCode()}'' not matching admin family {$family->getCode()}"
             );
         }

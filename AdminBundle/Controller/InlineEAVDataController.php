@@ -2,7 +2,6 @@
 
 namespace CleverAge\EAVManager\AdminBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sidus\EAVModelBundle\Entity\DataInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

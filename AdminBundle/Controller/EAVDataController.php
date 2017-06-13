@@ -165,7 +165,7 @@ class EAVDataController extends AbstractAdminController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->saveEntity($data);
 
-            $parameters = $request->query->all(); // @todo is this necessary ?
+            $parameters = $request->query->all();
             $parameters['success'] = 1;
 
             return $this->redirectToEntity($data, 'edit', $parameters);
@@ -443,7 +443,7 @@ class EAVDataController extends AbstractAdminController
      * @return StreamedResponse
      * @throws \Sidus\EAVModelBundle\Exception\MissingAttributeException
      */
-    public function generateExport(array $config)
+    protected function generateExport(array $config)
     {
         $response = new StreamedResponse();
         $response->setCallback(

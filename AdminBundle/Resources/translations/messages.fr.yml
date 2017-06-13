@@ -126,3 +126,9 @@ warning:
 
 eav.attribute.validation:
     required: Cette valeur ne doit pas être vide.
+
+error:
+    template:
+        header: Erreur serveur interne
+        title: Félicitations ! Vous venez de trouver un bug dans notre appli.
+        message: Nous venons de déployer nos meilleurs experts pour gérer cette situation,<br>accrochez-vous.

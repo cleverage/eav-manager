@@ -141,6 +141,7 @@ NEVER points to this layout directly !
     '@PinanoSelect2Bundle/Resources/public/js/i18n/fr.js'
     '@SidusEAVBootstrapBundle/Resources/public/js/autocomplete.combo.selector.js'
     '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/init.datepickers.js'
+    '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/edit.inline.js'
     '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/automodal.js'
     '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/input.picker.js'
     '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/datagrid.updater.js'
@@ -156,5 +157,26 @@ NEVER points to this layout directly !
     {{ tinymce_init() }}
 {% endblock %}
 {% block additionnal_javascript %}{% endblock %}
+
+{% block error_template %}
+<div id="error-template" class="hidden">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title text-danger">
+                    <i class="fa fa-exclamation-triangle"></i> {{ 'error.template.header'|trans }}
+                </h4>
+            </div>
+            <div class="modal-body">
+                <h4>{{ 'error.template.title'|trans }}</h4>
+                <p>{{ 'error.template.message'|trans|raw }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
 </body>
 </html>

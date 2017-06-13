@@ -25,7 +25,7 @@
 
 {% block additionnal_javascript %}
     {{ parent() }}
-    {% if data|default() %}
+    {% if data is defined and data %}
         {{ utilities.triggerDataEvent(admin, data, data ? data.id, success, target) }}
     {% endif %}
     {{ utilities.lock_form(form.vars.attr.id, target) }}

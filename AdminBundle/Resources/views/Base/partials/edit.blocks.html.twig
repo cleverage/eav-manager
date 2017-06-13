@@ -80,7 +80,7 @@
 {% endblock %}
 
 {% block breadcrumb_data %}
-    {% if admin.hasAction('edit') and admin.currentAction != 'create' and data|default() and data.id %}
+    {% if admin.hasAction('edit') and admin.currentAction != 'create' and data is defined and data.id %}
         <li>
             <a href="{{ admin_entity_path(admin, data, 'edit') }}">
                 {{ data|trim }}
@@ -136,7 +136,7 @@
 {% endblock %}
 
 {% block delete_link %}
-    {% if admin.hasAction('delete') and admin.currentAction != 'create' and data|default() and data.id %}
+    {% if admin.hasAction('delete') and admin.currentAction != 'create' and data is defined and data.id %}
         <li class="bg-danger">
             <a href="{{ admin_entity_path(admin, data, 'delete') }}">
                 <i class="fa fa-trash"></i>

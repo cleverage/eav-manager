@@ -135,3 +135,9 @@ warning:
 
 eav.attribute.validation:
     required: This value must not be blank
+
+error:
+    template:
+        header: Internal server error
+        title: Congratulations! You've found a bug in our app.
+        message: We are currently dispatching our best experts to deal with this situation,<br>hang tight.

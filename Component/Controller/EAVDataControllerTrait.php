@@ -63,7 +63,7 @@ trait EAVDataControllerTrait
         if (!$family) {
             $family = $data->getFamily();
         }
-        $this->initDataFamily($family, $data);
+        $this->initDataFamily($data, $family);
 
         return $data;
     }
@@ -77,9 +77,11 @@ trait EAVDataControllerTrait
      * @throws LogicException
      * @throws UnexpectedValueException
      */
-    protected function initDataFamily(FamilyInterface $family, DataInterface $data)
+    protected function initDataFamily(DataInterface $data, FamilyInterface $family = null)
     {
-        if ($family->getCode() !== $data->getFamilyCode()) {
+        if (!$family) {
+            $family = $data->getFamily();
+        } elseif ($family->getCode() !== $data->getFamilyCode()) {
             throw new UnexpectedValueException(
                 "Data family '{$data->getFamilyCode()}'' not matching admin family {$family->getCode()}"
             );

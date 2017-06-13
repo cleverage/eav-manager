@@ -53,7 +53,7 @@ class EAVKernelBundleLoader
             new \Sidus\FilterBundle\SidusFilterBundle(),
             // Data filtering with EAV support
             new \Sidus\EAVFilterBundle\SidusEAVFilterBundle(),
-            // Bootstrap integration + additionnal EAV components
+            // Bootstrap integration + additional EAV components
             new \Sidus\EAVBootstrapBundle\SidusEAVBootstrapBundle(),
             // Datagrid made easy
             new \Sidus\DataGridBundle\SidusDataGridBundle(),
@@ -71,6 +71,8 @@ class EAVKernelBundleLoader
             // Additionnal Bundles
             // TinyMCE WYSIWYG integration
             new \Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle(),
+            // JS routing needed for TinyMCE extensions
+            new \FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             // Automatic image resizing
             new \Liip\ImagineBundle\LiipImagineBundle(),
             // Clean HTML input (or during import)

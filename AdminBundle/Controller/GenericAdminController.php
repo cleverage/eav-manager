@@ -137,7 +137,7 @@ class GenericAdminController extends AbstractAdminController
                 );
             }
 
-            return $this->redirectToAction($this->getAdminListPath());
+            return $this->redirect($this->getAdminListPath());
         }
 
         return $this->renderAction(

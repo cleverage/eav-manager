@@ -49,22 +49,4 @@ class DataRepository extends BaseDataRepository
 
         return $qb;
     }
-
-    /**
-     * @param string            $alias
-     * @param null              $indexBy
-     * @param QueryBuilder|null $qb
-     *
-     * @return QueryBuilder
-     */
-    public function createOptimizedQueryBuilder($alias, $indexBy = null, QueryBuilder $qb = null)
-    {
-        if (!$qb) {
-            $qb = $this->createQueryBuilder($alias, $indexBy);
-        }
-        $qb->addSelect('values')
-            ->leftJoin($alias.'.values', 'values');
-
-        return $qb;
-    }
 }

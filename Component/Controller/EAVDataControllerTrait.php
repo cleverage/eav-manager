@@ -19,6 +19,7 @@
 
 namespace CleverAge\EAVManager\Component\Controller;
 
+use CleverAge\EAVManager\EAVModelBundle\Entity\DataRepository;
 use Sidus\EAVModelBundle\Entity\DataInterface;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -53,9 +54,9 @@ trait EAVDataControllerTrait
      * @param                      $id
      * @param FamilyInterface|null $family
      *
-     * @return DataInterface
-     *
      * @throws \Exception
+     *
+     * @return DataInterface
      */
     protected function getData($id, FamilyInterface $family = null)
     {
@@ -85,10 +86,11 @@ trait EAVDataControllerTrait
      * @param FamilyInterface $family
      * @param DataInterface   $data
      *
-     * @return FamilyInterface
-     *
      * @throws \LogicException
      * @throws \UnexpectedValueException
+     * @throws \Symfony\Component\DependencyInjection\Exception\InvalidArgumentException
+     *
+     * @return FamilyInterface
      */
     protected function initDataFamily(DataInterface $data, FamilyInterface $family = null)
     {

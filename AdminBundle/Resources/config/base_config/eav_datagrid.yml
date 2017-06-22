@@ -7,6 +7,8 @@ sidus_eav_data_grid:
                     - id
                     - createdAt
                     - updatedAt
+                default_sort:
+                    id: DESC
                 fields: []
             columns:
                 id:
@@ -32,6 +34,8 @@ sidus_eav_data_grid:
                     - title
                     - mimeType
                     - fileName
+                default_sort:
+                    id: DESC
                 fields:
                     title: ~
                     fileName: ~
@@ -56,6 +60,8 @@ sidus_eav_data_grid:
                     - id
                     - title
                     - mimeType
+                default_sort:
+                    id: DESC
                 fields:
                     title: ~
                     tags: ~

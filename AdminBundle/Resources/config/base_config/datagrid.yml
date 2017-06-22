@@ -126,6 +126,7 @@ sidus_data_grid:
         task:
             filter_config:
                 entity: CleverAge\ProcessBundle\Entity\TaskHistory
+                results_per_page: 50
                 sortable:
                     - taskCode
                     - message
@@ -155,5 +156,4 @@ sidus_data_grid:
                 loggedAt: ~
                 level: ~
                 reference: ~
-                actions:
-                    template: CleverAgeEAVManagerAdminBundle:Process/partials:task.row.actions.html.twig
+                context: ~

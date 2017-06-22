@@ -11,7 +11,8 @@ function initDatePickers(target) {
         minView: 'month',
         pickerPosition: 'bottom-left',
         todayBtn: true,
-        startView: 'month'
+        startView: 'month',
+        clearBtn: true
     });
 
     $(target).find('[data-provider="datetimepicker"]').datetimepicker({
@@ -19,7 +20,8 @@ function initDatePickers(target) {
         format: 'dd/mm/yyyy hh:ii',
         language: 'fr',
         pickerPosition: 'bottom-left',
-        todayBtn: true
+        todayBtn: true,
+        clearBtn: true
     });
 
     $(target).find('[data-provider="timepicker"]').datetimepicker({
@@ -29,7 +31,8 @@ function initDatePickers(target) {
         maxView: 'day',
         minView: 'hour',
         pickerPosition: 'bottom-left',
-        startView: 'day'
+        startView: 'day',
+        clearBtn: true
     });
 
     // Restore value from hidden input

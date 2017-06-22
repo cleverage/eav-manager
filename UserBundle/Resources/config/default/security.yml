@@ -16,6 +16,10 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
+        js_router:
+            pattern: ^/(js\/routing)
+            security: false
+
         main:
             anonymous: ~
             form_login:

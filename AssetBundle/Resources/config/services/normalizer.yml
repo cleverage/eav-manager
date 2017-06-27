@@ -4,6 +4,10 @@ services:
         class: CleverAge\EAVManager\AssetBundle\Serializer\Normalizer\ResourceNormalizer
         arguments:
             - '@sidus_file_upload.resource.manager'
+            -
+                document: '@oneup_uploader.controller.document'
+                image: '@oneup_uploader.controller.image'
+            - '@doctrine'
             - '@sidus_eav_model.serializer.handler.max_depth'
             - '@sidus_eav_model.serializer.handler.by_reference'
         tags:

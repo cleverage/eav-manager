@@ -47,6 +47,9 @@ class CleverAgeEAVManagerApiPlatformExtension extends Extension
             $loader->load('metadata.yml');
             $loader->load('provider.yml');
 
+            // Denormalizers
+            $loader->load('denormalizer/data.yml');
+
             // Normalizers
             $loader->load('normalizer/attribute.yml');
             $loader->load('normalizer/data.yml');

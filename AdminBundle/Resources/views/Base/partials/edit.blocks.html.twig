@@ -22,6 +22,7 @@
         {{ form_widget(form) }}
         {{ block('form_actions') }}
         {{ form_end(form) }}
+        {{ block('additional_content') }}
     </div>
 {% endblock %}
 
@@ -40,6 +41,7 @@
                 {{ block('form_actions') }}
             </div>
             {{ form_end(form) }}
+            {{ block('additional_content') }}
         </div>
     </div>
 {% endblock %}
@@ -143,5 +145,33 @@
                 {{ tryTrans([admin_trans_key ~ 'delete.label', 'admin.action.delete.label'], [], 'Delete') }}
             </a>
         </li>
+    {% endif %}
+{% endblock %}
+
+{% block additional_content %}
+    <hr/>
+    {% if data is defined and data %}
+    <dl class="dl-horizontal">
+        {% if data.identifier is defined and data.identifier %}
+            <dt>{{ tryTrans(['admin.' ~ admin.code ~ '.additional.identifier.label', 'admin.additional.identifier.label'], [], 'Identifier:') }}</dt>
+            <dd>{{ data.identifier }}</dd>
+        {% endif %}
+        {% if data.createdBy is defined and data.createdBy %}
+            <dt>{{ tryTrans(['admin.' ~ admin.code ~ '.additional.createdBy.label', 'admin.additional.createdBy.label'], [], 'Created by:') }}</dt>
+            <dd>{{ data.createdBy }}</dd>
+        {% endif %}
+        {% if data.createdAt is defined and data.createdAt %}
+            <dt>{{ tryTrans(['admin.' ~ admin.code ~ '.additional.createdAt.label', 'admin.additional.createdAt.label'], [], 'Created at:') }}</dt>
+            <dd>{{ data.createdAt|date }}</dd>
+        {% endif %}
+        {% if data.updatedBy is defined and data.updatedBy %}
+            <dt>{{ tryTrans(['admin.' ~ admin.code ~ '.additional.updatedBy.label', 'admin.additional.updatedBy.label'], [], 'Updated by:') }}</dt>
+            <dd>{{ data.updatedBy }}</dd>
+        {% endif %}
+        {% if data.updatedAt is defined and data.updatedAt %}
+            <dt>{{ tryTrans(['admin.' ~ admin.code ~ '.additional.updatedAt.label', 'admin.additional.updatedAt.label'], [], 'Updated at:') }}</dt>
+            <dd>{{ data.updatedAt|date }}</dd>
+        {% endif %}
+    </dl>
     {% endif %}
 {% endblock %}

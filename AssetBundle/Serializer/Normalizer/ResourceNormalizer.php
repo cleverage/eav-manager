@@ -19,14 +19,19 @@
 
 namespace CleverAge\EAVManager\AssetBundle\Serializer\Normalizer;
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
+use Oneup\UploaderBundle\Uploader\Response\EmptyResponse;
 use Sidus\EAVModelBundle\Serializer\ByReferenceHandler;
 use Sidus\EAVModelBundle\Serializer\MaxDepthHandler;
+use Sidus\FileUploadBundle\Controller\BlueimpController;
 use Sidus\FileUploadBundle\Manager\ResourceManager;
 use Sidus\FileUploadBundle\Model\ResourceInterface;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyInfo\PropertyTypeExtractorInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Serializer\Exception\RuntimeException;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -43,6 +48,12 @@ class ResourceNormalizer extends ObjectNormalizer
     /** @var ResourceManager */
     protected $resourceManager;
 
+    /** @var BlueimpController[] */
+    protected $uploadManagers;
+
+    /** @var Registry */
+    protected $doctrine;
+
     /** @var MaxDepthHandler */
     protected $maxDepthHandler;
 
@@ -55,6 +66,8 @@ class ResourceNormalizer extends ObjectNormalizer
      * @param PropertyAccessorInterface|null      $propertyAccessor
      * @param PropertyTypeExtractorInterface|null $propertyTypeExtractor
      * @param ResourceManager                     $resourceManager
+     * @param BlueimpController[]                 $uploadManagers
+     * @param Registry                            $doctrine
      * @param MaxDepthHandler                     $maxDepthHandler
      * @param ByReferenceHandler                  $byReferenceHandler
      */
@@ -64,11 +77,15 @@ class ResourceNormalizer extends ObjectNormalizer
         PropertyAccessorInterface $propertyAccessor = null,
         PropertyTypeExtractorInterface $propertyTypeExtractor = null,
         ResourceManager $resourceManager,
+        array $uploadManagers,
+        Registry $doctrine,
         MaxDepthHandler $maxDepthHandler,
         ByReferenceHandler $byReferenceHandler
     ) {
         parent::__construct($classMetadataFactory, $nameConverter, $propertyAccessor, $propertyTypeExtractor);
         $this->resourceManager = $resourceManager;
+        $this->uploadManagers = $uploadManagers;
+        $this->doctrine = $doctrine;
         $this->maxDepthHandler = $maxDepthHandler;
         $this->byReferenceHandler = $byReferenceHandler;
     }
@@ -77,7 +94,7 @@ class ResourceNormalizer extends ObjectNormalizer
      * {@inheritdoc}
      *
      * @throws \Exception
-     * @throws \Symfony\Component\Serializer\Exception\RuntimeException
+     * @throws RuntimeException
      */
     public function normalize($object, $format = null, array $context = [])
     {
@@ -99,6 +116,44 @@ class ResourceNormalizer extends ObjectNormalizer
         }
 
         return $this->handleCustomFields($object, $format, $context, $normalizedData);
+    }
+
+    /**
+     * @param mixed  $data
+     * @param string $class
+     * @param string $format
+     * @param array  $context
+     *
+     * @throws \Exception
+     *
+     * @return ResourceInterface
+     */
+    public function denormalize($data, $class, $format = null, array $context = [])
+    {
+        $resolver = new OptionsResolver();
+        $this->configureDenormalizeOptions($resolver);
+        $options = $resolver->resolve(array_key_exists(self::OPTION_KEY, $context) ? $context[self::OPTION_KEY] : []);
+
+        $repository = $this->doctrine->getRepository($class);
+
+        if (empty($data)) {
+            return null;
+        }
+
+        if (is_scalar($data)) {
+            // Test base identifier
+            $resource = $repository->find($data);
+            if (null === $resource) {
+                $resource = $repository->findOneBy(['path' => $data]);
+            }
+            if ($resource) {
+                return $resource;
+            }
+
+            return $this->uploadFile($data, $class, $options);
+        }
+
+        return parent::denormalize($data, $class, $format, $context);
     }
 
     /**
@@ -141,7 +196,7 @@ class ResourceNormalizer extends ObjectNormalizer
     protected function handleCustomFields(ResourceInterface $resource, $format, array $context, array $normalizedData)
     {
         $resolver = new OptionsResolver();
-        $this->configureOptions($resolver);
+        $this->configureNormalizeOptions($resolver);
         $options = $resolver->resolve(array_key_exists(self::OPTION_KEY, $context) ? $context[self::OPTION_KEY] : []);
 
         if ($options['url']) {
@@ -163,7 +218,7 @@ class ResourceNormalizer extends ObjectNormalizer
      *
      * @throws \Symfony\Component\OptionsResolver\Exception\AccessException
      */
-    protected function configureOptions(OptionsResolver $resolver)
+    protected function configureNormalizeOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             [
@@ -172,5 +227,70 @@ class ResourceNormalizer extends ObjectNormalizer
                 'absolute_path' => false,
             ]
         );
+    }
+
+    /**
+     * @param OptionsResolver $resolver
+     *
+     * @throws \Symfony\Component\OptionsResolver\Exception\AccessException
+     */
+    protected function configureDenormalizeOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(
+            [
+                'import_path' => null,
+                'copy_file' => true,
+                'ignore_missing' => true,
+            ]
+        );
+    }
+
+    /**
+     * @param string $data
+     * @param string $class
+     * @param array  $options
+     *
+     * @throws \Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException
+     * @throws \UnexpectedValueException
+     * @throws RuntimeException
+     *
+     * @return ResourceInterface
+     */
+    protected function uploadFile($data, $class, array $options)
+    {
+        $importPath = $options['import_path'] ?? null;
+        $filePath = rtrim($importPath, '/').'/'.$data;
+        if (!file_exists($filePath)) {
+            if ($options['ignore_missing']) {
+                return null;
+            }
+            throw new RuntimeException("Unable to denormalize resource based on data '{$data}'");
+        }
+
+        $type = call_user_func([$class, 'getType']);
+        if (!isset($this->uploadManagers[$type])) {
+            throw new RuntimeException("Unknown upload type {$type}");
+        }
+        $uploadManager = $this->uploadManagers[$type];
+        if ($options['copy_file']) {
+            // Copy file to tmp
+            $tmpFilePath = sys_get_temp_dir().'/'.basename($filePath);
+            if (!@copy($filePath, $tmpFilePath)) {
+                throw new RuntimeException("Unable to copy file {$filePath} to temporary destination {$tmpFilePath}");
+            }
+        } else {
+            $tmpFilePath = $filePath;
+        }
+
+        $file = new File($tmpFilePath);
+        $response = new EmptyResponse();
+        $file = $uploadManager->handleManualUpload($file, $response);
+        if (!$file instanceof ResourceInterface) {
+            $errorClass = get_class($file);
+            throw new RuntimeException("Unexpected response from file upload, got: {$errorClass}");
+        }
+        $file->setOriginalFileName(basename($filePath));
+
+        return $file;
     }
 }

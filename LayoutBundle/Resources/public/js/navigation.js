@@ -1,3 +1,6 @@
+/**
+ * Handles all navigation events, loads data based on target class, display loader, etc.
+ */
 !function ($) {
     "use strict"; // jshint ;_;
 

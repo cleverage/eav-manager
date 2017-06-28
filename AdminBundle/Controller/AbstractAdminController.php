@@ -111,7 +111,7 @@ abstract class AbstractAdminController extends BaseAdminController
     protected function getAdminListPath($data = null, array $parameters = [])
     {
         if (!$this->admin->hasAction('list')) {
-            return null;
+            return $this->redirectToRoute('eavmanager_layout.dashboard');
         }
 
         /** @var AdminRouter $adminRouter */

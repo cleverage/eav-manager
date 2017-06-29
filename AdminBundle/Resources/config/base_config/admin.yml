@@ -127,26 +127,6 @@ sidus_admin:
                 icon: tasks
                 hidden: true
 
-        variant:
-            controller: CleverAgeEAVManagerAdminBundle:Variant
-            entity: '%sidus_data_class%'
-            prefix: /variant
-            actions:
-                select:
-                    path:     /{attribute}/{parentId}/select
-                    form_type: CleverAge\EAVManager\AdminBundle\Form\Type\VariantFamilySelector
-                create:
-                    path:     /{attribute}/{parentId}/{familyCode}/create
-                    form_type: Sidus\EAVVariantBundle\Form\Type\VariantType
-                edit:
-                    path:     /{attribute}/{parentId}/{familyCode}/{id}/edit
-                    form_type: Sidus\EAVVariantBundle\Form\Type\VariantType
-                delete:
-                    path:     /{attribute}/{parentId}/{familyCode}/{id}/delete
-            options:
-                hidden: true
-                datagrid: base
-
         _data:
             controller: CleverAgeEAVManagerAdminBundle:InlineEAVData
             entity: '%sidus_data_class%'

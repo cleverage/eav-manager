@@ -9,8 +9,3 @@ services:
         class: CleverAge\EAVManager\AdminBundle\Form\Type\ImageType
         tags:
           - { name: form.type }
-
-    eavmanager_admin.form.variant_family_selector.type:
-        class: CleverAge\EAVManager\AdminBundle\Form\Type\VariantFamilySelector
-        tags:
-          - { name: form.type }

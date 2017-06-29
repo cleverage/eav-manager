@@ -34,7 +34,6 @@
         "sidus/eav-filter-bundle": "dev-v1.2.x-dev",
         "sidus/datagrid-bundle": "dev-v1.2.x-dev",
         "sidus/eav-datagrid-bundle": "dev-v1.2.x-dev",
-        "sidus/eav-variant-bundle": "dev-v1.2.x-dev",
         "sidus/publishing-bundle": "dev-v1.2.x-dev",
         "sidus/file-upload-bundle": "dev-v1.2.x-dev",
         "sidus/admin-bundle": "dev-v1.2.x-dev",

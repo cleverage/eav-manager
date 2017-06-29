@@ -85,23 +85,6 @@ admin:
             familyPermissions:
                 label: Familie's permissions
 
-    variant:
-        select:
-            submit:
-                label: Create a new variant
-            family:
-                label: Select family
-        edit:
-            back:
-                label: Back
-            submit:
-                label: Save
-        delete:
-            back:
-                label: Cancel
-            submit:
-                label: Delete
-
     media:
         title: Asset Manager
         select:

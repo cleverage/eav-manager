@@ -108,7 +108,7 @@
     /**
      * Pushes the url of the clicked element inside the history stack if the target is in autoload and NOT a modal
      */
-    $(document).on('complete.ajaxloading', '.autoload:not(.modal)', function (e) {
+    $(document).on('complete.ajaxloading', '.autoload:not(.modal) .autoload:not(.no-navigation)', function (e) {
         if (e.target !== this) { // Prevent error bubbling
             return;
         }

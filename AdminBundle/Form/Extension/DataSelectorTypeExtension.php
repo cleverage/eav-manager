@@ -17,7 +17,7 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace CleverAge\EAVManager\EAVModelBundle\Form\Extension;
+namespace CleverAge\EAVManager\AdminBundle\Form\Extension;
 
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormInterface;

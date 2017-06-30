@@ -1,0 +1,15 @@
+{% set baseTemplate = baseTemplate|default(admin.baseTemplate) %}
+{% extends isAjax ? 'CleverAgeEAVManagerLayoutBundle::empty_layout.html.twig'
+: baseTemplate|default('CleverAgeEAVManagerAdminBundle:Base:list.html.twig') %}
+
+{% set admin_trans_key = 'admin.' ~ admin.code ~ '.' ~ admin.currentAction.code ~ '.' %}
+
+{% if isAjax and form is defined %}
+    {% form_theme form 'CleverAgeEAVManagerLayoutBundle:Form:ajax_theme.html.twig' %}
+{% endif %}
+
+{% block tg_center %}
+    {{ form_widget(form) }}
+{% endblock %}
+
+{% block additionnal_javascript %}{% endblock %}

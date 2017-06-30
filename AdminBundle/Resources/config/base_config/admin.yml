@@ -143,5 +143,11 @@ sidus_admin:
                     form_type: '%eav_form.type%'
                 delete:
                     path:     /{familyCode}/{id}/delete
+                preview:
+                    path:     /{id}/preview
+                    form_type: '%eav_form.type%'
+                    form_options:
+                        disabled: true
+                        show_legend: false
             options:
                 hidden: true

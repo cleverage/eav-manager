@@ -84,6 +84,7 @@ admin:
         select:
             label: Sélectionner
             title: Sélectionner un média
+            disabled: Sélectionner un média
         detach:
             label: Détacher
 

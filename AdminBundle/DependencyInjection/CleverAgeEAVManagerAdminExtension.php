@@ -71,8 +71,9 @@ class CleverAgeEAVManagerAdminExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config/services'));
         $loader->load('admin.yml');
+        $loader->load('attribute_type.yml');
         $loader->load('cache.yml');
-        $loader->load('forms.yml');
+        $loader->load('form.yml');
     }
 
     /**

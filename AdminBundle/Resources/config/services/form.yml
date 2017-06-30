@@ -1,0 +1,33 @@
+services:
+    eavmanager_admin.form.link.type:
+        class: CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink
+        arguments: ['@sidus_admin.routing.admin_router']
+        tags:
+          - { name: form.type }
+
+    eavmanager_admin.form.image.type:
+        class: CleverAge\EAVManager\AdminBundle\Form\Type\ImageType
+        tags:
+          - { name: form.type }
+
+    webactu.form.type.embed_multi_family_entry:
+        class: CleverAge\EAVManager\AdminBundle\Form\Type\EmbedMultiFamilyEntryType
+        arguments:
+            - '@doctrine'
+            - '%sidus_eav_model.entity.data.class%'
+        tags:
+            - { name: form.type }
+
+    webactu.form.type.embed_multi_family_collection:
+            class: CleverAge\EAVManager\AdminBundle\Form\Type\EmbedMultiFamilyCollectionType
+            arguments:
+                - '@sidus_eav_model.family.registry'
+            tags:
+                - { name: form.type }
+
+    eavmanager.form.extension.data_selector:
+        class: CleverAge\EAVManager\AdminBundle\Form\Extension\DataSelectorTypeExtension
+        arguments:
+            - Sidus\EAVModelBundle\Form\Type\SimpleDataSelectorType
+        tags:
+            - { name: form.type_extension, extended_type: Sidus\EAVModelBundle\Form\Type\SimpleDataSelectorType }

@@ -90,6 +90,7 @@ admin:
         select:
             label: Select
             title: Select a media
+            disabled: Select a media
         detach:
             label: Detach
 

@@ -113,8 +113,22 @@
     </div>
 {% endblock %}
 
+{% block family_selector %}
+    <ul class="dropdown-menu">
+        {% for family in allowed_families %}
+            <li>
+                <a href="{{ admin_path(admin, action, {familyCode: family.code}) }}"
+                   data-target-element="#{{ target }}"
+                   data-auto-modal="{{ target }}" data-input-id="{{ id }}">
+                    {{ family }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
 {% block sidus_simple_data_selector_widget %}
-    {% if allow_add or allow_edit %}
+    {% if (allow_add or allow_edit) and not disabled %}
         <div class="input-group">
             {{ form_widget(form) }}
             {% if allow_edit %}
@@ -138,17 +152,7 @@
                         <button type="button" class="btn" data-toggle="dropdown">
                             <i class="fa fa-plus"></i> {{ 'admin.action.create.label'|trans }}
                         </button>
-                        <ul class="dropdown-menu">
-                            {% for family in allowed_families %}
-                                <li>
-                                    <a href="{{ admin_path(admin, action, {familyCode: family.code}) }}"
-                                       data-target-element="#{{ target }}"
-                                       data-auto-modal="{{ target }}" data-input-id="{{ id }}">
-                                        {{ family }}
-                                    </a>
-                                </li>
-                            {% endfor %}
-                        </ul>
+                        {{ block('family_selector') }}
                     </div>
                 {% endif %}
             {% endif %}
@@ -161,73 +165,26 @@
 {% block embed_multi_family_entry_widget %}
     {{ block('hidden_widget') }}
     {% set autoloadTargetId = id ~ '_embed_target' %}
-
-    <div class="well form">
-        {% if data %}
-            <div class="multi-family-embed autoload no-navigation" data-href="{{ admin_entity_path(admin, data, 'preview') }}"
-                 data-target-element="#{{ autoloadTargetId }}" id="{{ autoloadTargetId }}" data-autoload="1">
-                <div class="tg-loading">&nbsp;</div>
-                {{ data }}
-            </div>
-            <div class="clear pull-right">
-                <a href="{{ admin_entity_path(admin, data, 'edit') }}" class="btn btn-primary"
-                   data-target-element="#{{ target }}" data-auto-modal="{{ target }}" data-input-id="{{ id }}">
-                    <i class="fa fa-edit"></i> {{ 'admin.action.edit.label'|trans }}
-                </a>
-                <a href="{{ admin_entity_path(admin, data, 'delete') }}" class="btn btn-danger"
-                   data-target-element="#{{ target }}" data-auto-modal="{{ target }}" data-input-id="{{ id }}">
-                    <i class="fa fa-trash"></i> {{ 'admin.action.delete.label'|trans }}
-                </a>
+    {% if data %}
+        <div class="autoload no-navigation" data-target-element="#{{ autoloadTargetId }}" id="{{ autoloadTargetId }}"
+                data-href="{{ admin_entity_path(admin, data, 'preview', {inputId: id}) }}" data-autoload="1">
+            {{ data }}
+            <div class="tg-loading">&nbsp;</div>
+        </div>
+    {% else %}
+        <div class="autoload no-navigation" data-target-element="#{{ autoloadTargetId }}" id="{{ autoloadTargetId }}"
+            data-autoload-url="{{ admin_path(admin, 'preview', {id: '__ID__', inputId: id}) }}"
+            data-autoload="__PLACEHOLDER__">
+            <div class="dropdown input-group">
+                <button type="button" class="btn btn-success" data-toggle="dropdown">
+                    <i class="fa fa-plus"></i> {{ 'admin.action.create.label'|trans }}
+                </button>
+                <button type="button" class="btn btn-success" data-toggle="dropdown">
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                {{ block('family_selector') }}
             </div>
             <div class="clear"></div>
-        {% else %}
-            <div class="multi-family-embed autoload no-navigation" data-autoload="__PLACEHOLDER__"
-                 data-autoload-url="{{ admin_path(admin, 'preview', {id: '__ID__'}) }}"
-                 data-target-element="#{{ autoloadTargetId }}" id="{{ autoloadTargetId }}">
-                <div class="dropdown input-group">
-                    <button type="button" class="btn btn-success" data-toggle="dropdown">
-                        <i class="fa fa-plus"></i> {{ 'admin.action.create.label'|trans }}
-                    </button>
-                    <button type="button" class="btn btn-success" data-toggle="dropdown">
-                        <i class="fa fa-caret-down"></i>
-                    </button>
-                    <ul class="dropdown-menu">
-                        {% for family in allowed_families %}
-                            <li>
-                                <a href="{{ admin_path(admin, action, {familyCode: family.code}) }}"
-                                   data-target-element="#{{ target }}"
-                                   data-auto-modal="{{ target }}" data-input-id="{{ id }}">
-                                    {{ family }}
-                                </a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-        {% endif %}
-    </div>
+        </div>
+    {% endif %}
 {% endblock %}
-
-{#{% block embed_multi_family_collection_widget%}#}
-    {#{{ form_widget(form) }}#}
-    {#<div class="dropdown input-group">#}
-        {#<button type="button" class="btn btn-success" data-toggle="dropdown">#}
-            {#<i class="fa fa-plus"></i> {{ 'admin.action.create.label'|trans }}#}
-        {#</button>#}
-        {#<button type="button" class="btn btn-success" data-toggle="dropdown">#}
-            {#<i class="fa fa-caret-down"></i>#}
-        {#</button>#}
-        {#<ul class="dropdown-menu">#}
-            {#{% for family in allowed_families %}#}
-                {#<li>#}
-                    {#<a href="{{ admin_path(admin, action, {familyCode: family.code}) }}"#}
-                       {#data-addfield="collection" data-collection="{{ form.vars.id }}"#}
-                       {#{% if prototype is defined %}data-prototype-name="{{ prototype_name }}"{% endif %}#}
-                       {#data-target-element="#{{ target }}" data-auto-modal="{{ target }}" data-input-id="{{ id }}">#}
-                        {#{{ family }}#}
-                    {#</a>#}
-                {#</li>#}
-            {#{% endfor %}#}
-        {#</ul>#}
-    {#</div>#}
-{#{% endblock %}#}

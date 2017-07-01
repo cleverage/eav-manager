@@ -18,13 +18,6 @@ services:
         tags:
             - { name: form.type }
 
-    webactu.form.type.embed_multi_family_collection:
-            class: CleverAge\EAVManager\AdminBundle\Form\Type\EmbedMultiFamilyCollectionType
-            arguments:
-                - '@sidus_eav_model.family.registry'
-            tags:
-                - { name: form.type }
-
     eavmanager.form.extension.data_selector:
         class: CleverAge\EAVManager\AdminBundle\Form\Extension\DataSelectorTypeExtension
         arguments:

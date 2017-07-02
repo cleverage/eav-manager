@@ -10,10 +10,16 @@ function lockNavigation(message, target) {
     document.__lockedTarget = target;
     window.onbeforeunload = function (e) {
         if (e.target &&
-            document.__lockedTarget && !$(e.target).is(document) && !$(e.target).is(document.__lockedTarget)
+            document.__lockedTarget &&
+            !$(e.target).is(document) &&
+            !$(e.target).is(document.__lockedTarget)
         ) {
             return false;
         }
+        if ($(e.target).is('.no-navigation') || $(e.target).is('.modal')) {
+            return false;
+        }
+
         return message;
     };
 }

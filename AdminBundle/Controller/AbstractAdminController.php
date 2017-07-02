@@ -30,6 +30,7 @@ use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
 use Sidus\AdminBundle\Routing\AdminRouter;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Base controller to build admins in the CDM
@@ -111,7 +112,7 @@ abstract class AbstractAdminController extends BaseAdminController
     protected function getAdminListPath($data = null, array $parameters = [])
     {
         if (!$this->admin->hasAction('list')) {
-            return $this->redirectToRoute('eavmanager_layout.dashboard');
+            return $this->generateUrl('eavmanager_layout.dashboard', [], UrlGeneratorInterface::ABSOLUTE_PATH);
         }
 
         /** @var AdminRouter $adminRouter */

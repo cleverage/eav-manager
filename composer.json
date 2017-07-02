@@ -34,7 +34,6 @@
         "sidus/eav-filter-bundle": "1.2.*",
         "sidus/datagrid-bundle": "1.2.*",
         "sidus/eav-datagrid-bundle": "1.2.*",
-        "sidus/eav-variant-bundle": "1.2.*",
         "sidus/publishing-bundle": "1.2.*",
         "sidus/file-upload-bundle": "1.2.*",
         "sidus/admin-bundle": "1.2.*",

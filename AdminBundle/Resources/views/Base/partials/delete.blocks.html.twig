@@ -1,0 +1,53 @@
+{# @var admin \Sidus\AdminBundle\Admin\Admin #}
+
+{% block submit_button %}
+    <button type="submit" class="btn btn-danger">
+        {{ tryTrans([admin_trans_key ~ '.label', 'admin.action.' ~ admin.currentAction.code ~ '.label'], [], admin.currentAction.code|capitalize) }}
+    </button>
+{% endblock %}
+
+{% block secondary_actions %}
+    {% if data is defined and data and admin.hasAction('edit') %}
+        <li>
+            <a href="{{ admin_entity_path(admin, data, 'edit') }}">
+                <i class="fa fa-pencil"></i>
+                {{ tryTrans([admin_trans_key ~ 'edit.label', 'admin.action.edit.label'], [], 'Edit') }}
+            </a>
+        </li>
+    {% endif %}
+{% endblock %}
+
+{% block edit_standard %}
+    <div class="edit-form {{ block('edit_form_class') }}">
+        {{ form_start(form) }}
+        {{ block('form_actions') }}
+        {{ block('breadcrumb') }}
+        <div class="clear"></div>
+        {{ form_widget(form) }}
+        <p>{{ ('form.' ~ admin.currentAction.code ~ '.confirmation')|trans({'%entity%': data|default()|trim}) }}</p>
+        {{ block('form_actions') }}
+        {{ form_end(form) }}
+        {{ block('additional_content') }}
+    </div>
+{% endblock %}
+
+{% block edit_modal %}
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            {% import "CleverAgeEAVManagerLayoutBundle:Macros:utilities.html.twig" as utilities %}
+            {{ utilities.flash_messages() }}
+            {{ form_start(form) }}
+            <div class="modal-body">
+                <div class="edit-form {{ block('edit_form_class') }}">
+                    {{ form_widget(form) }}
+                    <p>{{ ('form.' ~ admin.currentAction.code ~ '.confirmation')|trans({'%entity%': data|default()|trim}) }}</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                {{ block('form_actions') }}
+            </div>
+            {{ form_end(form) }}
+            {{ block('additional_content') }}
+        </div>
+    </div>
+{% endblock %}

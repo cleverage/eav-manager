@@ -1,14 +1,6 @@
 sidus_eav_model:
     collection_type: Sidus\EAVBootstrapBundle\Form\Type\BootstrapCollectionType
 
-sidus_eav_variant:
-    routes:
-        select: admin.variant.select
-        create: admin.variant.create
-        edit: admin.variant.edit
-        delete: admin.variant.delete
-    families: ~
-
 sidus_publishing:
     enabled: false
     queue:

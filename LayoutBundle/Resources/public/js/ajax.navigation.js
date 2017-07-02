@@ -58,6 +58,9 @@ function ajaxLoading($, el, e) {
     if ($el.is('form') && !url) {
         url = $el.attr('action'); // Fallback to action
     }
+    if (!url) {
+        return; // If no URL found, we do nothing
+    }
 
     var event = $.Event('before.ajaxloading', {
         relatedTarget: el,

@@ -78,29 +78,13 @@ admin:
             familyPermissions:
                 label: Permissions par famille
 
-    variant:
-        select:
-            submit:
-                label: Créer une nouvelle variante
-            family:
-                label: Sélectionner la famille
-        edit:
-            back:
-                label: Retour
-            submit:
-                label: Enregistrer
-        delete:
-            back:
-                label: Retour
-            submit:
-                label: Supprimer
-
     media:
         menu:
             title: Médias
         select:
             label: Sélectionner
             title: Sélectionner un média
+            disabled: Sélectionner un média
         detach:
             label: Détacher
 

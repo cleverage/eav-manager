@@ -165,16 +165,17 @@
 {% block embed_multi_family_entry_widget %}
     {{ block('hidden_widget') }}
     {% set autoloadTargetId = id ~ '_embed_target' %}
+    {% set class = 'autoload no-navigation embed-multi-family-item' %}
     {% if data %}
-        <div class="autoload no-navigation" data-target-element="#{{ autoloadTargetId }}" id="{{ autoloadTargetId }}"
-                data-href="{{ admin_entity_path(admin, data, 'preview', {inputId: id}) }}" data-autoload="1">
+        <div class="{{ class }}" data-target-element="#{{ autoloadTargetId }}" id="{{ autoloadTargetId }}"
+             data-href="{{ admin_entity_path(admin, data, 'preview', {inputId: id}) }}" data-autoload="1">
             {{ data }}
             <div class="tg-loading">&nbsp;</div>
         </div>
     {% else %}
-        <div class="autoload no-navigation" data-target-element="#{{ autoloadTargetId }}" id="{{ autoloadTargetId }}"
-            data-autoload-url="{{ admin_path(admin, 'preview', {id: '__ID__', inputId: id}) }}"
-            data-autoload="__PLACEHOLDER__">
+        <div class="{{ class }}" data-target-element="#{{ autoloadTargetId }}" id="{{ autoloadTargetId }}"
+             data-autoload-url="{{ admin_path(admin, 'preview', {id: '__ID__', inputId: id}) }}"
+             data-autoload="__PLACEHOLDER__">
             <div class="dropdown input-group">
                 <button type="button" class="btn btn-success" data-toggle="dropdown">
                     <i class="fa fa-plus"></i> {{ 'admin.action.create.label'|trans }}
@@ -187,4 +188,10 @@
             <div class="clear"></div>
         </div>
     {% endif %}
+{% endblock %}
+
+{% block embed_multi_family_collection_widget %}
+    <div class="embed-multi-family">
+        {{ form_widget(form) }}
+    </div>
 {% endblock %}

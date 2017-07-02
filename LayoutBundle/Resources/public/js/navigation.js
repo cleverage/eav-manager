@@ -65,7 +65,7 @@
      * Displays a loading mask on top of the target
      */
     $(document).on('before.ajaxloading', '.with-loader', function (e) {
-        if (e.target !== this) { // Prevent error bubbling
+        if (e.target !== this) { // Prevent event bubbling
             return;
         }
         var $tg = $(e.target);
@@ -79,7 +79,7 @@
      * Popup modal if target is a modal
      */
     $(document).on('before.ajaxloading', '.modal', function (e) {
-        if (e.target !== this) { // Prevent error bubbling
+        if (e.target !== this) { // Prevent event bubbling
             return;
         }
         $(e.target).modal('show');
@@ -89,7 +89,7 @@
      * Loads the actual HTML response in the target div, only for autoload targets
      */
     $(document).on('success.ajaxloading', '.autoload', function (e) {
-        if (e.target !== this) { // Prevent error bubbling
+        if (e.target !== this) { // Prevent event bubbling
             return;
         }
         $(e.target).html(e.content);
@@ -99,7 +99,7 @@
      * Loads the actual HTML response in the target div, only for autoload targets
      */
     $(document).on('fail.ajaxloading', '.autoload', function (e) {
-        if (e.target !== this) { // Prevent error bubbling
+        if (e.target !== this) { // Prevent event bubbling
             return;
         }
         $(e.target).html($('#error-template').html());
@@ -108,22 +108,45 @@
     /**
      * Pushes the url of the clicked element inside the history stack if the target is in autoload and NOT a modal
      */
-    $(document).on('complete.ajaxloading', '.autoload:not(.modal) .autoload:not(.no-navigation)', function (e) {
-        if (e.target !== this) { // Prevent error bubbling
+    $(document).on('complete.ajaxloading', '.autoload', function (e) {
+        if (e.target !== this) { // Prevent event bubbling
             return;
         }
+        var $tg = $(this);
+        if ($tg.is('.modal') || $tg.is('.no-navigation')) {
+            return;
+        }
+
+        function removeParam(key, sourceURL) {
+            var rtn = sourceURL.split("?")[0],
+                param,
+                params_arr = [],
+                queryString = (sourceURL.indexOf("?") !== -1) ? sourceURL.split("?")[1] : "";
+            if (queryString !== "") {
+                params_arr = queryString.split("&");
+                for (var i = params_arr.length - 1; i >= 0; i -= 1) {
+                    param = params_arr[i].split("=")[0];
+                    if (param === key) {
+                        params_arr.splice(i, 1);
+                    }
+                }
+                rtn = rtn + "?" + params_arr.join("&");
+            }
+            return rtn;
+        }
+
+        var url = removeParam('target', e.url).replace(/\?$/, '');
 
         // Don't push new state if it's the same URL
-        if (window.location.href.search(e.url.replace(/([()[{*+.$^\\|?])/g, '\\$1')) != -1) {
+        if (window.location.href.search(url.replace(/([()[{*+.$^\\|?])/g, '\\$1')) != -1) {
             return;
         }
 
-        var $tg = $(e.target);
         var state = {
             previousState: history.state,
             previousTitle: document.title,
             previousUrl: window.location.href
         };
-        history.pushState(state, $tg.find('h2.ajax-title').text(), e.url);
+        history.pushState(state, $tg.find('h2.ajax-title').text(), url);
     });
 }(window.jQuery);

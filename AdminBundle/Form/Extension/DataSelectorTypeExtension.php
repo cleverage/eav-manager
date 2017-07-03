@@ -47,6 +47,7 @@ class DataSelectorTypeExtension extends AbstractTypeExtension
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
+        $view->vars['data'] = $form->getData();
         $view->vars['allow_add'] = $options['allow_add'];
         $view->vars['allow_edit'] = $options['allow_edit'];
         $view->vars['allowed_families'] = $options['allowed_families'];

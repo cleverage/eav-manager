@@ -79,21 +79,20 @@ class MediaExtension extends Twig_Extension
         if (isset($config['filters']['thumbnail'])) {
             list($width, $height) = $config['filters']['thumbnail']['size'];
             if ($config['filters']['thumbnail']['mode'] === 'inset') {
-                if ($image->getWidth() > $image->getHeight()) {
+                if ($image->getWidth() >= $image->getHeight()) {
                     $height = floor($width / $image->getWidth() * $image->getHeight());
                 }
-                if ($image->getWidth() < $image->getHeight()) {
+                if ($image->getWidth() <= $image->getHeight()) {
                     $width = floor($height / $image->getHeight() * $image->getWidth());
                 }
             }
         }
 
         return strtr(
-            'width="%w%" height="%h%" alt="%a%"',
+            'width="%w%" height="%h%"',
             [
                 '%w%' => $width,
                 '%h%' => $height,
-                '%a%' => $image->getOriginalFileName(),
             ]
         );
     }

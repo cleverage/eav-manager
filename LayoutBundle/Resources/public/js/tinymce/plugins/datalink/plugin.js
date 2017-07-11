@@ -6,8 +6,7 @@ tinymce.PluginManager.add('datalink', function (editor) {
         createLink: function (dataId) {
             var node = editor.selection.getNode();
             if (this.isDatalink(node)) {
-                $(node)
-                    .attr('data-link-id', dataId);
+                $(node).attr('data-link-id', dataId);
             } else {
                 editor.editorCommands.execCommand('unlink');
                 editor.insertContent('<a href="#data_' + dataId + '" data-link-id="' + dataId + '">' +

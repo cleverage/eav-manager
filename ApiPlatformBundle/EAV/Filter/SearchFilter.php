@@ -21,7 +21,10 @@ namespace CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter;
 
 use ApiPlatform\Core\Exception\InvalidArgumentException;
 use Doctrine\ORM\QueryBuilder;
+use Sidus\EAVModelBundle\Doctrine\AttributeQueryBuilderInterface;
+use Sidus\EAVModelBundle\Doctrine\DQLHandlerInterface;
 use Sidus\EAVModelBundle\Doctrine\EAVQueryBuilder;
+use Sidus\EAVModelBundle\Doctrine\EAVQueryBuilderInterface;
 use Sidus\EAVModelBundle\Model\AttributeInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter as BaseSearchFilter;
 
@@ -33,19 +36,13 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter as BaseSearchFilter
 class SearchFilter extends AbstractEAVFilter
 {
     /**
-     * Passes a property through the filter.
-     *
-     * @param QueryBuilder       $queryBuilder
-     * @param AttributeInterface $attribute
-     * @param mixed              $value
-     * @param null               $strategy
-     * @param string|null        $operationName
+     * {@inheritdoc}
      *
      * @throws \ApiPlatform\Core\Exception\InvalidArgumentException
      */
     protected function filterAttribute(
-        QueryBuilder $queryBuilder,
-        AttributeInterface $attribute,
+        EAVQueryBuilderInterface $eavQb,
+        AttributeQueryBuilderInterface $attributeQueryBuilder,
         $value,
         $strategy = null,
         string $operationName = null
@@ -71,7 +68,6 @@ class SearchFilter extends AbstractEAVFilter
                 throw new InvalidArgumentException("strategy {$strategy} does not exist.");
         }
 
-        $eavQb = new EAVQueryBuilder($queryBuilder, 'o');
-        $eavQb->apply($eavQb->attribute($attribute)->like($value));
+        return $attributeQueryBuilder->like($value);
     }
 }

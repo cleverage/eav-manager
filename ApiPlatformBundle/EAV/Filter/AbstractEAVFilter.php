@@ -126,7 +126,7 @@ abstract class AbstractEAVFilter implements FilterInterface
         $dqlHandlers = [];
         foreach ($properties as $property => $value) {
             if (null !== $this->properties && !array_key_exists($property, $this->properties)) {
-                return;
+                continue;
             }
 
             $family = $this->getFamily($resourceClass);

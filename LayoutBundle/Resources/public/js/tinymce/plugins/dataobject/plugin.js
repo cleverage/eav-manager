@@ -1,14 +1,14 @@
 tinymce.PluginManager.add('dataobject', function (editor) {
     var utilities = {
         isDataobject: function (node) {
-            return node.tagName == 'DIV' && editor.dom.getAttrib(node, 'data-object-id');
+            return node.tagName == 'IMG' && editor.dom.getAttrib(node, 'data-object-id');
         },
         createObject: function (dataId) {
             var node = editor.selection.getNode();
             if (this.isDataobject(node)) {
                 $(node).attr('data-object-id', dataId);
             } else {
-                editor.insertContent('<div class="dataobject" data-object-id="' + dataId + '"><img src="/bundles/cleverageeavmanagerlayout/img/dataobject.png" /></div>');
+                editor.insertContent('<img class="dataobject" data-object-id="' + dataId + '" src="/bundles/cleverageeavmanagerlayout/img/dataobject.png" />');
             }
         }
     };

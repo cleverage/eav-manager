@@ -21,8 +21,8 @@ namespace CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use Doctrine\ORM\QueryBuilder;
-use Sidus\EAVModelBundle\Doctrine\EAVQueryBuilder;
-use Sidus\EAVModelBundle\Exception\MissingAttributeException;
+use Sidus\EAVModelBundle\Doctrine\AttributeQueryBuilderInterface;
+use Sidus\EAVModelBundle\Doctrine\EAVQueryBuilderInterface;
 use Sidus\EAVModelBundle\Model\AttributeInterface;
 
 /**
@@ -56,39 +56,15 @@ class OrderFilter extends AbstractEAVFilter
 
         /** @var array $orderProperties */
         $orderProperties = $requestProperties['order'];
-        foreach ($orderProperties as $property => $value) {
-            if (null !== $this->properties && !array_key_exists($property, $this->properties)) {
-                return;
-            }
-            try {
-                $attribute = $this->getAttribute($resourceClass, $property);
-            } catch (MissingAttributeException $e) {
-                return;
-            }
-            $this->filterAttribute(
-                $queryBuilder,
-                $attribute,
-                $value,
-                $this->properties[$property] ?? null,
-                $operationName
-            );
-        }
+        $this->doApply($queryBuilder, $orderProperties, $resourceClass, $operationName);
     }
 
     /**
-     * Passes a property through the filter.
-     *
-     * @param QueryBuilder       $queryBuilder
-     * @param AttributeInterface $attribute
-     * @param mixed              $value
-     * @param null               $strategy
-     * @param string|null        $operationName
-     *
-     * @throws \ApiPlatform\Core\Exception\InvalidArgumentException
+     * {@inheritdoc}
      */
     protected function filterAttribute(
-        QueryBuilder $queryBuilder,
-        AttributeInterface $attribute,
+        EAVQueryBuilderInterface $eavQb,
+        AttributeQueryBuilderInterface $attributeQueryBuilder,
         $value,
         $strategy = null,
         string $operationName = null
@@ -98,9 +74,9 @@ class OrderFilter extends AbstractEAVFilter
             return;
         }
 
-        $eavQb = new EAVQueryBuilder($queryBuilder, 'o');
-        $eavQb->addOrderBy($eavQb->attribute($attribute), $value);
+        $eavQb->addOrderBy($attributeQueryBuilder, $value);
     }
+
     /**
      * @param array $description
      * @param AttributeInterface $attribute

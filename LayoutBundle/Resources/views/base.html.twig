@@ -59,17 +59,19 @@ NEVER points to this layout directly !
                             {% endif %}
                         {% endblock %}
                         {% block main_menu_application %}
-                            {% if is_granted('ROLE_DATA_MANAGER') %}
-                                {% for admin in get_admins() %}
-                                    {# @var admin \Sidus\AdminBundle\Admin\Admin #}
-                                    {% if not admin.option('hidden') %}
-                                        {{ utilities.admin_family_nav(admin, family is defined ? family) }}
+                            {% block families_menu %}
+                                {% if is_granted('ROLE_DATA_MANAGER') %}
+                                    {% for admin in get_admins() %}
+                                        {# @var admin \Sidus\AdminBundle\Admin\Admin #}
+                                        {% if not admin.option('hidden') and admin.option('families') %}
+                                            {{ utilities.admin_family_nav(admin, family is defined ? family) }}
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if is_granted('ROLE_MEDIA_MANAGER') %}
+                                        {{ utilities.admin_family_nav(admin('media'), family is defined ? family) }}
                                     {% endif %}
-                                {% endfor %}
-                                {% if is_granted('ROLE_MEDIA_MANAGER') %}
-                                    {{ utilities.admin_family_nav(admin('media'), family is defined ? family) }}
                                 {% endif %}
-                            {% endif %}
+                            {% endblock %}
                             {% block process_menu %}
                                 {% if is_granted('ROLE_PROCESS_MANAGER') %}
                                     {% set admin = admin('process') %}
@@ -147,6 +149,7 @@ NEVER points to this layout directly !
     '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/init.bootstrap.js'
     '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/init.datepickers.js'
     '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/init.edit-inline.js'
+    '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/init.pagination.js'
     '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/init.global.js'
     '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/init.selectall.js'
     '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/init.sortable-collections.js'

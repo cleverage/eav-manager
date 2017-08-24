@@ -21,7 +21,13 @@ namespace CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\FilterInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Core\Util\RequestParser;
 use Doctrine\ORM\QueryBuilder;
+use Sidus\EAVFilterBundle\Filter\EAVFilterHelper;
+use Sidus\EAVModelBundle\Doctrine\AttributeQueryBuilderInterface;
+use Sidus\EAVModelBundle\Doctrine\DQLHandlerInterface;
+use Sidus\EAVModelBundle\Doctrine\EAVQueryBuilder;
+use Sidus\EAVModelBundle\Doctrine\EAVQueryBuilderInterface;
 use Sidus\EAVModelBundle\Entity\DataInterface;
 use Sidus\EAVModelBundle\Exception\MissingAttributeException;
 use Sidus\EAVModelBundle\Model\AttributeInterface;
@@ -44,6 +50,9 @@ abstract class AbstractEAVFilter implements FilterInterface
     /** @var FamilyRegistry */
     protected $familyRegistry;
 
+    /** @var EAVFilterHelper */
+    protected $eavFilterHelper;
+
     /** @var array */
     protected $supportedTypes;
 
@@ -54,21 +63,24 @@ abstract class AbstractEAVFilter implements FilterInterface
     protected $familyCode;
 
     /**
-     * @param RequestStack   $requestStack
-     * @param FamilyRegistry $familyRegistry
-     * @param array          $supportedTypes
-     * @param array          $properties
-     * @param string         $familyCode
+     * @param RequestStack    $requestStack
+     * @param FamilyRegistry  $familyRegistry
+     * @param EAVFilterHelper $eavFilterHelper
+     * @param array           $supportedTypes
+     * @param array           $properties
+     * @param string          $familyCode
      */
     public function __construct(
         RequestStack $requestStack,
         FamilyRegistry $familyRegistry,
+        EAVFilterHelper $eavFilterHelper,
         array $supportedTypes,
         array $properties = null,
         $familyCode = null
     ) {
         $this->requestStack = $requestStack;
         $this->familyRegistry = $familyRegistry;
+        $this->eavFilterHelper = $eavFilterHelper;
         $this->supportedTypes = $supportedTypes;
         $this->properties = $properties;
         $this->familyCode = $familyCode;
@@ -91,23 +103,44 @@ abstract class AbstractEAVFilter implements FilterInterface
             return;
         }
 
-        foreach ($this->extractProperties($request) as $property => $value) {
+        $this->doApply($queryBuilder, $this->extractProperties($request), $resourceClass, $operationName);
+    }
+
+    /**
+     * @param QueryBuilder $queryBuilder
+     * @param array        $properties
+     * @param string       $resourceClass
+     * @param string|null  $operationName
+     *
+     * @throws \Sidus\EAVModelBundle\Exception\MissingFamilyException
+     * @throws \UnexpectedValueException
+     * @throws \LogicException
+     */
+    protected function doApply(
+        QueryBuilder $queryBuilder,
+        array $properties,
+        string $resourceClass,
+        string $operationName = null
+    ) {
+        $eavQB = new EAVQueryBuilder($queryBuilder, 'o');
+        $dqlHandlers = [];
+        foreach ($properties as $property => $value) {
             if (null !== $this->properties && !array_key_exists($property, $this->properties)) {
-                return;
+                continue;
             }
-            try {
-                $attribute = $this->getAttribute($resourceClass, $property);
-            } catch (MissingAttributeException $e) {
-                return;
-            }
-            $this->filterAttribute(
-                $queryBuilder,
-                $attribute,
+
+            $family = $this->getFamily($resourceClass);
+            $attributeQueryBuilder = $this->eavFilterHelper->getEAVAttributeQueryBuilder($eavQB, $family, $property);
+            $dqlHandlers[] = $this->filterAttribute(
+                $eavQB,
+                $attributeQueryBuilder,
                 $value,
                 $this->properties[$property] ?? null,
                 $operationName
             );
         }
+
+        $eavQB->apply($eavQB->getAnd($dqlHandlers));
     }
 
     /**
@@ -160,15 +193,17 @@ abstract class AbstractEAVFilter implements FilterInterface
     /**
      * Passes a property through the filter.
      *
-     * @param QueryBuilder       $queryBuilder
-     * @param AttributeInterface $attribute
-     * @param mixed              $value
-     * @param null               $strategy
-     * @param string|null        $operationName
+     * @param EAVQueryBuilderInterface       $eavQb
+     * @param AttributeQueryBuilderInterface $attributeQueryBuilder ,
+     * @param mixed                          $value
+     * @param null                           $strategy
+     * @param string|null                    $operationName
+     *
+     * @return DQLHandlerInterface
      */
     abstract protected function filterAttribute(
-        QueryBuilder $queryBuilder,
-        AttributeInterface $attribute,
+        EAVQueryBuilderInterface $eavQb,
+        AttributeQueryBuilderInterface $attributeQueryBuilder,
         $value,
         $strategy = null,
         string $operationName = null
@@ -183,7 +218,33 @@ abstract class AbstractEAVFilter implements FilterInterface
      */
     protected function extractProperties(Request $request): array
     {
+        $needsFixing = false;
+
+        if (null !== $this->properties) {
+            foreach ($this->properties as $property => $value) {
+                if ($this->isPropertyNested($property) && $request->query->has(str_replace('.', '_', $property))) {
+                    $needsFixing = true;
+                }
+            }
+        }
+
+        if ($needsFixing) {
+            $request = RequestParser::parseAndDuplicateRequest($request);
+        }
+
         return $request->query->all();
+    }
+
+    /**
+     * Determines whether the given property is nested.
+     *
+     * @param string $property
+     *
+     * @return bool
+     */
+    protected function isPropertyNested(string $property): bool
+    {
+        return false !== strpos($property, '.');
     }
 
     /**
@@ -282,6 +343,24 @@ abstract class AbstractEAVFilter implements FilterInterface
             }
             if ($property === 'identifier') {
                 return $family->getAttributeAsIdentifier();
+            }
+            // Special case for nested properties
+            if (false !== strpos($property, '.')) {
+                $attribute = null;
+                foreach (explode('.', $property) as $attributeCode) {
+                    if ($attribute instanceof AttributeInterface) { // If "parent" attribute resolved
+                        $families = $attribute->getOption('allowed_families', []);
+                        if (1 !== count($families)) {
+                            throw new \UnexpectedValueException(
+                                "Bad 'allowed_families' configuration for attribute '{$attribute->getCode()}'"
+                            );
+                        }
+                        $family = $this->familyRegistry->getFamily(reset($families));
+                    }
+                    $attribute = $family->getAttribute($attributeCode);
+                }
+
+                return $attribute;
             }
         }
 

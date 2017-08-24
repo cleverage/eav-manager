@@ -2,7 +2,7 @@
 {% block tinymce_javascript %}
     <script>
         $('.tinymce-submit').on('click', function (e) {
-            var dataId = $('.sidus-combo-selector :input.select2').val();
+            var dataId = $('.sidus-combo-selector :input.select2:visible').val();
             var plugin = parent.tinymce.PluginManager.get('dataobject')(editor);
             plugin.createObject(dataId);
             editor.windowManager.close();

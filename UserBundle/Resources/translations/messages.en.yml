@@ -14,3 +14,9 @@ security:
         title: Reset password
         back: Back to login
         submit: Change password
+
+eavmanager:
+    user:
+        security:
+            account_creation: Account creation
+            reset_password: Reset your password

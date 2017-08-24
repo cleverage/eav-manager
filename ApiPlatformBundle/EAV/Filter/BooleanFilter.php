@@ -19,9 +19,8 @@
 
 namespace CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter;
 
-use Doctrine\ORM\QueryBuilder;
-use Sidus\EAVModelBundle\Doctrine\EAVQueryBuilder;
-use Sidus\EAVModelBundle\Model\AttributeInterface;
+use Sidus\EAVModelBundle\Doctrine\AttributeQueryBuilderInterface;
+use Sidus\EAVModelBundle\Doctrine\EAVQueryBuilderInterface;
 
 /**
  * Filter the collection by given properties.
@@ -31,19 +30,11 @@ use Sidus\EAVModelBundle\Model\AttributeInterface;
 class BooleanFilter extends AbstractEAVFilter
 {
     /**
-     * Passes a property through the filter.
-     *
-     * @param QueryBuilder       $queryBuilder
-     * @param AttributeInterface $attribute
-     * @param mixed              $value
-     * @param null               $strategy
-     * @param string|null        $operationName
-     *
-     * @throws \ApiPlatform\Core\Exception\InvalidArgumentException
+     * {@inheritdoc}
      */
     protected function filterAttribute(
-        QueryBuilder $queryBuilder,
-        AttributeInterface $attribute,
+        EAVQueryBuilderInterface $eavQb,
+        AttributeQueryBuilderInterface $attributeQueryBuilder,
         $value,
         $strategy = null,
         string $operationName = null
@@ -56,7 +47,6 @@ class BooleanFilter extends AbstractEAVFilter
             $value = (bool) $value; // #covfefe
         }
 
-        $eavQb = new EAVQueryBuilder($queryBuilder, 'o');
-        $eavQb->apply($eavQb->attribute($attribute)->equals($value));
+        return $attributeQueryBuilder->equals($value);
     }
 }

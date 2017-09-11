@@ -59,16 +59,16 @@ NEVER points to this layout directly !
                             {% endif %}
                         {% endblock %}
                         {% block main_menu_application %}
-                            {% if is_granted('ROLE_DATA_MANAGER') %}
-                                {% for admin in get_admins() %}
+                            {% for admin in get_admins() %}
+                                {% if is_granted('ROLE_DATA_MANAGER') or (family is defined and is_granted('list', family)) %}
                                     {# @var admin \Sidus\AdminBundle\Admin\Admin #}
                                     {% if not admin.option('hidden') %}
                                         {{ utilities.admin_family_nav(admin, family is defined ? family) }}
                                     {% endif %}
-                                {% endfor %}
-                                {% if is_granted('ROLE_MEDIA_MANAGER') %}
-                                    {{ utilities.admin_family_nav(admin('media'), family is defined ? family) }}
                                 {% endif %}
+                            {% endfor %}
+                            {% if is_granted('ROLE_MEDIA_MANAGER') and is_granted('ROLE_DATA_MANAGER') %}
+                                {{ utilities.admin_family_nav(admin('media'), family is defined ? family) }}
                             {% endif %}
                             {% block process_menu %}
                                 {% if is_granted('ROLE_PROCESS_MANAGER') %}

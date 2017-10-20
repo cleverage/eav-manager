@@ -101,6 +101,7 @@ abstract class AbstractEAVQueryTask extends AbstractEAVTask
         if (null !== $options['offset']) {
             $qb->setFirstResult($options['offset']);
         }
+        $qb->distinct();
 
         return $qb;
     }

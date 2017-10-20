@@ -5,3 +5,8 @@ services:
         arguments:
             - '@doctrine'
             - '@sidus_eav_model.family.registry'
+
+    eavmanager_process.task.eav_criteria_reader:
+        class: CleverAge\EAVManager\ProcessBundle\Task\EAVCriteriaReaderTask
+        shared: false
+        parent: eavmanager_process.task.eav_reader

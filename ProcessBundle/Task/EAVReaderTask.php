@@ -6,6 +6,7 @@ use CleverAge\ProcessBundle\Model\IterableTaskInterface;
 use CleverAge\ProcessBundle\Model\ProcessState;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Psr\Log\LogLevel;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Allows to iterate over a paged resultset of EAV data
@@ -31,12 +32,17 @@ class EAVReaderTask extends AbstractEAVQueryTask implements IterableTaskInterfac
      */
     public function execute(ProcessState $state)
     {
+        $options = $this->getOptions($state);
         if ($this->closed) {
-            $options = $this->getOptions($state);
-            $state->log('Reader was closed previously', LogLevel::ERROR, $options['family'], $options);
-            $state->setStopped(true);
+            if ($options['allow_reset']) {
+                $this->closed = false;
+                $this->iterator = null;
+            } else {
+                $state->log('Reader was closed previously', LogLevel::ERROR, $options['family'], $options);
+                $state->setStopped(true);
 
-            return;
+                return;
+            }
         }
 
         if (null === $this->iterator) {
@@ -84,5 +90,17 @@ class EAVReaderTask extends AbstractEAVQueryTask implements IterableTaskInterfac
         }
 
         return $valid;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @throws \Sidus\EAVModelBundle\Exception\MissingFamilyException
+     */
+    protected function configureOptions(OptionsResolver $resolver)
+    {
+        parent::configureOptions($resolver);
+        $resolver->setDefaults([
+            'allow_reset' => false, // Allow the reader to reset it's iterator
+        ]);
     }
 }

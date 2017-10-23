@@ -7,6 +7,14 @@ services:
         tags:
             - { name: cleverage.transformer }
 
+    eav_manager_process.transformer.single_eav_finder:
+        class: CleverAge\EAVManager\ProcessBundle\Transformer\SingleEAVFinderTransformer
+        arguments:
+            - '@doctrine'
+            - '@sidus_eav_model.family.registry'
+        tags:
+            - { name: cleverage.transformer }
+
     eav_manager_process.transformer.resource_to_asset:
         class: CleverAge\EAVManager\ProcessBundle\Transformer\ResourceToAssetTransformer
         arguments:

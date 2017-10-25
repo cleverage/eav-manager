@@ -50,8 +50,8 @@ class ResourceManager extends BaseResourceManager
         if ($resource instanceof Image) {
             $imageSize = getimagesizefromstring($file->read());
             $resource
-                ->setWidth(isset($imageSize[0]) ? $imageSize[0] : null)
-                ->setHeight(isset($imageSize[1]) ? $imageSize[1] : null);
+                ->setWidth($imageSize[0] ?? null)
+                ->setHeight($imageSize[1] ?? null);
         }
     }
 }

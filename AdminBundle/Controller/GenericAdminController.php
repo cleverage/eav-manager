@@ -53,9 +53,9 @@ class GenericAdminController extends AbstractAdminController
     /**
      * @param Request $request
      *
-     * @return Response
-     *
      * @throws \Exception
+     *
+     * @return Response
      */
     public function createAction(Request $request)
     {

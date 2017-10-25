@@ -54,12 +54,13 @@ class PromoteUserCommand extends ContainerAwareCommand
      *
      * @throws \Exception
      *
-     * @return int|null|void
+     * @return int|null
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $username = $input->getArgument('username');
         $userManager = $this->getContainer()->get('eavmanager_user.user.manager');
+        $user = null;
         try {
             $user = $userManager->loadUserByUsername($username);
         } catch (UsernameNotFoundException $e) {

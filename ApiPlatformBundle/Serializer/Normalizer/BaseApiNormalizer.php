@@ -38,6 +38,9 @@ class BaseApiNormalizer extends AbstractItemNormalizer
 {
     use ContextTrait;
 
+    /** @var SerializerInterface */
+    protected $serializer;
+
     /** @var NormalizerInterface */
     protected $normalizer;
 
@@ -84,6 +87,9 @@ class BaseApiNormalizer extends AbstractItemNormalizer
      * {@inheritdoc}
      *
      * @throws \ApiPlatform\Core\Exception\InvalidArgumentException
+     * @throws \Symfony\Component\Serializer\Exception\CircularReferenceException
+     * @throws \Symfony\Component\Serializer\Exception\InvalidArgumentException
+     * @throws \Symfony\Component\Serializer\Exception\LogicException
      */
     public function normalize($object, $format = null, array $context = [])
     {
@@ -104,6 +110,12 @@ class BaseApiNormalizer extends AbstractItemNormalizer
      * @throws InvalidArgumentException
      * @throws \ApiPlatform\Core\Exception\PropertyNotFoundException
      * @throws \ApiPlatform\Core\Exception\ResourceClassNotFoundException
+     * @throws \Symfony\Component\Serializer\Exception\BadMethodCallException
+     * @throws \Symfony\Component\Serializer\Exception\ExtraAttributesException
+     * @throws \Symfony\Component\Serializer\Exception\InvalidArgumentException
+     * @throws \Symfony\Component\Serializer\Exception\LogicException
+     * @throws \Symfony\Component\Serializer\Exception\RuntimeException
+     * @throws \Symfony\Component\Serializer\Exception\UnexpectedValueException
      */
     public function denormalize($data, $class, $format = null, array $context = [])
     {

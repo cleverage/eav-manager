@@ -20,12 +20,8 @@
 namespace CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter;
 
 use ApiPlatform\Core\Exception\InvalidArgumentException;
-use Doctrine\ORM\QueryBuilder;
 use Sidus\EAVModelBundle\Doctrine\AttributeQueryBuilderInterface;
-use Sidus\EAVModelBundle\Doctrine\DQLHandlerInterface;
-use Sidus\EAVModelBundle\Doctrine\EAVQueryBuilder;
 use Sidus\EAVModelBundle\Doctrine\EAVQueryBuilderInterface;
-use Sidus\EAVModelBundle\Model\AttributeInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter as BaseSearchFilter;
 
 /**

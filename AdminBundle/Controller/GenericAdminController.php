@@ -84,7 +84,7 @@ class GenericAdminController extends AbstractAdminController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->saveEntity($data);
 
-            $parameters = $request->query->all(); // @todo is this necessary ?
+            $parameters = $request->query->all();
             $parameters['success'] = 1;
 
             return $this->redirectToEntity($data, 'edit', $parameters);

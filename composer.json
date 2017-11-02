@@ -37,6 +37,6 @@
         "sidus/publishing-bundle": "dev-v1.2.x-dev",
         "sidus/file-upload-bundle": "dev-v1.2.x-dev",
         "sidus/admin-bundle": "dev-v1.2.x-dev",
-        "cleverage/process-bundle": "dev-master"
+        "cleverage/process-bundle": "*"
     }
 }

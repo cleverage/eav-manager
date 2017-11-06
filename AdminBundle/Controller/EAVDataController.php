@@ -31,6 +31,7 @@ use Sidus\EAVDataGridBundle\Model\DataGrid as EAVDataGrid;
 use Sidus\EAVModelBundle\Entity\DataInterface;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
 use Sidus\FilterBundle\Configuration\DoctrineFilterConfigurationHandlerInterface;
+use Sidus\FilterBundle\Query\Handler\Doctrine\DoctrineQueryHandlerInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -279,12 +280,12 @@ class EAVDataController extends AbstractAdminController
             }
 
             // Check if family has a datagrid with the same name
-            if ($this->get('sidus_data_grid.datagrid_configuration.handler')->hasDataGrid($familyCode)) {
+            if ($this->get('sidus_data_grid.registry.datagrid')->hasDataGrid($familyCode)) {
                 return $familyCode;
             }
             // Check in lowercase (this should be deprecated ?)
             $code = strtolower($familyCode);
-            if ($this->get('sidus_data_grid.datagrid_configuration.handler')->hasDataGrid($code)) {
+            if ($this->get('sidus_data_grid.registry.datagrid')->hasDataGrid($code)) {
                 return $code;
             }
         }
@@ -431,9 +432,9 @@ class EAVDataController extends AbstractAdminController
      */
     protected function redirectToExport(DataGrid $dataGrid, SessionInterface $session)
     {
-        $filterConfig = $dataGrid->getFilterConfig();
+        $filterConfig = $dataGrid->getQueryHandler();
         $selectedIds = [];
-        if ($filterConfig instanceof DoctrineFilterConfigurationHandlerInterface) {
+        if ($filterConfig instanceof DoctrineQueryHandlerInterface) {
             $alias = $filterConfig->getAlias();
             $qb = $filterConfig->getQueryBuilder();
             $qb->select($alias.'.id');

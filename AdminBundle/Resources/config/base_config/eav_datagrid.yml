@@ -1,15 +1,16 @@
-sidus_eav_data_grid:
+sidus_data_grid:
     configurations:
         baseasset:
-            family: BaseAsset
-            filter_config:
+            query_handler:
+                provider: sidus.eav
+                options:
+                    family: BaseAsset
                 sortable:
                     - id
                     - createdAt
                     - updatedAt
                 default_sort:
                     id: DESC
-                fields: []
             columns:
                 id:
                     label: '#'
@@ -26,9 +27,11 @@ sidus_eav_data_grid:
                     data-target-element: '#tg_center'
 
         document:
-            family: Document
             parent: baseasset
-            filter_config:
+            query_handler:
+                provider: sidus.eav
+                options:
+                    family: Document
                 sortable:
                     - id
                     - title
@@ -36,7 +39,7 @@ sidus_eav_data_grid:
                     - fileName
                 default_sort:
                     id: DESC
-                fields:
+                filters:
                     title: ~
                     fileName: ~
                     mimeType:
@@ -53,16 +56,18 @@ sidus_eav_data_grid:
                     template: '%eav_datagrid.actions%'
 
         image:
-            family: Image
             parent: baseasset
-            filter_config:
+            query_handler:
+                provider: sidus.eav
+                options:
+                    family: Image
                 sortable:
                     - id
                     - title
                     - mimeType
                 default_sort:
                     id: DESC
-                fields:
+                filters:
                     title: ~
                     tags: ~
                     fileName: ~
@@ -83,15 +88,17 @@ sidus_eav_data_grid:
                     template: '%eav_datagrid.actions%'
 
         image_browser:
-            family: Image
-            filter_config:
+            query_handler:
+                provider: sidus.eav
+                options:
+                    family: Image
                 results_per_page: 5
                 sortable:
                     - id
                     - title
                 default_sort:
                     id: DESC
-                fields:
+                filters:
                     title: ~
                     tags: ~
             columns:
@@ -117,15 +124,17 @@ sidus_eav_data_grid:
                     data-target-element: '_CURRENT_MODAL'
 
         document_browser:
-            family: Document
-            filter_config:
+            query_handler:
+                provider: sidus.eav
+                options:
+                    family: Document
                 results_per_page: 5
                 sortable:
                     - id
                     - title
                 default_sort:
                     id: DESC
-                fields:
+                filters:
                     title: ~
                     tags: ~
             columns:

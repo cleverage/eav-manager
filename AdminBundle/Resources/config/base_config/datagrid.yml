@@ -1,14 +1,15 @@
 sidus_data_grid:
     configurations:
         user:
-            filter_config:
-                entity: CleverAgeEAVManagerUserBundle:User
+            query_handler:
+                options:
+                    entity: CleverAgeEAVManagerUserBundle:User
                 sortable:
                     - id
                     - createdAt
                     - username
                     - email
-                fields:
+                filters:
                     createdAt:
                         type: date_range
                         label: Création
@@ -38,14 +39,15 @@ sidus_data_grid:
                         data-target-element: "#tg_right"
 
         group:
-            filter_config:
-                entity: CleverAgeEAVManagerUserBundle:Group
+            query_handler:
+                options:
+                    entity: CleverAgeEAVManagerUserBundle:Group
                 sortable:
                     - id
                     - createdAt
                     - name
                     - roles
-                fields:
+                filters:
                     createdAt:
                         type: date_range
                         label: Création
@@ -69,8 +71,9 @@ sidus_data_grid:
                         data-target-element: "#tg_right"
 
         resource:
-            filter_config:
-                entity: CleverAge\EAVManager\AssetBundle\Entity\Document
+            query_handler:
+                options:
+                    entity: CleverAge\EAVManager\AssetBundle\Entity\Document
                 sortable:
                     - id
                     - originalFileName
@@ -79,7 +82,7 @@ sidus_data_grid:
                     - fileModifiedAt
                 default_sort:
                     id: DESC
-                fields:
+                filters:
                     originalFileName: ~
                     mimeType:
                         type: choice
@@ -97,8 +100,9 @@ sidus_data_grid:
                     template: CleverAgeEAVManagerAdminBundle:Asset/partials:resource.row.actions.html.twig
 
         process:
-            filter_config:
-                entity: CleverAge\ProcessBundle\Entity\ProcessHistory
+            query_handler:
+                options:
+                    entity: CleverAge\ProcessBundle\Entity\ProcessHistory
                 sortable:
                     - processCode
                     - startDate
@@ -106,7 +110,7 @@ sidus_data_grid:
                     - state
                 default_sort:
                     startDate: DESC
-                fields:
+                filters:
                     processCode:
                         type: choice
                     startDate:
@@ -124,7 +128,7 @@ sidus_data_grid:
                     template: CleverAgeEAVManagerAdminBundle:Process/partials:process.row.actions.html.twig
 
         task:
-            filter_config:
+            query_handler:
                 entity: CleverAge\ProcessBundle\Entity\TaskHistory
                 results_per_page: 50
                 sortable:
@@ -135,7 +139,7 @@ sidus_data_grid:
                     - reference
                 default_sort:
                     loggedAt: DESC
-                fields:
+                filters:
 #                    processHistory:
 #                        type: choice
 #                        form_options:

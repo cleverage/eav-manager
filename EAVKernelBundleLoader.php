@@ -57,8 +57,6 @@ class EAVKernelBundleLoader
             new \Sidus\EAVBootstrapBundle\SidusEAVBootstrapBundle(),
             // Datagrid made easy
             new \Sidus\DataGridBundle\SidusDataGridBundle(),
-            // EAV support for datagrids
-            new \Sidus\EAVDataGridBundle\SidusEAVDataGridBundle(),
             // Collect entities, serialize and push them on configured remote servers
             new \Sidus\PublishingBundle\SidusPublishingBundle(),
             // Easily attach file to doctrine's entities

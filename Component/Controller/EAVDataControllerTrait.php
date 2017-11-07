@@ -46,9 +46,21 @@ trait EAVDataControllerTrait
      *
      * @throws \Exception
      */
-    protected function getFamily($familyCode)
+    protected function getFamily($familyCode): FamilyInterface
     {
         return $this->container->get('sidus_eav_model.family.registry')->getFamily($familyCode);
+    }
+
+    /**
+     * @param FamilyInterface $family
+     *
+     * @throws \Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException
+     * @throws \Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException
+     */
+    protected function setFamily(FamilyInterface $family)
+    {
+        $this->family = $family;
+        $this->container->get('router')->getContext()->setParameter('familyCode', $family->getCode());
     }
 
     /**
@@ -59,7 +71,7 @@ trait EAVDataControllerTrait
      *
      * @return DataInterface
      */
-    protected function getData($id, FamilyInterface $family = null)
+    protected function getData($id, FamilyInterface $family = null): DataInterface
     {
         if ($id instanceof DataInterface) {
             $data = $id;
@@ -90,6 +102,8 @@ trait EAVDataControllerTrait
      * @throws \LogicException
      * @throws \UnexpectedValueException
      * @throws \Symfony\Component\DependencyInjection\Exception\InvalidArgumentException
+     * @throws \Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException
+     * @throws \Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException
      */
     protected function initDataFamily(DataInterface $data, FamilyInterface $family = null)
     {
@@ -100,6 +114,6 @@ trait EAVDataControllerTrait
                 "Data family '{$data->getFamilyCode()}'' not matching admin family {$family->getCode()}"
             );
         }
-        $this->family = $family;
+        $this->setFamily($family);
     }
 }

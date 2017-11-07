@@ -43,8 +43,6 @@ class EAVKernelBundleLoader
             new \Oneup\UploaderBundle\OneupUploaderBundle(),
             // Required by SidusFileUploadBundle
             new \Oneup\FlysystemBundle\OneupFlysystemBundle(),
-            // Required by SidusPublishingBundle
-            new \Circle\RestClientBundle\CircleRestClientBundle(),
 
             // Sidus bundles
             //  Base bundle for EAV model
@@ -57,8 +55,6 @@ class EAVKernelBundleLoader
             new \Sidus\EAVBootstrapBundle\SidusEAVBootstrapBundle(),
             // Datagrid made easy
             new \Sidus\DataGridBundle\SidusDataGridBundle(),
-            // Collect entities, serialize and push them on configured remote servers
-            new \Sidus\PublishingBundle\SidusPublishingBundle(),
             // Easily attach file to doctrine's entities
             new \Sidus\FileUploadBundle\SidusFileUploadBundle(),
             // Very basic admin configuration in YML to regroup entities and route actions easily

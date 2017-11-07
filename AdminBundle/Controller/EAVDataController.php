@@ -84,7 +84,7 @@ class EAVDataController extends AbstractAdminController
      */
     public function listAction(Request $request, FamilyInterface $family)
     {
-        $this->family = $family;
+        $this->setFamily($family);
         $dataGrid = $this->getDataGrid();
 
         $this->bindDataGridRequest($dataGrid, $request);
@@ -118,7 +118,7 @@ class EAVDataController extends AbstractAdminController
      */
     public function exportAction(Request $request, FamilyInterface $family)
     {
-        $this->family = $family;
+        $this->setFamily($family);
 
         $exportConfig = $this->getExportConfig($request);
         $defaultFormOptions = $this->getDefaultFormOptions($request, 'export');
@@ -269,7 +269,7 @@ class EAVDataController extends AbstractAdminController
      *
      * @return string
      */
-    protected function getDataGridConfigCode()
+    protected function getDataGridConfigCode(): string
     {
         if ($this->family) {
             // If datagrid code set in options, use it
@@ -294,27 +294,6 @@ class EAVDataController extends AbstractAdminController
     }
 
     /**
-     * {@inheritdoc}
-     */
-    protected function getDataGrid()
-    {
-        $datagrid = parent::getDataGrid();
-        if ($datagrid instanceof EAVDataGrid) {
-            $datagrid->setFamily($this->family);
-            if ($datagrid->hasAction('create')) {
-                $datagrid->setActionParameters(
-                    'create',
-                    [
-                        'familyCode' => $this->family->getCode(),
-                    ]
-                );
-            }
-        }
-
-        return $datagrid;
-    }
-
-    /**
      * @param Request     $request
      * @param string      $dataId
      * @param Action|null $action
@@ -323,7 +302,7 @@ class EAVDataController extends AbstractAdminController
      *
      * @return array
      */
-    protected function getDefaultFormOptions(Request $request, $dataId, Action $action = null)
+    protected function getDefaultFormOptions(Request $request, $dataId, Action $action = null): array
     {
         if (!$action) {
             $action = $this->admin->getCurrentAction();
@@ -352,7 +331,7 @@ class EAVDataController extends AbstractAdminController
      *
      * @return array
      */
-    protected function getViewParameters(Request $request, Form $form = null, $data = null)
+    protected function getViewParameters(Request $request, Form $form = null, $data = null): array
     {
         $parameters = parent::getViewParameters($request, $form, $data);
         if ($this->family) {
@@ -365,7 +344,7 @@ class EAVDataController extends AbstractAdminController
     /**
      * {@inheritdoc}
      */
-    protected function getAdminListPath($data = null, array $parameters = [])
+    protected function getAdminListPath($data = null, array $parameters = []): string
     {
         if ($this->family) {
             $parameters = array_merge(['familyCode' => $this->family->getCode()], $parameters);

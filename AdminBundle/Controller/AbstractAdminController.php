@@ -60,7 +60,7 @@ abstract class AbstractAdminController extends BaseAdminController
     /**
      * @param Request $request
      *
-     * @return string
+     * @return string|null
      */
     protected function getTarget(Request $request)
     {
@@ -76,11 +76,11 @@ abstract class AbstractAdminController extends BaseAdminController
      * @param Form    $form
      * @param mixed   $data
      *
-     * @return array
-     *
      * @throws \Exception
+     *
+     * @return array
      */
-    protected function getViewParameters(Request $request, Form $form = null, $data = null)
+    protected function getViewParameters(Request $request, Form $form = null, $data = null): array
     {
         $parameters = [
             'isAjax' => $request->isXmlHttpRequest(),
@@ -109,7 +109,7 @@ abstract class AbstractAdminController extends BaseAdminController
      *
      * @return string
      */
-    protected function getAdminListPath($data = null, array $parameters = [])
+    protected function getAdminListPath($data = null, array $parameters = []): string
     {
         if (!$this->admin->hasAction('list')) {
             return $this->generateUrl('eavmanager_layout.dashboard', [], UrlGeneratorInterface::ABSOLUTE_PATH);

@@ -1,11 +1,17 @@
 # Imports all default values for the EAV Manager to work
 
 imports:
-    - { resource: base_config/admin.yml }
-    - { resource: base_config/assets.yml }
-    - { resource: base_config/datagrid.yml }
-    - { resource: base_config/eav_config.yml }
-    - { resource: base_config/eav_datagrid.yml }
+    # Default parameters
     - { resource: base_config/parameters.yml }
-    - { resource: base_config/upload.yml }
-    - { resource: base_config/wysiwyg.yml }
+
+    # Admin
+    - { resource: base_config/admin/* }
+
+    # Application
+    - { resource: base_config/application/* }
+
+    # Datagrid
+    - { resource: base_config/datagrid/* }
+
+    # Model
+    - { resource: base_config/model/* }

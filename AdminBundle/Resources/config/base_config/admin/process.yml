@@ -1,0 +1,16 @@
+sidus_admin:
+    configurations:
+        process:
+            controller: CleverAgeEAVManagerAdminBundle:GenericAdmin
+            entity: CleverAge\ProcessBundle\Entity\ProcessHistory
+            prefix: /process
+            actions:
+                list:
+                    path: /
+                show:
+                    path: /{id}/show
+                delete:
+                    path: /{id}/delete
+            options:
+                icon: history
+                hidden: true

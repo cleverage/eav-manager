@@ -1,0 +1,26 @@
+sidus_admin:
+    configurations:
+        _data:
+            controller: CleverAgeEAVManagerAdminBundle:InlineEAVData
+            entity: '%sidus_data_class%'
+            prefix: /_data
+            actions:
+                create:
+                    path:     /{familyCode}/create
+                    form_type: '%eav_form.type%'
+                edit:
+                    path:     /{familyCode}/{id}/edit
+                    form_type: '%eav_form.type%'
+                editInline:
+                    path:     /{id}/edit
+                    form_type: '%eav_form.type%'
+                delete:
+                    path:     /{familyCode}/{id}/delete
+                preview:
+                    path:     /{id}/preview
+                    form_type: '%eav_form.type%'
+                    form_options:
+                        disabled: true
+                        show_legend: false
+            options:
+                hidden: true

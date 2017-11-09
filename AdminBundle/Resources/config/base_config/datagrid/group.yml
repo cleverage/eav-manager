@@ -1,0 +1,34 @@
+sidus_data_grid:
+    configurations:
+        group:
+            query_handler:
+                provider: doctrine
+                options:
+                    entity: CleverAgeEAVManagerUserBundle:Group
+                sortable:
+                    - id
+                    - createdAt
+                    - name
+                    - roles
+                filters:
+                    createdAt:
+                        type: date_range
+                        label: Création
+                    name: ~
+            columns:
+                id:
+                    label: '#'
+                name: ~
+                roles: ~
+                createdAt: ~
+                actions:
+                    template: '%datagrid.actions%'
+            actions:
+                create:
+                    form_type: CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink
+                    label: admin.action.create.label
+                    action: create
+                    icon: plus
+                    attr:
+                        class: btn-primary
+                        data-target-element: "#tg_right"

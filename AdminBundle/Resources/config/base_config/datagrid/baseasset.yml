@@ -1,0 +1,27 @@
+sidus_data_grid:
+    configurations:
+        baseasset:
+            query_handler:
+                provider: sidus.eav
+                options:
+                    family: BaseAsset
+                sortable:
+                    - id
+                    - createdAt
+                    - updatedAt
+                default_sort:
+                    id: DESC
+            columns:
+                id:
+                    label: '#'
+                label:
+                    template: '%clickable.template%'
+                createdAt: ~
+                updatedAt: ~
+                actions:
+                    template: '%eav_datagrid.actions%'
+            actions:
+                create: '%create.button%'
+            reset_button:
+                attr:
+                    data-target-element: '#tg_center'

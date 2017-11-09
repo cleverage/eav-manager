@@ -1,0 +1,33 @@
+sidus_data_grid:
+    configurations:
+        image:
+            parent: baseasset
+            query_handler:
+                provider: sidus.eav
+                options:
+                    family: Image
+                sortable:
+                    - id
+                    - title
+                    - mimeType
+                default_sort:
+                    id: DESC
+                filters:
+                    title: ~
+                    tags: ~
+                    fileName: ~
+                    mimeType:
+                        type: choice
+            columns:
+                id:
+                    label: '#'
+                imageFile:
+                    template: CleverAgeEAVManagerAdminBundle:Asset:partials/browse.thumbnail.html.twig
+                title:
+                    template: '%clickable.template%'
+                tags: ~
+                mimeType: ~
+                filename:
+                    property_path: imageFile.originalFilename
+                actions:
+                    template: '%eav_datagrid.actions%'

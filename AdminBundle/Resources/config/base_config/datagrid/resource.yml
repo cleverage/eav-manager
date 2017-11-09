@@ -1,0 +1,31 @@
+sidus_data_grid:
+    configurations:
+        resource:
+            query_handler:
+                provider: doctrine
+                options:
+                    entity: CleverAge\EAVManager\AssetBundle\Entity\Document
+                sortable:
+                    - id
+                    - originalFileName
+                    - fileSize
+                    - mimeType
+                    - fileModifiedAt
+                default_sort:
+                    id: DESC
+                filters:
+                    originalFileName: ~
+                    mimeType:
+                        type: choice
+                    fileModifiedAt:
+                        type: date_range
+            columns:
+                id:
+                    label: '#'
+                originalFileName: ~
+                type: ~
+                fileSize: ~
+                mimeType: ~
+                fileModifiedAt: ~
+                actions:
+                    template: CleverAgeEAVManagerAdminBundle:Asset/partials:resource.row.actions.html.twig

@@ -1,0 +1,13 @@
+sidus_admin:
+    configurations:
+        resource:
+            controller: CleverAgeEAVManagerAdminBundle:GenericAdmin
+            entity: CleverAge\EAVManager\AssetBundle\Entity\Document
+            prefix: /resources
+            actions:
+                list:
+                    path: /
+                delete:
+                    path: /{id}/delete
+            options:
+                hidden: true

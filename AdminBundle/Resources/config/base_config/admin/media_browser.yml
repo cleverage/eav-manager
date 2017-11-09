@@ -1,0 +1,25 @@
+sidus_admin:
+    configurations:
+        media_browser:
+            controller: CleverAgeEAVManagerAdminBundle:EAVData # Absolute reference in case it's overriden in the app
+            entity: '%sidus_data_class%'
+            prefix: /medias_browser
+            actions:
+                list:
+                    path:     /{familyCode}/list
+                create:
+                    path:     /{familyCode}/create
+                    form_type: '%eav_form.type%'
+                edit:
+                    path:     /{familyCode}/{id}/edit
+                    form_type: '%eav_form.type%'
+                delete:
+                    path:     /{familyCode}/{id}/delete
+            options:
+                hidden: true
+                allow_back: true
+                families:
+                    Image:
+                        datagrid: image_browser
+                    Document:
+                        datagrid: document_browser

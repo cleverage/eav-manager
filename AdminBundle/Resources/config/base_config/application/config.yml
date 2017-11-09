@@ -5,3 +5,6 @@ mopa_bootstrap:
     form:
         render_required_asterisk: true
         render_optional_text: false
+
+sidus_admin:
+    fallback_template_directory: CleverAgeEAVManagerAdminBundle:Base

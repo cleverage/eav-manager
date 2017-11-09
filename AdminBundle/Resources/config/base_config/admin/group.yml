@@ -1,0 +1,19 @@
+sidus_admin:
+    configurations:
+        group:
+            controller: CleverAgeEAVManagerAdminBundle:User
+            entity: CleverAge\EAVManager\UserBundle\Entity\Group
+            prefix: /groups
+            actions:
+                list:
+                    path:     /
+                create:
+                    path:     /create
+                    form_type: CleverAge\EAVManager\UserBundle\Form\Type\GroupType
+                edit:
+                    path:     /{id}/edit
+                    form_type: CleverAge\EAVManager\UserBundle\Form\Type\GroupType
+                delete:
+                    path:     /{id}/delete
+            options:
+                hidden: true

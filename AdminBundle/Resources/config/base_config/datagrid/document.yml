@@ -1,0 +1,30 @@
+sidus_data_grid:
+    configurations:
+        document:
+            parent: baseasset
+            query_handler:
+                provider: sidus.eav
+                options:
+                    family: Document
+                sortable:
+                    - id
+                    - title
+                    - mimeType
+                    - fileName
+                default_sort:
+                    id: DESC
+                filters:
+                    title: ~
+                    fileName: ~
+                    mimeType:
+                        type: choice
+            columns:
+                id:
+                    label: '#'
+                title:
+                    template: '%clickable.template%'
+                fileSize: ~
+                mimeType: ~
+                fileName: ~
+                actions:
+                    template: '%eav_datagrid.actions%'

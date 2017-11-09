@@ -19,10 +19,9 @@
 
 namespace CleverAge\EAVManager\AdminBundle\DependencyInjection;
 
-use Symfony\Component\Config\FileLocator;
+use Sidus\FilterBundle\DependencyInjection\Loader\ServiceLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\BadMethodCallException;
-use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
@@ -69,11 +68,8 @@ class CleverAgeEAVManagerAdminExtension extends Extension
 
         $container->setParameter($this->rootAlias.'.configuration', $this->globalConfig);
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config/services'));
-        $loader->load('admin.yml');
-        $loader->load('attribute_type.yml');
-        $loader->load('cache.yml');
-        $loader->load('form.yml');
+        $loader = new ServiceLoader(__DIR__.'/../Resources/config/services');
+        $loader->loadFiles($container);
     }
 
     /**

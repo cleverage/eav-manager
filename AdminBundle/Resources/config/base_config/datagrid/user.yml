@@ -1,0 +1,40 @@
+sidus_data_grid:
+    configurations:
+        user:
+            query_handler:
+                provider: doctrine
+                options:
+                    entity: CleverAgeEAVManagerUserBundle:User
+                sortable:
+                    - id
+                    - createdAt
+                    - username
+                    - email
+                filters:
+                    createdAt:
+                        type: date_range
+                        label: Création
+                    email: ~
+                    username: ~
+            columns:
+                id:
+                    label: '#'
+                username: ~
+                email: ~
+                lastName:
+                    property_path: data.lastName
+                firstName:
+                    property_path: data.firstName
+                printableRoles: ~
+                createdAt: ~
+                actions:
+                    template: CleverAgeEAVManagerAdminBundle:User:partials/list.row.actions.html.twig
+            actions:
+                create:
+                    form_type: CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink
+                    label: admin.action.create.label
+                    action: create
+                    icon: plus
+                    attr:
+                        class: btn-primary
+                        data-target-element: "#tg_right"

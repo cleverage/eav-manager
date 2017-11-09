@@ -1,0 +1,35 @@
+sidus_data_grid:
+    configurations:
+        document_browser:
+            query_handler:
+                provider: sidus.eav
+                options:
+                    family: Document
+                results_per_page: 5
+                sortable:
+                    - id
+                    - title
+                default_sort:
+                    id: DESC
+                filters:
+                    title: ~
+                    tags: ~
+            columns:
+                id:
+                    label: '#'
+                title:
+                    template: 'CleverAgeEAVManagerAdminBundle:Asset:partials/browse.row.label.html.twig'
+                actions:
+                    template: 'CleverAgeEAVManagerAdminBundle:Asset:partials/browse.row.actions.html.twig'
+            actions:
+                create:
+                    form_type: CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink
+                    label: admin.action.create.label
+                    action: create
+                    icon: plus
+                    attr:
+                        class: btn-primary
+                        data-target-element: '_CURRENT_MODAL'
+            reset_button:
+                attr:
+                    data-target-element: '_CURRENT_MODAL'

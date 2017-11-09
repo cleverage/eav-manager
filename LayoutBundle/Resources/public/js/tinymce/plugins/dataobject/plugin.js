@@ -1,3 +1,10 @@
+var script = document.currentScript;
+var fullUrl = script.src;
+var pathArray = fullUrl.split( '/' );
+var protocol = pathArray[0];
+var host = pathArray[2];
+var currentScriptBaseUrl = protocol + '//' + host;
+
 tinymce.PluginManager.add('dataobject', function (editor) {
     var utilities = {
         isDataobject: function (node) {
@@ -8,7 +15,7 @@ tinymce.PluginManager.add('dataobject', function (editor) {
             if (this.isDataobject(node)) {
                 $(node).attr('data-object-id', dataId);
             } else {
-                editor.insertContent('<img class="dataobject" data-object-id="' + dataId + '" src="/bundles/cleverageeavmanagerlayout/img/dataobject.png" />');
+                editor.insertContent('<img class="dataobject" data-object-id="' + dataId + '" src="' + currentScriptBaseUrl + '/bundles/cleverageeavmanagerlayout/img/dataobject.png" />');
             }
         }
     };

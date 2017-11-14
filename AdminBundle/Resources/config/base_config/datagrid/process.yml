@@ -21,6 +21,8 @@ sidus_data_grid:
                         type: date_range
                     state:
                         type: choice
+                        form_options:
+                            multiple: true
             columns:
                 processCode: ~
                 startDate: ~

@@ -22,6 +22,7 @@ namespace CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\FilterInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Core\Util\RequestParser;
+use CleverAge\EAVManager\EAVModelBundle\Resolver\FamilyResolver;
 use Doctrine\ORM\QueryBuilder;
 use Sidus\EAVFilterBundle\Filter\EAVFilterHelper;
 use Sidus\EAVModelBundle\Doctrine\AttributeQueryBuilderInterface;
@@ -50,6 +51,9 @@ abstract class AbstractEAVFilter implements FilterInterface
     /** @var FamilyRegistry */
     protected $familyRegistry;
 
+    /** @var FamilyResolver */
+    protected $familyResolver;
+
     /** @var EAVFilterHelper */
     protected $eavFilterHelper;
 
@@ -65,6 +69,7 @@ abstract class AbstractEAVFilter implements FilterInterface
     /**
      * @param RequestStack    $requestStack
      * @param FamilyRegistry  $familyRegistry
+     * @param FamilyResolver  $familyResolver
      * @param EAVFilterHelper $eavFilterHelper
      * @param array           $supportedTypes
      * @param array           $properties
@@ -73,6 +78,7 @@ abstract class AbstractEAVFilter implements FilterInterface
     public function __construct(
         RequestStack $requestStack,
         FamilyRegistry $familyRegistry,
+        FamilyResolver $familyResolver,
         EAVFilterHelper $eavFilterHelper,
         array $supportedTypes,
         array $properties = null,
@@ -390,17 +396,6 @@ abstract class AbstractEAVFilter implements FilterInterface
             return $family;
         }
 
-        $matchingFamilies = [];
-        foreach ($this->familyRegistry->getFamilies() as $family) {
-            if (ltrim($family->getDataClass(), '\\') === ltrim($resourceClass, '\\')) {
-                $matchingFamilies[] = $family;
-            }
-        }
-
-        if (1 === count($matchingFamilies)) {
-            return reset($matchingFamilies);
-        }
-
-        throw new \LogicException("Cannot resolve family for class '{$resourceClass}'");
+        return $this->familyResolver->getFamily($resourceClass);
     }
 }

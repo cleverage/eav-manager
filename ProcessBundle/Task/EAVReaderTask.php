@@ -5,6 +5,7 @@ namespace CleverAge\EAVManager\ProcessBundle\Task;
 use CleverAge\ProcessBundle\Model\IterableTaskInterface;
 use CleverAge\ProcessBundle\Model\ProcessState;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Psr\Log\LogLevel;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -37,8 +38,9 @@ class EAVReaderTask extends AbstractEAVQueryTask implements IterableTaskInterfac
             if ($options['allow_reset']) {
                 $this->closed = false;
                 $this->iterator = null;
+                $state->log('Reader was closed previously, restarting it', LogLevel::WARNING, $options['family'], $options);
             } else {
-                $state->log('Reader was closed previously', LogLevel::ERROR, $options['family'], $options);
+                $state->log('Reader was closed previously, stopping the process', LogLevel::ERROR, $options['family'], $options);
                 $state->setStopped(true);
 
                 return;
@@ -51,14 +53,22 @@ class EAVReaderTask extends AbstractEAVQueryTask implements IterableTaskInterfac
 
             $this->iterator = $query->iterate();
             $this->iterator->next(); // Move to first element
+
+            // Log the data count
+            if ($this->getOption($state, 'log_count')) {
+                $pager = new Paginator($query);
+                $count = count($pager);
+                $state->log("{$count} items found with current query", LogLevel::INFO, $options['family'], $options);
+            }
         }
 
         $result = $this->iterator->current();
 
         // Handle empty results
         if (false === $result) {
-            $options = $this->getOptions($state);
-            $state->log('Empty resultset for query', LogLevel::WARNING, $options['family'], $options);
+            if ($this->getOption($state, 'log_count')) {
+                $state->log('Empty resultset for query, stopping the process', LogLevel::NOTICE, $options['family'], $options);
+            }
             $state->setStopped(true);
 
             return;
@@ -100,7 +110,8 @@ class EAVReaderTask extends AbstractEAVQueryTask implements IterableTaskInterfac
     {
         parent::configureOptions($resolver);
         $resolver->setDefaults([
-            'allow_reset' => false, // Allow the reader to reset it's iterator
+            'allow_reset' => false,   // Allow the reader to reset it's iterator
+            'log_count'   => false,   // Log in state history the result count
         ]);
     }
 }

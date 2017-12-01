@@ -1,6 +1,8 @@
 {% spaceless %}
     <div class="btn-group btn-group-xs btn-group-nowrap">
         {% block list_row_actions %}
+
+            {# Show button - DISABLED for now, until the process_show interface is up
             {% set link_title = tryTrans([
             'admin.'~viewParameters.admin.code~'.show.label',
             'admin.action.show.label',
@@ -9,6 +11,9 @@
                class="btn btn-primary" data-target-element="#tg_right" title="{{ link_title }}">
                 <i class="fa fa-eye"></i>
             </a>
+            #}
+
+            {# Delete button #}
             {% set link_title = tryTrans([
             'admin.'~viewParameters.admin.code~'.delete.label',
             'admin.action.delete.label',

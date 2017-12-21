@@ -69,7 +69,7 @@
             return;
         }
         var $tg = $(e.target);
-        if ($tg.attr('id') == 'tg_right') {
+        if ($tg.attr('id') === 'tg_right') {
             $(document.body).addClass('tg-right-expanded');
         }
         $tg.prepend($('<div class="tg-loading">&nbsp;</div>'));
@@ -138,7 +138,7 @@
         var url = removeParam('target', e.url).replace(/\?$/, '');
 
         // Don't push new state if it's the same URL
-        if (window.location.href.search(url.replace(/([()[{*+.$^\\|?])/g, '\\$1')) != -1) {
+        if (window.location.href.search(url.replace(/([()[{*+.$^\\|?])/g, '\\$1')) !== -1) {
             return;
         }
 

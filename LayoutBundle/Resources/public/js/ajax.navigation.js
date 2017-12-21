@@ -87,7 +87,7 @@ function ajaxLoading($, el, e) {
     }
 
     // This means this links is not meant to be loaded in ajax
-    if (event.url.substr(0, 1) == '#') {
+    if (event.url.substr(0, 1) === '#') {
         return;
     }
 
@@ -108,6 +108,7 @@ function ajaxLoading($, el, e) {
     response.done(function (content) {
         event.type = 'success';
         event.content = content;
+        event.url = this.url;
         try {
             $targets.each(function (index, target) {
                 event.index = index;
@@ -134,6 +135,7 @@ function ajaxLoading($, el, e) {
     response.fail(function (error) {
         event.type = 'fail';
         event.error = error;
+        event.url = this.url;
         try {
             $targets.each(function (index, target) {
                 event.index = index;

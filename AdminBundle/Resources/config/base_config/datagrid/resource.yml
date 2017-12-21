@@ -28,4 +28,4 @@ sidus_data_grid:
                 mimeType: ~
                 fileModifiedAt: ~
                 actions:
-                    template: CleverAgeEAVManagerAdminBundle:Asset/partials:resource.row.actions.html.twig
+                    template: '%eav_datagrid.actions%'

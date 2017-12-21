@@ -1,15 +1,13 @@
 {% extends '@CleverAgeEAVManagerAdmin/Base/partials/list.row.actions.html.twig' %}
 
 {% block list_row_actions %}
+    {% import '@CleverAgeEAVManagerLayout/Macros/utilities.html.twig' as utilities %}
     {% if is_granted('ROLE_ADMIN') %}
-        {% set link_title = tryTrans([
-        'admin.'~admin.code~'.resetPassword.label',
-        'admin.action.resetPassword.label',
-        ], [], 'Reset Password') %}
-        <a href="{{ admin_entity_path(viewParameters.admin, result, 'resetPassword') }}"
-           class="btn btn-warning" data-target-element="#tg_right" title="{{ link_title }}">
-            <i class="fa fa-unlock"></i>
-        </a>
+        {{ utilities.action_button(admin, result, 'resetPassword', {
+            target: '#tg_right',
+            class: 'btn btn-warning',
+            icon: 'unlock',
+        }) }}
     {% endif %}
     {{ parent() }}
 {% endblock %}

@@ -33,6 +33,17 @@ use CleverAge\EAVManager\UserBundle\Entity\User;
  */
 class FamilyVoter implements VoterInterface
 {
+    /** @var VoterInterface */
+    protected $roleHierarchyVoter;
+
+    /**
+     * @param VoterInterface $roleHierarchyVoter
+     */
+    public function __construct(VoterInterface $roleHierarchyVoter)
+    {
+        $this->roleHierarchyVoter = $roleHierarchyVoter;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -51,6 +62,9 @@ class FamilyVoter implements VoterInterface
         $result = VoterInterface::ACCESS_ABSTAIN;
         if (!$object instanceof FamilyInterface) {
             return $result;
+        }
+        if (VoterInterface::ACCESS_GRANTED === $this->roleHierarchyVoter->vote($token, null, ['ROLE_DATA_ADMIN'])) {
+            return VoterInterface::ACCESS_GRANTED;
         }
         $permissions = $this->extractPermissions($token);
 

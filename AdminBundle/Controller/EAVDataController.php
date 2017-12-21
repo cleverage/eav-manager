@@ -73,7 +73,7 @@ class EAVDataController extends AbstractAdminController
     }
 
     /**
-     * @Security("is_granted('list', family) or is_granted('ROLE_DATA_ADMIN')")
+     * @Security("is_granted('list', family)")
      *
      * @param Request         $request
      * @param FamilyInterface $family
@@ -107,7 +107,7 @@ class EAVDataController extends AbstractAdminController
     }
 
     /**
-     * @Security("is_granted('list', family) or is_granted('ROLE_DATA_ADMIN')")
+     * @Security("is_granted('list', family)")
      *
      * @param Request         $request
      * @param FamilyInterface $family
@@ -142,7 +142,7 @@ class EAVDataController extends AbstractAdminController
     }
 
     /**
-     * @Security("is_granted('create', family) or is_granted('ROLE_DATA_ADMIN')")
+     * @Security("is_granted('create', family)")
      *
      * @param Request         $request
      * @param FamilyInterface $family
@@ -160,7 +160,7 @@ class EAVDataController extends AbstractAdminController
     }
 
     /**
-     * @Security("is_granted('read', data) or is_granted('ROLE_DATA_ADMIN')")
+     * @Security("is_granted('read', data)")
      *
      * @param Request         $request
      * @param DataInterface   $data
@@ -173,13 +173,13 @@ class EAVDataController extends AbstractAdminController
     public function readAction(Request $request, DataInterface $data, FamilyInterface $family = null)
     {
         $this->initDataFamily($data, $family);
-        $form = $this->getForm($request, $data);
+        $form = $this->getForm($request, $data, ['disabled' => true]);
 
         return $this->renderAction($this->getViewParameters($request, $form, $data));
     }
 
     /**
-     * @Security("is_granted('edit', data) or is_granted('ROLE_DATA_ADMIN')")
+     * @Security("is_granted('edit', data)")
      *
      * @param Request         $request
      * @param DataInterface   $data
@@ -210,7 +210,7 @@ class EAVDataController extends AbstractAdminController
     /**
      * Dedicated permission for cloning ?
      *
-     * @Security("(is_granted('create', family) and is_granted('read', data)) or is_granted('ROLE_DATA_ADMIN')")
+     * @Security("(is_granted('create', family) and is_granted('read', data))")
      *
      * @param Request         $request
      * @param DataInterface   $data
@@ -226,7 +226,7 @@ class EAVDataController extends AbstractAdminController
     }
 
     /**
-     * @Security("is_granted('delete', data) or is_granted('ROLE_DATA_ADMIN')")
+     * @Security("is_granted('delete', data)")
      *
      * @param Request         $request
      * @param DataInterface   $data

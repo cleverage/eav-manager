@@ -1,6 +1,8 @@
 services:
     eavmanager_security.family.voter:
         class: CleverAge\EAVManager\SecurityBundle\Voter\FamilyVoter
+        arguments:
+            - '@security.access.role_hierarchy_voter'
         tags:
             - { name: security.voter }
 

@@ -1,0 +1,29 @@
+.form-read-only {
+    .select2-container--disabled {
+        .select2-selection--single {
+            cursor: text;
+            background-color: $input-bg;
+        }
+        .select2-selection__arrow {
+            display: none;
+        }
+    }
+    .form-control {
+        border: none;
+        box-shadow: none;
+        user-select: text;
+        -webkit-user-select: text;
+
+        &[disabled],
+        &[readonly],
+        fieldset[disabled] & {
+            background-color: $input-bg;
+            opacity: 1; // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655
+        }
+
+        &[disabled],
+        fieldset[disabled] & {
+            cursor: text;
+        }
+    }
+}

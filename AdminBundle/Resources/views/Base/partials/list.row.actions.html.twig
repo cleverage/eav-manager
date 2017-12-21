@@ -3,14 +3,23 @@
     <div class="btn-group btn-group-xs btn-group-nowrap">
         {% set admin = viewParameters.admin %}
         {% block list_row_actions %}
-            {{ utilities.action_button(admin, result, 'edit', {
-                class: 'btn btn-primary',
-            }) }}
+            {% if admin.hasAction('edit') %}{# and is_granted('edit', result) %}#}
+                {{ utilities.action_button(admin, result, 'edit', {
+                    class: 'btn btn-primary',
+                    target: '#tg_right',
+                }) }}
+            {% elseif admin.hasAction('read') %}{# and is_granted('read', result) %}#}
+                {{ utilities.action_button(admin, result, 'read', {
+                    class: 'btn btn-primary',
+                    target: '#tg_right',
+                }) }}
+            {% endif %}
             {{ utilities.action_button(admin, result, 'clone', {
-                class: 'btn btn-default'
+                target: '#tg_right',
             }) }}
             {{ utilities.action_button(admin, result, 'delete', {
                 class: 'btn btn-danger',
+                target: '#tg_right',
                 icon: 'remove',
             }) }}
         {% endblock %}

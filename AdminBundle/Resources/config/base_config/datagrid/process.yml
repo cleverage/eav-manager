@@ -29,4 +29,4 @@ sidus_data_grid:
                 endDate: ~
                 state: ~
                 actions:
-                    template: CleverAgeEAVManagerAdminBundle:Process/partials:process.row.actions.html.twig
+                    template: '%datagrid.actions%'

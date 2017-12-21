@@ -7,12 +7,23 @@
 {% endblock %}
 
 {% block secondary_actions %}
-    {% if data is defined and data and admin.hasAction('edit') %}
+    {% if data is defined and data %}
+        {% import '@CleverAgeEAVManagerLayout/Macros/utilities.html.twig' as utilities %}
         <li>
-            <a href="{{ admin_entity_path(admin, data, 'edit') }}">
-                <i class="fa fa-pencil"></i>
-                {{ tryTrans([admin_trans_key ~ 'edit.label', 'admin.action.edit.label'], [], 'Edit') }}
-            </a>
+            {% if admin.hasAction('edit') and is_granted('edit', data) %}
+                {{ utilities.eav_action_button(admin, data, 'edit', {
+                    title_as_content: true,
+                    target: target,
+                    class: '',
+                }) }}
+            {% elseif admin.hasAction('read') and is_granted('read', data) %}
+                {{ utilities.eav_action_button(admin, data, 'read', {
+                    title_as_content: true,
+                    target: target,
+                    class: '',
+                    icon: 'eye',
+                }) }}
+            {% endif %}
         </li>
     {% endif %}
 {% endblock %}

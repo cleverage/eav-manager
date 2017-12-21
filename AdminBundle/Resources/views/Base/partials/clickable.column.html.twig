@@ -1,14 +1,20 @@
+{% import "CleverAgeEAVManagerLayoutBundle:Macros:utilities.html.twig" as utilities %}
+
 {% set admin = viewParameters.admin %}
-{% if is_granted(result, 'edit') %}
-    <a href="{{ admin_entity_path(admin, result, 'edit') }}" data-target-element="#tg_right"
-       title="{{ ('admin.' ~ admin.code ~ '.edit.title') | trans }}">
-        {{ render_object_value(result, column) }}
-    </a>
-{% elseif is_granted(result, 'read') %}
-    <a href="{{ admin_entity_path(admin, result, 'read') }}" data-target-element="#tg_right"
-       title="{{ ('admin.' ~ admin.code ~ '.read.title') | trans }}">
-        {{ render_object_value(result, column) }}
-    </a>
+{% if admin.hasAction('edit') and is_granted('edit', result) %}
+    {{ utilities.eav_action_button(admin, result, 'edit', {
+        content: render_object_value(result, column),
+        target: '#tg_right',
+        no_icon: true,
+        class: '',
+    }) }}
+{% elseif admin.hasAction('read') and is_granted('read', result) %}
+    {{ utilities.eav_action_button(admin, result, 'read', {
+        content: render_object_value(result, column),
+        target: '#tg_right',
+        no_icon: true,
+        class: '',
+    }) }}
 {% else %}
     {{ render_object_value(result, column) }}
 {% endif %}

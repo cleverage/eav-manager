@@ -1,5 +1,14 @@
 {% set admin = viewParameters.admin %}
-<a href="{{ admin_entity_path(admin, result, 'edit') }}" data-target-element="#tg_right"
-   title="{{ ('admin.' ~ admin.code ~ '.edit.title') | trans }}">
+{% if is_granted(result, 'edit') %}
+    <a href="{{ admin_entity_path(admin, result, 'edit') }}" data-target-element="#tg_right"
+       title="{{ ('admin.' ~ admin.code ~ '.edit.title') | trans }}">
+        {{ render_object_value(result, column) }}
+    </a>
+{% elseif is_granted(result, 'read') %}
+    <a href="{{ admin_entity_path(admin, result, 'read') }}" data-target-element="#tg_right"
+       title="{{ ('admin.' ~ admin.code ~ '.read.title') | trans }}">
+        {{ render_object_value(result, column) }}
+    </a>
+{% else %}
     {{ render_object_value(result, column) }}
-</a>
+{% endif %}

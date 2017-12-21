@@ -160,7 +160,26 @@ class EAVDataController extends AbstractAdminController
     }
 
     /**
-     * Security check is done manually in the code : handles the read-only role.
+     * @Security("is_granted('read', data) or is_granted('ROLE_DATA_ADMIN')")
+     *
+     * @param Request         $request
+     * @param DataInterface   $data
+     * @param FamilyInterface $family
+     *
+     * @throws \Exception
+     *
+     * @return Response
+     */
+    public function readAction(Request $request, DataInterface $data, FamilyInterface $family = null)
+    {
+        $this->initDataFamily($data, $family);
+        $form = $this->getForm($request, $data);
+
+        return $this->renderAction($this->getViewParameters($request, $form, $data));
+    }
+
+    /**
+     * @Security("is_granted('edit', data) or is_granted('ROLE_DATA_ADMIN')")
      *
      * @param Request         $request
      * @param DataInterface   $data
@@ -173,15 +192,7 @@ class EAVDataController extends AbstractAdminController
     public function editAction(Request $request, DataInterface $data, FamilyInterface $family = null)
     {
         $this->initDataFamily($data, $family);
-
-        $options = [];
-        if ($this->admin->getCurrentAction() === 'edit' && !$this->isGranted('edit', $family)
-            && !$this->isGranted('ROLE_DATA_ADMIN')
-        ) {
-            $options['disabled'] = true;
-        }
-
-        $form = $this->getForm($request, $data, $options);
+        $form = $this->getForm($request, $data);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -197,7 +208,9 @@ class EAVDataController extends AbstractAdminController
     }
 
     /**
-     * Clone an existing data.
+     * Dedicated permission for cloning ?
+     *
+     * @Security("(is_granted('create', family) and is_granted('read', data)) or is_granted('ROLE_DATA_ADMIN')")
      *
      * @param Request         $request
      * @param DataInterface   $data
@@ -213,7 +226,7 @@ class EAVDataController extends AbstractAdminController
     }
 
     /**
-     * @Security("is_granted('delete', family) or is_granted('ROLE_DATA_ADMIN')")
+     * @Security("is_granted('delete', data) or is_granted('ROLE_DATA_ADMIN')")
      *
      * @param Request         $request
      * @param DataInterface   $data

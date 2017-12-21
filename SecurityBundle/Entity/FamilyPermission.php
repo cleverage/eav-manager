@@ -116,7 +116,7 @@ class FamilyPermission
      */
     public function hasPermission($permission)
     {
-        if (!in_array($permission, $this::$permissions, true)) {
+        if (!\in_array($permission, $this::$permissions, true)) {
             throw new \UnexpectedValueException("Permissions does not exists: {$permission}");
         }
         $accessor = PropertyAccess::createPropertyAccessor();

@@ -1,14 +1,4 @@
 services:
-    security.role_hierarchy:
-        class: CleverAge\EAVManager\SecurityBundle\Security\Core\Role\RoleHierarchy
-        arguments: ['%security.role_hierarchy.roles%']
-
-    eavmanager_security.family.voter:
-        parent: security.access.role_hierarchy_voter
-        class: CleverAge\EAVManager\SecurityBundle\Voter\FamilyVoter
-        tags:
-            - { name: security.voter }
-
     eavmanager_security.form.role_hierarchy.type:
         class: CleverAge\EAVManager\SecurityBundle\Form\Type\RoleHierarchyType
         arguments: ['@security.role_hierarchy']

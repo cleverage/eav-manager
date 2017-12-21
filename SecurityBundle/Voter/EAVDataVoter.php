@@ -19,26 +19,35 @@
 
 namespace CleverAge\EAVManager\SecurityBundle\Voter;
 
-use Doctrine\Common\Collections\Collection;
-use Sidus\EAVModelBundle\Model\FamilyInterface;
+use Sidus\EAVModelBundle\Entity\DataInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use CleverAge\EAVManager\SecurityBundle\Entity\FamilyPermission;
-use CleverAge\EAVManager\UserBundle\Entity\User;
 
 /**
- * Allows the access to a family based on the family permissions of a user.
+ * Allows the access to a data based on it's family
  *
  * @author Vincent Chalnot <vchalnot@clever-age.com>
  */
-class FamilyVoter implements VoterInterface
+class EAVDataVoter implements VoterInterface
 {
+    /** @var FamilyVoter */
+    protected $familyVoter;
+
+    /**
+     * @param FamilyVoter $familyVoter
+     */
+    public function __construct(FamilyVoter $familyVoter)
+    {
+        $this->familyVoter = $familyVoter;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function supportsClass($class)
     {
-        return is_a($class, FamilyInterface::class, true);
+        return is_a($class, DataInterface::class, true);
     }
 
     /**
@@ -48,28 +57,11 @@ class FamilyVoter implements VoterInterface
      */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
-        $result = VoterInterface::ACCESS_ABSTAIN;
-        if (!$object instanceof FamilyInterface) {
-            return $result;
-        }
-        $permissions = $this->extractPermissions($token);
-
-        $result = VoterInterface::ACCESS_DENIED;
-        foreach ($attributes as $attribute) {
-            if (!$this->supportsAttribute($attribute)) {
-                continue;
-            }
-
-            foreach ($permissions as $permission) {
-                if ($permission->hasPermission($attribute) &&
-                    $permission->getFamily()->getCode() === $object->getCode()
-                ) {
-                    return VoterInterface::ACCESS_GRANTED;
-                }
-            }
+        if ($object instanceof DataInterface) {
+            return $this->familyVoter->vote($token, $object->getFamily(), $attributes);
         }
 
-        return $result;
+        return VoterInterface::ACCESS_ABSTAIN;
     }
 
     /**
@@ -82,22 +74,5 @@ class FamilyVoter implements VoterInterface
     public function supportsAttribute($attribute)
     {
         return \in_array($attribute, FamilyPermission::getPermissions(), true);
-    }
-
-    /**
-     * @param TokenInterface $token
-     *
-     * @return FamilyPermission[]|Collection
-     *
-     * @throws \UnexpectedValueException
-     */
-    protected function extractPermissions(TokenInterface $token)
-    {
-        $user = $token->getUser();
-        if (!$user instanceof User) {
-            return [];
-        }
-
-        return $user->getCombinedFamilyPermissions();
     }
 }

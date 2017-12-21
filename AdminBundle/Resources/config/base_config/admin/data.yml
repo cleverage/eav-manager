@@ -5,6 +5,9 @@ sidus_admin:
             entity: '%sidus_data_class%'
             prefix: /_data
             actions:
+                read:
+                    path:     /{familyCode}/{id}/read
+                    form_type: '%eav_form.type%'
                 create:
                     path:     /{familyCode}/create
                     form_type: '%eav_form.type%'

@@ -1,0 +1,12 @@
+services:
+    eavmanager_security.family.voter:
+        class: CleverAge\EAVManager\SecurityBundle\Voter\FamilyVoter
+        tags:
+            - { name: security.voter }
+
+    eavmanager_security.eav_data.voter:
+        class: CleverAge\EAVManager\SecurityBundle\Voter\EAVDataVoter
+        arguments:
+            - '@eavmanager_security.family.voter'
+        tags:
+            - { name: security.voter }

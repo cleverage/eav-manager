@@ -19,9 +19,8 @@
 
 namespace CleverAge\EAVManager\SecurityBundle\DependencyInjection;
 
-use Symfony\Component\Config\FileLocator;
+use Sidus\FilterBundle\DependencyInjection\Loader\ServiceLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
@@ -40,7 +39,7 @@ class CleverAgeEAVManagerSecurityExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.yml');
+        $loader = new ServiceLoader(__DIR__.'/../Resources/config/services');
+        $loader->loadFiles($container);
     }
 }

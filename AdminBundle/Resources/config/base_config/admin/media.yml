@@ -7,6 +7,9 @@ sidus_admin:
             actions:
                 list:
                     path:     /{familyCode}/list
+                read:
+                    path:     /{familyCode}/{id}/read
+                    form_type: '%eav_form.type%'
                 create:
                     path:     /{familyCode}/create
                     form_type: '%eav_form.type%'

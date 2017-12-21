@@ -1,0 +1,4 @@
+services:
+    security.role_hierarchy:
+        class: CleverAge\EAVManager\SecurityBundle\Security\Core\Role\RoleHierarchy
+        arguments: ['%security.role_hierarchy.roles%']

@@ -178,13 +178,16 @@ abstract class AbstractEAVFilter implements FilterInterface
 
             $family = $this->getFamily($resourceClass);
             $attributeQueryBuilder = $this->eavFilterHelper->getEAVAttributeQueryBuilder($eavQB, $family, $property);
-            $dqlHandlers[] = $this->filterAttribute(
+            $dqlHandler = $this->filterAttribute(
                 $eavQB,
                 $attributeQueryBuilder,
                 $value,
                 $this->properties[$property] ?? null,
                 $operationName
             );
+            if ($dqlHandler instanceof DQLHandlerInterface) {
+                $dqlHandlers[] = $dqlHandler;
+            }
         }
 
         $eavQB->apply($eavQB->getAnd($dqlHandlers));

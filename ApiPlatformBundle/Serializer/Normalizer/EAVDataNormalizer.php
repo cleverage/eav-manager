@@ -66,9 +66,8 @@ class EAVDataNormalizer extends BaseEAVDataNormalizer
     public function normalize($object, $format = null, array $context = [])
     {
         // Do the same for 'by_reference' ?
-        if (
-        $this->iriConverter
-        && $this->byReferenceHandler->isByShortReference($context)
+        if ($this->iriConverter
+            && $this->byReferenceHandler->isByShortReference($context)
         ) {
             return $this->iriConverter->getIriFromItem($object);
         }
@@ -86,6 +85,9 @@ class EAVDataNormalizer extends BaseEAVDataNormalizer
      * @param array         $context
      *
      * @throws \Symfony\Component\PropertyAccess\Exception\ExceptionInterface
+     * @throws \Symfony\Component\Serializer\Exception\LogicException
+     * @throws \Symfony\Component\Serializer\Exception\InvalidArgumentException
+     * @throws \Symfony\Component\Serializer\Exception\CircularReferenceException
      *
      * @return mixed
      */
@@ -122,6 +124,12 @@ class EAVDataNormalizer extends BaseEAVDataNormalizer
      * @param array              $context
      *
      * @throws EAVExceptionInterface
+     * @throws \Sidus\EAVModelBundle\Exception\MissingAttributeException
+     * @throws \Sidus\EAVModelBundle\Exception\InvalidValueDataException
+     * @throws \Sidus\EAVModelBundle\Exception\ContextException
+     * @throws \Symfony\Component\Serializer\Exception\LogicException
+     * @throws \Symfony\Component\Serializer\Exception\InvalidArgumentException
+     * @throws \Symfony\Component\Serializer\Exception\CircularReferenceException
      *
      * @return mixed
      */

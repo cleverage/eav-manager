@@ -17,10 +17,8 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 namespace CleverAge\EAVManager\AdminBundle\Controller;
 
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -34,9 +32,9 @@ class GenericAdminController extends AbstractAdminController
     /**
      * @param Request $request
      *
-     * @return array
-     *
      * @throws \Exception
+     *
+     * @return Response
      */
     public function listAction(Request $request)
     {
@@ -55,9 +53,9 @@ class GenericAdminController extends AbstractAdminController
     /**
      * @param Request $request
      *
-     * @return Response
-     *
      * @throws \Exception
+     *
+     * @return Response
      */
     public function createAction(Request $request)
     {
@@ -71,9 +69,9 @@ class GenericAdminController extends AbstractAdminController
      * @param Request $request
      * @param mixed   $data
      *
-     * @return array|RedirectResponse
-     *
      * @throws \Exception
+     *
+     * @return Response
      */
     public function editAction(Request $request, $data = null)
     {
@@ -86,7 +84,7 @@ class GenericAdminController extends AbstractAdminController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->saveEntity($data);
 
-            $parameters = $request->query->all(); // @todo is this necessary ?
+            $parameters = $request->query->all();
             $parameters['success'] = 1;
 
             return $this->redirectToEntity($data, 'edit', $parameters);
@@ -99,9 +97,9 @@ class GenericAdminController extends AbstractAdminController
      * @param Request $request
      * @param mixed   $data
      *
-     * @return array|RedirectResponse
-     *
      * @throws \Exception
+     *
+     * @return Response
      */
     public function cloneAction(Request $request, $data = null)
     {
@@ -111,9 +109,9 @@ class GenericAdminController extends AbstractAdminController
     /**
      * @param Request $request
      *
-     * @return array|RedirectResponse
-     *
      * @throws \Exception
+     *
+     * @return Response
      */
     public function deleteAction(Request $request)
     {

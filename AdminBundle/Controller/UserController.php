@@ -89,7 +89,7 @@ class UserController extends GenericAdminController
         $possible = '23456789ABCDEFGHJKLMNPQRSTVWXYZabcdefghijkmnpqrstvwxyz';
         $i = 0;
         while ($i < $count) {
-            $char = $possible[mt_rand(0, strlen($possible) - 1)];
+            $char = $possible[random_int(0, strlen($possible) - 1)];
             $passwd .= $char;
             ++$i;
         }

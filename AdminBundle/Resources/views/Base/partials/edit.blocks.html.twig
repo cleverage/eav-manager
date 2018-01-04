@@ -85,7 +85,7 @@
     {% if admin.hasAction('edit') and admin.currentAction != 'create' and data is defined and data.id %}
         <li>
             <a href="{{ admin_entity_path(admin, data, 'edit') }}">
-                {{ data|trim }}
+                {{ render_value(data) }}
             </a>
         </li>
     {% endif %}

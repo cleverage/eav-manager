@@ -73,7 +73,7 @@ class CreateUserCommand extends ContainerAwareCommand
      * @throws ORMInvalidArgumentException
      * @throws UsernameNotFoundException
      *
-     * @return int|null|void
+     * @return int|null
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

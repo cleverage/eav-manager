@@ -15,8 +15,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class EmbedMultiFamilyEntryType extends AutocompleteDataSelectorType
 {
     /**
-     * @param Registry             $doctrine
-     * @param string               $dataClass
+     * @param Registry $doctrine
+     * @param string   $dataClass
      */
     public function __construct(
         Registry $doctrine,
@@ -56,13 +56,5 @@ class EmbedMultiFamilyEntryType extends AutocompleteDataSelectorType
     public function getBlockPrefix()
     {
         return 'embed_multi_family_entry';
-    }
-
-    /**
-     * @return string
-     */
-    public function getParent()
-    {
-        return SimpleDataSelectorType::class;
     }
 }

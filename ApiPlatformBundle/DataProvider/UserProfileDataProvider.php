@@ -46,8 +46,8 @@ class UserProfileDataProvider implements ItemDataProviderInterface
      * Retrieves an item.
      *
      * @param string      $resourceClass
-     * @param string|null $operationName
      * @param int|string  $id
+     * @param string|null $operationName
      * @param array       $context
      *
      * @throws ResourceClassNotSupportedException

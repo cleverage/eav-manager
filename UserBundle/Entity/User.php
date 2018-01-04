@@ -308,6 +308,7 @@ class User implements UserInterface, \Serializable
         $roles = $this->roles;
 
         foreach ($this->getGroups() as $group) {
+            /** @noinspection SlowArrayOperationsInLoopInspection */
             $roles = array_merge($roles, $group->getRoles());
         }
 

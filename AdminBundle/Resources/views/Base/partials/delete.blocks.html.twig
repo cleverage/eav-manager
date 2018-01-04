@@ -24,7 +24,7 @@
         {{ block('breadcrumb') }}
         <div class="clear"></div>
         {{ form_widget(form) }}
-        <p>{{ ('form.' ~ admin.currentAction.code ~ '.confirmation')|trans({'%entity%': data|default()|trim}) }}</p>
+        <p>{{ ('form.' ~ admin.currentAction.code ~ '.confirmation')|trans({'%entity%': render_value(data|default()) }) }}</p>
         {{ block('form_actions') }}
         {{ form_end(form) }}
         {{ block('additional_content') }}
@@ -40,7 +40,7 @@
             <div class="modal-body">
                 <div class="edit-form {{ block('edit_form_class') }}">
                     {{ form_widget(form) }}
-                    <p>{{ ('form.' ~ admin.currentAction.code ~ '.confirmation')|trans({'%entity%': data|default()|trim}) }}</p>
+                    <p>{{ ('form.' ~ admin.currentAction.code ~ '.confirmation')|trans({'%entity%': render_value(data|default()) }) }}</p>
                 </div>
             </div>
             <div class="modal-footer">

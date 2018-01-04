@@ -20,7 +20,6 @@
 namespace CleverAge\EAVManager\AdminBundle\Controller;
 
 use Sidus\EAVModelBundle\Entity\DataInterface;
-use Sidus\EAVModelBundle\Model\FamilyInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -41,10 +40,13 @@ class InlineEAVDataController extends EAVDataController
      */
     public function editInlineAction(Request $request, DataInterface $data)
     {
-        $parameters = array_merge($request->query->all(), [
-            'familyCode' => $data->getFamilyCode(),
-            'id' => $data->getId(),
-        ]);
+        $parameters = array_merge(
+            $request->query->all(),
+            [
+                'familyCode' => $data->getFamilyCode(),
+                'id' => $data->getId(),
+            ]
+        );
 
         return $this->redirectToAction('edit', $parameters);
     }
@@ -52,8 +54,8 @@ class InlineEAVDataController extends EAVDataController
     /**
      * Alias for edit action but with custom form options
      *
-     * @param DataInterface   $data
-     * @param Request         $request
+     * @param Request       $request
+     * @param DataInterface $data
      *
      * @throws \Exception
      *

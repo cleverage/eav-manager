@@ -6,7 +6,7 @@
 
 {% set admin_trans_key = 'admin.' ~ admin.code ~ '.' ~ admin.currentAction.code ~ '.' %}
 
-{% if isAjax and form is defined %}
+{% if isAjax and form is defined and form %}
     {% form_theme form 'CleverAgeEAVManagerLayoutBundle:Form:ajax_theme.html.twig' %}
 {% endif %}
 
@@ -28,5 +28,7 @@
     {% if data is defined and data %}
         {{ utilities.triggerDataEvent(admin, data, data ? data.id, success, target) }}
     {% endif %}
-    {{ utilities.lock_form(form.vars.attr.id, target) }}
+    {% if form is defined and form and form.vars.attr.id is defined %}
+        {{ utilities.lock_form(form.vars.attr.id, target) }}
+    {% endif %}
 {% endblock %}

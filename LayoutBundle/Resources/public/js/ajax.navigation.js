@@ -170,7 +170,12 @@ function ajaxLoading($, el, e) {
     });
 }
 
+var alreadyReloaded = false;
 window.onpopstate = function () {
+    if (alreadyReloaded) {
+        return;
+    }
+    alreadyReloaded = true;
     window.location.replace(window.location.href);
 };
 

@@ -17,7 +17,6 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 namespace CleverAge\EAVManager\AdminBundle\Controller;
 
 use CleverAge\EAVManager\Component\Controller\EAVDataControllerTrait;
@@ -31,6 +30,7 @@ use Sidus\AdminBundle\Admin\Action;
 use Sidus\EAVDataGridBundle\Model\DataGrid as EAVDataGrid;
 use Sidus\EAVModelBundle\Entity\DataInterface;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
+use Sidus\FilterBundle\Configuration\DoctrineFilterConfigurationHandlerInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -56,8 +56,7 @@ class EAVDataController extends AbstractAdminController
      *
      * @return Response
      */
-    public function indexAction(
-        /** @noinspection PhpUnusedParameterInspection */
+    public function indexAction(/** @noinspection PhpUnusedParameterInspection */
         Request $request
     ) {
         /* @noinspection LoopWhichDoesNotLoopInspection */
@@ -75,8 +74,8 @@ class EAVDataController extends AbstractAdminController
     /**
      * @Security("is_granted('list', family) or is_granted('ROLE_DATA_ADMIN')")
      *
-     * @param FamilyInterface $family
      * @param Request         $request
+     * @param FamilyInterface $family
      *
      * @throws \Exception
      *
@@ -122,7 +121,7 @@ class EAVDataController extends AbstractAdminController
 
         $exportConfig = $this->getExportConfig($request);
         $defaultFormOptions = $this->getDefaultFormOptions($request, 'export');
-        $attr = isset($defaultFormOptions['attr']) ? $defaultFormOptions['attr'] : [];
+        $attr = $defaultFormOptions['attr'] ?? [];
         $attr['data-target-element'] = null; // Deep merge hell
         $form = $this->getForm(
             $request,
@@ -144,8 +143,8 @@ class EAVDataController extends AbstractAdminController
     /**
      * @Security("is_granted('create', family) or is_granted('ROLE_DATA_ADMIN')")
      *
-     * @param FamilyInterface $family
      * @param Request         $request
+     * @param FamilyInterface $family
      *
      * @throws \Exception
      *
@@ -162,9 +161,9 @@ class EAVDataController extends AbstractAdminController
     /**
      * Security check is done manually in the code : handles the read-only role.
      *
-     * @param FamilyInterface $family
-     * @param DataInterface   $data
      * @param Request         $request
+     * @param DataInterface   $data
+     * @param FamilyInterface $family
      *
      * @throws \Exception
      *
@@ -199,9 +198,9 @@ class EAVDataController extends AbstractAdminController
     /**
      * Clone an existing data.
      *
-     * @param FamilyInterface $family
-     * @param DataInterface   $data
      * @param Request         $request
+     * @param DataInterface   $data
+     * @param FamilyInterface $family
      *
      * @throws \Exception
      *
@@ -215,9 +214,9 @@ class EAVDataController extends AbstractAdminController
     /**
      * @Security("is_granted('delete', family) or is_granted('ROLE_DATA_ADMIN')")
      *
-     * @param FamilyInterface $family
-     * @param DataInterface   $data
      * @param Request         $request
+     * @param DataInterface   $data
+     * @param FamilyInterface $family
      *
      * @throws \Exception
      *
@@ -399,8 +398,12 @@ class EAVDataController extends AbstractAdminController
             return [];
         }
         $session = $request->getSession();
-        $selectedIds = $session->get('export_selected_ids_'.$configKey);
-        $selectedColumns = $session->get('export_selected_columns_'.$configKey);
+        $selectedIds = null;
+        $selectedColumns = null;
+        if ($session) {
+            $selectedIds = $session->get('export_selected_ids_'.$configKey);
+            $selectedColumns = $session->get('export_selected_columns_'.$configKey);
+        }
         $attributes = [];
         if (is_array($selectedColumns)) {
             /** @var array $selectedColumns */
@@ -428,13 +431,17 @@ class EAVDataController extends AbstractAdminController
      */
     protected function redirectToExport(DataGrid $dataGrid, SessionInterface $session)
     {
-        $alias = $dataGrid->getFilterConfig()->getAlias();
-        $qb = $dataGrid->getFilterConfig()->getQueryBuilder();
-        $qb->select($alias.'.id');
-
+        $filterConfig = $dataGrid->getFilterConfig();
         $selectedIds = [];
-        foreach ($qb->getQuery()->getArrayResult() as $result) {
-            $selectedIds[] = $result['id'];
+        if ($filterConfig instanceof DoctrineFilterConfigurationHandlerInterface) {
+            $alias = $filterConfig->getAlias();
+            $qb = $filterConfig->getQueryBuilder();
+            $qb->select($alias.'.id');
+
+            $selectedIds = [];
+            foreach ($qb->getQuery()->getArrayResult() as $result) {
+                $selectedIds[] = $result['id'];
+            }
         }
 
         $selectedColumns = [];
@@ -461,9 +468,12 @@ class EAVDataController extends AbstractAdminController
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
      * @throws \UnexpectedValueException
+     * @throws \Symfony\Component\Serializer\Exception\LogicException
+     * @throws \Symfony\Component\Serializer\Exception\InvalidArgumentException
+     * @throws \Symfony\Component\Serializer\Exception\CircularReferenceException
+     * @throws \Sidus\EAVModelBundle\Exception\MissingAttributeException
      *
      * @return StreamedResponse
-     * @throws \Sidus\EAVModelBundle\Exception\MissingAttributeException
      */
     protected function generateExport(array $config)
     {
@@ -575,7 +585,8 @@ class EAVDataController extends AbstractAdminController
 
         if (array_key_exists($serializedColumn, $value)) {
             return $value[$serializedColumn];
-        } elseif ($value !== null) {
+        }
+        if ($value !== null) {
             throw new \UnexpectedValueException(
                 "Unknown serialized format for entity #{$entity->getId()}"
             );

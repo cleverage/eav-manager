@@ -107,43 +107,6 @@ abstract class AbstractEAVFilter implements FilterInterface
     }
 
     /**
-     * @param QueryBuilder $queryBuilder
-     * @param array        $properties
-     * @param string       $resourceClass
-     * @param string|null  $operationName
-     *
-     * @throws \Sidus\EAVModelBundle\Exception\MissingFamilyException
-     * @throws \UnexpectedValueException
-     * @throws \LogicException
-     */
-    protected function doApply(
-        QueryBuilder $queryBuilder,
-        array $properties,
-        string $resourceClass,
-        string $operationName = null
-    ) {
-        $eavQB = new EAVQueryBuilder($queryBuilder, 'o');
-        $dqlHandlers = [];
-        foreach ($properties as $property => $value) {
-            if (null !== $this->properties && !array_key_exists($property, $this->properties)) {
-                continue;
-            }
-
-            $family = $this->getFamily($resourceClass);
-            $attributeQueryBuilder = $this->eavFilterHelper->getEAVAttributeQueryBuilder($eavQB, $family, $property);
-            $dqlHandlers[] = $this->filterAttribute(
-                $eavQB,
-                $attributeQueryBuilder,
-                $value,
-                $this->properties[$property] ?? null,
-                $operationName
-            );
-        }
-
-        $eavQB->apply($eavQB->getAnd($dqlHandlers));
-    }
-
-    /**
      * Gets the description of this filter for the given resource.
      *
      * Returns an array with the filter parameter names as keys and array with the following data as values:
@@ -188,6 +151,46 @@ abstract class AbstractEAVFilter implements FilterInterface
         }
 
         return $description;
+    }
+
+    /**
+     * @param QueryBuilder $queryBuilder
+     * @param array        $properties
+     * @param string       $resourceClass
+     * @param string|null  $operationName
+     *
+     * @throws \Sidus\EAVModelBundle\Exception\MissingFamilyException
+     * @throws \UnexpectedValueException
+     * @throws \LogicException
+     */
+    protected function doApply(
+        QueryBuilder $queryBuilder,
+        array $properties,
+        string $resourceClass,
+        string $operationName = null
+    ) {
+        $eavQB = new EAVQueryBuilder($queryBuilder, 'o');
+        $dqlHandlers = [];
+        foreach ($properties as $property => $value) {
+            if (null !== $this->properties && !array_key_exists($property, $this->properties)) {
+                continue;
+            }
+
+            $family = $this->getFamily($resourceClass);
+            $attributeQueryBuilder = $this->eavFilterHelper->getEAVAttributeQueryBuilder($eavQB, $family, $property);
+            $dqlHandler = $this->filterAttribute(
+                $eavQB,
+                $attributeQueryBuilder,
+                $value,
+                $this->properties[$property] ?? null,
+                $operationName
+            );
+            if ($dqlHandler instanceof DQLHandlerInterface) {
+                $dqlHandlers[] = $dqlHandler;
+            }
+        }
+
+        $eavQB->apply($eavQB->getAnd($dqlHandlers));
     }
 
     /**

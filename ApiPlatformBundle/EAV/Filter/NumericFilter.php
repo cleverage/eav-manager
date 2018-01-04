@@ -19,11 +19,8 @@
 
 namespace CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter;
 
-use Doctrine\ORM\QueryBuilder;
 use Sidus\EAVModelBundle\Doctrine\AttributeQueryBuilderInterface;
-use Sidus\EAVModelBundle\Doctrine\EAVQueryBuilder;
 use Sidus\EAVModelBundle\Doctrine\EAVQueryBuilderInterface;
-use Sidus\EAVModelBundle\Model\AttributeInterface;
 
 /**
  * Filter the collection by given properties.

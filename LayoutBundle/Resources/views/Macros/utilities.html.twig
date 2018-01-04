@@ -64,7 +64,7 @@ Changes the current active datagrid row
     <script>
         {% set parameters = {
         dataId: id,
-        dataLabel: data|trim,
+        dataLabel: render_value(data),
         admin: admin.code,
         action: admin.currentAction.code,
         success: success,

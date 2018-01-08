@@ -7,17 +7,17 @@ sidus_admin:
             actions:
                 list:
                     path:     /{familyCode}/list
-                read:
-                    path:     /{familyCode}/{id}/read
-                    form_type: '%eav_form.type%'
                 create:
                     path:     /{familyCode}/create
                     form_type: '%eav_form.type%'
+                read:
+                    path:     /{familyCode}/read/{id}
+                    form_type: '%eav_form.type%'
                 edit:
-                    path:     /{familyCode}/{id}/edit
+                    path:     /{familyCode}/edit/{id}
                     form_type: '%eav_form.type%'
                 delete:
-                    path:     /{familyCode}/{id}/delete
+                    path:     /{familyCode}/delete/{id}
             options:
                 hidden: true
                 icon: image

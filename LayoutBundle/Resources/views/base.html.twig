@@ -18,18 +18,9 @@ NEVER points to this layout directly !
     {% endblock %}
     <title>{% block title %}CleverAge/EAVManager{{ title is defined ? ' - ' ~ title }}{% endblock %}</title>
     {% block stylesheets %}
-        {# !!!!!! WARNING !!!!! #}
-        {# Because of the way Assetic works, if you want to override this block you will also have to override the JS block #}
-        {% stylesheets
-        'bundles/pinanoselect2/css/select2.css'
-        'bundles/mopabootstrap/components/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css'
-        'bundles/cleverageeavmanagerlayout/css/yeti.css'
-        filter='?uglifycss' filter='cssrewrite' %}
-        <link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen"/>
-        {% endstylesheets %}
+        <link href="{{ asset('bundles/cleverageeavmanagerlayout/css/layout.css') }}" type="text/css" rel="stylesheet" media="screen"/>
     {% endblock %}
 </head>
-
 <body class="{% block body_class %}{% endblock %}">
 {% block main_container %}
     <div class="container-fluid">
@@ -124,9 +115,9 @@ NEVER points to this layout directly !
 {% endblock %}
 
 {% block javascripts %}
-    {# !!!!!! WARNING !!!!! #}
-    {# Because of the way Assetic works, if you want to override this block you will also have to override the CSS block #}
-    {% javascripts
+    <script type="text/javascript" src="{{ asset('bundles/cleverageeavmanagerlayout/js/build.js') }}"></script>
+    {#
+    List of all javascript files included in the build, order matters. (@todo update paths)
     'assets/jquery/jquery.min.js'
     'assets/jquery-ui/jquery-ui.min.js'
     '@FOSJsRoutingBundle/Resources/public/js/router.js'
@@ -164,9 +155,7 @@ NEVER points to this layout directly !
     '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/media.browser.js'
     '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/init.autoload.js'
     '@CleverAgeEAVManagerLayoutBundle/Resources/public/js/init.embed-multi-family.js'
-    filter='?uglifyjs2' %}
-    <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+    #}
     <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
     {{ tinymce_init() }}
 {% endblock %}

@@ -7,16 +7,16 @@ sidus_admin:
             actions:
                 list:
                     path:     /
-                read:
-                    path:     /{id}/read
-                    form_type: CleverAge\EAVManager\UserBundle\Form\Type\GroupType
                 create:
                     path:     /create
                     form_type: CleverAge\EAVManager\UserBundle\Form\Type\GroupType
+                read:
+                    path:     /read/{id}
+                    form_type: CleverAge\EAVManager\UserBundle\Form\Type\GroupType
                 edit:
-                    path:     /{id}/edit
+                    path:     /edit/{id}
                     form_type: CleverAge\EAVManager\UserBundle\Form\Type\GroupType
                 delete:
-                    path:     /{id}/delete
+                    path:     /delete/{id}
             options:
                 hidden: true

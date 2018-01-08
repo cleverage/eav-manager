@@ -5,22 +5,22 @@ sidus_admin:
             entity: '%sidus_data_class%'
             prefix: /_data
             actions:
-                read:
-                    path:     /{familyCode}/{id}/read
-                    form_type: '%eav_form.type%'
                 create:
                     path:     /{familyCode}/create
                     form_type: '%eav_form.type%'
-                edit:
-                    path:     /{familyCode}/{id}/edit
+                read:
+                    path:     /{familyCode}/read/{id}
                     form_type: '%eav_form.type%'
-                editInline:
-                    path:     /{id}/edit
+                edit:
+                    path:     /{familyCode}/edit/{id}
                     form_type: '%eav_form.type%'
                 delete:
-                    path:     /{familyCode}/{id}/delete
+                    path:     /{familyCode}/delete/{id}
+                editInline:
+                    path:     /edit/{id}
+                    form_type: '%eav_form.type%'
                 preview:
-                    path:     /{id}/preview
+                    path:     /preview/{id}
                     form_type: '%eav_form.type%'
                     form_options:
                         disabled: true

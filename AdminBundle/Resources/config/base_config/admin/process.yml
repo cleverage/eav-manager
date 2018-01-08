@@ -7,10 +7,8 @@ sidus_admin:
             actions:
                 list:
                     path: /
-                show:
-                    path: /{id}/show
                 delete:
-                    path: /{id}/delete
+                    path: /delete/{id}
             options:
                 icon: history
                 hidden: true

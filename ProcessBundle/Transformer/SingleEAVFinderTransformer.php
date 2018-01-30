@@ -150,38 +150,43 @@ class SingleEAVFinderTransformer implements ConfigurableTransformerInterface
         /** @var DataRepository $repository */
         $repository = $options['repository'];
 
-        $eavQb = $repository->createFamilyQueryBuilder($family, 'e');
+        if (array_key_exists('id', $value) && 1 === count($value)) {
+            $data = $repository->loadFullEntity($value['id']);
+        } else {
+            $eavQb = $repository->createFamilyQueryBuilder($family, 'e');
 
-        $queryParts = [];
-        /** @noinspection ForeachSourceInspection */
-        foreach ($value as $attributeCode => $attributeValue) {
-            if (is_array($attributeValue)) {
-                $queryParts[] = $eavQb->a($attributeCode)->in($attributeValue);
-            } else {
-                if (null !== $attributeValue && $attributeValue === $family->getAttribute($attributeCode)->getDefault()) {
-                    $queryParts[] = $eavQb->getOr(
-                        [
-                            $eavQb->a($attributeCode)->equals($attributeValue),
-                            $eavQb->a($attributeCode)->isNull(), // Handles default values not persisted to database
-                        ]
-                    );
+            $queryParts = [];
+            /** @noinspection ForeachSourceInspection */
+            foreach ($value as $attributeCode => $attributeValue) {
+                if (is_array($attributeValue)) {
+                    $queryParts[] = $eavQb->a($attributeCode)->in($attributeValue);
                 } else {
-                    $queryParts[] = $eavQb->a($attributeCode)->equals($attributeValue);
+                    if (null !== $attributeValue && $attributeValue === $family->getAttribute($attributeCode)
+                                                                               ->getDefault()) {
+                        $queryParts[] = $eavQb->getOr(
+                            [
+                                $eavQb->a($attributeCode)->equals($attributeValue),
+                                $eavQb->a($attributeCode)->isNull(), // Handles default values not persisted to database
+                            ]
+                        );
+                    } else {
+                        $queryParts[] = $eavQb->a($attributeCode)->equals($attributeValue);
+                    }
                 }
             }
-        }
 
-        $qb = $eavQb->apply($eavQb->getAnd($queryParts));
-        $qb->distinct();
+            $qb = $eavQb->apply($eavQb->getAnd($queryParts));
+            $qb->distinct();
 
-        try {
-            $data = $qb->getQuery()->getOneOrNullResult();
-        } catch (NonUniqueResultException $e) {
-            $msg = "Non unique entity for family {$family->getCode()} and";
-            foreach ($value as $attribute => $attributeValue) {
-                $msg .= " attribute {$attribute} with value '{$attributeValue}'";
+            try {
+                $data = $qb->getQuery()->getOneOrNullResult();
+            } catch (NonUniqueResultException $e) {
+                $msg = "Non unique entity for family {$family->getCode()} and";
+                foreach ($value as $attribute => $attributeValue) {
+                    $msg .= " attribute {$attribute} with value '{$attributeValue}'";
+                }
+                throw new \UnexpectedValueException($msg);
             }
-            throw new \UnexpectedValueException($msg);
         }
 
         if (null === $data && !$options['ignore_missing']) {

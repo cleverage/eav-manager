@@ -98,7 +98,7 @@ class SecurityController extends Controller
 
                 $this->addFlash(
                     'success',
-                    'lost_password.password_changed'
+                    $this->get('translator')->trans('lost_password.password_changed', [], 'security')
                 );
 
                 return $this->redirectToRoute('login');
@@ -135,7 +135,10 @@ class SecurityController extends Controller
         $userManager = $this->get('eavmanager_user.user.manager');
         $user = $userManager->loadUserByToken($token);
         if (!$user) {
-            $this->addFlash('error', 'reset_password.token_not_found');
+            $this->addFlash(
+                'error',
+                $this->get('translator')->trans('reset_password.token_not_found', [], 'security')
+            );
 
             return $this->redirectToRoute('lost_password');
         }

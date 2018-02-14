@@ -28,12 +28,22 @@ class UserProvider implements UserProviderInterface
     /** @var Registry */
     protected $doctrine;
 
+    /** @var string */
+    protected $userClass;
+
+    /** @var bool */
+    protected $allowEmailAsUsername;
+
     /**
      * @param Registry $doctrine
+     * @param string   $userClass
+     * @param bool     $allowEmailAsUsername
      */
-    public function __construct(Registry $doctrine)
+    public function __construct(Registry $doctrine, $userClass = User::class, $allowEmailAsUsername = true)
     {
         $this->doctrine = $doctrine;
+        $this->userClass = $userClass;
+        $this->allowEmailAsUsername = $allowEmailAsUsername;
     }
 
     /**
@@ -45,11 +55,15 @@ class UserProvider implements UserProviderInterface
      *
      * @throws UsernameNotFoundException
      *
-     * @return User|UserInterface|null
+     * @return User|UserInterface
      */
     public function loadUserByUsername($username)
     {
+        /** @var User|UserInterface $user */
         $user = $this->getRepository()->findOneBy(['username' => $username]);
+        if (!$user && $this->allowEmailAsUsername) {
+            $user = $this->getRepository()->findOneBy(['email' => $username]);
+        }
         if ($user) {
             return $user;
         }
@@ -86,7 +100,7 @@ class UserProvider implements UserProviderInterface
      */
     public function supportsClass($class)
     {
-        return is_a($class, User::class, true);
+        return is_a($class, $this->userClass, true);
     }
 
     /**
@@ -94,6 +108,6 @@ class UserProvider implements UserProviderInterface
      */
     protected function getRepository()
     {
-        return $this->doctrine->getRepository(User::class);
+        return $this->doctrine->getRepository($this->userClass);
     }
 }

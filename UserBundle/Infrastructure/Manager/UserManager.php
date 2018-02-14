@@ -115,6 +115,7 @@ class UserManager implements UserManagerInterface
      * @throws ORMInvalidArgumentException
      * @throws OptimisticLockException
      * @throws \InvalidArgumentException
+     * @throws ORMException
      */
     public function requestNewPassword(User $user)
     {
@@ -143,7 +144,6 @@ class UserManager implements UserManagerInterface
         $em->persist($user);
         $em->flush();
 
-        // Si l'utilisteur est nouveau
         if ($user->isNew() && !$user->isEmailSent()) {
             try {
                 $this->userMailer->sendNewUserMail($user);
@@ -153,7 +153,6 @@ class UserManager implements UserManagerInterface
                 $this->logger->alert($e->getMessage());
             }
         }
-        // Si le mot de passe a expiré et que l'email n'a pas été envoyé
         if ($user->getPasswordRequestedAt() && !$user->isEmailSent()) {
             try {
                 $this->userMailer->sendResetPasswordMail($user);

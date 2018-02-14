@@ -1,20 +1,11 @@
 <?php
 /*
- *    CleverAge/EAVManager
- *    Copyright (C) 2015-2017 Clever-Age
+ * This file is part of the CleverAge/EAVManager package.
  *
- *    This program is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * Copyright (c) 2015-2018 Clever-Age
  *
- *    This program is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
- *
- *    You should have received a copy of the GNU General Public License
- *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace CleverAge\EAVManager\SecurityBundle\Form\Type;
@@ -78,7 +69,7 @@ class RoleHierarchyType extends AbstractType
                         'required' => false,
                         'widget_checkbox_label' => 'widget',
                     ];
-                    if (is_array($roles)) {
+                    if (\is_array($roles)) {
                         /** @var array $roles */
                         foreach ($roles as $role) {
                             if ($role === $hierarchy->getRole()) {
@@ -118,8 +109,9 @@ class RoleHierarchyType extends AbstractType
                         }
                         unset($submittedData['hasRole']);
                     }
+                    /** @var array $submittedData */
                     foreach ($submittedData as $key => $items) {
-                        if (is_array($items)) {
+                        if (\is_array($items)) {
                             unset($submittedData[$key]);
                             /** @var array $items */
                             foreach ($items as $role) {
@@ -156,7 +148,7 @@ class RoleHierarchyType extends AbstractType
                 if (!$value instanceof \Traversable && !$value instanceof LeafRole) {
                     throw new \UnexpectedValueException($error);
                 }
-                if (is_array($value) || $value instanceof \Traversable) {
+                if (\is_array($value) || $value instanceof \Traversable) {
                     /** @var array $value */
                     foreach ($value as $item) {
                         if (!$item instanceof LeafRole) {

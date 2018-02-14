@@ -1,20 +1,11 @@
 <?php
 /*
- *    CleverAge/EAVManager
- *    Copyright (C) 2015-2017 Clever-Age
+ * This file is part of the CleverAge/EAVManager package.
  *
- *    This program is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * Copyright (c) 2015-2018 Clever-Age
  *
- *    This program is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
- *
- *    You should have received a copy of the GNU General Public License
- *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace CleverAge\EAVManager\UserBundle\Mailer;
@@ -72,7 +63,7 @@ class UserMailer
     {
         $parameters = [
             'user' => $user,
-            'subject' => $this->translator->trans('eavmanager.user.security.account_creation'),
+            'subject' => $this->translator->trans('user.account_creation', [], 'security'),
             'company' => $this->configuration->getMailerCompany(),
         ];
         $text = $this->twig->render('CleverAgeEAVManagerUserBundle:Email:newUser.txt.twig', $parameters);
@@ -99,7 +90,7 @@ class UserMailer
     {
         $parameters = [
             'user' => $user,
-            'subject' => $this->translator->trans('eavmanager.user.security.reset_password'),
+            'subject' => $this->translator->trans('user.reset_password', [], 'security'),
             'company' => $this->configuration->getMailerCompany(),
         ];
         $text = $this->twig->render('CleverAgeEAVManagerUserBundle:Email:resetPassword.txt.twig', $parameters);

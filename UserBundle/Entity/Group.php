@@ -1,20 +1,11 @@
 <?php
 /*
- *    CleverAge/EAVManager
- *    Copyright (C) 2015-2017 Clever-Age
+ * This file is part of the CleverAge/EAVManager package.
  *
- *    This program is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * Copyright (c) 2015-2018 Clever-Age
  *
- *    This program is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
- *
- *    You should have received a copy of the GNU General Public License
- *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace CleverAge\EAVManager\UserBundle\Entity;
@@ -34,6 +25,8 @@ use Doctrine\ORM\Mapping as ORM;
 class Group
 {
     /**
+     * @var int
+     *
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -42,24 +35,28 @@ class Group
 
     /**
      * @var string
+     *
      * @ORM\Column(name="name", type="string")
      */
     protected $name;
 
     /**
      * @var DateTime
+     *
      * @ORM\Column(name="created_at", type="datetime")
      */
     protected $createdAt;
 
     /**
      * @var DateTime
+     *
      * @ORM\Column(name="updated_at", type="datetime")
      */
     protected $updatedAt;
 
     /**
      * @var FamilyPermission[]|Collection
+     *
      * @ORM\OneToMany(targetEntity="CleverAge\EAVManager\SecurityBundle\Entity\FamilyPermission", mappedBy="group",
      *                                                           cascade={"persist", "remove"}, orphanRemoval=true)
      */
@@ -67,6 +64,7 @@ class Group
 
     /**
      * @var User[]|Collection
+     *
      * @ORM\ManyToMany(targetEntity="CleverAge\EAVManager\UserBundle\Entity\User", mappedBy="groups")
      */
     protected $users;
@@ -136,7 +134,7 @@ class Group
     /**
      * @param DateTime $updatedAt
      *
-     * @return User
+     * @return Group
      */
     public function setUpdatedAt(DateTime $updatedAt = null)
     {
@@ -156,7 +154,7 @@ class Group
     /**
      * @param FamilyPermission $familyPermission
      *
-     * @return User
+     * @return Group
      */
     public function addFamilyPermission(FamilyPermission $familyPermission)
     {
@@ -202,18 +200,18 @@ class Group
      */
     public function hasRole($role)
     {
-        return in_array(strtoupper($role), $this->getRoles(), true);
+        return \in_array(strtoupper($role), $this->getRoles(), true);
     }
 
     /**
      * @param string $role
      *
-     * @return User
+     * @return Group
      */
     public function addRole($role)
     {
         $role = strtoupper($role);
-        if ($role === User::ROLE_DEFAULT) {
+        if (User::ROLE_DEFAULT === $role) {
             return $this;
         }
 
@@ -231,7 +229,9 @@ class Group
      */
     public function removeRole($role)
     {
-        if (false !== $key = array_search(strtoupper($role), $this->roles, true)) {
+        $key = array_search(strtoupper($role), $this->roles, true);
+        if (false !== $key) {
+            /** @var string $key */
             unset($this->roles[$key]);
             $this->roles = array_values($this->roles);
         }

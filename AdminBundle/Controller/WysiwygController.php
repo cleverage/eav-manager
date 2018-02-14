@@ -1,20 +1,11 @@
 <?php
 /*
- *    CleverAge/EAVManager
- *    Copyright (C) 2015-2017 Clever-Age
+ * This file is part of the CleverAge/EAVManager package.
  *
- *    This program is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * Copyright (c) 2015-2018 Clever-Age
  *
- *    This program is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
- *
- *    You should have received a copy of the GNU General Public License
- *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace CleverAge\EAVManager\AdminBundle\Controller;
@@ -27,6 +18,7 @@ use Sidus\EAVModelBundle\Entity\DataInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Enrich the WYSIWYG experience with in-place data selectors.
@@ -39,9 +31,9 @@ class WysiwygController extends Controller
      * @param Request $request
      * @param string  $configName
      *
-     * @return array
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return Response
      */
     public function selectDataAction(Request $request, $configName)
     {
@@ -75,9 +67,9 @@ class WysiwygController extends Controller
      *
      * @param Request $request
      *
-     * @return array
-     *
      * @throws \Exception
+     *
+     * @return array
      */
     public function selectMediaAction(Request $request)
     {
@@ -130,9 +122,9 @@ class WysiwygController extends Controller
     /**
      * @param Request $request
      *
-     * @return DataInterface|null
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return DataInterface|null
      */
     protected function getData(Request $request)
     {

@@ -1,4 +1,12 @@
 <?php
+/*
+ * This file is part of the CleverAge/EAVManager package.
+ *
+ * Copyright (c) 2015-2018 Clever-Age
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace CleverAge\EAVManager\ProcessBundle\Task;
 
@@ -23,6 +31,7 @@ class EAVReaderTask extends AbstractEAVQueryTask implements IterableTaskInterfac
     /**
      * {@inheritDoc}
      *
+     * @throws \InvalidArgumentException
      * @throws \Pagerfanta\Exception\NotIntegerCurrentPageException
      * @throws \Pagerfanta\Exception\OutOfRangeCurrentPageException
      * @throws \Pagerfanta\Exception\LessThan1CurrentPageException
@@ -38,9 +47,19 @@ class EAVReaderTask extends AbstractEAVQueryTask implements IterableTaskInterfac
             if ($options['allow_reset']) {
                 $this->closed = false;
                 $this->iterator = null;
-                $state->log('Reader was closed previously, restarting it', LogLevel::WARNING, $options['family'], $options);
+                $state->log(
+                    'Reader was closed previously, restarting it',
+                    LogLevel::WARNING,
+                    $options['family'],
+                    $options
+                );
             } else {
-                $state->log('Reader was closed previously, stopping the process', LogLevel::ERROR, $options['family'], $options);
+                $state->log(
+                    'Reader was closed previously, stopping the process',
+                    LogLevel::ERROR,
+                    $options['family'],
+                    $options
+                );
                 $state->setStopped(true);
 
                 return;
@@ -57,7 +76,7 @@ class EAVReaderTask extends AbstractEAVQueryTask implements IterableTaskInterfac
             // Log the data count
             if ($this->getOption($state, 'log_count')) {
                 $pager = new Paginator($query);
-                $count = count($pager);
+                $count = \count($pager);
                 $state->log("{$count} items found with current query", LogLevel::INFO, $options['family'], $options);
             }
         }
@@ -67,7 +86,12 @@ class EAVReaderTask extends AbstractEAVQueryTask implements IterableTaskInterfac
         // Handle empty results
         if (false === $result) {
             if ($this->getOption($state, 'log_count')) {
-                $state->log('Empty resultset for query, stopping the process', LogLevel::NOTICE, $options['family'], $options);
+                $state->log(
+                    'Empty resultset for query, stopping the process',
+                    LogLevel::NOTICE,
+                    $options['family'],
+                    $options
+                );
             }
             $state->setStopped(true);
 
@@ -84,8 +108,9 @@ class EAVReaderTask extends AbstractEAVQueryTask implements IterableTaskInterfac
      *
      * @param ProcessState $state
      *
-     * @return bool
      * @throws \LogicException
+     *
+     * @return bool
      */
     public function next(ProcessState $state)
     {
@@ -109,9 +134,11 @@ class EAVReaderTask extends AbstractEAVQueryTask implements IterableTaskInterfac
     protected function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
-        $resolver->setDefaults([
-            'allow_reset' => false,   // Allow the reader to reset it's iterator
-            'log_count'   => false,   // Log in state history the result count
-        ]);
+        $resolver->setDefaults(
+            [
+                'allow_reset' => false,   // Allow the reader to reset it's iterator
+                'log_count' => false,   // Log in state history the result count
+            ]
+        );
     }
 }

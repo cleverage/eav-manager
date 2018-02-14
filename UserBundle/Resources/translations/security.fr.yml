@@ -1,0 +1,25 @@
+login:
+    title: Connexion
+    username: Utilisateur
+    password: Mot de passe
+    submit: Connexion
+    remember_me: Se souvenir de moi
+    lost_password: Mot de passe oublié ?
+
+lost_password:
+    title: Demande de réinitialisation de mot de passe
+    back: Retour à l'écran de connexion
+    submit: Envoyer la demande
+    not_found: Aucun utilisateur correspondant à cet email n'a été trouvé
+    password_changed: La demande de changement de mot de passe à été envoyée à l'adresse saisie.
+
+reset_password:
+    title: Réinitialisation du mot de passe
+    back: Retour à l'écran de connexion
+    submit: Changer le mot de passe
+    token_not_found: Aucun utilisateur n'a été trouvé avec ce token
+
+user:
+    account_creation: Création
+    reset_password: Réinitialiser votre mot de passe
+

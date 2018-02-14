@@ -1,4 +1,12 @@
 <?php
+/*
+ * This file is part of the CleverAge/EAVManager package.
+ *
+ * Copyright (c) 2015-2018 Clever-Age
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace CleverAge\EAVManager\ProcessBundle\Task;
 
@@ -74,7 +82,7 @@ abstract class AbstractEAVQueryTask extends AbstractEAVTask
         $queryParts = [];
         /** @noinspection ForeachSourceInspection */
         foreach ($options['criteria'] as $attributeCode => $value) {
-            if (is_array($value)) {
+            if (\is_array($value)) {
                 $queryParts[] = $eavQb->a($attributeCode)->in($value);
             } else {
                 if (null !== $value && $value === $family->getAttribute($attributeCode)->getDefault()) {

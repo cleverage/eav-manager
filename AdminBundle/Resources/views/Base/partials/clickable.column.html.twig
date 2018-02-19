@@ -1,12 +1,12 @@
 {% import "CleverAgeEAVManagerLayoutBundle:Macros:utilities.html.twig" as utilities %}
 
 {% set admin = viewParameters.admin %}
-{% set buttonOptions = {
+{% set buttonOptions = buttonOptions|default({
     content: column.render(result),
     target: '#tg_right',
     no_icon: true,
     class: '',
-} %}
+}) %}
 {% if admin.hasAction('edit') and is_granted('edit', result) %}
     {{ utilities.eav_action_button(admin, result, 'edit', buttonOptions) }}
 {% elseif admin.hasAction('read') and is_granted('read', result) %}

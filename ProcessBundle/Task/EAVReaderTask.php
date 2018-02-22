@@ -13,7 +13,6 @@ namespace CleverAge\EAVManager\ProcessBundle\Task;
 use CleverAge\ProcessBundle\Model\IterableTaskInterface;
 use CleverAge\ProcessBundle\Model\ProcessState;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Psr\Log\LogLevel;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -67,16 +66,13 @@ class EAVReaderTask extends AbstractEAVQueryTask implements IterableTaskInterfac
         }
 
         if (null === $this->iterator) {
-            $qb = $this->getQueryBuilder($state);
-            $query = $qb->getQuery();
-
-            $this->iterator = $query->iterate();
+            $paginator = $this->getPaginator($state);
+            $this->iterator = $paginator->getIterator();
             $this->iterator->next(); // Move to first element
 
             // Log the data count
             if ($this->getOption($state, 'log_count')) {
-                $pager = new Paginator($query);
-                $count = \count($pager);
+                $count = \count($paginator);
                 $state->log("{$count} items found with current query", LogLevel::INFO, $options['family'], $options);
             }
         }

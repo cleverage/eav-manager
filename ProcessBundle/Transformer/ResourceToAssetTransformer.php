@@ -128,8 +128,8 @@ class ResourceToAssetTransformer extends UniqueEAVFinderTransformer
 
         $eavQb = $repository->createFamilyQueryBuilder($family);
         $qb = $eavQb->apply($eavQb->attribute($attribute)->equals($resource));
-        $qb->setMaxResults(1);
-        $data = $qb->getQuery()->getOneOrNullResult();
+        $results = $qb->getQuery()->getResult();
+        $data = \count($results) ? reset($results) : null;
 
         if (null === $data) {
             if ($options['create_missing']) {

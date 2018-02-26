@@ -60,11 +60,13 @@ class FamilyPermission
     protected $group;
 
     /**
-     * @var FamilyInterface
+     * Switching to string because the system crashed when a family was removed and there is no way to handle this
      *
-     * @ORM\Column(name="family_code", type="sidus_family")
+     * @var string
+     *
+     * @ORM\Column(name="family_code", type="string")
      */
-    protected $family;
+    protected $familyCode;
 
     /**
      * @var bool
@@ -115,7 +117,7 @@ class FamilyPermission
      *
      * @throws \Exception
      */
-    public function hasPermission($permission)
+    public function hasPermission($permission): bool
     {
         if (!\in_array($permission, $this::$permissions, true)) {
             throw new \UnexpectedValueException("Permissions does not exists: {$permission}");
@@ -128,7 +130,7 @@ class FamilyPermission
     /**
      * @return array
      */
-    public static function getPermissions()
+    public static function getPermissions(): array
     {
         return self::$permissions;
     }
@@ -136,7 +138,7 @@ class FamilyPermission
     /**
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -146,7 +148,7 @@ class FamilyPermission
      *
      * @return FamilyPermission
      */
-    public function setId($id)
+    public function setId($id): FamilyPermission
     {
         $this->id = $id;
 
@@ -156,7 +158,7 @@ class FamilyPermission
     /**
      * @return User
      */
-    public function getUser()
+    public function getUser(): User
     {
         return $this->user;
     }
@@ -166,7 +168,7 @@ class FamilyPermission
      *
      * @return FamilyPermission
      */
-    public function setUser(User $user = null)
+    public function setUser(User $user = null): FamilyPermission
     {
         $this->user = $user;
         if ($user && !$user->getFamilyPermissions()->contains($this)) {
@@ -179,7 +181,7 @@ class FamilyPermission
     /**
      * @return Group
      */
-    public function getGroup()
+    public function getGroup(): Group
     {
         return $this->group;
     }
@@ -189,7 +191,7 @@ class FamilyPermission
      *
      * @return FamilyPermission
      */
-    public function setGroup(Group $group = null)
+    public function setGroup(Group $group = null): FamilyPermission
     {
         $this->group = $group;
         if ($group && !$group->getFamilyPermissions()->contains($this)) {
@@ -200,11 +202,11 @@ class FamilyPermission
     }
 
     /**
-     * @return FamilyInterface
+     * @throws \LogicException
      */
     public function getFamily()
     {
-        return $this->family;
+        throw new \LogicException('Deprecated call, please use getFamilyCode instead');
     }
 
     /**
@@ -212,17 +214,33 @@ class FamilyPermission
      *
      * @return FamilyPermission
      */
-    public function setFamily(FamilyInterface $family = null)
+    public function setFamily(FamilyInterface $family = null): FamilyPermission
     {
-        $this->family = $family;
+        $this->familyCode = $family ? $family->getCode() : null;
 
         return $this;
     }
 
     /**
+     * @return string
+     */
+    public function getFamilyCode(): string
+    {
+        return $this->familyCode;
+    }
+
+    /**
+     * @param string $familyCode
+     */
+    public function setFamilyCode(string $familyCode = null)
+    {
+        $this->familyCode = $familyCode;
+    }
+
+    /**
      * @return bool
      */
-    public function isList()
+    public function isList(): bool
     {
         return $this->list;
     }
@@ -232,7 +250,7 @@ class FamilyPermission
      *
      * @return FamilyPermission
      */
-    public function setList($list)
+    public function setList($list): FamilyPermission
     {
         $this->list = $list;
 
@@ -242,7 +260,7 @@ class FamilyPermission
     /**
      * @return bool
      */
-    public function isRead()
+    public function isRead(): bool
     {
         return $this->read;
     }
@@ -252,7 +270,7 @@ class FamilyPermission
      *
      * @return FamilyPermission
      */
-    public function setRead($read)
+    public function setRead($read): FamilyPermission
     {
         $this->read = $read;
 
@@ -262,7 +280,7 @@ class FamilyPermission
     /**
      * @return bool
      */
-    public function isCreate()
+    public function isCreate(): bool
     {
         return $this->create;
     }
@@ -272,7 +290,7 @@ class FamilyPermission
      *
      * @return FamilyPermission
      */
-    public function setCreate($create)
+    public function setCreate($create): FamilyPermission
     {
         $this->create = $create;
 
@@ -282,7 +300,7 @@ class FamilyPermission
     /**
      * @return bool
      */
-    public function isEdit()
+    public function isEdit(): bool
     {
         return $this->edit;
     }
@@ -292,7 +310,7 @@ class FamilyPermission
      *
      * @return FamilyPermission
      */
-    public function setEdit($edit)
+    public function setEdit($edit): FamilyPermission
     {
         $this->edit = $edit;
 
@@ -302,7 +320,7 @@ class FamilyPermission
     /**
      * @return bool
      */
-    public function isDelete()
+    public function isDelete(): bool
     {
         return $this->delete;
     }
@@ -312,7 +330,7 @@ class FamilyPermission
      *
      * @return FamilyPermission
      */
-    public function setDelete($delete)
+    public function setDelete($delete): FamilyPermission
     {
         $this->delete = $delete;
 
@@ -322,7 +340,7 @@ class FamilyPermission
     /**
      * @return bool
      */
-    public function isPublish()
+    public function isPublish(): bool
     {
         return $this->publish;
     }
@@ -332,7 +350,7 @@ class FamilyPermission
      *
      * @return FamilyPermission
      */
-    public function setPublish($publish)
+    public function setPublish($publish): FamilyPermission
     {
         $this->publish = $publish;
 

@@ -67,7 +67,7 @@ class FamilyVoter implements VoterInterface
 
             foreach ($permissions as $permission) {
                 if ($permission->hasPermission($attribute) &&
-                    $permission->getFamily()->getCode() === $object->getCode()
+                    $permission->getFamilyCode() === $object->getCode()
                 ) {
                     return VoterInterface::ACCESS_GRANTED;
                 }

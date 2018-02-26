@@ -101,7 +101,7 @@
 {% block family_permission_widget %}
     <div class="row">
         <div class="col-sm-3">
-            {{ form_widget(form.family) }}
+            {{ form_row(form.familyCode) }}
         </div>
         {% for permission in form %}
             {% if not permission.rendered %}

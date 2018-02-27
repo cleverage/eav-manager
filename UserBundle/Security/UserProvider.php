@@ -1,20 +1,11 @@
 <?php
 /*
- *    CleverAge/EAVManager
- *    Copyright (C) 2015-2017 Clever-Age
+ * This file is part of the CleverAge/EAVManager package.
  *
- *    This program is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * Copyright (c) 2015-2018 Clever-Age
  *
- *    This program is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
- *
- *    You should have received a copy of the GNU General Public License
- *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace CleverAge\EAVManager\UserBundle\Security;
@@ -37,12 +28,22 @@ class UserProvider implements UserProviderInterface
     /** @var Registry */
     protected $doctrine;
 
+    /** @var string */
+    protected $userClass;
+
+    /** @var bool */
+    protected $allowEmailAsUsername;
+
     /**
      * @param Registry $doctrine
+     * @param string   $userClass
+     * @param bool     $allowEmailAsUsername
      */
-    public function __construct(Registry $doctrine)
+    public function __construct(Registry $doctrine, $userClass = User::class, $allowEmailAsUsername = true)
     {
         $this->doctrine = $doctrine;
+        $this->userClass = $userClass;
+        $this->allowEmailAsUsername = $allowEmailAsUsername;
     }
 
     /**
@@ -54,11 +55,15 @@ class UserProvider implements UserProviderInterface
      *
      * @throws UsernameNotFoundException
      *
-     * @return User|UserInterface|null
+     * @return User|UserInterface
      */
     public function loadUserByUsername($username)
     {
+        /** @var User|UserInterface $user */
         $user = $this->getRepository()->findOneBy(['username' => $username]);
+        if (!$user && $this->allowEmailAsUsername) {
+            $user = $this->getRepository()->findOneBy(['email' => $username]);
+        }
         if ($user) {
             return $user;
         }
@@ -95,7 +100,7 @@ class UserProvider implements UserProviderInterface
      */
     public function supportsClass($class)
     {
-        return is_a($class, User::class, true);
+        return is_a($class, $this->userClass, true);
     }
 
     /**
@@ -103,6 +108,6 @@ class UserProvider implements UserProviderInterface
      */
     protected function getRepository()
     {
-        return $this->doctrine->getRepository(User::class);
+        return $this->doctrine->getRepository($this->userClass);
     }
 }

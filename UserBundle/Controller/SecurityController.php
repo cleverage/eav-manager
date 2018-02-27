@@ -1,20 +1,11 @@
 <?php
 /*
- *    CleverAge/EAVManager
- *    Copyright (C) 2015-2017 Clever-Age
+ * This file is part of the CleverAge/EAVManager package.
  *
- *    This program is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * Copyright (c) 2015-2018 Clever-Age
  *
- *    This program is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
- *
- *    You should have received a copy of the GNU General Public License
- *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace CleverAge\EAVManager\UserBundle\Controller;
@@ -25,6 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
@@ -37,11 +29,12 @@ class SecurityController extends Controller
 {
     /**
      * @Template()
+     *
      * @Route("/login", name="login")
      *
      * @throws \Exception
      *
-     * @return array
+     * @return Response|array
      */
     public function loginAction()
     {
@@ -64,13 +57,14 @@ class SecurityController extends Controller
 
     /**
      * @Template()
+     *
      * @Route("/login/lost-password", name="lost_password")
      *
      * @param Request $request
      *
      * @throws \Exception
      *
-     * @return array
+     * @return Response|array
      */
     public function lostPasswordAction(Request $request)
     {
@@ -82,6 +76,9 @@ class SecurityController extends Controller
             null,
             [
                 'show_legend' => false,
+                'attr' => [
+                    'novalidate' => 'novalidate',
+                ],
             ]
         );
         $form->handleRequest($request);
@@ -93,7 +90,7 @@ class SecurityController extends Controller
             try {
                 $user = $userManager->loadUserByUsername($form->get('username')->getData());
             } catch (UsernameNotFoundException $e) {
-                $error = "Aucun utilisateur correspondant à cet email n'a été trouvé";
+                $error = 'lost_password.not_found';
             }
 
             if ($user) {
@@ -101,7 +98,7 @@ class SecurityController extends Controller
 
                 $this->addFlash(
                     'success',
-                    "La demande de changement de mot de passe à été envoyée à l'adresse saisie."
+                    $this->get('translator')->trans('lost_password.password_changed', [], 'security')
                 );
 
                 return $this->redirectToRoute('login');
@@ -116,13 +113,14 @@ class SecurityController extends Controller
 
     /**
      * @Template()
+     *
      * @Route("/login/reset-password", name="reset_password")
      *
      * @param Request $request
      *
      * @throws \Exception
      *
-     * @return array
+     * @return Response|array
      */
     public function resetPasswordAction(Request $request)
     {
@@ -137,7 +135,10 @@ class SecurityController extends Controller
         $userManager = $this->get('eavmanager_user.user.manager');
         $user = $userManager->loadUserByToken($token);
         if (!$user) {
-            $this->addFlash('error', "Aucun utilisateur n'a été trouvé avec ce token");
+            $this->addFlash(
+                'error',
+                $this->get('translator')->trans('reset_password.token_not_found', [], 'security')
+            );
 
             return $this->redirectToRoute('lost_password');
         }

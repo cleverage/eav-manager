@@ -1,10 +1,19 @@
 <?php
+/*
+ * This file is part of the CleverAge/EAVManager package.
+ *
+ * Copyright (c) 2015-2018 Clever-Age
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace CleverAge\EAVManager\ProcessBundle\Task;
 
 use CleverAge\EAVManager\EAVModelBundle\Entity\DataRepository;
 use CleverAge\ProcessBundle\Model\ProcessState;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -52,6 +61,8 @@ abstract class AbstractEAVQueryTask extends AbstractEAVTask
     }
 
     /**
+     * @deprecated Use getPaginator instead because this method can't handle limit and offset properly
+     *
      * @param ProcessState $state
      * @param string       $alias
      *
@@ -74,7 +85,7 @@ abstract class AbstractEAVQueryTask extends AbstractEAVTask
         $queryParts = [];
         /** @noinspection ForeachSourceInspection */
         foreach ($options['criteria'] as $attributeCode => $value) {
-            if (is_array($value)) {
+            if (\is_array($value)) {
                 $queryParts[] = $eavQb->a($attributeCode)->in($value);
             } else {
                 if (null !== $value && $value === $family->getAttribute($attributeCode)->getDefault()) {
@@ -95,14 +106,36 @@ abstract class AbstractEAVQueryTask extends AbstractEAVTask
         }
 
         $qb = $eavQb->apply($eavQb->getAnd($queryParts));
-        if (null !== $options['limit']) {
-            $qb->setMaxResults($options['limit']);
-        }
-        if (null !== $options['offset']) {
-            $qb->setFirstResult($options['offset']);
-        }
         $qb->distinct();
 
         return $qb;
+    }
+
+    /**
+     * If a limit or an offset is specified, we are forced to use a paginator to handle joins properly
+     *
+     * @param ProcessState $state
+     * @param string       $alias
+     *
+     * @throws \UnexpectedValueException
+     * @throws \Sidus\EAVModelBundle\Exception\MissingAttributeException
+     * @throws \LogicException
+     * @throws \Symfony\Component\OptionsResolver\Exception\ExceptionInterface
+     *
+     * @return Paginator
+     */
+    protected function getPaginator(ProcessState $state, $alias = 'e')
+    {
+        $options = $this->getOptions($state);
+        /** @noinspection PhpDeprecationInspection */
+        $paginator = new Paginator($this->getQueryBuilder($state, $alias));
+        if (null !== $options['limit']) {
+            $paginator->getQuery()->setMaxResults($options['limit']);
+        }
+        if (null !== $options['offset']) {
+            $paginator->getQuery()->setFirstResult($options['offset']);
+        }
+
+        return $paginator;
     }
 }

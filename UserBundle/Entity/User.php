@@ -1,20 +1,11 @@
 <?php
 /*
- *    CleverAge/EAVManager
- *    Copyright (C) 2015-2017 Clever-Age
+ * This file is part of the CleverAge/EAVManager package.
  *
- *    This program is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * Copyright (c) 2015-2018 Clever-Age
  *
- *    This program is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
- *
- *    You should have received a copy of the GNU General Public License
- *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace CleverAge\EAVManager\UserBundle\Entity;
@@ -136,18 +127,21 @@ class User implements UserInterface, \Serializable
 
     /**
      * @var DateTime
+     *
      * @ORM\Column(name="created_at", type="datetime")
      */
     protected $createdAt;
 
     /**
      * @var DateTime
+     *
      * @ORM\Column(name="updated_at", type="datetime")
      */
     protected $updatedAt;
 
     /**
      * @var FamilyPermission[]|Collection
+     *
      * @ORM\OneToMany(targetEntity="CleverAge\EAVManager\SecurityBundle\Entity\FamilyPermission", mappedBy="user",
      *                                                           cascade={"persist", "remove"}, orphanRemoval=true)
      */
@@ -155,11 +149,14 @@ class User implements UserInterface, \Serializable
 
     /**
      * @var DataInterface
+     *
      * @ORM\OneToOne(targetEntity="Sidus\EAVModelBundle\Entity\DataInterface", cascade={"persist", "remove"})
      */
     protected $data;
 
     /**
+     * @var Group[]|Collection
+     *
      * @ORM\ManyToMany(targetEntity="CleverAge\EAVManager\UserBundle\Entity\Group", inversedBy="users")
      * @ORM\JoinTable(name="eavmanager_user_group",
      *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
@@ -332,7 +329,7 @@ class User implements UserInterface, \Serializable
      */
     public function hasRole($role)
     {
-        return in_array(strtoupper($role), $this->getRoles(), true);
+        return \in_array(strtoupper($role), $this->getRoles(), true);
     }
 
     /**
@@ -343,7 +340,7 @@ class User implements UserInterface, \Serializable
     public function addRole($role)
     {
         $role = strtoupper($role);
-        if ($role === static::ROLE_DEFAULT) {
+        if (static::ROLE_DEFAULT === $role) {
             return $this;
         }
 
@@ -361,7 +358,9 @@ class User implements UserInterface, \Serializable
      */
     public function removeRole($role)
     {
-        if (false !== $key = array_search(strtoupper($role), $this->roles, true)) {
+        $key = array_search(strtoupper($role), $this->roles, true);
+        if (false !== $key) {
+            /** @var string $key */
             unset($this->roles[$key]);
             $this->roles = array_values($this->roles);
         }
@@ -555,7 +554,7 @@ class User implements UserInterface, \Serializable
     {
         $roles = [];
         foreach ($this->getRoles() as $role) {
-            if ($role === 'ROLE_USER') {
+            if ('ROLE_USER' === $role) {
                 continue;
             }
             $role = strtolower(str_replace('ROLE_', '', $role));
@@ -729,7 +728,8 @@ class User implements UserInterface, \Serializable
             $this->username,
             $this->password,
             $this->salt,
-            $this->roles) = unserialize($serialized);
+            $this->roles
+            ) = unserialize($serialized, []);
     }
 
     /**

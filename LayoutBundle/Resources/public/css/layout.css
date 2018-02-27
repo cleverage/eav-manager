@@ -1568,7 +1568,7 @@ pre code {
   left: 100%; }
 
 .col-xs-offset-0 {
-  margin-left: 0%; }
+  margin-left: 0; }
 
 .col-xs-offset-1 {
   margin-left: 8.33333%; }
@@ -1725,7 +1725,7 @@ pre code {
     left: 100%; }
 
   .col-sm-offset-0 {
-    margin-left: 0%; }
+    margin-left: 0; }
 
   .col-sm-offset-1 {
     margin-left: 8.33333%; }
@@ -1881,7 +1881,7 @@ pre code {
     left: 100%; }
 
   .col-md-offset-0 {
-    margin-left: 0%; }
+    margin-left: 0; }
 
   .col-md-offset-1 {
     margin-left: 8.33333%; }
@@ -2037,7 +2037,7 @@ pre code {
     left: 100%; }
 
   .col-lg-offset-0 {
-    margin-left: 0%; }
+    margin-left: 0; }
 
   .col-lg-offset-1 {
     margin-left: 8.33333%; }
@@ -4008,7 +4008,7 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
 
 .progress-bar {
   float: left;
-  width: 0%;
+  width: 0;
   height: 100%;
   font-size: 12px;
   line-height: 21px;

@@ -1,20 +1,11 @@
 <?php
 /*
- *    CleverAge/EAVManager
- *    Copyright (C) 2015-2017 Clever-Age
+ * This file is part of the CleverAge/EAVManager package.
  *
- *    This program is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * Copyright (c) 2015-2018 Clever-Age
  *
- *    This program is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
- *
- *    You should have received a copy of the GNU General Public License
- *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace CleverAge\EAVManager\SecurityBundle\Entity;
@@ -45,6 +36,7 @@ class FamilyPermission
 
     /**
      * @var int
+     *
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -53,6 +45,7 @@ class FamilyPermission
 
     /**
      * @var User
+     *
      * @ORM\ManyToOne(targetEntity="CleverAge\EAVManager\UserBundle\Entity\User", inversedBy="familyPermissions")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="cascade")
      */
@@ -60,49 +53,59 @@ class FamilyPermission
 
     /**
      * @var Group
+     *
      * @ORM\ManyToOne(targetEntity="CleverAge\EAVManager\UserBundle\Entity\Group", inversedBy="familyPermissions")
      * @ORM\JoinColumn(name="group_id", referencedColumnName="id", onDelete="cascade")
      */
     protected $group;
 
     /**
-     * @var FamilyInterface
-     * @ORM\Column(name="family_code", type="sidus_family")
+     * Switching to string because the system crashed when a family was removed and there is no way to handle this
+     *
+     * @var string
+     *
+     * @ORM\Column(name="family_code", type="string")
      */
-    protected $family;
+    protected $familyCode;
 
     /**
      * @var bool
+     *
      * @ORM\Column(type="boolean")
      */
     protected $list = true;
 
     /**
      * @var bool
+     *
      * @ORM\Column(type="boolean", name="`read`") Reserved SQL word
      */
     protected $read = true;
 
     /**
      * @var bool
+     *
      * @ORM\Column(type="boolean", name="`create`") Reserved SQL word
      */
     protected $create = true;
 
     /**
      * @var bool
+     *
      * @ORM\Column(type="boolean")
      */
     protected $edit = true;
 
     /**
      * @var bool
+     *
      * @ORM\Column(type="boolean", name="`delete`") Reserved SQL word
      */
     protected $delete = true;
 
     /**
      * @var bool
+     *
      * @ORM\Column(type="boolean")
      */
     protected $publish = true;
@@ -114,7 +117,7 @@ class FamilyPermission
      *
      * @throws \Exception
      */
-    public function hasPermission($permission)
+    public function hasPermission($permission): bool
     {
         if (!\in_array($permission, $this::$permissions, true)) {
             throw new \UnexpectedValueException("Permissions does not exists: {$permission}");
@@ -127,7 +130,7 @@ class FamilyPermission
     /**
      * @return array
      */
-    public static function getPermissions()
+    public static function getPermissions(): array
     {
         return self::$permissions;
     }
@@ -135,7 +138,7 @@ class FamilyPermission
     /**
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -145,7 +148,7 @@ class FamilyPermission
      *
      * @return FamilyPermission
      */
-    public function setId($id)
+    public function setId($id): FamilyPermission
     {
         $this->id = $id;
 
@@ -155,7 +158,7 @@ class FamilyPermission
     /**
      * @return User
      */
-    public function getUser()
+    public function getUser(): User
     {
         return $this->user;
     }
@@ -165,7 +168,7 @@ class FamilyPermission
      *
      * @return FamilyPermission
      */
-    public function setUser(User $user = null)
+    public function setUser(User $user = null): FamilyPermission
     {
         $this->user = $user;
         if ($user && !$user->getFamilyPermissions()->contains($this)) {
@@ -178,7 +181,7 @@ class FamilyPermission
     /**
      * @return Group
      */
-    public function getGroup()
+    public function getGroup(): Group
     {
         return $this->group;
     }
@@ -188,7 +191,7 @@ class FamilyPermission
      *
      * @return FamilyPermission
      */
-    public function setGroup(Group $group = null)
+    public function setGroup(Group $group = null): FamilyPermission
     {
         $this->group = $group;
         if ($group && !$group->getFamilyPermissions()->contains($this)) {
@@ -199,11 +202,11 @@ class FamilyPermission
     }
 
     /**
-     * @return FamilyInterface
+     * @throws \LogicException
      */
     public function getFamily()
     {
-        return $this->family;
+        throw new \LogicException('Deprecated call, please use getFamilyCode instead');
     }
 
     /**
@@ -211,17 +214,33 @@ class FamilyPermission
      *
      * @return FamilyPermission
      */
-    public function setFamily(FamilyInterface $family = null)
+    public function setFamily(FamilyInterface $family = null): FamilyPermission
     {
-        $this->family = $family;
+        $this->familyCode = $family ? $family->getCode() : null;
 
         return $this;
     }
 
     /**
+     * @return string
+     */
+    public function getFamilyCode(): string
+    {
+        return $this->familyCode;
+    }
+
+    /**
+     * @param string $familyCode
+     */
+    public function setFamilyCode(string $familyCode = null)
+    {
+        $this->familyCode = $familyCode;
+    }
+
+    /**
      * @return bool
      */
-    public function isList()
+    public function isList(): bool
     {
         return $this->list;
     }
@@ -231,7 +250,7 @@ class FamilyPermission
      *
      * @return FamilyPermission
      */
-    public function setList($list)
+    public function setList($list): FamilyPermission
     {
         $this->list = $list;
 
@@ -241,7 +260,7 @@ class FamilyPermission
     /**
      * @return bool
      */
-    public function isRead()
+    public function isRead(): bool
     {
         return $this->read;
     }
@@ -251,7 +270,7 @@ class FamilyPermission
      *
      * @return FamilyPermission
      */
-    public function setRead($read)
+    public function setRead($read): FamilyPermission
     {
         $this->read = $read;
 
@@ -261,7 +280,7 @@ class FamilyPermission
     /**
      * @return bool
      */
-    public function isCreate()
+    public function isCreate(): bool
     {
         return $this->create;
     }
@@ -271,7 +290,7 @@ class FamilyPermission
      *
      * @return FamilyPermission
      */
-    public function setCreate($create)
+    public function setCreate($create): FamilyPermission
     {
         $this->create = $create;
 
@@ -281,7 +300,7 @@ class FamilyPermission
     /**
      * @return bool
      */
-    public function isEdit()
+    public function isEdit(): bool
     {
         return $this->edit;
     }
@@ -291,7 +310,7 @@ class FamilyPermission
      *
      * @return FamilyPermission
      */
-    public function setEdit($edit)
+    public function setEdit($edit): FamilyPermission
     {
         $this->edit = $edit;
 
@@ -301,7 +320,7 @@ class FamilyPermission
     /**
      * @return bool
      */
-    public function isDelete()
+    public function isDelete(): bool
     {
         return $this->delete;
     }
@@ -311,7 +330,7 @@ class FamilyPermission
      *
      * @return FamilyPermission
      */
-    public function setDelete($delete)
+    public function setDelete($delete): FamilyPermission
     {
         $this->delete = $delete;
 
@@ -321,7 +340,7 @@ class FamilyPermission
     /**
      * @return bool
      */
-    public function isPublish()
+    public function isPublish(): bool
     {
         return $this->publish;
     }
@@ -331,7 +350,7 @@ class FamilyPermission
      *
      * @return FamilyPermission
      */
-    public function setPublish($publish)
+    public function setPublish($publish): FamilyPermission
     {
         $this->publish = $publish;
 

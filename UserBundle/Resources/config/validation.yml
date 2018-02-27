@@ -35,6 +35,8 @@ CleverAge\EAVManager\UserBundle\Entity\User:
                 min: 6
                 minMessage: admin.user.form.password.short
                 groups: [ 'Registration', 'ResetPassword', 'ChangePassword']
+        familyPermissions:
+            - Valid: ~
 
 CleverAge\EAVManager\UserBundle\Entity\Group:
     properties:

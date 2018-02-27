@@ -7,15 +7,21 @@
         "eav",
         "model"
     ],
-    "homepage": "https://git.clever-age.net/clever-age-practice-manager/eav-manager",
+    "homepage": "https://github.com/cleverage/eav-manager",
     "type": "library",
-    "license": "GPL-3.0",
+    "license": "MIT",
     "authors": [
         {
             "name": "Vincent Chalnot",
             "email": "vchalnot@clever-age.com",
             "homepage": "https://github.com/VincentChalnot",
             "role": "Lead Developer"
+        },
+        {
+            "name": "Valentin Clavreul",
+            "email": "vclavreul@clever-age.com",
+            "homepage": "https://github.com/shavounet",
+            "role": "Developer"
         }
     ],
     "autoload": {
@@ -24,6 +30,7 @@
         }
     },
     "require": {
+        "php": ">=7.1",
         "liip/imagine-bundle": "^1.7",
         "exercise/htmlpurifier-bundle": "0.2.*",
         "thomaspark/bootswatch": "^3.3.7",

@@ -1,20 +1,11 @@
 <?php
 /*
- *    CleverAge/EAVManager
- *    Copyright (C) 2015-2017 Clever-Age
+ * This file is part of the CleverAge/EAVManager package.
  *
- *    This program is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * Copyright (c) 2015-2018 Clever-Age
  *
- *    This program is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
- *
- *    You should have received a copy of the GNU General Public License
- *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter;
@@ -149,7 +140,7 @@ abstract class AbstractEAVFilter implements FilterInterface
                 continue;
             }
             $typeOfField = $this->getType($attribute);
-            if (!in_array($typeOfField, $this->supportedTypes, true)) {
+            if (!\in_array($typeOfField, $this->supportedTypes, true)) {
                 continue;
             }
 
@@ -347,10 +338,10 @@ abstract class AbstractEAVFilter implements FilterInterface
     {
         $family = $this->getFamily($resourceClass);
         if (!$family->hasAttribute($property)) {
-            if ($property === 'label') {
+            if ('label' === $property) {
                 return $family->getAttributeAsLabel();
             }
-            if ($property === 'identifier') {
+            if ('identifier' === $property) {
                 return $family->getAttributeAsIdentifier();
             }
             // Special case for nested properties
@@ -359,7 +350,7 @@ abstract class AbstractEAVFilter implements FilterInterface
                 foreach (explode('.', $property) as $attributeCode) {
                     if ($attribute instanceof AttributeInterface) { // If "parent" attribute resolved
                         $families = $attribute->getOption('allowed_families', []);
-                        if (1 !== count($families)) {
+                        if (1 !== \count($families)) {
                             throw new \UnexpectedValueException(
                                 "Bad 'allowed_families' configuration for attribute '{$attribute->getCode()}'"
                             );

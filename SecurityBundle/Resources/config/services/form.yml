@@ -7,5 +7,7 @@ services:
 
     eavmanager_security.form.family_permission.type:
         class: CleverAge\EAVManager\SecurityBundle\Form\Type\FamilyPermissionType
+        arguments:
+            - '@sidus_eav_model.family.registry'
         tags:
             - { name: form.type }

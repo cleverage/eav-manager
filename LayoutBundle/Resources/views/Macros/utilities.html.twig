@@ -4,7 +4,7 @@ Displays flash messages for main keys
 {% macro flash_messages() %}
     {% for name in ['error', 'warning', 'success', 'info'] %}
         {% for message in app.session.flashBag.get(name) %}
-            <div class="alert alert-{{ name }}">
+            <div class="alert alert-{{ name == 'error' ? 'danger' : name }}">
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
                 {{ message|raw }}
             </div>
@@ -53,6 +53,7 @@ Displays an admin menu link with a FA icon
     {% import _self as current %}
     {% set admin = admin(admin) %}
     {% set title = title ?: tryTrans(['admin.'~admin.code~'.title'], [], admin.code|humanize) %}
+    {% set icon = icon ?: admin.option('icon') %}
     {% set title = ('<i class="fa fa-' ~ icon ~ '"></i> ') ~ title %}
     {{ current.admin_menu_link(title, admin, action, parameters) }}
 {% endmacro %}

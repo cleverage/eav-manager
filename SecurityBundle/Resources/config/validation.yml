@@ -1,0 +1,5 @@
+CleverAge\EAVManager\SecurityBundle\Entity\FamilyPermission:
+    properties:
+        familyCode:
+            - NotBlank:
+                message: admin.family_permission.form.family.blank

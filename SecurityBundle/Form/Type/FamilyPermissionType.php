@@ -1,27 +1,21 @@
 <?php
 /*
- *    CleverAge/EAVManager
- *    Copyright (C) 2015-2017 Clever-Age
+ * This file is part of the CleverAge/EAVManager package.
  *
- *    This program is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * Copyright (c) 2015-2018 Clever-Age
  *
- *    This program is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
- *
- *    You should have received a copy of the GNU General Public License
- *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace CleverAge\EAVManager\SecurityBundle\Form\Type;
 
 use CleverAge\EAVManager\SecurityBundle\Entity\FamilyPermission;
 use Sidus\EAVModelBundle\Form\Type\FamilySelectorType;
+use Sidus\EAVModelBundle\Model\FamilyInterface;
+use Sidus\EAVModelBundle\Registry\FamilyRegistry;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Exception\AccessException;
@@ -34,18 +28,33 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class FamilyPermissionType extends AbstractType
 {
+    /** @var FamilyRegistry */
+    protected $familyRegistry;
+
+    /**
+     * @param FamilyRegistry $familyRegistry
+     */
+    public function __construct(FamilyRegistry $familyRegistry)
+    {
+        $this->familyRegistry = $familyRegistry;
+    }
+
     /**
      * @param FormBuilderInterface $builder
      * @param array                $options
+     *
+     * @throws \Symfony\Component\Form\Exception\InvalidArgumentException
+     * @throws \Sidus\EAVModelBundle\Exception\MissingFamilyException
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add(
-            'family',
+            'familyCode',
             FamilySelectorType::class,
             [
                 'label' => false,
-                'horizontal_input_wrapper_class' => 'col-sm-3',
+                'placeholder' => 'permission.family.placeholder',
+                'horizontal_input_wrapper_class' => 'col-sm-12',
             ]
         );
         foreach (FamilyPermission::getPermissions() as $permission) {
@@ -58,6 +67,29 @@ class FamilyPermissionType extends AbstractType
                 ]
             );
         }
+
+        $builder->get('familyCode')->addModelTransformer(
+            new CallbackTransformer(
+                function ($originalData) {
+                    if (null === $originalData) {
+                        return null;
+                    }
+                    // Ignoring missing family
+                    if (!$this->familyRegistry->hasFamily($originalData)) {
+                        return null;
+                    }
+
+                    return $this->familyRegistry->getFamily($originalData);
+                },
+                function ($submittedData) {
+                    if ($submittedData instanceof FamilyInterface) {
+                        return $submittedData->getCode();
+                    }
+
+                    return $submittedData;
+                }
+            )
+        );
     }
 
     /**

@@ -30,6 +30,7 @@
         }
     },
     "require": {
+        "php": ">=7.1",
         "liip/imagine-bundle": "^1.7",
         "exercise/htmlpurifier-bundle": "0.2.*",
         "thomaspark/bootswatch": "^3.3.7",

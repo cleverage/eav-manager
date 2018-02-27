@@ -165,7 +165,7 @@ Displays a link button to an entity, checking permissions and with configurable 
             'admin.action.'~actionName~'.label',
             ], {}, actionName) %}
         {% endif %}
-        <a href="{{ admin_entity_path(admin, entity, actionName) }}" title="{{ title|escape('html_attr') }}"
+        <a href="{{ admin_entity_path(admin, entity, actionName, options.route_parameters is defined ? options.route_parameters : []) }}" title="{{ title|escape('html_attr') }}"
            class="{{ options.class is defined ? options.class : 'btn btn-default' }}"
            {% if options.target is defined and options.target %}
                 data-target-element="{{ options.target }}"
@@ -197,7 +197,7 @@ Displays a link button to an entity with configurable title, class, target and i
             'admin.action.'~actionName~'.label',
             ], {}, actionName) %}
         {% endif %}
-        <a href="{{ admin_entity_path(admin, entity, actionName) }}" title="{{ title }}"
+        <a href="{{ admin_entity_path(admin, entity, actionName, options.route_parameters is defined ? options.route_parameters : []) }}" title="{{ title }}"
            class="{{ options.class|default('btn btn-default') }}"
            data-target-element="{{ options.target|default('#tg_right') }}">
             <i class="fa fa-{{ options.icon is defined ? options.icon : actionName }}"></i>

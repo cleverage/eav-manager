@@ -21,7 +21,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class EAVReaderTask extends AbstractEAVQueryTask implements IterableTaskInterface
 {
-    /** @var IterableResult */
+    /** @var \Iterator */
     protected $iterator;
 
     /** @var bool */
@@ -94,7 +94,7 @@ class EAVReaderTask extends AbstractEAVQueryTask implements IterableTaskInterfac
             return;
         }
 
-        $state->setOutput(reset($result));
+        $state->setOutput($result);
     }
 
     /**
@@ -110,7 +110,7 @@ class EAVReaderTask extends AbstractEAVQueryTask implements IterableTaskInterfac
      */
     public function next(ProcessState $state)
     {
-        if (!$this->iterator instanceof IterableResult) {
+        if (!$this->iterator instanceof \Iterator) {
             throw new \LogicException('No iterator initialized');
         }
         $this->iterator->next();

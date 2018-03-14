@@ -62,7 +62,7 @@ class FamilyPermission
     /**
      * Switching to string because the system crashed when a family was removed and there is no way to handle this
      *
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="family_code", type="string")
      */
@@ -204,7 +204,7 @@ class FamilyPermission
     /**
      * @throws \LogicException
      */
-    public function getFamily()
+    public function getFamily(): void
     {
         throw new \LogicException('Deprecated call, please use getFamilyCode instead');
     }
@@ -222,9 +222,9 @@ class FamilyPermission
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getFamilyCode(): string
+    public function getFamilyCode(): ?string
     {
         return $this->familyCode;
     }
@@ -232,7 +232,7 @@ class FamilyPermission
     /**
      * @param string $familyCode
      */
-    public function setFamilyCode(string $familyCode = null)
+    public function setFamilyCode(string $familyCode = null): void
     {
         $this->familyCode = $familyCode;
     }

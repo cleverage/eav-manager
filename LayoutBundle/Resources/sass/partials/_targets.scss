@@ -8,7 +8,6 @@
   vertical-align: top;
   position: relative;
   min-height: 100vh;
-  @include transition(width 0.5s); // @todo not working why ?
   &:empty {
     display: none;
   }

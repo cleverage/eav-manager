@@ -1,6 +1,33 @@
 CleverAge/EAVManager Changelog
 ==============================
 
+## v1.3.4
+
+| Date       | BC Breaks? | Deprecations? |
+| ---------- | :--------: | :-----------: |
+| 2018-03-14 | yes        | yes           |
+
+### Datagrids
+ - Changing datagrid rendering method, now using render_datagrid() twig function
+ 
+## v1.3.3
+
+| Date       | BC Breaks? | Deprecations? |
+| ---------- | :--------: | :-----------: |
+| 2018-03-14 | no         | no           |
+
+### User / Security
+ - Fixing regression with family permissions
+
+## v1.3.2
+
+| Date       | BC Breaks? | Deprecations? |
+| ---------- | :--------: | :-----------: |
+| 2018-03-14 | no         | no           |
+
+### Processes
+ - Fixing EAV Reader task
+
 ## v1.3.1
 
 | Date       | BC Breaks? | Deprecations? |

@@ -20,8 +20,7 @@
 {% endblock %}
 
 {% block datagrid %}
-    {% import "SidusDataGridBundle:DataGrid:datagrid.html.twig" as DataGridHelper %}
-    {{ DataGridHelper.render(datagrid, {admin: admin}) }}
+    {{ render_datagrid(datagrid, {admin: admin}) }}
 {% endblock %}
 
 {% block list_title %}

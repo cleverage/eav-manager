@@ -1,6 +1,5 @@
 {% block datagrid %}
-    {% import "SidusDataGridBundle:DataGrid:datagrid.html.twig" as DataGridHelper %}
-    {{ DataGridHelper.render(datagrid, {family: family, admin: admin}) }}
+    {{ render_datagrid(datagrid, {family: family, admin: admin}) }}
 {% endblock %}
 
 {% block list_title %}

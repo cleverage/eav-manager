@@ -76,10 +76,8 @@ class EAVReaderTask extends AbstractEAVQueryTask implements IterableTaskInterfac
             }
         }
 
-        $result = $this->iterator->current();
-
         // Handle empty results
-        if (false === $result) {
+        if (0 === $this->iterator->count()) {
             if ($this->getOption($state, 'log_count')) {
                 $state->log(
                     'Empty resultset for query, stopping the process',
@@ -93,7 +91,7 @@ class EAVReaderTask extends AbstractEAVQueryTask implements IterableTaskInterfac
             return;
         }
 
-        $state->setOutput($result);
+        $state->setOutput($this->iterator->current());
     }
 
     /**

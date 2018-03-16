@@ -11,6 +11,7 @@
 namespace CleverAge\EAVManager\AdminBundle\Controller;
 
 use Sidus\EAVModelBundle\Entity\DataInterface;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -55,5 +56,24 @@ class InlineEAVDataController extends EAVDataController
     public function previewAction(Request $request, DataInterface $data)
     {
         return $this->editAction($request, $data, $data->getFamily());
+    }
+
+    /**
+     * @param Request $request
+     * @param Form    $form
+     * @param mixed   $data
+     *
+     * @throws \Exception
+     *
+     * @return array
+     */
+    protected function getViewParameters(Request $request, Form $form = null, $data = null): array
+    {
+        $parameters = parent::getViewParameters($request, $form, $data);
+        if ('preview' === $this->admin->getCurrentAction()->getCode()) {
+            $parameters['disabled'] = $request->query->getBoolean('disabled');
+        }
+
+        return $parameters;
     }
 }

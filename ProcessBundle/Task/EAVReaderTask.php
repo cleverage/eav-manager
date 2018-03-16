@@ -68,7 +68,6 @@ class EAVReaderTask extends AbstractEAVQueryTask implements IterableTaskInterfac
         if (null === $this->iterator) {
             $paginator = $this->getPaginator($state);
             $this->iterator = $paginator->getIterator();
-            $this->iterator->next(); // Move to first element
 
             // Log the data count
             if ($this->getOption($state, 'log_count')) {

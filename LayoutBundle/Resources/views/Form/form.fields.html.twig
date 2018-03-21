@@ -168,11 +168,12 @@
     {% set class = 'autoload no-navigation embed-multi-family-item' %}
     {% if data %}
         <div class="{{ class }}" data-target-element="#{{ autoloadTargetId }}" id="{{ autoloadTargetId }}"
-             data-href="{{ admin_entity_path(admin, data, 'preview', {inputId: id}) }}" data-autoload="1">
+             data-href="{{ admin_entity_path(admin, data, 'preview', {inputId: id, disabled: disabled}) }}"
+             data-autoload="1">
             {{ data }}
             <div class="tg-loading">&nbsp;</div>
         </div>
-    {% else %}
+    {% elseif not disabled %}
         <div class="{{ class }}" data-target-element="#{{ autoloadTargetId }}" id="{{ autoloadTargetId }}"
              data-autoload-url="{{ admin_path(admin, 'preview', {id: '__ID__', inputId: id}) }}"
              data-autoload="__PLACEHOLDER__">
@@ -186,6 +187,15 @@
                 {{ block('family_selector') }}
             </div>
             <div class="clear"></div>
+        </div>
+    {% else %}
+        <div class="dropdown input-group">
+            <button type="button" class="btn btn-default" data-toggle="dropdown" disabled="disabled">
+                <i class="fa fa-plus"></i> {{ 'admin.action.create.label'|trans }}
+            </button>
+            <button type="button" class="btn btn-default" data-toggle="dropdown" disabled="disabled">
+                <i class="fa fa-caret-down"></i>
+            </button>
         </div>
     {% endif %}
 {% endblock %}

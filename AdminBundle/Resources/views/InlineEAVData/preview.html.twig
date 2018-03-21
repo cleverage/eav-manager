@@ -1,6 +1,6 @@
 {% set baseTemplate = baseTemplate|default(admin.baseTemplate) %}
 {% extends isAjax ? 'CleverAgeEAVManagerLayoutBundle::empty_layout.html.twig'
-: baseTemplate|default('CleverAgeEAVManagerAdminBundle:Base:list.html.twig') %}
+    : baseTemplate|default('CleverAgeEAVManagerAdminBundle:Base:list.html.twig') %}
 
 {% set admin_trans_key = 'admin.' ~ admin.code ~ '.' ~ admin.currentAction.code ~ '.' %}
 
@@ -13,7 +13,7 @@
         <h6>{{ data.family }}</h6>
         {{ form_widget(form) }}
         {% set inputId = app.request.get('inputId') %}
-        {% if inputId %}
+        {% if not disabled and inputId %}
             {% set target = inputId ~ '_modal' %}
             <div class="clear pull-right">
                 <a href="{{ admin_entity_path(admin, data, 'edit') }}" class="btn btn-primary"

@@ -12,9 +12,12 @@ namespace CleverAge\EAVManager\ProcessBundle\Task;
 
 use CleverAge\EAVManager\EAVModelBundle\Entity\DataRepository;
 use CleverAge\ProcessBundle\Model\ProcessState;
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Sidus\EAVModelBundle\Doctrine\EAVFinder;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
+use Sidus\EAVModelBundle\Registry\FamilyRegistry;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -23,6 +26,20 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 abstract class AbstractEAVQueryTask extends AbstractEAVTask
 {
+    /** @var EAVFinder */
+    protected $eavFinder;
+
+    /**
+     * AbstractEAVQueryTask constructor.
+     *
+     * @param EAVFinder $eavFinder
+     */
+    public function __construct(Registry $doctrine, FamilyRegistry $familyRegistry, EAVFinder $eavFinder)
+    {
+        parent::__construct($doctrine, $familyRegistry);
+        $this->eavFinder = $eavFinder;
+    }
+
     /**
      * {@inheritDoc}
      * @throws \Sidus\EAVModelBundle\Exception\MissingFamilyException
@@ -34,6 +51,7 @@ abstract class AbstractEAVQueryTask extends AbstractEAVTask
         $resolver->setDefaults(
             [
                 'criteria' => [],
+                'extended_criteria' => [],
                 'repository' => null,
                 'order_by' => [],
                 'limit' => null,
@@ -54,6 +72,7 @@ abstract class AbstractEAVQueryTask extends AbstractEAVTask
         );
 
         $resolver->setAllowedTypes('criteria', ['array']);
+        $resolver->setAllowedTypes('extended_criteria', ['array']);
         $resolver->setAllowedTypes('repository', ['NULL', DataRepository::class]);
         $resolver->setAllowedTypes('order_by', ['array']);
         $resolver->setAllowedTypes('limit', ['NULL', 'integer']);
@@ -76,36 +95,17 @@ abstract class AbstractEAVQueryTask extends AbstractEAVTask
     protected function getQueryBuilder(ProcessState $state, $alias = 'e')
     {
         $options = $this->getOptions($state);
-        /** @var DataRepository $repository */
-        $repository = $options['repository'];
-        /** @var FamilyInterface $family */
-        $family = $options['family'];
-        $eavQb = $repository->createFamilyQueryBuilder($family, $alias);
 
-        $queryParts = [];
-        /** @noinspection ForeachSourceInspection */
-        foreach ($options['criteria'] as $attributeCode => $value) {
-            if (\is_array($value)) {
-                $queryParts[] = $eavQb->a($attributeCode)->in($value);
-            } else {
-                if (null !== $value && $value === $family->getAttribute($attributeCode)->getDefault()) {
-                    $queryParts[] = $eavQb->getOr(
-                        [
-                            $eavQb->a($attributeCode)->equals($value),
-                            $eavQb->a($attributeCode)->isNull(), // Handles default values not persisted to database
-                        ]
-                    );
-                } else {
-                    $queryParts[] = $eavQb->a($attributeCode)->equals($value);
-                }
-            }
+        $criteria = $options['extended_criteria'];
+        foreach ($options['criteria'] as $key => $value) {
+            $criteria[] = [
+                $key,
+                is_array($value) ? 'in' : '=',
+                $value,
+            ];
         }
-        /** @noinspection ForeachSourceInspection */
-        foreach ($options['order_by'] as $attributeCode => $order) {
-            $eavQb->addOrderBy($eavQb->a($attributeCode), $order);
-        }
+        $qb = $this->eavFinder->getFilterByQb($options['family'], $criteria, $options['order_by'], $alias);
 
-        $qb = $eavQb->apply($eavQb->getAnd($queryParts));
         $qb->distinct();
 
         return $qb;

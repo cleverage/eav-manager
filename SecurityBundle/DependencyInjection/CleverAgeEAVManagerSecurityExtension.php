@@ -10,9 +10,7 @@
 
 namespace CleverAge\EAVManager\SecurityBundle\DependencyInjection;
 
-use Sidus\FilterBundle\DependencyInjection\Loader\ServiceLoader;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Sidus\BaseBundle\DependencyInjection\SidusBaseExtension;
 
 /**
  * This is the class that loads and manages your bundle configuration.
@@ -21,16 +19,6 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  *
  * @author Vincent Chalnot <vchalnot@clever-age.com>
  */
-class CleverAgeEAVManagerSecurityExtension extends Extension
+class CleverAgeEAVManagerSecurityExtension extends SidusBaseExtension
 {
-    /**
-     * {@inheritdoc}
-     *
-     * @throws \Exception
-     */
-    public function load(array $configs, ContainerBuilder $container)
-    {
-        $loader = new ServiceLoader(__DIR__.'/../Resources/config/services');
-        $loader->loadFiles($container);
-    }
 }

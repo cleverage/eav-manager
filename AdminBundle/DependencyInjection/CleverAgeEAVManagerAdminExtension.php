@@ -10,10 +10,9 @@
 
 namespace CleverAge\EAVManager\AdminBundle\DependencyInjection;
 
-use Sidus\FilterBundle\DependencyInjection\Loader\ServiceLoader;
+use Sidus\BaseBundle\DependencyInjection\SidusBaseExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\BadMethodCallException;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
  * This is the class that loads and manages your bundle configuration.
@@ -22,7 +21,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  *
  * @author Vincent Chalnot <vchalnot@clever-age.com>
  */
-class CleverAgeEAVManagerAdminExtension extends Extension
+class CleverAgeEAVManagerAdminExtension extends SidusBaseExtension
 {
     /** @var array */
     protected $globalConfig;
@@ -59,8 +58,7 @@ class CleverAgeEAVManagerAdminExtension extends Extension
 
         $container->setParameter($this->rootAlias.'.configuration', $this->globalConfig);
 
-        $loader = new ServiceLoader(__DIR__.'/../Resources/config/services');
-        $loader->loadFiles($container);
+        parent::load($configs, $container);
     }
 
     /**

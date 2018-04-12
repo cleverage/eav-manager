@@ -28,7 +28,7 @@ class DataRepository extends BaseDataRepository
      */
     public function getQbLastByUser(User $user)
     {
-        $qb = $this->createOptimizedQueryBuilder('d')
+        $qb = $this->createQueryBuilder('d')
             ->where('d.createdBy = :user1 OR d.updatedBy = :user2')
             ->orderBy('d.updatedAt', 'desc')
             ->setParameters(

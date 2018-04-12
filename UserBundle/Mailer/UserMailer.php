@@ -71,7 +71,7 @@ class UserMailer
 
         $message = $this->createMessage();
         $message->setSubject($parameters['subject']);
-        $message->setTo([$user->getUsername()]);
+        $message->setTo([$user->getEmail()]);
         $message->setBody($text);
         $message->addPart($html, 'text/html');
 
@@ -98,7 +98,7 @@ class UserMailer
 
         $message = $this->createMessage();
         $message->setSubject($parameters['subject']);
-        $message->setTo([$user->getUsername()]);
+        $message->setTo([$user->getEmail()]);
         $message->setBody($text);
         $message->addPart($html, 'text/html');
 

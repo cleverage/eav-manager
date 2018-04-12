@@ -11,7 +11,7 @@
 namespace CleverAge\EAVManager\AssetBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Sidus\EAVModelBundle\Utilities\DateTimeUtility;
+use Sidus\BaseBundle\Utilities\DateTimeUtility;
 use Sidus\FileUploadBundle\Entity\Resource;
 
 /**

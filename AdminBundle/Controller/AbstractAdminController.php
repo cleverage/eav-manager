@@ -14,7 +14,7 @@ use CleverAge\EAVManager\Component\Controller\BaseControllerTrait;
 use Sidus\AdminBundle\Admin\Action;
 use Sidus\AdminBundle\Controller\AbstractAdminController as BaseAdminController;
 use Sidus\DataGridBundle\Model\DataGrid;
-use Sidus\EAVModelBundle\Translator\TranslatableTrait;
+use Sidus\BaseBundle\Translator\TranslatableTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;

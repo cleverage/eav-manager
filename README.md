@@ -23,10 +23,18 @@ Either use the [EAVManager starter kit](https://github.com/cleverage/eav-manager
 
  - [How to install this bundle manually](Documentation/A-01-install.md)
 
-# Configuration
-
 # Components
 
+To understand the various configurations needed in order to create a full-scale application using this bundle, you need
+to take a look at the inner components under the hood:
+
+ - [Components](Documentation/B-01-components.md)
+
+# Configuration
+
+
+
+ 
 # FAQ
 
 # Partners

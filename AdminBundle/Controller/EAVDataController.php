@@ -18,10 +18,8 @@ use Sidus\EAVModelBundle\Doctrine\EAVQueryBuilder;
 use Sidus\EAVModelBundle\Entity\AbstractData;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sidus\AdminBundle\Admin\Action;
-use Sidus\EAVDataGridBundle\Model\DataGrid as EAVDataGrid;
 use Sidus\EAVModelBundle\Entity\DataInterface;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
-use Sidus\FilterBundle\Configuration\DoctrineFilterConfigurationHandlerInterface;
 use Sidus\FilterBundle\Query\Handler\Doctrine\DoctrineQueryHandlerInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
@@ -232,6 +230,7 @@ class EAVDataController extends AbstractAdminController
     public function deleteAction(Request $request, DataInterface $data, FamilyInterface $family = null)
     {
         $this->initDataFamily($data, $family);
+        $constrainedEntities = $this->get('sidus_eav_model.integrity_constraint_manager')->getEntityConstraints($data);
 
         $formOptions = $this->getDefaultFormOptions($request, $data->getId());
         unset($formOptions['family']);
@@ -239,23 +238,25 @@ class EAVDataController extends AbstractAdminController
         $form = $builder->getForm();
         $dataId = $data->getId();
 
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->deleteEntity($data);
+        if (0 === \count($constrainedEntities)) {
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->deleteEntity($data);
 
-            if ($request->isXmlHttpRequest()) {
-                return $this->renderAction(
-                    array_merge(
-                        $this->getViewParameters($request, $form),
-                        [
-                            'dataId' => $dataId,
-                            'success' => 1,
-                        ]
-                    )
-                );
+                if ($request->isXmlHttpRequest()) {
+                    return $this->renderAction(
+                        array_merge(
+                            $this->getViewParameters($request, $form),
+                            [
+                                'dataId' => $dataId,
+                                'success' => 1,
+                            ]
+                        )
+                    );
+                }
+
+                return $this->redirect($this->getAdminListPath());
             }
-
-            return $this->redirect($this->getAdminListPath());
         }
 
         return $this->renderAction(
@@ -263,6 +264,7 @@ class EAVDataController extends AbstractAdminController
                 $this->getViewParameters($request, $form, $data),
                 [
                     'dataId' => $dataId,
+                    'constrainedEntities' => $constrainedEntities,
                 ]
             )
         );
@@ -509,6 +511,7 @@ class EAVDataController extends AbstractAdminController
                 $normalizer = $this->get('serializer');
                 foreach ($qb->getQuery()->iterate() as $row) {
                     $entity = $row[0];
+                    /** @var array $normalizedData */
                     $normalizedData = $normalizer->normalize($entity, 'csv');
                     $writableData = [];
                     foreach ($attributesConfig as $attributeCode => $attributeConfig) {

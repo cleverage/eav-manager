@@ -1,8 +1,16 @@
 {# @var admin \Sidus\AdminBundle\Admin\Admin #}
 
 {% block submit_button %}
-    <button type="submit" class="btn btn-danger">
-        {{ tryTrans([admin_trans_key ~ '.label', 'admin.action.' ~ admin.currentAction.code ~ '.label'], [], admin.currentAction.code|capitalize) }}
+    {% set disabled = constrainedEntities is defined and constrainedEntities|length %}
+    <button type="submit" class="btn btn-danger{{ disabled ? ' disabled' }} %}">
+        {{ tryTrans(
+            [
+                admin_trans_key ~ '.label',
+                'admin.action.' ~ admin.currentAction.code ~ '.label'
+            ],
+            [],
+            admin.currentAction.code|capitalize
+        ) }}
     </button>
 {% endblock %}
 
@@ -28,37 +36,21 @@
     {% endif %}
 {% endblock %}
 
-{% block edit_standard %}
-    <div class="edit-form {{ block('edit_form_class') }}">
-        {{ form_start(form) }}
-        {{ block('form_actions') }}
-        {{ block('breadcrumb') }}
-        <div class="clear"></div>
-        {{ form_widget(form) }}
+{% block form_message %}
+    {% if constrainedEntities is defined and constrainedEntities|length %}
+        <h4 class="text-danger">{{ ('form.' ~ admin.currentAction.code ~ '.disabled')|trans }}</h4>
+        <p>{{ ('form.' ~ admin.currentAction.code ~ '.constraint')|trans({'%entity%': render_value(data|default()) }) }}</p>
+        <ul class="list-group well">
+            {% for constrainedEntity in constrainedEntities %}
+                <li>
+                    {{ render_value(constrainedEntity) }}
+                    <span class="text-muted" title="{{ constrainedEntity|typeof(true) }}">
+                        ({{ constrainedEntity|typeof }})
+                    </span>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
         <p>{{ ('form.' ~ admin.currentAction.code ~ '.confirmation')|trans({'%entity%': render_value(data|default()) }) }}</p>
-        {{ block('form_actions') }}
-        {{ form_end(form) }}
-        {{ block('additional_content') }}
-    </div>
-{% endblock %}
-
-{% block edit_modal %}
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            {% import "CleverAgeEAVManagerLayoutBundle:Macros:utilities.html.twig" as utilities %}
-            {{ utilities.flash_messages() }}
-            {{ form_start(form) }}
-            <div class="modal-body">
-                <div class="edit-form {{ block('edit_form_class') }}">
-                    {{ form_widget(form) }}
-                    <p>{{ ('form.' ~ admin.currentAction.code ~ '.confirmation')|trans({'%entity%': render_value(data|default()) }) }}</p>
-                </div>
-            </div>
-            <div class="modal-footer">
-                {{ block('form_actions') }}
-            </div>
-            {{ form_end(form) }}
-            {{ block('additional_content') }}
-        </div>
-    </div>
+    {% endif %}
 {% endblock %}

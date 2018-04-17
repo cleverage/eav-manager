@@ -14,17 +14,31 @@
 {% endblock %}
 
 {% block edit_standard %}
+    {% import "CleverAgeEAVManagerLayoutBundle:Macros:utilities.html.twig" as utilities %}
     <div class="edit-form {{ block('edit_form_class') }}">
         {{ form_start(form) }}
-        {{ block('form_actions') }}
-        {{ block('breadcrumb') }}
+        <div class="actions-sticky">
+            {{ utilities.flash_messages() }}
+            <div class="actions-flex">
+                <div class="breadcrumb-wrapper">
+                    {{ block('breadcrumb') }}
+                </div>
+                <div class="actions-wrapper">
+                    <div>{# Extra div necessary to prevent child position relative to break #}
+                        {{ block('form_actions') }}
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="clear"></div>
         {{ form_widget(form) }}
-        {{ block('form_actions') }}
+        {{ block('form_message') }}
         {{ form_end(form) }}
         {{ block('additional_content') }}
     </div>
 {% endblock %}
+
+{% block form_message %}{% endblock %}
 
 {% block edit_modal %}
     <div class="modal-dialog modal-lg" role="document">
@@ -35,6 +49,7 @@
             <div class="modal-body">
                 <div class="edit-form {{ block('edit_form_class') }}">
                     {{ form_widget(form) }}
+                    {{ block('form_message') }}
                 </div>
             </div>
             <div class="modal-footer">
@@ -47,7 +62,7 @@
 {% endblock %}
 
 {% block breadcrumb %}
-    <ol class="breadcrumb pull-left">
+    <ol class="breadcrumb">
         {{ block('breadcrumb_index') }}
         {{ block('breadcrumb_list') }}
         {{ block('breadcrumb_data') }}
@@ -60,8 +75,8 @@
         <li>
             <a href="{{ admin_path(admin, 'index') }}">
                 {{ tryTrans([
-                'admin.' ~ admin.code ~ 'index.title',
-                'admin.index.title'
+                    'admin.' ~ admin.code ~ 'index.title',
+                    'admin.index.title'
                 ], [], admin.code|humanize) }}
             </a>
         </li>
@@ -73,8 +88,8 @@
         <li>
             <a href="{{ listPath is defined and listPath ? listPath : admin_path(admin, 'list') }}">
                 {{ tryTrans([
-                'admin.' ~ admin.code ~ 'list.title',
-                'admin.list.title'
+                    'admin.' ~ admin.code ~ 'list.title',
+                    'admin.list.title'
                 ], [], 'List') }}
             </a>
         </li>
@@ -83,7 +98,7 @@
 
 {% block breadcrumb_data %}
     {% if admin.hasAction('edit') and admin.currentAction != 'create' and data is defined and data.id %}
-        <li>
+        <li class="shrink">
             <a href="{{ admin_entity_path(admin, data, 'edit') }}">
                 {{ render_value(data) }}
             </a>
@@ -94,8 +109,8 @@
 {% block breadcrumb_action %}
     <li class="active">
         {{ tryTrans([
-        admin_trans_key ~ '.title',
-        'admin.action.' ~ admin.currentAction.code ~ '.title'
+            admin_trans_key ~ '.title',
+            'admin.action.' ~ admin.currentAction.code ~ '.title'
         ], [], admin.currentAction.code|humanize) }}
     </li>
 {% endblock %}
@@ -154,27 +169,27 @@
 {% block additional_content %}
     <hr/>
     {% if data is defined and data %}
-    <dl class="dl-horizontal">
-        {% if data.identifier is defined and data.identifier %}
-            <dt>{{ tryTrans(['admin.' ~ admin.code ~ '.additional.identifier.label', 'admin.additional.identifier.label'], [], 'Identifier:') }}</dt>
-            <dd>{{ data.identifier }}</dd>
-        {% endif %}
-        {% if data.createdBy is defined and data.createdBy %}
-            <dt>{{ tryTrans(['admin.' ~ admin.code ~ '.additional.createdBy.label', 'admin.additional.createdBy.label'], [], 'Created by:') }}</dt>
-            <dd>{{ data.createdBy }}</dd>
-        {% endif %}
-        {% if data.createdAt is defined and data.createdAt %}
-            <dt>{{ tryTrans(['admin.' ~ admin.code ~ '.additional.createdAt.label', 'admin.additional.createdAt.label'], [], 'Created at:') }}</dt>
-            <dd>{{ data.createdAt|date }}</dd>
-        {% endif %}
-        {% if data.updatedBy is defined and data.updatedBy %}
-            <dt>{{ tryTrans(['admin.' ~ admin.code ~ '.additional.updatedBy.label', 'admin.additional.updatedBy.label'], [], 'Updated by:') }}</dt>
-            <dd>{{ data.updatedBy }}</dd>
-        {% endif %}
-        {% if data.updatedAt is defined and data.updatedAt %}
-            <dt>{{ tryTrans(['admin.' ~ admin.code ~ '.additional.updatedAt.label', 'admin.additional.updatedAt.label'], [], 'Updated at:') }}</dt>
-            <dd>{{ data.updatedAt|date }}</dd>
-        {% endif %}
-    </dl>
+        <dl class="dl-horizontal">
+            {% if data.identifier is defined and data.identifier %}
+                <dt>{{ tryTrans(['admin.' ~ admin.code ~ '.additional.identifier.label', 'admin.additional.identifier.label'], [], 'Identifier:') }}</dt>
+                <dd>{{ data.identifier }}</dd>
+            {% endif %}
+            {% if data.createdBy is defined and data.createdBy %}
+                <dt>{{ tryTrans(['admin.' ~ admin.code ~ '.additional.createdBy.label', 'admin.additional.createdBy.label'], [], 'Created by:') }}</dt>
+                <dd>{{ data.createdBy }}</dd>
+            {% endif %}
+            {% if data.createdAt is defined and data.createdAt %}
+                <dt>{{ tryTrans(['admin.' ~ admin.code ~ '.additional.createdAt.label', 'admin.additional.createdAt.label'], [], 'Created at:') }}</dt>
+                <dd>{{ data.createdAt|date }}</dd>
+            {% endif %}
+            {% if data.updatedBy is defined and data.updatedBy %}
+                <dt>{{ tryTrans(['admin.' ~ admin.code ~ '.additional.updatedBy.label', 'admin.additional.updatedBy.label'], [], 'Updated by:') }}</dt>
+                <dd>{{ data.updatedBy }}</dd>
+            {% endif %}
+            {% if data.updatedAt is defined and data.updatedAt %}
+                <dt>{{ tryTrans(['admin.' ~ admin.code ~ '.additional.updatedAt.label', 'admin.additional.updatedAt.label'], [], 'Updated at:') }}</dt>
+                <dd>{{ data.updatedAt|date }}</dd>
+            {% endif %}
+        </dl>
     {% endif %}
 {% endblock %}

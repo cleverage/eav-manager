@@ -64,11 +64,11 @@ Changes the current active datagrid row
 {% macro triggerDataEvent(admin, data, id, success, target) %}
     <script>
         {% set parameters = {
-        dataId: id,
-        dataLabel: render_value(data),
-        admin: admin.code,
-        action: admin.currentAction.code,
-        success: success,
+            dataId: id,
+            dataLabel: render_value(data),
+            admin: admin.code,
+            action: admin.currentAction.code,
+            success: success,
         } %}
         var event;
         if (typeof CustomEvent == 'function') {
@@ -97,8 +97,8 @@ Locks the form attached to the modified input
             {% if inputId %}
             // Lock navigation if form is updated
             lockNavigationOnChange(
-                    '#{{ inputId }}',
-                    '{{ 'form.abandon_changes.confirmation'|trans|escape('js') }}'
+                '#{{ inputId }}',
+                '{{ 'form.abandon_changes.confirmation'|trans|escape('js') }}'
                     {% if target %}, '{{ target|escape('js') }}'{% endif %}
             );
             {% endif %}
@@ -162,16 +162,16 @@ Displays a link button to an entity, checking permissions and with configurable 
             {% set title = options.title %}
         {% else %}
             {% set title = tryTrans([
-            'admin.family.'~entity.family.code~'.'~actionName~'.label',
-            'admin.'~admin.code~'.'~actionName~'.label',
-            'admin.action.'~actionName~'.label',
+                'admin.family.'~entity.family.code~'.'~actionName~'.label',
+                'admin.'~admin.code~'.'~actionName~'.label',
+                'admin.action.'~actionName~'.label',
             ], {}, actionName) %}
         {% endif %}
         <a href="{{ admin_entity_path(admin, entity, actionName) }}" title="{{ title|escape('html_attr') }}"
            class="{{ options.class is defined ? options.class : 'btn btn-default' }}"
-           {% if options.target is defined and options.target %}
-                data-target-element="{{ options.target }}"
-           {% endif %}>
+                {% if options.target is defined and options.target %}
+            data-target-element="{{ options.target }}"
+                {% endif %}>
             {% if not options.no_icon|default(false) %}
                 <i class="fa fa-{{ options.icon is defined ? options.icon : actionName }}"></i>
             {% endif %}
@@ -195,8 +195,8 @@ Displays a link button to an entity with configurable title, class, target and i
             {% set title = options.title %}
         {% else %}
             {% set title = tryTrans([
-            'admin.'~admin.code~actionName~'.label',
-            'admin.action.'~actionName~'.label',
+                'admin.'~admin.code~actionName~'.label',
+                'admin.action.'~actionName~'.label',
             ], {}, actionName) %}
         {% endif %}
         <a href="{{ admin_entity_path(admin, entity, actionName) }}" title="{{ title }}"

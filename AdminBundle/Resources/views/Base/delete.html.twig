@@ -2,9 +2,7 @@
 
 {% import "CleverAgeEAVManagerLayoutBundle:Macros:utilities.html.twig" as utilities %}
 
-{% block flash_messages %}
-    {{ not success ? utilities.flash_messages() }}
-{% endblock %}
+{% block flash_messages %}{% endblock %}
 
 {% block tg_center %}
     {% if form is defined %}

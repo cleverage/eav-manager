@@ -107,26 +107,30 @@ class GenericAdminController extends AbstractAdminController
     public function deleteAction(Request $request)
     {
         $data = $this->getDataFromRequest($request);
+        $constrainedEntities = $this->get('sidus_eav_model.integrity_constraint_manager')->getEntityConstraints($data);
+
         $builder = $this->createFormBuilder(null, $this->getDefaultFormOptions($request, $data->getId()));
         $form = $builder->getForm();
         $dataId = $data->getId();
 
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->deleteEntity($data);
-            if ($request->isXmlHttpRequest()) {
-                return $this->renderAction(
-                    array_merge(
-                        $this->getViewParameters($request, $form),
-                        [
-                            'dataId' => $dataId,
-                            'success' => 1,
-                        ]
-                    )
-                );
-            }
+        if (0 === \count($constrainedEntities)) {
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->deleteEntity($data);
+                if ($request->isXmlHttpRequest()) {
+                    return $this->renderAction(
+                        array_merge(
+                            $this->getViewParameters($request, $form),
+                            [
+                                'dataId' => $dataId,
+                                'success' => 1,
+                            ]
+                        )
+                    );
+                }
 
-            return $this->redirect($this->getAdminListPath());
+                return $this->redirect($this->getAdminListPath());
+            }
         }
 
         return $this->renderAction(
@@ -134,6 +138,7 @@ class GenericAdminController extends AbstractAdminController
                 $this->getViewParameters($request, $form, $data),
                 [
                     'dataId' => $dataId,
+                    'constrainedEntities' => $constrainedEntities,
                 ]
             )
         );

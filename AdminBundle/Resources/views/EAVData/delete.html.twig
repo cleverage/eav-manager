@@ -10,3 +10,8 @@
         {{ block('edit_standard') }}
     {% endif %}
 {% endblock %}
+
+{% block additionnal_javascript %}
+    {% import "CleverAgeEAVManagerLayoutBundle:Macros:utilities.html.twig" as utilities %}
+    {{ utilities.triggerDataEvent(admin, data is defined ? data, dataId, success, target) }}
+{% endblock %}

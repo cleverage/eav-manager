@@ -8,7 +8,14 @@
 <h2 class="hidden ajax-title">{{ title }}</h2>
 
 {% block tg_left %}{% endblock %}
-{% block flash_messages %}{{ utilities.flash_messages() }}{% endblock %}
+{% block flash_messages %}
+    {% set flashMessages = utilities.flash_messages()|trim %}
+    {% if flashMessages %}
+        <div class="actions-sticky">
+            {{ flashMessages|raw }}
+        </div>
+    {% endif %}
+{% endblock %}
 {% block tg_center %}{% endblock %}
 {% block tg_right %}{% endblock %}
 

@@ -105,13 +105,22 @@ NEVER points to this layout directly !
                     {% endblock -%}
                 </div>
                 <div id="tg_center" class="with-loader autoload">
-                    {{ utilities.flash_messages() }}
+                    {{ block('flash_messages') }}
                     {% block tg_center %}{% endblock %}
                 </div>
                 <div id="tg_right" class="with-loader autoload">{% block tg_right %}{% endblock %}</div>
             </div>
         {% endblock %}
     </div>
+{% endblock %}
+
+{% block flash_messages %}
+    {% set flashMessages = utilities.flash_messages()|trim %}
+    {% if flashMessages %}
+        <div class="actions-sticky">
+            {{ flashMessages|raw }}
+        </div>
+    {% endif %}
 {% endblock %}
 
 {% block javascripts %}

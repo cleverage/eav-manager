@@ -1,5 +1,4 @@
 {% block list_modal %}
-    {% import "CleverAgeEAVManagerLayoutBundle:Macros:utilities.html.twig" as utilities %}
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -9,7 +8,7 @@
                 <h4 class="modal-title">{{ block('list_title') }}</h4>
             </div>
             <div class="modal-body">
-                {{ utilities.flash_messages() }}
+                {{ block('list_flash_messages') }}
                 {{ block('datagrid') }}
             </div>
             <div class="modal-footer">
@@ -25,4 +24,9 @@
 
 {% block list_title %}
     {{ tryTrans([admin_trans_key ~ '.title', 'admin.list_of'], {'%family%': admin.code|humanize}) }}
+{% endblock %}
+
+{% block list_flash_messages %}
+    {% import "CleverAgeEAVManagerLayoutBundle:Macros:utilities.html.twig" as utilities %}
+    {{ utilities.flash_messages() }}
 {% endblock %}

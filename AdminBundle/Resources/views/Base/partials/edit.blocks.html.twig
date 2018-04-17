@@ -14,22 +14,9 @@
 {% endblock %}
 
 {% block edit_standard %}
-    {% import "CleverAgeEAVManagerLayoutBundle:Macros:utilities.html.twig" as utilities %}
     <div class="edit-form {{ block('edit_form_class') }}">
         {{ form_start(form) }}
-        <div class="actions-sticky">
-            {{ utilities.flash_messages() }}
-            <div class="actions-flex">
-                <div class="breadcrumb-wrapper">
-                    {{ block('breadcrumb') }}
-                </div>
-                <div class="actions-wrapper">
-                    <div>{# Extra div necessary to prevent child position relative to break #}
-                        {{ block('form_actions') }}
-                    </div>
-                </div>
-            </div>
-        </div>
+        {{ block('sticky_actions') }}
         <div class="clear"></div>
         {{ form_widget(form) }}
         {{ block('form_message') }}
@@ -38,13 +25,33 @@
     </div>
 {% endblock %}
 
+{% block edit_flash_messages %}
+    {% import "CleverAgeEAVManagerLayoutBundle:Macros:utilities.html.twig" as utilities %}
+    {{ utilities.flash_messages() }}
+{% endblock %}
+
+{% block sticky_actions %}
+    <div class="actions-sticky">
+        {{ block('edit_flash_messages') }}
+        <div class="actions-flex">
+            <div class="breadcrumb-wrapper">
+                {{ block('breadcrumb') }}
+            </div>
+            <div class="actions-wrapper">
+                <div>{# Extra div necessary to prevent child position relative to break #}
+                    {{ block('form_actions') }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
 {% block form_message %}{% endblock %}
 
 {% block edit_modal %}
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            {% import "CleverAgeEAVManagerLayoutBundle:Macros:utilities.html.twig" as utilities %}
-            {{ utilities.flash_messages() }}
+            {{ block('edit_flash_messages') }}
             {{ form_start(form) }}
             <div class="modal-body">
                 <div class="edit-form {{ block('edit_form_class') }}">

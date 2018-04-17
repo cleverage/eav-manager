@@ -1,5 +1,10 @@
 {# @var admin \Sidus\AdminBundle\Admin\Admin #}
 
+{% block edit_flash_messages %}
+    {% import '@CleverAgeEAVManagerLayout/Macros/utilities.html.twig' as utilities %}
+    {{ not success ? utilities.flash_messages() }}
+{% endblock %}
+
 {% block submit_button %}
     {% set disabled = constrainedEntities is defined and constrainedEntities|length %}
     <button type="submit" class="btn btn-danger{{ disabled ? ' disabled' }} %}">

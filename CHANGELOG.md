@@ -1,6 +1,64 @@
 CleverAge/EAVManager Changelog
 ==============================
 
+## v1.3.9
+
+| Date       | BC Breaks? | Deprecations? |
+| ---------- | :--------: | :-----------: |
+| 2018-04-24 | no         | no            |
+
+### UX
+ - Now displaying integrity constraints that prevents entity removal on delete action page
+ - Better layout, sticky action header, better alerts.
+ 
+## v1.3.8
+
+| Date       | BC Breaks? | Deprecations? |
+| ---------- | :--------: | :-----------: |
+| 2018-04-12 | yes        | yes           |
+
+### User / Security
+ - Fixing mailer, using email instead of username
+ 
+### Processes
+ - The AbstractEAVQueryTask is now using the new EAVFinder API to create its query builder
+ 
+### Internals
+ - Switching some imports to Sidus/BaseBundle that regroups commonly used features accross all bundles
+ 
+### EAV Query API
+ - Removing deprecated DataRepository::createOptimizedQueryBuilder calls
+ 
+## v1.3.7
+
+| Date       | BC Breaks? | Deprecations? |
+| ---------- | :--------: | :-----------: |
+| 2018-03-21 | no         | no            |
+
+### Forms
+ - Removing/disabling edit button in embed multi families form types when form is disabled
+ 
+## v1.3.6
+
+| Date       | BC Breaks? | Deprecations? |
+| ---------- | :--------: | :-----------: |
+| 2018-03-16 | no         | no            |
+
+### Processes
+ - Fixing item count reporting in EAVReaderTask
+ 
+## v1.3.5
+
+| Date       | BC Breaks? | Deprecations? |
+| ---------- | :--------: | :-----------: |
+| 2018-03-16 | no         | no            |
+
+### Context
+ - Fixing default context form rendering
+ 
+### Processes
+ - Fixing EAVReaderTask
+
 ## v1.3.4
 
 | Date       | BC Breaks? | Deprecations? |
@@ -14,7 +72,7 @@ CleverAge/EAVManager Changelog
 
 | Date       | BC Breaks? | Deprecations? |
 | ---------- | :--------: | :-----------: |
-| 2018-03-14 | no         | no           |
+| 2018-03-14 | no         | no            |
 
 ### User / Security
  - Fixing regression with family permissions
@@ -23,7 +81,7 @@ CleverAge/EAVManager Changelog
 
 | Date       | BC Breaks? | Deprecations? |
 | ---------- | :--------: | :-----------: |
-| 2018-03-14 | no         | no           |
+| 2018-03-14 | no         | no            |
 
 ### Processes
  - Fixing EAV Reader task

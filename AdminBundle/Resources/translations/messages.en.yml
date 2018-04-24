@@ -108,6 +108,8 @@ admin:
 form:
     delete:
         confirmation: Are you sure you want to delete "%entity%" ?
+        constraint: 'The entity "%entity%" is constrained by the following entities and therefore cannot be removed:'
+        disabled: Unable to delete entity
     abandon_changes:
         confirmation: Are you sure you want to cancel current modifications ?
     resetPassword:

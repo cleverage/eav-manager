@@ -2,9 +2,12 @@
 ## Installation
 Yes it's complicated, but it's also very versatile and allows you to do it your way.
 
+If you are using the [[EAVManager Starter Kit](https://github.com/cleverage/eav-manager-starter-kit)] you don't need to
+follow these steps!
+
 ### Create the EAVModelBundle
 Create a dedicated bundle for your EAV model classes (or put them in any of your bundles).
-If you want to use the ```generate:bundle``` command you have to do this first.
+You can use the ```generate:bundle``` command.
 
 #### Create your Data Doctrine entity
 Don't forget to change the "MyNameSpace" part with your own.
@@ -61,13 +64,13 @@ class Value extends AbstractValue
 ```
 
 ### Update composer.json:
-Install Assetic, the EAV Manager and merge the rest of the configuration:
+
+Install the EAV Manager and merge the rest of the configuration:
 
 ```json
 {
     "require": {
-        "symfony/assetic-bundle": "^2.8",
-        "cleverage/eav-manager": "~1.2.0"
+        "cleverage/eav-manager": "^1.3.0"
     },
     "config": {
         "component-dir": "web/assets",
@@ -82,8 +85,7 @@ Install Assetic, the EAV Manager and merge the rest of the configuration:
             "Mopa\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::postInstallSymlinkTwitterBootstrapSass",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget",
-            "php bin/console assetic:dump"
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
         ]
     }
 }
@@ -110,8 +112,6 @@ class AppKernel extends Kernel
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-            // Not part of the standard distribution anymore:
-            new Symfony\Bundle\AsseticBundle\AsseticBundle(),
         ];
 
         $eavBundles = CleverAge\EAVManager\EAVKernelBundleLoader::getBundles();
@@ -192,49 +192,6 @@ twig:
         - CleverAgeEAVManagerLayoutBundle:Form:form.fields.html.twig
 ```
 
-Configure Assetic (at the bottom of your config.yml for example)
-
-```yaml
-assetic:
-    debug: "%kernel.debug%"
-    use_controller: "%kernel.debug%"
-    bundles:
-        - CleverAgeEAVManagerLayoutBundle
-    node: "%node_path%"
-    filters:
-        cssrewrite: ~
-        uglifyjs2:
-            bin: "%node_uglifyjs_path%"
-        uglifycss:
-            bin: "%node_uglifycss_path%"
-    assets:
-        map1:
-            input: "%kernel.root_dir%/../web/assets/jquery/jquery.min.map"
-            output: js/jquery.min.map
-        src1:
-            input: "%kernel.root_dir%/../web/assets/jquery/jquery.js"
-            output: js/jquery.js
-```
-
-We will use UglifyJs and UglifyCSS to minify and compile the CSS and JS necessary for the admin to run, for this we need
-to make the binary path of those libraries configurable per environment.
-
-Append this to your parameters.yml.dist:
-```yaml
-parameters:
-    # ...
-    node_path: /usr/bin/nodejs
-    node_uglifyjs_path: /usr/local/bin/uglifyjs
-    node_uglifycss_path: /usr/local/bin/uglifycss
-```
-
-To install these libraries, you will need npm installed on your system:
-```bash
-$ sudo npm install -g uglifyjs
-$ sudo npm install -g uglifycss
-```
-
-You can also automatically install them locally with a package.json and a composer hook.
 
 ### Update composer
 Run a global composer update:

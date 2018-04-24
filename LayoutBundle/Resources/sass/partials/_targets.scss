@@ -4,7 +4,7 @@
 }
 
 #tg_right, #tg_left, #tg_center {
-  padding: $padding-base-horizontal;
+  @include container-fixed;
   vertical-align: top;
   position: relative;
   min-height: 100vh;

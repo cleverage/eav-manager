@@ -1,7 +1,6 @@
 .sidebar {
   .nav, .admin-nav h5 {
-    margin-left: -$padding-base-horizontal;
-    margin-right: -$padding-base-horizontal;
+    @include make-row;
   }
   .admin-nav {
     h5 {
@@ -53,5 +52,54 @@
     h5 {
       border-top: 1px solid darken($navbar-inverse-bg, 5%);
     }
+  }
+}
+
+.breadcrumb {
+  margin-bottom: $form-group-margin-bottom;
+  margin-right: $padding-base-horizontal;
+  // Fixing excessively longs breadcrumb items
+  & > li {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-top: $padding-xs-vertical;
+    padding-bottom: $padding-xs-vertical;
+    flex-shrink: 0;
+    &.shrink {
+      flex-shrink: 1;
+    }
+  }
+
+  display: flex;
+  flex-direction: row;
+}
+
+.actions-sticky {
+  @include make-row;
+  position: sticky;
+  top: 0;
+  padding-top: $padding-base-horizontal;
+  padding-left: $padding-base-horizontal;
+  padding-right: $padding-base-horizontal;
+  margin-top: 0;
+  margin-bottom: $padding-base-horizontal;
+  z-index: 100;
+  background: $body-bg;
+  border-bottom: 1px solid $legend-border-color;
+}
+
+.actions-flex {
+  display: flex;
+  flex-direction: row;
+  .breadcrumb-wrapper {
+    overflow: hidden;
+  }
+
+  .actions-wrapper {
+    display: flex;
+    flex-grow: 1;
+    flex-shrink: 0;
+    justify-content: flex-end;
   }
 }

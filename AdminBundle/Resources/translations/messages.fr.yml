@@ -99,6 +99,8 @@ admin:
 form:
     delete:
         confirmation: Êtes-vous certain de vouloir supprimer l'entité "%entity%" ?
+        constraint: 'L''entité "%entity%" est contrainte par les entités suivantes et ne peut pas être supprimée:'
+        disabled: Suppression de l'entité impossible
     abandon_changes:
         confirmation: Êtes-vous certain de vouloir annuler vos modifications ?
     resetPassword:

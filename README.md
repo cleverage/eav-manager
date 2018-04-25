@@ -42,13 +42,13 @@ You need to check several different bundle documentation that are stored in diff
 Only the checked entries are completed.
 
  - [x] [EAV Model documentation](https://vincentchalnot.github.io/SidusEAVModelBundle)
- - [-] [Process bundle documentation](https://github.com/cleverage/process-bundle)
+ - [x] [Process bundle documentation](https://github.com/cleverage/process-bundle)
  - [ ] [EAV bootstrap extension](https://github.com/VincentChalnot/SidusEAVBootstrapBundle)
  - [x] [Admin configuration](https://github.com/VincentChalnot/SidusAdminBundle)
  - [ ] [Datagrid configuration](https://github.com/VincentChalnot/SidusDataGridBundle)
  - [ ] [Filter configuration](https://github.com/VincentChalnot/SidusFilterBundle)
  - [x] [EAV Filter configuration](https://github.com/VincentChalnot/SidusEAVFilterBundle)
- - [-] [File upload configuration](https://github.com/VincentChalnot/SidusFileUploadBundle)
+ - [x] [File upload configuration](https://github.com/VincentChalnot/SidusFileUploadBundle)
  - [x] [Base Bundle](https://github.com/VincentChalnot/SidusBaseBundle)
 
 ## Cookbooks

@@ -63,7 +63,7 @@ class WysiwygController extends Controller
     }
 
     /**
-     * @Template()
+     * @Template("@CleverAgeEAVManagerAdmin/Wysiwyg/selectMedia.html.twig")
      *
      * @param Request $request
      *
@@ -76,7 +76,7 @@ class WysiwygController extends Controller
         $formData = [
             'data' => $this->getData($request),
             'filter' => $request->get('dataFilter'),
-            'responsive' => (string) $request->get('dataResponsive') === '1',
+            'responsive' => '1' === (string) $request->get('dataResponsive'),
         ];
         $builder = $this->createFormBuilder(
             $formData,

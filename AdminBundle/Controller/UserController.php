@@ -29,7 +29,7 @@ class UserController extends GenericAdminController
     /**
      * @Security("is_granted('ROLE_ADMIN')")
      *
-     * @Template()
+     * @Template("@CleverAgeEAVManagerAdmin/User/resetPassword.html.twig")
      *
      * @param Request $request
      * @param User    $user

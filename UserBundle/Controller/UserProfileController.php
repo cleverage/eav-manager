@@ -27,7 +27,7 @@ class UserProfileController extends Controller
     use BaseControllerTrait;
 
     /**
-     * @Template()
+     * @Template("@CleverAgeEAVManagerUser/UserProfile/edit.html.twig")
      *
      * @param Request $request
      *

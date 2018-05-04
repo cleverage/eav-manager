@@ -28,7 +28,7 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 class SecurityController extends Controller
 {
     /**
-     * @Template()
+     * @Template("@CleverAgeEAVManagerUser/Security/login.html.twig")
      *
      * @Route("/login", name="login")
      *
@@ -56,7 +56,7 @@ class SecurityController extends Controller
     }
 
     /**
-     * @Template()
+     * @Template("@CleverAgeEAVManagerUser/Security/lostPassword.html.twig")
      *
      * @Route("/login/lost-password", name="lost_password")
      *
@@ -112,7 +112,7 @@ class SecurityController extends Controller
     }
 
     /**
-     * @Template()
+     * @Template("@CleverAgeEAVManagerUser/Security/resetPassword.html.twig")
      *
      * @Route("/login/reset-password", name="reset_password")
      *

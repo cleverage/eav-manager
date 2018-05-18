@@ -10,10 +10,7 @@
 
 namespace CleverAge\EAVManager\EAVModelBundle\DependencyInjection;
 
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Sidus\BaseBundle\DependencyInjection\SidusBaseExtension;
 
 /**
  * This is the class that loads and manages your bundle configuration.
@@ -22,17 +19,6 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  *
  * @author Vincent Chalnot <vchalnot@clever-age.com>
  */
-class CleverAgeEAVManagerEAVModelExtension extends Extension
+class CleverAgeEAVManagerEAVModelExtension extends SidusBaseExtension
 {
-    /**
-     * {@inheritdoc}
-     *
-     * @throws \Exception
-     */
-    public function load(array $configs, ContainerBuilder $container)
-    {
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config/services'));
-        $loader->load('services.yml');
-        $loader->load('twig.yml');
-    }
 }

@@ -1,5 +1,7 @@
 services:
     eavmanager_user.user.provider:
-        class: CleverAge\EAVManager\UserBundle\Security\UserProvider
-        arguments:
-            - '@doctrine'
+        alias: CleverAge\EAVManager\UserBundle\Security\UserProvider
+
+    CleverAge\EAVManager\UserBundle\Security\UserProvider:
+        public: false
+        autowire: true

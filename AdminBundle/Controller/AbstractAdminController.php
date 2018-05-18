@@ -108,7 +108,7 @@ abstract class AbstractAdminController extends BaseAdminController
         }
 
         /** @var AdminRouter $adminRouter */
-        $adminRouter = $this->get('sidus_admin.routing.admin_router');
+        $adminRouter = $this->get(AdminRouter::class);
 
         return $adminRouter->generateAdminPath($this->admin, 'list', $parameters);
     }

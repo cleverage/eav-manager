@@ -10,10 +10,8 @@
 
 namespace CleverAge\EAVManager\UserBundle\DependencyInjection;
 
-use Symfony\Component\Config\FileLocator;
+use Sidus\BaseBundle\DependencyInjection\SidusBaseExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
  * This is the class that loads and manages your bundle configuration.
@@ -22,7 +20,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  *
  * @author Vincent Chalnot <vchalnot@clever-age.com>
  */
-class CleverAgeEAVManagerUserExtension extends Extension
+class CleverAgeEAVManagerUserExtension extends SidusBaseExtension
 {
     /**
      * {@inheritdoc}
@@ -35,14 +33,7 @@ class CleverAgeEAVManagerUserExtension extends Extension
 
         $container->setParameter('eavmanager_user.config', $config);
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config/services'));
-        $loader->load('configuration.yml');
-        $loader->load('events.yml');
-        $loader->load('forms.yml');
-        $loader->load('mailer.yml');
-        $loader->load('managers.yml');
-        $loader->load('normalizer.yml');
-        $loader->load('security.yml');
+        parent::load($configs, $container);
     }
 
     /**

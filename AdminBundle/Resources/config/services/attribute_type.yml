@@ -1,6 +1,7 @@
 services:
     eavmanager_admin.attribute_type.document:
         class: '%sidus_eav_model.attribute_type.relation.class%'
+        public: false
         arguments:
             - document
             - documentValue
@@ -11,6 +12,7 @@ services:
 
     eavmanager_admin.attribute_type.image:
         class: '%sidus_eav_model.attribute_type.relation.class%'
+        public: false
         arguments:
             - image
             - imageValue
@@ -21,6 +23,7 @@ services:
 
     eavmanager_admin.attribute_type.media_browser:
         class: '%sidus_eav_model.attribute_type.eav_relation.class%'
+        public: false
         arguments:
             - media_browser
             - dataValue
@@ -28,8 +31,8 @@ services:
         tags:
             - { name: sidus.attribute_type }
 
-    eavmanager_admin.attribute_type.embed_multi_family:
-        class: CleverAge\EAVManager\AdminBundle\Model\EmbedMultiFamilyAttributeType
+    CleverAge\EAVManager\AdminBundle\Model\EmbedMultiFamilyAttributeType:
+        public: false
         arguments:
             - embed_multi_family
             - dataValue

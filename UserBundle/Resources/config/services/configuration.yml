@@ -1,4 +1,3 @@
 services:
-    eavmanager_user.config.holder:
-        class: CleverAge\EAVManager\UserBundle\Configuration\Configuration
+    CleverAge\EAVManager\UserBundle\Configuration\Configuration:
         arguments: ['%eavmanager_user.config%']

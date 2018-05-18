@@ -5,7 +5,7 @@ services:
         arguments:
             - '@request_stack'
             - '@sidus_eav_model.family.registry'
-            - '@eavmanager.resolver.family'
+            - '@CleverAge\EAVManager\EAVModelBundle\Resolver\FamilyResolver'
             - '@sidus_eav_filter.helper.eav_filter'
 
     eavmanager_api_platform.filter.search:

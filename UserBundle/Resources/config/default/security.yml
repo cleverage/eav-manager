@@ -8,7 +8,7 @@ security:
     # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
        eavmanager_user_provider:
-           id: eavmanager_user.user.provider
+           id: CleverAge\EAVManager\UserBundle\Security\UserProvider
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs

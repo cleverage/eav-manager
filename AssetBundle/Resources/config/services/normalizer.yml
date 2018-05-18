@@ -1,7 +1,7 @@
 services:
-    eavmanager_asset.normalizer.resource:
+    CleverAge\EAVManager\AssetBundle\Serializer\Normalizer\ResourceNormalizer:
         parent: serializer.normalizer.object
-        class: CleverAge\EAVManager\AssetBundle\Serializer\Normalizer\ResourceNormalizer
+        public: false
         arguments:
             - '@sidus_file_upload.resource.manager'
             -

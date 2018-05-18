@@ -1,20 +1,17 @@
 services:
-    eavmanager_user.form.user.type:
-        class: CleverAge\EAVManager\UserBundle\Form\Type\UserType
-        arguments:
-            - '@sidus_eav_model.family.registry'
-            - '@security.token_storage'
-            - '@security.authorization_checker'
+    CleverAge\EAVManager\UserBundle\Form\Type\UserType:
+        public: false
+        autowire: true
         tags:
             - { name: form.type }
 
-    eavmanager_user.form.group.type:
-        class: CleverAge\EAVManager\UserBundle\Form\Type\GroupType
+    CleverAge\EAVManager\UserBundle\Form\Type\GroupType:
+        public: false
         tags:
             - { name: form.type }
 
-    eavmanager_user.form.user_profile.type:
-        parent: eavmanager_user.form.user.type
-        class: CleverAge\EAVManager\UserBundle\Form\Type\UserProfileType
+    CleverAge\EAVManager\UserBundle\Form\Type\UserProfileType:
+        public: false
+        autowire: true
         tags:
             - { name: form.type }

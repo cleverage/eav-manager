@@ -10,12 +10,12 @@
 
 namespace CleverAge\EAVManager\AssetBundle\Serializer\Normalizer;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Oneup\UploaderBundle\Uploader\Response\EmptyResponse;
 use Sidus\EAVModelBundle\Serializer\ByReferenceHandler;
 use Sidus\EAVModelBundle\Serializer\MaxDepthHandler;
 use Sidus\FileUploadBundle\Controller\BlueimpController;
-use Sidus\FileUploadBundle\Manager\ResourceManager;
+use Sidus\FileUploadBundle\Manager\ResourceManagerInterface;
 use Sidus\FileUploadBundle\Model\ResourceInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -36,13 +36,13 @@ class ResourceNormalizer extends ObjectNormalizer
 {
     const OPTION_KEY = 'resource_options';
 
-    /** @var ResourceManager */
+    /** @var ResourceManagerInterface */
     protected $resourceManager;
 
     /** @var BlueimpController[] */
     protected $uploadManagers;
 
-    /** @var Registry */
+    /** @var ManagerRegistry */
     protected $doctrine;
 
     /** @var MaxDepthHandler */
@@ -56,9 +56,9 @@ class ResourceNormalizer extends ObjectNormalizer
      * @param NameConverterInterface|null         $nameConverter
      * @param PropertyAccessorInterface|null      $propertyAccessor
      * @param PropertyTypeExtractorInterface|null $propertyTypeExtractor
-     * @param ResourceManager                     $resourceManager
+     * @param ResourceManagerInterface            $resourceManager
      * @param BlueimpController[]                 $uploadManagers
-     * @param Registry                            $doctrine
+     * @param ManagerRegistry                     $doctrine
      * @param MaxDepthHandler                     $maxDepthHandler
      * @param ByReferenceHandler                  $byReferenceHandler
      *
@@ -69,9 +69,9 @@ class ResourceNormalizer extends ObjectNormalizer
         NameConverterInterface $nameConverter = null,
         PropertyAccessorInterface $propertyAccessor = null,
         PropertyTypeExtractorInterface $propertyTypeExtractor = null,
-        ResourceManager $resourceManager,
+        ResourceManagerInterface $resourceManager,
         array $uploadManagers,
-        Registry $doctrine,
+        ManagerRegistry $doctrine,
         MaxDepthHandler $maxDepthHandler,
         ByReferenceHandler $byReferenceHandler
     ) {

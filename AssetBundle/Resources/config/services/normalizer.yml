@@ -3,12 +3,12 @@ services:
         parent: serializer.normalizer.object
         public: false
         arguments:
-            - '@sidus_file_upload.resource.manager'
+            - '@Sidus\FileUploadBundle\Manager\ResourceManagerInterface'
             -
                 document: '@oneup_uploader.controller.document'
                 image: '@oneup_uploader.controller.image'
-            - '@doctrine'
-            - '@sidus_eav_model.serializer.handler.max_depth'
-            - '@sidus_eav_model.serializer.handler.by_reference'
+            - '@Doctrine\Common\Persistence\ManagerRegistry'
+            - '@Sidus\EAVModelBundle\Serializer\MaxDepthHandler'
+            - '@Sidus\EAVModelBundle\Serializer\ByReferenceHandler'
         tags:
             - { name: serializer.normalizer }

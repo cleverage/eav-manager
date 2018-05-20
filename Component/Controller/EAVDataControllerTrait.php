@@ -12,12 +12,14 @@ namespace CleverAge\EAVManager\Component\Controller;
 
 use Sidus\EAVModelBundle\Entity\DataInterface;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
+use Sidus\EAVModelBundle\Registry\FamilyRegistry;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use CleverAge\EAVManager\UserBundle\Entity\User;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
- * @method Registry getDoctrine
+ * @method ManagerRegistry getDoctrine
  * @method User getUser
  * @method addFlash($key, $message)
  *
@@ -39,7 +41,7 @@ trait EAVDataControllerTrait
      */
     protected function getFamily($familyCode): FamilyInterface
     {
-        return $this->container->get('sidus_eav_model.family.registry')->getFamily($familyCode);
+        return $this->container->get(FamilyRegistry::class)->getFamily($familyCode);
     }
 
     /**

@@ -4,9 +4,9 @@ services:
         class: CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\AbstractEAVFilter
         arguments:
             - '@request_stack'
-            - '@sidus_eav_model.family.registry'
+            - '@Sidus\EAVModelBundle\Registry\FamilyRegistry'
             - '@CleverAge\EAVManager\EAVModelBundle\Resolver\FamilyResolver'
-            - '@sidus_eav_filter.helper.eav_filter'
+            - '@Sidus\EAVFilterBundle\Filter\EAVFilterHelper'
 
     eavmanager_api_platform.filter.search:
         abstract: true

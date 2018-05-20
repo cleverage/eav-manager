@@ -1,13 +1,8 @@
 services:
-    eavmanager_process.task.eav_reader:
-        class: CleverAge\EAVManager\ProcessBundle\Task\EAVReaderTask
+    CleverAge\EAVManager\ProcessBundle\Task\EAVReaderTask:
         shared: false
-        arguments:
-            - '@doctrine'
-            - '@sidus_eav_model.family.registry'
-            - '@sidus_eav_model.finder'
+        autowire: true
 
-    eavmanager_process.task.eav_criteria_reader:
-        class: CleverAge\EAVManager\ProcessBundle\Task\EAVCriteriaReaderTask
+    CleverAge\EAVManager\ProcessBundle\Task\EAVCriteriaReaderTask:
         shared: false
-        parent: eavmanager_process.task.eav_reader
+        autowire: true

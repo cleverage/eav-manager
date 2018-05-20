@@ -27,6 +27,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Sidus\DataGridBundle\Registry\DataGridRegistry;
+use Sidus\EAVModelBundle\Doctrine\IntegrityConstraintManager;
 
 /**
  * Specific controller for EAV Data
@@ -230,7 +232,7 @@ class EAVDataController extends AbstractAdminController
     public function deleteAction(Request $request, DataInterface $data, FamilyInterface $family = null)
     {
         $this->initDataFamily($data, $family);
-        $constrainedEntities = $this->get('sidus_eav_model.integrity_constraint_manager')->getEntityConstraints($data);
+        $constrainedEntities = $this->get(IntegrityConstraintManager::class)->getEntityConstraints($data);
 
         $formOptions = $this->getDefaultFormOptions($request, $data->getId());
         unset($formOptions['family']);
@@ -288,12 +290,12 @@ class EAVDataController extends AbstractAdminController
             }
 
             // Check if family has a datagrid with the same name
-            if ($this->get('sidus_data_grid.registry.datagrid')->hasDataGrid($familyCode)) {
+            if ($this->get(DataGridRegistry::class)->hasDataGrid($familyCode)) {
                 return $familyCode;
             }
             // Check in lowercase (this should be deprecated ?)
             $code = strtolower($familyCode);
-            if ($this->get('sidus_data_grid.registry.datagrid')->hasDataGrid($code)) {
+            if ($this->get(DataGridRegistry::class)->hasDataGrid($code)) {
                 return $code;
             }
         }

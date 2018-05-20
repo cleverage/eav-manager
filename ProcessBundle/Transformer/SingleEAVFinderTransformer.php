@@ -11,7 +11,7 @@
 namespace CleverAge\EAVManager\ProcessBundle\Transformer;
 
 use CleverAge\ProcessBundle\Transformer\ConfigurableTransformerInterface;
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Sidus\EAVModelBundle\Entity\DataRepository;
@@ -27,17 +27,17 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class SingleEAVFinderTransformer implements ConfigurableTransformerInterface
 {
-    /** @var Registry */
+    /** @var ManagerRegistry */
     protected $doctrine;
 
     /** @var FamilyRegistry */
     protected $familyRegistry;
 
     /**
-     * @param Registry       $doctrine
-     * @param FamilyRegistry $familyRegistry
+     * @param ManagerRegistry $doctrine
+     * @param FamilyRegistry  $familyRegistry
      */
-    public function __construct(Registry $doctrine, FamilyRegistry $familyRegistry)
+    public function __construct(ManagerRegistry $doctrine, FamilyRegistry $familyRegistry)
     {
         $this->doctrine = $doctrine;
         $this->familyRegistry = $familyRegistry;
@@ -149,7 +149,9 @@ class SingleEAVFinderTransformer implements ConfigurableTransformerInterface
             if (\is_array($attributeValue)) {
                 $queryParts[] = $eavQb->a($attributeCode)->in($attributeValue);
             } else {
-                if (null !== $attributeValue && $attributeValue === $family->getAttribute($attributeCode)->getDefault()) {
+                if (null !== $attributeValue
+                    && $attributeValue === $family->getAttribute($attributeCode)->getDefault()
+                ) {
                     $queryParts[] = $eavQb->getOr(
                         [
                             $eavQb->a($attributeCode)->equals($attributeValue),

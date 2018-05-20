@@ -11,7 +11,7 @@
 namespace CleverAge\EAVManager\ProcessBundle\Task;
 
 use CleverAge\ProcessBundle\Task\AbstractDoctrineTask;
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
 use Sidus\EAVModelBundle\Registry\FamilyRegistry;
 use Symfony\Component\OptionsResolver\Options;
@@ -26,9 +26,10 @@ abstract class AbstractEAVTask extends AbstractDoctrineTask
     protected $familyRegistry;
 
     /**
-     * {@inheritDoc}
+     * @param ManagerRegistry $doctrine
+     * @param FamilyRegistry  $familyRegistry
      */
-    public function __construct(Registry $doctrine, FamilyRegistry $familyRegistry)
+    public function __construct(ManagerRegistry $doctrine, FamilyRegistry $familyRegistry)
     {
         parent::__construct($doctrine);
         $this->familyRegistry = $familyRegistry;

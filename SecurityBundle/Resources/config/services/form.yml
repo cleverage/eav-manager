@@ -1,7 +1,8 @@
 services:
     CleverAge\EAVManager\SecurityBundle\Form\Type\RoleHierarchyType:
         public: false
-        autowire: true
+        arguments:
+            - '@security.role_hierarchy'
         tags:
             - { name: form.type }
 

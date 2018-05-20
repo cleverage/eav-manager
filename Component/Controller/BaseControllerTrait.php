@@ -10,7 +10,7 @@
 
 namespace CleverAge\EAVManager\Component\Controller;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @method string generateUrl($route, $parameters = [], $referenceType)
- * @method Registry getDoctrine
+ * @method ManagerRegistry getDoctrine
  *
  * @property ContainerInterface $container
  *

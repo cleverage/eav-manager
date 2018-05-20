@@ -91,7 +91,7 @@ $dataLoader->load($results);
 <?php
 /**
  * @var \Sidus\EAVModelBundle\Model\FamilyInterface $family
- * @var \Doctrine\Bundle\DoctrineBundle\Registry $doctrine
+ * @var \Doctrine\Common\Persistence\ManagerRegistry $doctrine
  * @var \CleverAge\EAVManager\EAVModelBundle\Entity\DataRepository $dataRepository
  * @var integer $id
  * @var \Sidus\EAVModelBundle\Doctrine\DataLoaderInterface $dataLoader

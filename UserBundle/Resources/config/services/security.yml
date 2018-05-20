@@ -1,7 +1,4 @@
 services:
-    eavmanager_user.user.provider:
-        alias: CleverAge\EAVManager\UserBundle\Security\UserProvider
-
     CleverAge\EAVManager\UserBundle\Security\UserProvider:
         public: false
         autowire: true

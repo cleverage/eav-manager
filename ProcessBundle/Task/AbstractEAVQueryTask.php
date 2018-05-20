@@ -12,7 +12,7 @@ namespace CleverAge\EAVManager\ProcessBundle\Task;
 
 use CleverAge\EAVManager\EAVModelBundle\Entity\DataRepository;
 use CleverAge\ProcessBundle\Model\ProcessState;
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Sidus\EAVModelBundle\Doctrine\EAVFinder;
@@ -34,7 +34,7 @@ abstract class AbstractEAVQueryTask extends AbstractEAVTask
      *
      * @param EAVFinder $eavFinder
      */
-    public function __construct(Registry $doctrine, FamilyRegistry $familyRegistry, EAVFinder $eavFinder)
+    public function __construct(ManagerRegistry $doctrine, FamilyRegistry $familyRegistry, EAVFinder $eavFinder)
     {
         parent::__construct($doctrine, $familyRegistry);
         $this->eavFinder = $eavFinder;

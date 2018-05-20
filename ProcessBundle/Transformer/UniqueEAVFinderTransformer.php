@@ -11,7 +11,7 @@
 namespace CleverAge\EAVManager\ProcessBundle\Transformer;
 
 use CleverAge\ProcessBundle\Transformer\ConfigurableTransformerInterface;
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
 use Sidus\EAVModelBundle\Entity\DataRepository;
 use Sidus\EAVModelBundle\Model\AttributeInterface;
@@ -27,17 +27,17 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class UniqueEAVFinderTransformer implements ConfigurableTransformerInterface
 {
-    /** @var Registry */
+    /** @var ManagerRegistry */
     protected $doctrine;
 
     /** @var FamilyRegistry */
     protected $familyRegistry;
 
     /**
-     * @param Registry       $doctrine
-     * @param FamilyRegistry $familyRegistry
+     * @param ManagerRegistry $doctrine
+     * @param FamilyRegistry  $familyRegistry
      */
-    public function __construct(Registry $doctrine, FamilyRegistry $familyRegistry)
+    public function __construct(ManagerRegistry $doctrine, FamilyRegistry $familyRegistry)
     {
         $this->doctrine = $doctrine;
         $this->familyRegistry = $familyRegistry;

@@ -1,0 +1,3 @@
+services:
+    Sidus\FileUploadBundle\Metadata\MetadataUpdaterInterface:
+        class: CleverAge\EAVManager\AssetBundle\Metadata\MetadataUpdater

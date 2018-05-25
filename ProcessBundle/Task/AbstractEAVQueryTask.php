@@ -12,7 +12,7 @@ namespace CleverAge\EAVManager\ProcessBundle\Task;
 
 use CleverAge\EAVManager\EAVModelBundle\Entity\DataRepository;
 use CleverAge\ProcessBundle\Model\ProcessState;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Sidus\EAVModelBundle\Doctrine\EAVFinder;
@@ -30,13 +30,13 @@ abstract class AbstractEAVQueryTask extends AbstractEAVTask
     protected $eavFinder;
 
     /**
-     * AbstractEAVQueryTask constructor.
-     *
-     * @param EAVFinder $eavFinder
+     * @param EntityManagerInterface $entityManager
+     * @param FamilyRegistry         $familyRegistry
+     * @param EAVFinder              $eavFinder
      */
-    public function __construct(ManagerRegistry $doctrine, FamilyRegistry $familyRegistry, EAVFinder $eavFinder)
+    public function __construct(EntityManagerInterface $entityManager, FamilyRegistry $familyRegistry, EAVFinder $eavFinder)
     {
-        parent::__construct($doctrine, $familyRegistry);
+        parent::__construct($entityManager, $familyRegistry);
         $this->eavFinder = $eavFinder;
     }
 
@@ -67,7 +67,7 @@ abstract class AbstractEAVQueryTask extends AbstractEAVTask
                 /** @var FamilyInterface $family */
                 $family = $options['family'];
 
-                return $this->doctrine->getRepository($family->getDataClass());
+                return $this->entityManager->getRepository($family->getDataClass());
             }
         );
 
@@ -85,6 +85,7 @@ abstract class AbstractEAVQueryTask extends AbstractEAVTask
      * @param ProcessState $state
      * @param string       $alias
      *
+     * @throws \InvalidArgumentException
      * @throws \UnexpectedValueException
      * @throws \LogicException
      * @throws \Sidus\EAVModelBundle\Exception\MissingAttributeException
@@ -100,7 +101,7 @@ abstract class AbstractEAVQueryTask extends AbstractEAVTask
         foreach ($options['criteria'] as $key => $value) {
             $criteria[] = [
                 $key,
-                is_array($value) ? 'in' : '=',
+                \is_array($value) ? 'in' : '=',
                 $value,
             ];
         }
@@ -117,6 +118,7 @@ abstract class AbstractEAVQueryTask extends AbstractEAVTask
      * @param ProcessState $state
      * @param string       $alias
      *
+     * @throws \InvalidArgumentException
      * @throws \UnexpectedValueException
      * @throws \Sidus\EAVModelBundle\Exception\MissingAttributeException
      * @throws \LogicException

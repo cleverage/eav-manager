@@ -10,7 +10,7 @@
 
 namespace CleverAge\EAVManager\AdminBundle\Form\Type;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 use Sidus\EAVBootstrapBundle\Form\Type\AutocompleteDataSelectorType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -22,14 +22,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class EmbedMultiFamilyEntryType extends AutocompleteDataSelectorType
 {
     /**
-     * @param ManagerRegistry $doctrine
-     * @param string          $dataClass
+     * @param EntityManagerInterface $entityManager
+     * @param string                 $dataClass
      */
-    public function __construct(
-        ManagerRegistry $doctrine,
-        $dataClass
-    ) {
-        $this->repository = $doctrine->getRepository($dataClass);
+    public function __construct(EntityManagerInterface $entityManager, $dataClass)
+    {
+        $this->repository = $entityManager->getRepository($dataClass);
     }
 
     /**

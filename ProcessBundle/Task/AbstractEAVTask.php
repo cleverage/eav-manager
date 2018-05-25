@@ -10,8 +10,8 @@
 
 namespace CleverAge\EAVManager\ProcessBundle\Task;
 
-use CleverAge\ProcessBundle\Task\AbstractDoctrineTask;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use CleverAge\ProcessBundle\Model\AbstractConfigurableTask;
+use Doctrine\ORM\EntityManagerInterface;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
 use Sidus\EAVModelBundle\Registry\FamilyRegistry;
 use Symfony\Component\OptionsResolver\Options;
@@ -20,18 +20,21 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Handles EAV Data
  */
-abstract class AbstractEAVTask extends AbstractDoctrineTask
+abstract class AbstractEAVTask extends AbstractConfigurableTask
 {
+    /** @var EntityManagerInterface */
+    protected $entityManager;
+
     /** @var FamilyRegistry */
     protected $familyRegistry;
 
     /**
-     * @param ManagerRegistry $doctrine
-     * @param FamilyRegistry  $familyRegistry
+     * @param EntityManagerInterface $entityManager
+     * @param FamilyRegistry         $familyRegistry
      */
-    public function __construct(ManagerRegistry $doctrine, FamilyRegistry $familyRegistry)
+    public function __construct(EntityManagerInterface $entityManager, FamilyRegistry $familyRegistry)
     {
-        parent::__construct($doctrine);
+        $this->entityManager = $entityManager;
         $this->familyRegistry = $familyRegistry;
     }
 

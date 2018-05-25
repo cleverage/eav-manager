@@ -16,7 +16,6 @@ use Sidus\EAVModelBundle\Registry\FamilyRegistry;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use CleverAge\EAVManager\UserBundle\Entity\User;
-use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @method ManagerRegistry getDoctrine

@@ -1,8 +1,11 @@
 services:
     CleverAge\EAVManager\ProcessBundle\Task\EAVReaderTask:
         shared: false
-        autowire: true
+        arguments:
+            - '@sidus_eav_model.entity_manager'
+            - '@Sidus\EAVModelBundle\Registry\FamilyRegistry'
+            - '@Sidus\EAVModelBundle\Doctrine\EAVFinder'
 
     CleverAge\EAVManager\ProcessBundle\Task\EAVCriteriaReaderTask:
+        parent: CleverAge\EAVManager\ProcessBundle\Task\EAVReaderTask
         shared: false
-        autowire: true

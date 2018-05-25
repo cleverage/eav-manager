@@ -5,7 +5,9 @@ services:
             - { name: cleverage.transformer }
 
     CleverAge\EAVManager\ProcessBundle\Transformer\SingleEAVFinderTransformer:
-        autowire: true
+        arguments:
+            - '@sidus_eav_model.entity_manager'
+            - '@Sidus\EAVModelBundle\Registry\FamilyRegistry'
         tags:
             - { name: cleverage.transformer }
 

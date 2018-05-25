@@ -25,43 +25,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  *
  * @author Vincent Chalnot <vchalnot@clever-age.com>
  */
-class UniqueEAVFinderTransformer implements ConfigurableTransformerInterface
+class UniqueEAVFinderTransformer extends SingleEAVFinderTransformer
 {
-    /** @var ManagerRegistry */
-    protected $doctrine;
-
-    /** @var FamilyRegistry */
-    protected $familyRegistry;
-
-    /**
-     * @param ManagerRegistry $doctrine
-     * @param FamilyRegistry  $familyRegistry
-     */
-    public function __construct(ManagerRegistry $doctrine, FamilyRegistry $familyRegistry)
-    {
-        $this->doctrine = $doctrine;
-        $this->familyRegistry = $familyRegistry;
-    }
-
-    /**
-     * Must return the transformed $value
-     *
-     * @param mixed $value
-     * @param array $options
-     *
-     * @throws \Exception
-     *
-     * @return mixed $value
-     */
-    public function transform($value, array $options = [])
-    {
-        $resolver = new OptionsResolver();
-        $this->configureOptions($resolver);
-        $options = $resolver->resolve($options);
-
-        return $this->findData($value, $options);
-    }
-
     /**
      * @param OptionsResolver $resolver
      *
@@ -69,36 +34,13 @@ class UniqueEAVFinderTransformer implements ConfigurableTransformerInterface
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        parent::configureOptions($resolver);
         $resolver->setRequired(
             [
-                'family',
                 'attribute',
             ]
         );
-        $resolver->setAllowedTypes('family', ['string', FamilyInterface::class]);
         $resolver->setAllowedTypes('attribute', ['string', AttributeInterface::class]);
-        $resolver->setDefaults(
-            [
-                'entity_manager' => null,
-                'repository' => null,
-                'ignore_missing' => true,
-            ]
-        );
-        $resolver->setAllowedTypes('entity_manager', ['NULL', 'string', EntityManagerInterface::class]);
-        $resolver->setAllowedTypes('repository', ['NULL', DataRepository::class]);
-        $resolver->setAllowedTypes('ignore_missing', ['bool']);
-
-        /** @noinspection PhpUnusedParameterInspection */
-        $resolver->setNormalizer(
-            'family',
-            function (Options $options, $value) {
-                if ($value instanceof FamilyInterface) {
-                    return $value;
-                }
-
-                return $this->familyRegistry->getFamily($value);
-            }
-        );
         $resolver->setNormalizer(
             'attribute',
             function (Options $options, $value) {
@@ -115,18 +57,6 @@ class UniqueEAVFinderTransformer implements ConfigurableTransformerInterface
                 }
 
                 return $family->getAttribute($value);
-            }
-        );
-        $resolver->setNormalizer(
-            'repository',
-            function (Options $options, $value) {
-                if ($value instanceof DataRepository) {
-                    return $value;
-                }
-                /** @var FamilyInterface $family */
-                $family = $options['family'];
-
-                return $this->doctrine->getManager($options['entity_manager'])->getRepository($family->getDataClass());
             }
         );
     }

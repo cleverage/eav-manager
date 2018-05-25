@@ -11,6 +11,7 @@
 namespace CleverAge\EAVManager\AssetBundle\Serializer\Normalizer;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 use Oneup\UploaderBundle\Uploader\Response\EmptyResponse;
 use Sidus\EAVModelBundle\Serializer\ByReferenceHandler;
 use Sidus\EAVModelBundle\Serializer\MaxDepthHandler;
@@ -127,7 +128,11 @@ class ResourceNormalizer extends ObjectNormalizer
         $this->configureDenormalizeOptions($resolver);
         $options = $resolver->resolve(array_key_exists(self::OPTION_KEY, $context) ? $context[self::OPTION_KEY] : []);
 
-        $repository = $this->doctrine->getRepository($class);
+        $entityManager = $this->doctrine->getManagerForClass($class);
+        if (!$entityManager instanceof EntityManagerInterface) {
+            throw new \UnexpectedValueException("No manager found for class {$class}");
+        }
+        $repository = $entityManager->getRepository($class);
 
         if (empty($data)) {
             return null;
@@ -135,6 +140,7 @@ class ResourceNormalizer extends ObjectNormalizer
 
         if (is_scalar($data)) {
             // Test base identifier
+            /** @var ResourceInterface $resource */
             $resource = $repository->find($data);
             if (null === $resource) {
                 $resource = $repository->findOneBy(['path' => $data]);
@@ -145,6 +151,8 @@ class ResourceNormalizer extends ObjectNormalizer
 
             return $this->uploadFile($data, $class, $options);
         }
+
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
 
         return parent::denormalize($data, $class, $format, $context);
     }

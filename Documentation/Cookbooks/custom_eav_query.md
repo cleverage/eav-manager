@@ -91,12 +91,12 @@ $dataLoader->load($results);
 <?php
 /**
  * @var \Sidus\EAVModelBundle\Model\FamilyInterface $family
- * @var \Doctrine\Common\Persistence\ManagerRegistry $doctrine
+ * @var \Doctrine\ORM\EntityManagerInterface $entityManager
  * @var \CleverAge\EAVManager\EAVModelBundle\Entity\DataRepository $dataRepository
  * @var integer $id
  * @var \Sidus\EAVModelBundle\Doctrine\DataLoaderInterface $dataLoader
 */
-$dataRepository = $doctrine->getRepository($family->getDataClass());
+$dataRepository = $entityManager->getRepository($family->getDataClass());
 
 $entity = $dataRepository->find($id);
 

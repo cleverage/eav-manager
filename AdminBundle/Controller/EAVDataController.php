@@ -13,6 +13,7 @@ namespace CleverAge\EAVManager\AdminBundle\Controller;
 use CleverAge\EAVManager\Component\Controller\EAVDataControllerTrait;
 use CleverAge\EAVManager\EAVModelBundle\Entity\DataRepository;
 use CleverAge\ProcessBundle\Filesystem\CsvFile;
+use Doctrine\ORM\EntityManagerInterface;
 use Sidus\DataGridBundle\Model\DataGrid;
 use Sidus\EAVModelBundle\Doctrine\EAVQueryBuilder;
 use Sidus\EAVModelBundle\Entity\AbstractData;
@@ -48,7 +49,8 @@ class EAVDataController extends AbstractAdminController
      *
      * @return Response
      */
-    public function indexAction(/** @noinspection PhpUnusedParameterInspection */
+    public function indexAction(
+        /** @noinspection PhpUnusedParameterInspection */
         Request $request
     ) {
         /** @var array $families */
@@ -489,9 +491,12 @@ class EAVDataController extends AbstractAdminController
                 );
                 $csvFile->writeLine(array_combine($headers, $headers));
 
-                $doctrine = $this->getDoctrine();
+                $manager = $this->getDoctrine()->getManagerForClass($this->family->getDataClass());
+                if (!$manager instanceof EntityManagerInterface) {
+                    throw new \UnexpectedValueException("No manager found for class {$this->family->getDataClass()}");
+                }
                 /** @var DataRepository $repository */
-                $repository = $doctrine->getRepository($this->family->getDataClass());
+                $repository = $manager->getRepository($this->family->getDataClass());
                 $qb = $repository->createQueryBuilder('e');
                 $qb
                     ->andWhere('e.family = :family')
@@ -543,7 +548,7 @@ class EAVDataController extends AbstractAdminController
                     $csvFile->writeLine($writableData);
 
                     /* @noinspection DisconnectedForeachInstructionInspection */
-                    $doctrine->getManager()->clear();
+                    $manager->clear();
                 }
 
                 $csvFile->close();

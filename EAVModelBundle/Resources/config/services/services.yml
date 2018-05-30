@@ -1,8 +1,0 @@
-parameters:
-    sidus_admin.entity.matcher.class: CleverAge\EAVManager\AdminBundle\Entity\AdminEntityMatcher
-
-services:
-    eavmanager.resolver.family:
-        class: CleverAge\EAVManager\EAVModelBundle\Resolver\FamilyResolver
-        arguments:
-            - '@sidus_eav_model.family.registry'

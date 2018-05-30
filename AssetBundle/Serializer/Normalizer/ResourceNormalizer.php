@@ -10,12 +10,13 @@
 
 namespace CleverAge\EAVManager\AssetBundle\Serializer\Normalizer;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 use Oneup\UploaderBundle\Uploader\Response\EmptyResponse;
 use Sidus\EAVModelBundle\Serializer\ByReferenceHandler;
 use Sidus\EAVModelBundle\Serializer\MaxDepthHandler;
 use Sidus\FileUploadBundle\Controller\BlueimpController;
-use Sidus\FileUploadBundle\Manager\ResourceManager;
+use Sidus\FileUploadBundle\Manager\ResourceManagerInterface;
 use Sidus\FileUploadBundle\Model\ResourceInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -36,13 +37,13 @@ class ResourceNormalizer extends ObjectNormalizer
 {
     const OPTION_KEY = 'resource_options';
 
-    /** @var ResourceManager */
+    /** @var ResourceManagerInterface */
     protected $resourceManager;
 
     /** @var BlueimpController[] */
     protected $uploadManagers;
 
-    /** @var Registry */
+    /** @var ManagerRegistry */
     protected $doctrine;
 
     /** @var MaxDepthHandler */
@@ -56,9 +57,9 @@ class ResourceNormalizer extends ObjectNormalizer
      * @param NameConverterInterface|null         $nameConverter
      * @param PropertyAccessorInterface|null      $propertyAccessor
      * @param PropertyTypeExtractorInterface|null $propertyTypeExtractor
-     * @param ResourceManager                     $resourceManager
+     * @param ResourceManagerInterface            $resourceManager
      * @param BlueimpController[]                 $uploadManagers
-     * @param Registry                            $doctrine
+     * @param ManagerRegistry                     $doctrine
      * @param MaxDepthHandler                     $maxDepthHandler
      * @param ByReferenceHandler                  $byReferenceHandler
      *
@@ -69,9 +70,9 @@ class ResourceNormalizer extends ObjectNormalizer
         NameConverterInterface $nameConverter = null,
         PropertyAccessorInterface $propertyAccessor = null,
         PropertyTypeExtractorInterface $propertyTypeExtractor = null,
-        ResourceManager $resourceManager,
+        ResourceManagerInterface $resourceManager,
         array $uploadManagers,
-        Registry $doctrine,
+        ManagerRegistry $doctrine,
         MaxDepthHandler $maxDepthHandler,
         ByReferenceHandler $byReferenceHandler
     ) {
@@ -127,7 +128,11 @@ class ResourceNormalizer extends ObjectNormalizer
         $this->configureDenormalizeOptions($resolver);
         $options = $resolver->resolve(array_key_exists(self::OPTION_KEY, $context) ? $context[self::OPTION_KEY] : []);
 
-        $repository = $this->doctrine->getRepository($class);
+        $entityManager = $this->doctrine->getManagerForClass($class);
+        if (!$entityManager instanceof EntityManagerInterface) {
+            throw new \UnexpectedValueException("No manager found for class {$class}");
+        }
+        $repository = $entityManager->getRepository($class);
 
         if (empty($data)) {
             return null;
@@ -135,6 +140,7 @@ class ResourceNormalizer extends ObjectNormalizer
 
         if (is_scalar($data)) {
             // Test base identifier
+            /** @var ResourceInterface $resource */
             $resource = $repository->find($data);
             if (null === $resource) {
                 $resource = $repository->findOneBy(['path' => $data]);
@@ -145,6 +151,8 @@ class ResourceNormalizer extends ObjectNormalizer
 
             return $this->uploadFile($data, $class, $options);
         }
+
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
 
         return parent::denormalize($data, $class, $format, $context);
     }

@@ -14,8 +14,8 @@ use CleverAge\EAVManager\UserBundle\Domain\Manager\UserManagerInterface;
 use CleverAge\EAVManager\UserBundle\Entity\User;
 use CleverAge\EAVManager\UserBundle\Exception\BadUsernameException;
 use CleverAge\EAVManager\UserBundle\Mailer\UserMailer;
-use Doctrine\Bundle\DoctrineBundle\Registry;
-use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -41,8 +41,8 @@ class UserManager implements UserManagerInterface
     /** @var UserPasswordEncoderInterface */
     protected $passwordEncoder;
 
-    /** @var Registry */
-    protected $doctrine;
+    /** @var EntityManagerInterface */
+    protected $entityManager;
 
     /** @var ValidatorInterface */
     protected $validator;
@@ -56,7 +56,7 @@ class UserManager implements UserManagerInterface
     /**
      * @param UserProviderInterface        $userProvider
      * @param UserPasswordEncoderInterface $passwordEncoder
-     * @param Registry                     $doctrine
+     * @param ManagerRegistry              $doctrine
      * @param ValidatorInterface           $validator
      * @param UserMailer                   $userMailer
      * @param LoggerInterface              $logger
@@ -64,14 +64,14 @@ class UserManager implements UserManagerInterface
     public function __construct(
         UserProviderInterface $userProvider,
         UserPasswordEncoderInterface $passwordEncoder,
-        Registry $doctrine,
+        ManagerRegistry $doctrine,
         ValidatorInterface $validator,
         UserMailer $userMailer,
         LoggerInterface $logger
     ) {
         $this->userProvider = $userProvider;
         $this->passwordEncoder = $passwordEncoder;
-        $this->doctrine = $doctrine;
+        $this->entityManager = $doctrine->getManagerForClass(User::class);
         $this->validator = $validator;
         $this->userMailer = $userMailer;
         $this->logger = $logger;
@@ -139,16 +139,14 @@ class UserManager implements UserManagerInterface
             $this->setPlainTextPassword($user, $user->getPlainPassword());
         }
 
-        /** @var EntityManager $em */
-        $em = $this->doctrine->getManager();
-        $em->persist($user);
-        $em->flush();
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
 
         if ($user->isNew() && !$user->isEmailSent()) {
             try {
                 $this->userMailer->sendNewUserMail($user);
                 $user->setEmailSent(true);
-                $em->flush($user);
+                $this->entityManager->flush($user);
             } catch (\Exception $e) {
                 $this->logger->alert($e->getMessage());
             }
@@ -157,7 +155,7 @@ class UserManager implements UserManagerInterface
             try {
                 $this->userMailer->sendResetPasswordMail($user);
                 $user->setEmailSent(true);
-                $em->flush($user);
+                $this->entityManager->flush($user);
             } catch (\Exception $e) {
                 $this->logger->alert($e->getMessage());
             }
@@ -174,10 +172,8 @@ class UserManager implements UserManagerInterface
      */
     public function remove(User $user)
     {
-        /** @var EntityManager $em */
-        $em = $this->doctrine->getManager();
-        $em->remove($user);
-        $em->flush($user);
+        $this->entityManager->remove($user);
+        $this->entityManager->flush($user);
     }
 
     /**
@@ -249,6 +245,6 @@ class UserManager implements UserManagerInterface
      */
     protected function getRepository()
     {
-        return $this->doctrine->getRepository(User::class);
+        return $this->entityManager->getRepository(User::class);
     }
 }

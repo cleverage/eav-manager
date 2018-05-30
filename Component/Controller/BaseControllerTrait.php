@@ -10,15 +10,13 @@
 
 namespace CleverAge\EAVManager\Component\Controller;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @method string generateUrl($route, $parameters = [], $referenceType)
- * @method Registry getDoctrine
+ * @method ManagerRegistry getDoctrine
  *
  * @property ContainerInterface $container
  *
@@ -42,20 +40,5 @@ trait BaseControllerTrait
         }
 
         return $this->generateUrl($request->attributes->get('_route'), array_merge($params, $parameters));
-    }
-
-    /**
-     * Alias to return the entity manager.
-     *
-     * @param string|null $persistentManagerName
-     *
-     * @throws \InvalidArgumentException
-     * @throws \LogicException
-     *
-     * @return EntityManager|ObjectManager
-     */
-    protected function getManager($persistentManagerName = null): EntityManager
-    {
-        return $this->getDoctrine()->getManager($persistentManagerName);
     }
 }

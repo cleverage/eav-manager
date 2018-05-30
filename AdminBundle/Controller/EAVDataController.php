@@ -13,6 +13,7 @@ namespace CleverAge\EAVManager\AdminBundle\Controller;
 use CleverAge\EAVManager\Component\Controller\EAVDataControllerTrait;
 use CleverAge\EAVManager\EAVModelBundle\Entity\DataRepository;
 use CleverAge\ProcessBundle\Filesystem\CsvFile;
+use Doctrine\ORM\EntityManagerInterface;
 use Sidus\DataGridBundle\Model\DataGrid;
 use Sidus\EAVModelBundle\Doctrine\EAVQueryBuilder;
 use Sidus\EAVModelBundle\Entity\AbstractData;
@@ -27,6 +28,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Sidus\DataGridBundle\Registry\DataGridRegistry;
+use Sidus\EAVModelBundle\Doctrine\IntegrityConstraintManager;
 
 /**
  * Specific controller for EAV Data
@@ -46,7 +49,8 @@ class EAVDataController extends AbstractAdminController
      *
      * @return Response
      */
-    public function indexAction(/** @noinspection PhpUnusedParameterInspection */
+    public function indexAction(
+        /** @noinspection PhpUnusedParameterInspection */
         Request $request
     ) {
         /** @var array $families */
@@ -230,7 +234,7 @@ class EAVDataController extends AbstractAdminController
     public function deleteAction(Request $request, DataInterface $data, FamilyInterface $family = null)
     {
         $this->initDataFamily($data, $family);
-        $constrainedEntities = $this->get('sidus_eav_model.integrity_constraint_manager')->getEntityConstraints($data);
+        $constrainedEntities = $this->get(IntegrityConstraintManager::class)->getEntityConstraints($data);
 
         $formOptions = $this->getDefaultFormOptions($request, $data->getId());
         unset($formOptions['family']);
@@ -288,12 +292,12 @@ class EAVDataController extends AbstractAdminController
             }
 
             // Check if family has a datagrid with the same name
-            if ($this->get('sidus_data_grid.registry.datagrid')->hasDataGrid($familyCode)) {
+            if ($this->get(DataGridRegistry::class)->hasDataGrid($familyCode)) {
                 return $familyCode;
             }
             // Check in lowercase (this should be deprecated ?)
             $code = strtolower($familyCode);
-            if ($this->get('sidus_data_grid.registry.datagrid')->hasDataGrid($code)) {
+            if ($this->get(DataGridRegistry::class)->hasDataGrid($code)) {
                 return $code;
             }
         }
@@ -487,9 +491,12 @@ class EAVDataController extends AbstractAdminController
                 );
                 $csvFile->writeLine(array_combine($headers, $headers));
 
-                $doctrine = $this->getDoctrine();
+                $manager = $this->getDoctrine()->getManagerForClass($this->family->getDataClass());
+                if (!$manager instanceof EntityManagerInterface) {
+                    throw new \UnexpectedValueException("No manager found for class {$this->family->getDataClass()}");
+                }
                 /** @var DataRepository $repository */
-                $repository = $doctrine->getRepository($this->family->getDataClass());
+                $repository = $manager->getRepository($this->family->getDataClass());
                 $qb = $repository->createQueryBuilder('e');
                 $qb
                     ->andWhere('e.family = :family')
@@ -541,7 +548,7 @@ class EAVDataController extends AbstractAdminController
                     $csvFile->writeLine($writableData);
 
                     /* @noinspection DisconnectedForeachInstructionInspection */
-                    $doctrine->getManager()->clear();
+                    $manager->clear();
                 }
 
                 $csvFile->close();

@@ -70,8 +70,3 @@ Define filters on data source in configuration and helps build filter forms and 
 
 EAV compatibility is achieved with the help of the
 [Sidus/EAVFilterBundle](https://github.com/VincentChalnot/SidusEAVFilterBundle) bundle
-
-
-### Sidus/PublishingBundle ###
-
-Forget it, it doesn't work anymore since the v1.2 and the switch from JMSSerializer to Symfony's Serializer component.

@@ -1,7 +1,6 @@
 services:
-    eavmanager_asset.twig.media.extension:
-        class: CleverAge\EAVManager\AssetBundle\Twig\MediaExtension
-        arguments:
-            - '@liip_imagine.filter.configuration'
+    CleverAge\EAVManager\AssetBundle\Twig\MediaExtension:
+        public: false
+        autowire: true
         tags:
             - { name: twig.extension }

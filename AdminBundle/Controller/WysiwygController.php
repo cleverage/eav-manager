@@ -15,6 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sidus\EAVBootstrapBundle\Form\Type\ComboDataSelectorType;
 use Sidus\EAVBootstrapBundle\Form\Type\SwitchType;
 use Sidus\EAVModelBundle\Entity\DataInterface;
+use Sidus\EAVModelBundle\Entity\DataRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Request;
@@ -63,7 +64,7 @@ class WysiwygController extends Controller
     }
 
     /**
-     * @Template()
+     * @Template("@CleverAgeEAVManagerAdmin/Wysiwyg/selectMedia.html.twig")
      *
      * @param Request $request
      *
@@ -76,7 +77,7 @@ class WysiwygController extends Controller
         $formData = [
             'data' => $this->getData($request),
             'filter' => $request->get('dataFilter'),
-            'responsive' => (string) $request->get('dataResponsive') === '1',
+            'responsive' => '1' === (string) $request->get('dataResponsive'),
         ];
         $builder = $this->createFormBuilder(
             $formData,
@@ -130,9 +131,7 @@ class WysiwygController extends Controller
     {
         $data = null;
         if ($request->query->has('dataId')) {
-            $dataClass = $this->getParameter('sidus_eav_model.entity.data.class');
-            $dataRepository = $this->get('doctrine')->getRepository($dataClass);
-            $data = $dataRepository->find($request->query->get('dataId'));
+            $data = $this->get(DataRepository::class)->find($request->query->get('dataId'));
         }
 
         return $data;

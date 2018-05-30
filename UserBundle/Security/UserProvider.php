@@ -11,7 +11,8 @@
 namespace CleverAge\EAVManager\UserBundle\Security;
 
 use CleverAge\EAVManager\UserBundle\Entity\User;
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -25,8 +26,8 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  */
 class UserProvider implements UserProviderInterface
 {
-    /** @var Registry */
-    protected $doctrine;
+    /** @var EntityManagerInterface */
+    protected $entityManager;
 
     /** @var string */
     protected $userClass;
@@ -35,13 +36,13 @@ class UserProvider implements UserProviderInterface
     protected $allowEmailAsUsername;
 
     /**
-     * @param Registry $doctrine
-     * @param string   $userClass
-     * @param bool     $allowEmailAsUsername
+     * @param ManagerRegistry $doctrine
+     * @param string          $userClass
+     * @param bool            $allowEmailAsUsername
      */
-    public function __construct(Registry $doctrine, $userClass = User::class, $allowEmailAsUsername = true)
+    public function __construct(ManagerRegistry $doctrine, $userClass = User::class, $allowEmailAsUsername = true)
     {
-        $this->doctrine = $doctrine;
+        $this->entityManager = $doctrine->getManagerForClass($userClass);
         $this->userClass = $userClass;
         $this->allowEmailAsUsername = $allowEmailAsUsername;
     }
@@ -108,6 +109,8 @@ class UserProvider implements UserProviderInterface
      */
     protected function getRepository()
     {
-        return $this->doctrine->getRepository($this->userClass);
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
+
+        return $this->entityManager->getRepository($this->userClass);
     }
 }

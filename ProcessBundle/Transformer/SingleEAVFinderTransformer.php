@@ -11,7 +11,6 @@
 namespace CleverAge\EAVManager\ProcessBundle\Transformer;
 
 use CleverAge\ProcessBundle\Transformer\ConfigurableTransformerInterface;
-use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Sidus\EAVModelBundle\Entity\DataRepository;
@@ -27,19 +26,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class SingleEAVFinderTransformer implements ConfigurableTransformerInterface
 {
-    /** @var Registry */
-    protected $doctrine;
+    /** @var EntityManagerInterface */
+    protected $entityManager;
 
     /** @var FamilyRegistry */
     protected $familyRegistry;
 
     /**
-     * @param Registry       $doctrine
-     * @param FamilyRegistry $familyRegistry
+     * @param EntityManagerInterface $entityManager
+     * @param FamilyRegistry         $familyRegistry
      */
-    public function __construct(Registry $doctrine, FamilyRegistry $familyRegistry)
+    public function __construct(EntityManagerInterface $entityManager, FamilyRegistry $familyRegistry)
     {
-        $this->doctrine = $doctrine;
+        $this->entityManager = $entityManager;
         $this->familyRegistry = $familyRegistry;
     }
 
@@ -77,12 +76,10 @@ class SingleEAVFinderTransformer implements ConfigurableTransformerInterface
         $resolver->setAllowedTypes('family', ['string', FamilyInterface::class]);
         $resolver->setDefaults(
             [
-                'entity_manager' => null,
                 'repository' => null,
                 'ignore_missing' => true,
             ]
         );
-        $resolver->setAllowedTypes('entity_manager', ['NULL', 'string', EntityManagerInterface::class]);
         $resolver->setAllowedTypes('repository', ['NULL', DataRepository::class]);
         $resolver->setAllowedTypes('ignore_missing', ['bool']);
 
@@ -106,7 +103,7 @@ class SingleEAVFinderTransformer implements ConfigurableTransformerInterface
                 /** @var FamilyInterface $family */
                 $family = $options['family'];
 
-                return $this->doctrine->getManager($options['entity_manager'])->getRepository($family->getDataClass());
+                return $this->entityManager->getRepository($family->getDataClass());
             }
         );
     }
@@ -149,7 +146,9 @@ class SingleEAVFinderTransformer implements ConfigurableTransformerInterface
             if (\is_array($attributeValue)) {
                 $queryParts[] = $eavQb->a($attributeCode)->in($attributeValue);
             } else {
-                if (null !== $attributeValue && $attributeValue === $family->getAttribute($attributeCode)->getDefault()) {
+                if (null !== $attributeValue
+                    && $attributeValue === $family->getAttribute($attributeCode)->getDefault()
+                ) {
                     $queryParts[] = $eavQb->getOr(
                         [
                             $eavQb->a($attributeCode)->equals($attributeValue),

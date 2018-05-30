@@ -1,6 +1,6 @@
 services:
-    eavmanager.twig.context.extension:
-        class: CleverAge\EAVManager\EAVModelBundle\Twig\EAVContextExtension
-        arguments: ['@sidus_eav_model.context.manager']
+    CleverAge\EAVManager\EAVModelBundle\Twig\EAVContextExtension:
+        public: false
+        autowire: true
         tags:
             - { name: twig.extension }

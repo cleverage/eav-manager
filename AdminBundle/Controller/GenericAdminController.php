@@ -12,6 +12,7 @@ namespace CleverAge\EAVManager\AdminBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Sidus\EAVModelBundle\Doctrine\IntegrityConstraintManager;
 
 /**
  * Generic admin controller for non-EAV data.
@@ -107,7 +108,7 @@ class GenericAdminController extends AbstractAdminController
     public function deleteAction(Request $request)
     {
         $data = $this->getDataFromRequest($request);
-        $constrainedEntities = $this->get('sidus_eav_model.integrity_constraint_manager')->getEntityConstraints($data);
+        $constrainedEntities = $this->get(IntegrityConstraintManager::class)->getEntityConstraints($data);
 
         $builder = $this->createFormBuilder(null, $this->getDefaultFormOptions($request, $data->getId()));
         $form = $builder->getForm();

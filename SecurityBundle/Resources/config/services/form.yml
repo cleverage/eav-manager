@@ -1,13 +1,13 @@
 services:
-    eavmanager_security.form.role_hierarchy.type:
-        class: CleverAge\EAVManager\SecurityBundle\Form\Type\RoleHierarchyType
-        arguments: ['@security.role_hierarchy']
+    CleverAge\EAVManager\SecurityBundle\Form\Type\RoleHierarchyType:
+        public: false
+        arguments:
+            - '@security.role_hierarchy'
         tags:
             - { name: form.type }
 
-    eavmanager_security.form.family_permission.type:
-        class: CleverAge\EAVManager\SecurityBundle\Form\Type\FamilyPermissionType
-        arguments:
-            - '@sidus_eav_model.family.registry'
+    CleverAge\EAVManager\SecurityBundle\Form\Type\FamilyPermissionType:
+        public: false
+        autowire: true
         tags:
             - { name: form.type }

@@ -1,0 +1,6 @@
+services:
+    eavmanager_user.user.manager:
+        alias: CleverAge\EAVManager\UserBundle\Domain\Manager\UserManagerInterface
+
+    eavmanager_user.user.provider:
+        alias: CleverAge\EAVManager\UserBundle\Security\UserProvider

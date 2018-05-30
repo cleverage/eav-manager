@@ -1,6 +1,6 @@
 services:
-    eavmanager_asset.doctrine.subscriber:
-        class: CleverAge\EAVManager\AssetBundle\Event\AssetSubscriber
+    CleverAge\EAVManager\AssetBundle\Event\AssetSubscriber:
+        public: false
         arguments:
             - '%sidus_eav_model.entity.data.class%'
         tags:

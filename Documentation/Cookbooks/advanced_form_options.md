@@ -1,0 +1,4 @@
+MopaBootstrapBundle
+allow_edit/add
+disabled
+embed/embed_multi_family

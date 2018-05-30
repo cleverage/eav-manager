@@ -1,8 +1,4 @@
 services:
-    eavmanager_user.mailer.user:
-        class: CleverAge\EAVManager\UserBundle\Mailer\UserMailer
-        arguments:
-            - '@mailer'
-            - '@twig'
-            - '@translator'
-            - '@eavmanager_user.config.holder'
+    CleverAge\EAVManager\UserBundle\Mailer\UserMailer:
+        public: false
+        autowire: true

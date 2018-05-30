@@ -1,4 +1,5 @@
 services:
-    sidus_admin.entity.matcher:
+    Sidus\AdminBundle\Entity\AdminEntityMatcher:
         class: CleverAge\EAVManager\AdminBundle\Entity\AdminEntityMatcher
-        arguments: ['@sidus_admin.configuration.admin.handler']
+        autowire: true
+        public: false

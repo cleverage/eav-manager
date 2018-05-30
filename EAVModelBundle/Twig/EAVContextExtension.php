@@ -16,6 +16,10 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Twig_Extension;
 
 /**
+ * @deprecated ContextManagerInterface does not declare the getContextForm method (anymore)
+ *
+ * @todo refactor with a different service
+ *
  * Display context form in twig templates.
  *
  * @author Vincent Chalnot <vchalnot@clever-age.com>

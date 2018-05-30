@@ -4,7 +4,7 @@ services:
         decorates: api_platform.metadata.property.name_collection_factory
         arguments:
             - '@eavmanager_api_platform.metadata.property.name_collection_factory.inner'
-            - '@sidus_eav_model.family.registry'
+            - '@Sidus\EAVModelBundle\Registry\FamilyRegistry'
             - '%sidus_eav_model.normalizer.data.ignored_attributes%'
 
     eavmanager_api_platform.metadata.property.metadata_factory:

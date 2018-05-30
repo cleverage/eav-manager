@@ -1,24 +1,17 @@
 services:
-    eav_manager_process.transformer.unique_eav_finder:
-        class: CleverAge\EAVManager\ProcessBundle\Transformer\UniqueEAVFinderTransformer
-        arguments:
-            - '@doctrine'
-            - '@sidus_eav_model.family.registry'
+    CleverAge\EAVManager\ProcessBundle\Transformer\UniqueEAVFinderTransformer:
+        autowire: true
         tags:
             - { name: cleverage.transformer }
 
-    eav_manager_process.transformer.single_eav_finder:
-        class: CleverAge\EAVManager\ProcessBundle\Transformer\SingleEAVFinderTransformer
+    CleverAge\EAVManager\ProcessBundle\Transformer\SingleEAVFinderTransformer:
         arguments:
-            - '@doctrine'
-            - '@sidus_eav_model.family.registry'
+            - '@sidus_eav_model.entity_manager'
+            - '@Sidus\EAVModelBundle\Registry\FamilyRegistry'
         tags:
             - { name: cleverage.transformer }
 
-    eav_manager_process.transformer.resource_to_asset:
-        class: CleverAge\EAVManager\ProcessBundle\Transformer\ResourceToAssetTransformer
-        arguments:
-            - '@doctrine'
-            - '@sidus_eav_model.family.registry'
+    CleverAge\EAVManager\ProcessBundle\Transformer\ResourceToAssetTransformer:
+        autowire: true
         tags:
             - { name: cleverage.transformer }

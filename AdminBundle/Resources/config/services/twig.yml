@@ -1,5 +1,5 @@
 services:
-    eav_manager.twig.extension.admin:
-        class: CleverAge\EAVManager\AdminBundle\Twig\AdminExtension
+    CleverAge\EAVManager\AdminBundle\Twig\AdminExtension:
+        public: false
         tags:
             - { name: twig.extension }

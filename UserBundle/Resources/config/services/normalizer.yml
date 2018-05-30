@@ -8,12 +8,11 @@ parameters:
         - combinedFamilyPermissions
 
 services:
-    eavmanager_user.normalizer.user:
+    CleverAge\EAVManager\UserBundle\Serializer\Normalizer\UserNormalizer:
         parent: serializer.normalizer.object
-        class: CleverAge\EAVManager\UserBundle\Serializer\Normalizer\UserNormalizer
         arguments:
-            - '@sidus_eav_model.serializer.handler.max_depth'
-            - '@sidus_eav_model.serializer.handler.by_reference'
+            - '@Sidus\EAVModelBundle\Serializer\MaxDepthHandler'
+            - '@Sidus\EAVModelBundle\Serializer\ByReferenceHandler'
         calls:
             - [setIgnoredAttributes, ['%eavmanager_user.normalizer.user.ignored_attributes%']]
         tags:
@@ -22,7 +21,7 @@ services:
     eavmanager_user.normalizer.user.flat:
         class: Sidus\EAVModelBundle\Serializer\Normalizer\Flat\FlatNormalizer
         arguments:
-            - '@eavmanager_user.normalizer.user'
+            - '@CleverAge\EAVManager\UserBundle\Serializer\Normalizer\UserNormalizer'
             - [csv]
         tags:
             - { name: serializer.normalizer, priority: 1 }

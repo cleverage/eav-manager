@@ -3,7 +3,7 @@ services:
         class: CleverAge\EAVManager\ApiPlatformBundle\DataProvider\FamilyDataProvider
         public: false
         arguments:
-            - '@sidus_eav_model.family.registry'
+            - '@Sidus\EAVModelBundle\Registry\FamilyRegistry'
         tags:
             -  { name: api_platform.collection_data_provider, priority: 2 }
             -  { name: api_platform.item_data_provider, priority: 2 }

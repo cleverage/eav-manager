@@ -1,11 +1,12 @@
 services:
-    sidus_eav_model.normalizer.data:
-        parent: serializer.normalizer.object
+    Sidus\EAVModelBundle\Serializer\Normalizer\EAVDataNormalizer:
         class: CleverAge\EAVManager\ApiPlatformBundle\Serializer\Normalizer\EAVDataNormalizer
+        parent: serializer.normalizer.object
+        public: false
         arguments:
-            - '@sidus_eav_model.serializer.handler.max_depth'
-            - '@sidus_eav_model.serializer.handler.circular_reference'
-            - '@sidus_eav_model.serializer.handler.by_reference'
+            - '@Sidus\EAVModelBundle\Serializer\MaxDepthHandler'
+            - '@Sidus\EAVModelBundle\Serializer\CircularReferenceHandler'
+            - '@Sidus\EAVModelBundle\Serializer\ByReferenceHandler'
         calls:
             - [setIgnoredAttributes, ['%sidus_eav_model.normalizer.data.ignored_attributes%']]
             - [setReferenceAttributes, ['%sidus_eav_model.normalizer.data.reference_attributes%']]
@@ -13,19 +14,19 @@ services:
         tags:
             - { name: serializer.normalizer }
 
-    eavmanager_api_platform.normalizer.base.data:
-        class: CleverAge\EAVManager\ApiPlatformBundle\Serializer\Normalizer\BaseApiNormalizer
+    CleverAge\EAVManager\ApiPlatformBundle\Serializer\Normalizer\BaseApiNormalizer:
         parent: api_platform.serializer.normalizer.item
+        public: false
         calls:
-            - [setNormalizer, ['@sidus_eav_model.normalizer.data']]
+            - [setNormalizer, ['@Sidus\EAVModelBundle\Serializer\Normalizer\EAVDataNormalizer']]
         tags:
             - { name: serializer.normalizer, priority: 1 }
 
     # JsonLD Support
-    eavmanager_api_platform.normalizer.json_ld.data:
-        class: CleverAge\EAVManager\ApiPlatformBundle\Serializer\Normalizer\JsonLdApiNormalizer
+    CleverAge\EAVManager\ApiPlatformBundle\Serializer\Normalizer\JsonLdApiNormalizer:
         parent: api_platform.jsonld.normalizer.item
+        public: false
         calls:
-            - [setNormalizer, ['@sidus_eav_model.normalizer.data']]
+            - [setNormalizer, ['@Sidus\EAVModelBundle\Serializer\Normalizer\EAVDataNormalizer']]
         tags:
             - { name: serializer.normalizer, priority: 9 }

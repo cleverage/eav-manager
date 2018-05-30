@@ -1,5 +1,5 @@
 services:
-    eavmanager_asset.form.media_browser.type:
-        class: CleverAge\EAVManager\AssetBundle\Form\Type\MediaBrowserType
+    CleverAge\EAVManager\AssetBundle\Form\Type\MediaBrowserType:
+        public: false
         tags:
             - { name: form.type }

@@ -3,7 +3,7 @@ services:
         class: CleverAge\EAVManager\ApiPlatformBundle\Serializer\Normalizer\BaseApiNormalizer
         parent: api_platform.serializer.normalizer.item
         calls:
-            - [setNormalizer, ['@sidus_eav_model.normalizer.attribute']]
+            - [setNormalizer, ['@Sidus\EAVModelBundle\Serializer\Normalizer\AttributeNormalizer']]
         tags:
             - { name: serializer.normalizer, priority: 1 }
 
@@ -12,6 +12,6 @@ services:
         class: CleverAge\EAVManager\ApiPlatformBundle\Serializer\Normalizer\JsonLdApiNormalizer
         parent: api_platform.jsonld.normalizer.item
         calls:
-            - [setNormalizer, ['@sidus_eav_model.normalizer.attribute']]
+            - [setNormalizer, ['@Sidus\EAVModelBundle\Serializer\Normalizer\AttributeNormalizer']]
         tags:
             - { name: serializer.normalizer, priority: 9 }

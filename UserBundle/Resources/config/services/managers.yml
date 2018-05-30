@@ -1,10 +1,10 @@
 services:
-    eavmanager_user.user.manager:
+    CleverAge\EAVManager\UserBundle\Domain\Manager\UserManagerInterface:
         class: CleverAge\EAVManager\UserBundle\Infrastructure\Manager\UserManager
         arguments:
-            - '@eavmanager_user.user.provider'
-            - '@security.password_encoder'
-            - '@doctrine'
-            - '@validator'
-            - '@eavmanager_user.mailer.user'
-            - '@logger'
+            - '@CleverAge\EAVManager\UserBundle\Security\UserProvider'
+            - '@Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface'
+            - '@Doctrine\Common\Persistence\ManagerRegistry'
+            - '@Symfony\Component\Validator\Validator\ValidatorInterface'
+            - '@CleverAge\EAVManager\UserBundle\Mailer\UserMailer'
+            - '@Psr\Log\LoggerInterface'

@@ -25,7 +25,7 @@ class DashboardController extends Controller
     use BaseControllerTrait;
 
     /**
-     * @Template()
+     * @Template("@CleverAgeEAVManagerLayout/Dashboard/dashboard.html.twig")
      *
      * @param Request $request
      *

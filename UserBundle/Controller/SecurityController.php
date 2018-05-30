@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use CleverAge\EAVManager\UserBundle\Configuration\Configuration;
 
 /**
  * Handles authentication and lost password as well as password creation
@@ -28,7 +29,7 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 class SecurityController extends Controller
 {
     /**
-     * @Template()
+     * @Template("@CleverAgeEAVManagerUser/Security/login.html.twig")
      *
      * @Route("/login", name="login")
      *
@@ -39,7 +40,7 @@ class SecurityController extends Controller
     public function loginAction()
     {
         if ($this->getUser()) {
-            return $this->redirectToRoute($this->get('eavmanager_user.config.holder')->getHomeRoute());
+            return $this->redirectToRoute($this->get(Configuration::class)->getHomeRoute());
         }
         $authenticationUtils = $this->get('security.authentication_utils');
 
@@ -56,7 +57,7 @@ class SecurityController extends Controller
     }
 
     /**
-     * @Template()
+     * @Template("@CleverAgeEAVManagerUser/Security/lostPassword.html.twig")
      *
      * @Route("/login/lost-password", name="lost_password")
      *
@@ -69,7 +70,7 @@ class SecurityController extends Controller
     public function lostPasswordAction(Request $request)
     {
         if ($this->getUser()) {
-            return $this->redirectToRoute($this->get('eavmanager_user.config.holder')->getHomeRoute());
+            return $this->redirectToRoute($this->get(Configuration::class)->getHomeRoute());
         }
         $form = $this->createForm(
             LostUserPasswordType::class,
@@ -112,7 +113,7 @@ class SecurityController extends Controller
     }
 
     /**
-     * @Template()
+     * @Template("@CleverAgeEAVManagerUser/Security/resetPassword.html.twig")
      *
      * @Route("/login/reset-password", name="reset_password")
      *
@@ -125,7 +126,7 @@ class SecurityController extends Controller
     public function resetPasswordAction(Request $request)
     {
         if ($this->getUser()) {
-            return $this->redirectToRoute($this->get('eavmanager_user.config.holder')->getHomeRoute());
+            return $this->redirectToRoute($this->get(Configuration::class)->getHomeRoute());
         }
         $token = $request->query->get('token');
         if (!$token) {
@@ -158,7 +159,7 @@ class SecurityController extends Controller
             $tokenStorage = $this->get('security.token_storage');
             $tokenStorage->setToken($token);
 
-            return $this->redirectToRoute($this->get('eavmanager_user.config.holder')->getHomeRoute());
+            return $this->redirectToRoute($this->get(Configuration::class)->getHomeRoute());
         }
 
         return [

@@ -36,7 +36,9 @@ class EAVKernelBundleLoader
             new \Oneup\FlysystemBundle\OneupFlysystemBundle(),
 
             // Sidus bundles
-            //  Base bundle for EAV model
+            // Base bundle containing many dependencies
+            new \Sidus\BaseBundle\SidusBaseBundle(),
+            // Base bundle for EAV model
             new \Sidus\EAVModelBundle\SidusEAVModelBundle(),
             // Data filtering based on user input
             new \Sidus\FilterBundle\SidusFilterBundle(),

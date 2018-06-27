@@ -34,8 +34,11 @@ abstract class AbstractEAVQueryTask extends AbstractEAVTask
      * @param FamilyRegistry         $familyRegistry
      * @param EAVFinder              $eavFinder
      */
-    public function __construct(EntityManagerInterface $entityManager, FamilyRegistry $familyRegistry, EAVFinder $eavFinder)
-    {
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        FamilyRegistry $familyRegistry,
+        EAVFinder $eavFinder
+    ) {
         parent::__construct($entityManager, $familyRegistry);
         $this->eavFinder = $eavFinder;
     }

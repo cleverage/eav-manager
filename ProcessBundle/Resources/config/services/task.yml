@@ -2,9 +2,12 @@ services:
     CleverAge\EAVManager\ProcessBundle\Task\EAVReaderTask:
         shared: false
         arguments:
+            - '@logger'
             - '@sidus_eav_model.entity_manager'
             - '@Sidus\EAVModelBundle\Registry\FamilyRegistry'
             - '@Sidus\EAVModelBundle\Doctrine\EAVFinder'
+        tags:
+            - { name: monolog.logger, channel: cleverage_process }
 
     CleverAge\EAVManager\ProcessBundle\Task\EAVCriteriaReaderTask:
         parent: CleverAge\EAVManager\ProcessBundle\Task\EAVReaderTask

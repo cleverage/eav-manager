@@ -66,8 +66,7 @@ class EAVReaderTask extends AbstractEAVQueryTask implements IterableTaskInterfac
     {
         $options = $this->getOptions($state);
         if ($this->closed) {
-            $logContext = $state->getLogContext();
-            $logContext['options'] = $options;
+            $logContext = $this->getLogContext($state);
             if ($options['allow_reset']) {
                 $this->closed = false;
                 $this->iterator = null;
@@ -87,8 +86,7 @@ class EAVReaderTask extends AbstractEAVQueryTask implements IterableTaskInterfac
             // Log the data count
             if ($this->getOption($state, 'log_count')) {
                 $count = \count($paginator);
-                $logContext = $state->getLogContext();
-                $logContext['options'] = $options;
+                $logContext = $this->getLogContext($state);
                 $this->logger->info("{$count} items found with current query", $logContext);
             }
         }
@@ -96,8 +94,7 @@ class EAVReaderTask extends AbstractEAVQueryTask implements IterableTaskInterfac
         // Handle empty results
         if (0 === $this->iterator->count()) {
             if ($this->getOption($state, 'log_count')) {
-                $logContext = $state->getLogContext();
-                $logContext['options'] = $options;
+                $logContext = $this->getLogContext($state);
                 $this->logger->notice('Empty resultset for query, stopping the process', $logContext);
             }
             $state->setStopped(true);
@@ -147,5 +144,25 @@ class EAVReaderTask extends AbstractEAVQueryTask implements IterableTaskInterfac
                 'log_count' => false,   // Log in state history the result count
             ]
         );
+    }
+
+    /**
+     * @param \CleverAge\ProcessBundle\Model\ProcessState $state
+     * @return array
+     * @throws \Symfony\Component\OptionsResolver\Exception\ExceptionInterface
+     */
+    protected function getLogContext(ProcessState $state)
+    {
+        $logContext = $state->getLogContext();
+        $options = $this->getOptions($state);
+        if (array_key_exists('family', $options)) {
+            $options['family'] = $options['family']->getCode();
+        }
+        if (array_key_exists('repository', $options)) {
+            $options['repository'] = \get_class($options['repository']);
+        }
+        $logContext['options'] = $options;
+
+        return $logContext;
     }
 }

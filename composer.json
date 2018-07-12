@@ -31,7 +31,7 @@
     },
     "require": {
         "php": ">=7.1",
-        "symfony/symfony": ">=3.3",
+        "symfony/symfony": "^3.3",
         "liip/imagine-bundle": "^1.7",
         "exercise/htmlpurifier-bundle": "0.2.*",
         "thomaspark/bootswatch": "^3.3.7",
@@ -43,6 +43,6 @@
         "sidus/datagrid-bundle": "dev-v1.3-dev",
         "sidus/file-upload-bundle": "dev-v1.2.x-dev",
         "sidus/admin-bundle": "dev-v1.3-dev",
-        "cleverage/process-bundle": "dev-v1.1-dev"
+        "cleverage/process-bundle": "dev-v1.2-dev"
     }
 }

@@ -4,8 +4,12 @@
     {# @var image \CleverAge\EAVManager\AssetBundle\Entity\Image #}
     {% if data %}
         {% set image = data %}
-        <img src="{{ image.path | imagine_filter('thumbnail') }}"
-             class="pull-right img-thumbnail" {{ image_size_attrs(image, 'thumbnail') }}>
+        <a href="{{ image.path | imagine_filter('large') }}" target="_blank" data-toggle="lightbox"
+           title="{{ image }}"
+           data-original-uri="{{ path('sidus_file_upload.file.download', {type: image.type, identifier: image.identifier}) }}">
+            <img src="{{ image.path | imagine_filter('thumbnail') }}"
+                 class="pull-right img-thumbnail" {{ image_size_attrs(image, 'thumbnail') }}>
+        </a>
     {% endif %}
     <div class="well well-sm pull-left">
         {{ block('sidus_resource_widget') }}
@@ -58,7 +62,8 @@
                id="{{ id }}" {% if value is defined and value %} value="{{ value }}"{% endif %}>
         {% if disabled %}
             <div class="pull-left btn-group-vertical">
-                <span class="btn btn-default disabled" title="{{ 'admin.media.select.disabled' | trans }}">
+                <span class="btn btn-default disabled"
+                      title="{{ 'admin.media.select.disabled' | trans | escape('html_attr') }}">
                     <i class="fa fa-image"></i> {{ 'admin.media.select.disabled' | trans }}
                 </span>
             </div>
@@ -67,8 +72,10 @@
                 {% for family in allowed_families %}
                     {% set title = 'admin.media.select.label' | trans({'%family%': family.label}) %}
                     <a data-href="{{ admin_path('media_browser', 'list', {familyCode: family.code}) }}"
-                       type="button" class="btn btn-primary" title="{{ title }}" data-auto-modal="{{ target }}"
-                       data-media-input-id="{{ id }}" data-target-element="#{{ target }}">
+                       type="button" class="btn btn-primary" title="{{ title }}"
+                       data-auto-modal="{{ target }}"
+                       data-media-input-id="{{ id }}"
+                       data-target-element="#{{ target }}">
                         <i class="fa fa-image"></i> {{ title }}
                     </a>
                 {% endfor %}
@@ -119,7 +126,8 @@
             <li>
                 <a href="{{ admin_path(admin, action, {familyCode: family.code}) }}"
                    data-target-element="#{{ target }}"
-                   data-auto-modal="{{ target }}" data-input-id="{{ id }}">
+                   data-auto-modal="{{ target }}"
+                   data-input-id="{{ id }}">
                     {{ family }}
                 </a>
             </li>
@@ -134,8 +142,11 @@
             {% if allow_edit %}
                 {#<!--suppress HtmlUnknownAnchorTarget -->#}
                 <a href="{{ admin_path(admin, 'editInline', {id: '__ID__'}) }}"
-                   class="input-group-addon btn disabled" data-target-element="#{{ target }}"
-                   data-auto-modal="{{ target }}" data-input-id="{{ id }}" data-edit-in-place="{{ admin }}">
+                   class="input-group-addon btn disabled"
+                   data-target-element="#{{ target }}"
+                   data-auto-modal="{{ target }}"
+                   data-input-id="{{ id }}"
+                   data-edit-in-place="{{ admin }}">
                     <i class="fa fa-edit"></i> {{ 'admin.action.edit.label'|trans }}
                 </a>
             {% endif %}
@@ -143,8 +154,10 @@
                 {% if allowed_families|length == 1 %}
                     {% set family = allowed_families|first %}
                     <a href="{{ admin_path(admin, action, {familyCode: family.code}) }}"
-                       class="input-group-addon btn" data-target-element="#{{ target }}"
-                       data-auto-modal="{{ target }}" data-input-id="{{ id }}">
+                       class="input-group-addon btn"
+                       data-target-element="#{{ target }}"
+                       data-auto-modal="{{ target }}"
+                       data-input-id="{{ id }}">
                         <i class="fa fa-plus"></i> Create
                     </a>
                 {% else %}
@@ -167,14 +180,16 @@
     {% set autoloadTargetId = id ~ '_embed_target' %}
     {% set class = 'autoload no-navigation embed-multi-family-item' %}
     {% if data %}
-        <div class="{{ class }}" data-target-element="#{{ autoloadTargetId }}" id="{{ autoloadTargetId }}"
+        <div class="{{ class }}" id="{{ autoloadTargetId }}"
+             data-target-element="#{{ autoloadTargetId }}"
              data-href="{{ admin_entity_path(admin, data, 'preview', {inputId: id, disabled: disabled}) }}"
              data-autoload="1">
             {{ data }}
             <div class="tg-loading">&nbsp;</div>
         </div>
     {% elseif not disabled %}
-        <div class="{{ class }}" data-target-element="#{{ autoloadTargetId }}" id="{{ autoloadTargetId }}"
+        <div class="{{ class }}" id="{{ autoloadTargetId }}"
+             data-target-element="#{{ autoloadTargetId }}"
              data-autoload-url="{{ admin_path(admin, 'preview', {id: '__ID__', inputId: id}) }}"
              data-autoload="__PLACEHOLDER__">
             <div class="dropdown input-group">

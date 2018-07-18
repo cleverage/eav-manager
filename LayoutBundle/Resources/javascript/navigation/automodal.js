@@ -16,7 +16,7 @@
 
     function resolveCurrentModal() {
         var t = $(this);
-        if (t.data('target-element') == '_CURRENT_MODAL') {
+        if (t.data('target-element') === '_CURRENT_MODAL') {
             var currentModal = t.closest('.modal');
             if (currentModal.length && currentModal.attr('id')) {
                 t.data('target-element', '#' + currentModal.attr('id'));

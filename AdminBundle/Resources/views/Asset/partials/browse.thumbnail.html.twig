@@ -1,7 +1,10 @@
 {% spaceless %}
     {% if result.get(column.propertyPath) %}
         {% set image = result.get(column.propertyPath) %}
-        <img src="{{ image.path | imagine_filter('tiny') }}"
-             class="img-thumbnail" {{ image_size_attrs(image, 'tiny') }}>
+        <a href="{{ image.path | imagine_filter('large') }}" data-toggle="lightbox" title="{{ result }}"
+           data-original-uri="{{ path('sidus_file_upload.file.download', {type: image.type, identifier: image.identifier}) }}">
+            <img src="{{ image.path | imagine_filter('tiny') }}"
+                 class="img-thumbnail" {{ image_size_attrs(image, 'tiny') }}>
+        </a>
     {% endif %}
 {% endspaceless %}

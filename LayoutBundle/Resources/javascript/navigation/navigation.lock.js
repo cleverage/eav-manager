@@ -67,7 +67,7 @@ function callback_tinymce_init(editor) {
  * @returns {boolean}
  */
 function checkOnBeforeLoad(e, tg) {
-    if (typeof window.onbeforeunload == 'function') {
+    if (typeof window.onbeforeunload === 'function') {
         var val = window.onbeforeunload({target: tg});
         if (val) {
             if (!confirm(val)) {

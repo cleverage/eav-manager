@@ -17,11 +17,15 @@
             {% set target = inputId ~ '_modal' %}
             <div class="clear pull-right">
                 <a href="{{ admin_entity_path(admin, data, 'edit') }}" class="btn btn-primary"
-                   data-target-element="#{{ target }}" data-auto-modal="{{ target }}" data-input-id="{{ inputId }}">
+                   data-target-element="#{{ target }}"
+                   data-auto-modal="{{ target }}"
+                   data-input-id="{{ inputId }}">
                     <i class="fa fa-edit"></i> {{ 'admin.action.edit.label'|trans }}
                 </a>
                 <a href="{{ admin_entity_path(admin, data, 'delete') }}" class="btn btn-danger"
-                   data-target-element="#{{ target }}" data-auto-modal="{{ target }}" data-input-id="{{ inputId }}">
+                   data-target-element="#{{ target }}"
+                   data-auto-modal="{{ target }}"
+                   data-input-id="{{ inputId }}">
                     <i class="fa fa-trash"></i> {{ 'admin.action.delete.label'|trans }}
                 </a>
             </div>

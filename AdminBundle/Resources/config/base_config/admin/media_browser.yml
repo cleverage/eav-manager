@@ -16,6 +16,7 @@ sidus_admin:
                 edit:
                     path:     /{familyCode}/edit/{id}
                     form_type: '%eav_form.type%'
+                    template: '@CleverAgeEAVManagerAdmin/Asset/edit.html.twig'
                 delete:
                     path:     /{familyCode}/delete/{id}
             options:

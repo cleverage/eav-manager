@@ -5,7 +5,7 @@
      * Bind global events on a given element, used by ajax navigation and bootstrap collection
      */
     $(document).on('global.event', function (e) {
-        if (e.target != document) {
+        if (e.target !== document) {
             // Autocomplete
             initAutocompleteSelector($, e.target);
             // Sidus combo data selector (family + autocomplete)

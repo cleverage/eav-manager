@@ -20,7 +20,7 @@
             history.replaceState(previousState, previousTitle, previousUrl);
         }
 
-        if ($tg.attr('id') == 'tg_right') {
+        if ($tg.attr('id') === 'tg_right') {
             $(document.body).removeClass('tg-right-expanded');
         }
     }

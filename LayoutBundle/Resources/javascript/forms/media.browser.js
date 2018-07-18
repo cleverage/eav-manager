@@ -3,10 +3,24 @@
 !function ($) {
     "use strict"; // jshint ;_;
 
+    /**
+     * Fetch media widget associated to target
+     *
+     * @param target
+     *
+     * @returns {*}
+     */
     function getMediaWidget(target) {
         return target.parents('.media-browser').first();
     }
 
+    /**
+     * Select media and append preview to widget
+     *
+     * @param target
+     * @param mediaId
+     * @param imageHtml
+     */
     function selectMedia(target, mediaId, imageHtml) {
         var b = getMediaWidget(target);
         b.find('input[type="hidden"]').val(mediaId);
@@ -15,6 +29,7 @@
 
     /**
      * Detach media from form input
+     *
      * @param target
      */
     function detachMedia(target) {
@@ -24,7 +39,7 @@
     }
 
     /**
-     * Binds all required events when adding an element to a bootstrap collection
+     * Detach media in widget
      */
     $(document).on('click', '.media-detach', function (e) {
         detachMedia($(this));
@@ -34,7 +49,7 @@
     });
 
     /**
-     * Binds all required events when adding an element to a bootstrap collection
+     * Select a media in widget
      */
     $(document).on('click', '.media-select', function (e) {
         var t = $(this);

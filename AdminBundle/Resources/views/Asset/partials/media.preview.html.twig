@@ -2,16 +2,17 @@
     {% if result.family.hasAttribute('imageFile') and result.imageFile %}
         {# @var image \CleverAge\EAVManager\AssetBundle\Entity\Image #}
         {% set image = result.imageFile %}
-        <a href="{{ image | imagine_filter('large') }}" target="_blank">
-            <img src="{{ image | imagine_filter('thumbnail') }}"
+        <a href="{{ image.path | imagine_filter('large') }}" target="_blank" data-toggle="lightbox" title="{{ result }}"
+           data-original-uri="{{ path('sidus_file_upload.file.download', {type: image.type, identifier: image.identifier}) }}">
+            <img src="{{ image.path | imagine_filter('thumbnail') }}"
                  class="img-thumbnail pull-left" {{ image_size_attrs(image, 'thumbnail') }}>
         </a>
     {% elseif result.family.hasAttribute('documentFile') and result.documentFile %}
         {# @var document \CleverAge\EAVManager\AssetBundle\Entity\Document #}
         {% set document = result.documentFile %}
         <a href="{{ path('sidus_file_upload.file.download', {type: document.type, identifier: document.identifier}) }}"
-           target="_blank" class="btn btn-default">
-            <i class="fa fa-download"></i> {{ document.originalFileName }}
+           target="_blank" class="btn btn-default" title="{{ document.originalFileName }}">
+            <i class="fa fa-download"></i> {{ result ?: document.originalFileName }}
         </a>
     {% else %}
         <span class="text-muted">{{ 'warning.missing.asset'|trans }}</span>

@@ -3,10 +3,10 @@
 
     function addPlaceholder($col) {
         var $newElement = $col.find('[data-autoload]').filter(function () {
-            return $(this).data('autoload') == '__PLACEHOLDER__';
+            return $(this).data('autoload') === '__PLACEHOLDER__';
         });
         var $add = $col.closest('.embed-multi-family').find('a[data-addfield]').first().hide();
-        if ($newElement.length == 0) {
+        if ($newElement.length === 0) {
             $add.trigger('click');
         }
         if ($newElement.length > 1) {

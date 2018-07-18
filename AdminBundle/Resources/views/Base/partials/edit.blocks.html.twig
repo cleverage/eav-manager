@@ -128,21 +128,21 @@
            {% if not backAction %}data-close-target="{{ target }}"{% elseif isModal %}
             data-target-element="{{ target }}"{% endif %}>
             {% if backAction %}
-                {{ tryTrans([admin_trans_key ~ 'back.label', 'admin.action.back.label'], [], 'Back') }}
+                <i class="fa fa-arrow-left"></i> {{ tryTrans([admin_trans_key ~ 'back.label', 'admin.action.back.label'], [], 'Back') }}
             {% else %}
-                {{ tryTrans([admin_trans_key ~ 'close.label', 'admin.action.close.label'], [], 'Close') }}
+                <i class="fa fa-close"></i> {{ tryTrans([admin_trans_key ~ 'close.label', 'admin.action.close.label'], [], 'Close') }}
             {% endif %}
         </a>
     {% elseif isAjax %}
         <a href="#" data-close-target="{{ target }}" class="btn btn-default">
-            {{ tryTrans([admin_trans_key ~ 'close.label', 'admin.action.close.label'], [], 'Close') }}
+            <i class="fa fa-close"></i> {{ tryTrans([admin_trans_key ~ 'close.label', 'admin.action.close.label'], [], 'Close') }}
         </a>
     {% endif %}
 {% endblock %}
 
 {% block submit_button %}
     <button type="submit" class="btn btn-primary">
-        {{ tryTrans([admin_trans_key ~ 'submit.label', 'admin.action.submit.label'], [], 'Submit') }}
+        <i class="fa fa-save"></i> {{ tryTrans([admin_trans_key ~ 'submit.label', 'admin.action.submit.label'], [], 'Submit') }}
     </button>
 {% endblock %}
 

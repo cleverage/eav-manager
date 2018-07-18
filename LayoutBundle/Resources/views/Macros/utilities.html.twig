@@ -167,7 +167,7 @@ Displays a link button to an entity, checking permissions and with configurable 
                 'admin.action.'~actionName~'.label',
             ], {}, actionName) %}
         {% endif %}
-        <a href="{{ admin_entity_path(admin, entity, actionName) }}" title="{{ title|escape('html_attr') }}"
+        <a href="{{ admin_entity_path(admin, entity, actionName) }}" title="{{ title }}"
            class="{{ options.class is defined ? options.class : 'btn btn-default' }}"
                 {% if options.target is defined and options.target %}
             data-target-element="{{ options.target }}"

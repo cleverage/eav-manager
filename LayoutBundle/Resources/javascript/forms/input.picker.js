@@ -15,13 +15,13 @@
         }
 
         var $input = $('#' + $tg.data('input-id'));
-        if (0 == $input.length) {
+        if (0 === $input.length) {
             return;
         }
         if ($input.is('select')) {
             var $options = $input.find('option[value="' + e.detail.dataId + '"]');
             var $option;
-            if (0 == $options.length) {
+            if (0 === $options.length) {
                 $option = $('<option>', {value: e.detail.dataId});
                 $input.append($option);
             } else {

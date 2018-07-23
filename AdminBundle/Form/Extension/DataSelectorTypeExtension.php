@@ -43,7 +43,8 @@ class DataSelectorTypeExtension extends AbstractTypeExtension
         $view->vars['allow_edit'] = $options['allow_edit'];
         $view->vars['allowed_families'] = $options['allowed_families'];
         $view->vars['admin'] = $options['admin'];
-        $view->vars['action'] = $options['action'];
+        $view->vars['create_action'] = $options['create_action'];
+        $view->vars['edit_action'] = $options['edit_action'];
         $view->vars['target'] = $options['target'] ?: "tg_{$view->vars['id']}_modal";
     }
 
@@ -59,7 +60,8 @@ class DataSelectorTypeExtension extends AbstractTypeExtension
                 'allow_add' => false,
                 'allow_edit' => false,
                 'admin' => '_data',
-                'action' => 'create',
+                'edit_action' => 'editInline',
+                'create_action' => 'create',
                 'target' => null,
             ]
         );

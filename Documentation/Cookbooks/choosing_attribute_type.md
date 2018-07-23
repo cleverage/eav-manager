@@ -135,7 +135,7 @@ The ````allow_add```` and ````allow_edit```` form options will append buttons on
 when clicked will open a modal to dynamically create a new entity or edit the selected entity.
 
 ````yaml
-flags:
+relatedPost:
     type: data_selector
     options:
         allowed_families:
@@ -147,6 +147,18 @@ flags:
 
 It uses a simple ````<select>```` to display the available entities so if you have to many entities, you should consider
 using the [autocomplete_data_selector](#autocomplete-data-selector-autocomplete_data_selector) type instead.
+
+**Advanced usage**: You can override the default admin, actions and target of quick create/edit buttons:
+
+````yaml
+    form_options:
+        allow_add: true
+        allow_edit: true
+        admin: mycustomadmin # Default: _data
+        edit_action: customEdit # Default: editInline
+        create_action: customCreate # Default: create
+        target: my-custom-target # Default: null
+````
 
 #### Autocomplete Data Selector (autocomplete_data_selector)
 
@@ -198,10 +210,29 @@ data pointers.
 #### Embed Multi Family (embed_multi_family)
 
 This type will allow you to dynamically attach objects with different families to the same attribute. It's not a "real"
-embed as it uses modals to create and edit elements
+embed as it uses modals to create and edit elements because it's technically extremely difficult to submit a form with
+variable sub-form inside a specific form node.
+
+This is very similar to a multiple combo data selector with the ````allow_add```` and ````allow_edit```` form options
+but with a better preview of each element directly in the form.
+
+**Advanced usage**: The preview of each element can be overriden by specifying a dedicated admin with a ````preview````
+action in the form options.
 
 #### Media Browser (media_browser)
 
+This type is an advanced data picker, it's only meant to pick data from the ````Document```` or ````Image```` families
+but it can be used as an example to build custom data picker.
+
+The main feature of this data picker is that it allows you to browse the data of the target family in a separate
+datagrid displayed in a modal. It also allows you to create and edit data on the fly in the same modal.
+
 #### Document (document)
 
+This type allows you to create relationships with Document entities through an upload input. Upload mechanism uses a
+configuration maintained by both Sidus/FileUploadBundle and OneUp/UploaderBundle to describes where to put uploaded
+file using the Flysystem abstraction layer.
+
 #### Image (image)
+
+See document.

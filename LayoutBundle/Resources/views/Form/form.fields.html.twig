@@ -124,7 +124,7 @@
     <ul class="dropdown-menu">
         {% for family in allowed_families %}
             <li>
-                <a href="{{ admin_path(admin, action, {familyCode: family.code}) }}"
+                <a href="{{ admin_path(admin, create_action, {familyCode: family.code}) }}"
                    data-target-element="#{{ target }}"
                    data-auto-modal="{{ target }}"
                    data-input-id="{{ id }}">
@@ -141,7 +141,7 @@
             {{ form_widget(form) }}
             {% if allow_edit %}
                 {#<!--suppress HtmlUnknownAnchorTarget -->#}
-                <a href="{{ admin_path(admin, 'editInline', {id: '__ID__'}) }}"
+                <a href="{{ admin_path(admin, edit_action, {id: '__ID__'}) }}"
                    class="input-group-addon btn disabled"
                    data-target-element="#{{ target }}"
                    data-auto-modal="{{ target }}"
@@ -153,7 +153,7 @@
             {% if allow_add %}
                 {% if allowed_families|length == 1 %}
                     {% set family = allowed_families|first %}
-                    <a href="{{ admin_path(admin, action, {familyCode: family.code}) }}"
+                    <a href="{{ admin_path(admin, create_action, {familyCode: family.code}) }}"
                        class="input-group-addon btn"
                        data-target-element="#{{ target }}"
                        data-auto-modal="{{ target }}"

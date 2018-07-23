@@ -9,7 +9,7 @@
 {% endif %}
 
 {% block tg_center %}
-    <div class="well form">
+    <div class="well form form-read-only">
         <h6>{{ data.family }}</h6>
         {{ form_widget(form) }}
         {% set inputId = app.request.get('inputId') %}

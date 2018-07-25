@@ -4,8 +4,10 @@ uglifyjs --compress --mangle -o vendor/cleverage/eav-manager/LayoutBundle/Resour
 vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.js \
 vendor/twbs/bootstrap-sass/assets/javascripts/bootstrap.js \
 vendor/mopa/bootstrap-bundle/Mopa/Bundle/BootstrapBundle/Resources/public/js/mopabootstrap-subnav.js \
-vendor/mopa/bootstrap-bundle/Mopa/Bundle/BootstrapBundle/Resources/public/components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.js \
-vendor/mopa/bootstrap-bundle/Mopa/Bundle/BootstrapBundle/Resources/public/components/smalot-bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.fr.js \
+vendor/moment/moment/min/moment.min.js \
+vendor/moment/moment/locale/fr.js \
+vendor/sidus/eav-bootstrap-bundle/Resources/public/js/datetime.picker.js \
+vendor/eonasdan/bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js \
 vendor/blueimp/jquery-file-upload/js/jquery.fileupload.js \
 vendor/blueimp/jquery-file-upload/js/jquery.fileupload-jquery-ui.js \
 vendor/blueimp/jquery-file-upload/js/jquery.iframe-transport.js \

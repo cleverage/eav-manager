@@ -2,6 +2,8 @@ sidus_eav_model:
     collection_type: Sidus\EAVBootstrapBundle\Form\Type\BootstrapCollectionType
 
 mopa_bootstrap:
+    icons:
+        icon_set: fontawesome4
     form:
         render_required_asterisk: true
         render_optional_text: false

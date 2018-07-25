@@ -1,0 +1,2 @@
+sidus_data_grid:
+    default_template: '@CleverAgeEAVManagerAdmin/DataGrid/template.html.twig'

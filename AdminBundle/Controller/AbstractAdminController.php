@@ -141,6 +141,7 @@ abstract class AbstractAdminController extends BaseAdminController
         }
 
         $formOptions = parent::getDefaultFormOptions($request, $dataId, $action);
+        $formOptions['show_legend'] = false;
 
         if ($request->isXmlHttpRequest()) { // Target should not be used when not calling through Ajax
             $formOptions['attr']['data-target-element'] = $this->getTarget($request);

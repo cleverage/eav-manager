@@ -1,0 +1,26 @@
+{# @var datagrid \Sidus\DataGridBundle\Model\DataGrid #}
+{# @var viewParameters array #}
+{% extends '@SidusDataGrid/DataGrid/template.html.twig' %}
+
+{% block filters %}
+    <div class="actions-sticky">
+        <div class="actions-flex">
+            <div class="breadcrumb-wrapper">
+                <h4>
+                    {{ viewParameters.title is defined ? viewParameters.title : 'List' }}
+                </h4>
+            </div>
+            <div class="actions-wrapper">
+                <div>
+                    <div class="btn-group pull-right">
+                        {{ form_widget(datagrid.formView.filterResetButton) }}
+                        {{ form_widget(datagrid.formView.filterSubmitButton) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ parent() }}
+{% endblock %}
+
+{% block filters_actions %}{% endblock %}

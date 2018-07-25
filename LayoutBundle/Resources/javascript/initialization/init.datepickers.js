@@ -8,6 +8,7 @@
     function initDatePickers(target) {
         // Datetime pickers
         $(target).find('[data-provider="datepicker"]').datetimepicker({
+            fontAwesome: true,
             autoclose: true,
             format: 'dd/mm/yyyy',
             language: 'fr',
@@ -19,6 +20,7 @@
         });
 
         $(target).find('[data-provider="datetimepicker"]').datetimepicker({
+            fontAwesome: true,
             autoclose: true,
             format: 'dd/mm/yyyy hh:ii',
             language: 'fr',
@@ -28,6 +30,7 @@
         });
 
         $(target).find('[data-provider="timepicker"]').datetimepicker({
+            fontAwesome: true,
             autoclose: true,
             format: 'hh:ii',
             formatViewType: 'time',

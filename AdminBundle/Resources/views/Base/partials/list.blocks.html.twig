@@ -1,13 +1,7 @@
 {% block list_modal %}
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-close-target="{{ target }}" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">{{ block('list_title') }}</h4>
-            </div>
-            <div class="modal-body">
+            <div class="modal-body no-padding-top">
                 {{ block('list_flash_messages') }}
                 {{ block('datagrid') }}
             </div>
@@ -19,7 +13,10 @@
 {% endblock %}
 
 {% block datagrid %}
-    {{ render_datagrid(datagrid, {admin: admin}) }}
+    {{ render_datagrid(datagrid, {
+        admin: admin,
+        title: block('list_title')
+    }) }}
 {% endblock %}
 
 {% block list_title %}

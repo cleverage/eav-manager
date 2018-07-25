@@ -51,16 +51,13 @@
 {% block edit_modal %}
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            {{ block('edit_flash_messages') }}
             {{ form_start(form) }}
-            <div class="modal-body">
+            <div class="modal-body no-padding-top">
+                {{ block('sticky_actions') }}
                 <div class="edit-form {{ block('edit_form_class') }}">
                     {{ form_widget(form) }}
                     {{ block('form_message') }}
                 </div>
-            </div>
-            <div class="modal-footer">
-                {{ block('form_actions') }}
             </div>
             {{ form_end(form) }}
             {{ block('additional_content') }}

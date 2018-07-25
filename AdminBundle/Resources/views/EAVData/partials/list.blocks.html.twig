@@ -1,5 +1,9 @@
 {% block datagrid %}
-    {{ render_datagrid(datagrid, {family: family, admin: admin}) }}
+    {{ render_datagrid(datagrid, {
+        family: family,
+        admin: admin,
+        title: block('list_title')
+    }) }}
 {% endblock %}
 
 {% block list_title %}

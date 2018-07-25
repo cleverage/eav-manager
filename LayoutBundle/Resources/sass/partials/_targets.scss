@@ -47,6 +47,9 @@
 
 .tg-right-expanded {
   #tg_center {
+    @media (max-width: $screen-lg-min) {
+      display: none;
+    }
     table.table {
       th, td {
         display: none;
@@ -54,6 +57,12 @@
           display: table-cell;
         }
       }
+    }
+  }
+  #tg_right {
+    @media (max-width: $screen-lg-min) {
+      max-width: none;
+      width: 100%;
     }
   }
 }

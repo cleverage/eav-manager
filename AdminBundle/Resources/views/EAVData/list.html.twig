@@ -6,8 +6,6 @@
     {% if isModal %}
         {{ block('list_modal') }}
     {% else %}
-        <h3>{{ block('list_title') }}</h3>
-        <hr>
         {{ block('datagrid') }}
     {% endif %}
 {% endblock %}

@@ -1,6 +1,6 @@
 {% set baseTemplate = baseTemplate|default(admin.baseTemplate) %}
 {% extends isAjax ? 'CleverAgeEAVManagerLayoutBundle::empty_layout.html.twig'
-: baseTemplate|default('CleverAgeEAVManagerLayoutBundle::layout.html.twig') %}
+    : baseTemplate|default('CleverAgeEAVManagerLayoutBundle::layout.html.twig') %}
 
 {% set admin_trans_key = 'admin.' ~ admin.code ~ '.' ~ admin.currentAction.code ~ '.' %}
 
@@ -9,8 +9,6 @@
     {% if isModal %}
         {{ block('list_modal') }}
     {% else %}
-        <h3>{{ block('list_title') }}</h3>
-        <hr>
         {{ block('datagrid') }}
     {% endif %}
 {% endblock %}

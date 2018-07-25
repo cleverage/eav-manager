@@ -79,9 +79,7 @@
   @include make-row;
   position: sticky;
   top: 0;
-  padding-top: $padding-base-horizontal;
-  padding-left: $padding-base-horizontal;
-  padding-right: $padding-base-horizontal;
+  padding: $padding-base-horizontal;
   margin-top: 0;
   margin-bottom: $padding-base-horizontal;
   z-index: 100;
@@ -94,6 +92,13 @@
   flex-direction: row;
   .breadcrumb-wrapper {
     overflow: hidden;
+    min-height: 41px;
+    .breadcrumb {
+      margin-bottom: 0;
+    }
+    .breadcrumb-wrapper h4 {
+      margin-bottom: 0;
+    }
   }
 
   .actions-wrapper {

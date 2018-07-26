@@ -32,8 +32,10 @@ abstract class AbstractEAVTask extends AbstractConfigurableTask
      * @param EntityManagerInterface $entityManager
      * @param FamilyRegistry         $familyRegistry
      */
-    public function __construct(EntityManagerInterface $entityManager, FamilyRegistry $familyRegistry)
-    {
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        FamilyRegistry $familyRegistry
+    ) {
         $this->entityManager = $entityManager;
         $this->familyRegistry = $familyRegistry;
     }

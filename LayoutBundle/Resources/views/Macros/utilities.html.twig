@@ -71,7 +71,7 @@ Changes the current active datagrid row
             success: success,
         } %}
         var event;
-        if (typeof CustomEvent == 'function') {
+        if (typeof CustomEvent === 'function') {
             event = new Event('clever_admindata', {bubbles: true, cancelable: true});
         } else {
             event = document.createEvent('Event');
@@ -93,7 +93,7 @@ Locks the form attached to the modified input
 {% macro lock_form(inputId, target) %}
     <script>
         // Launched only on ajax calls when jQuery is already defined: lock
-        if (typeof $ != 'undefined') {
+        if (typeof $ !== 'undefined') {
             {% if inputId %}
             // Lock navigation if form is updated
             lockNavigationOnChange(

@@ -34,7 +34,7 @@ class MediaController extends Controller
      */
     public function mediaUrlAction(Request $request, DataInterface $data, $filter)
     {
-        if ($data->getFamilyCode() !== 'Image') {
+        if ('Image' !== $data->getFamilyCode()) {
             throw new \UnexpectedValueException("Data should be of family 'Image', '{$data->getFamilyCode()}' given");
         }
         /** @var \Sidus\EAV\Image $data */

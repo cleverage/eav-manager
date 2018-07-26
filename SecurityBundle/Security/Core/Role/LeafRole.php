@@ -51,7 +51,7 @@ class LeafRole extends Role
      */
     public function setParent(LeafRole $parent = null)
     {
-        if (!$parent->getChildren()->contains($this)) {
+        if ($parent && !$parent->getChildren()->contains($this)) {
             $parent->addChild($this);
         }
         $this->parent = $parent;

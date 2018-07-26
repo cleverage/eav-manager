@@ -15,7 +15,6 @@ use Sidus\AdminBundle\Admin\Action;
 use Sidus\AdminBundle\Controller\AbstractAdminController as BaseAdminController;
 use Sidus\DataGridBundle\Model\DataGrid;
 use Sidus\BaseBundle\Translator\TranslatableTrait;
-use Sidus\EAVModelBundle\Entity\DataInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
@@ -46,7 +45,10 @@ abstract class AbstractAdminController extends BaseAdminController
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
-        $this->translator = $container->get('translator'); // Specifically inject translator for tryTranslate method
+        if ($container) {
+            // Specifically inject translator for tryTranslate method
+            $this->translator = $container->get('translator');
+        }
     }
 
     /**

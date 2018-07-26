@@ -8,7 +8,7 @@ var currentScriptBaseUrl = protocol + '//' + host;
 tinymce.PluginManager.add('dataobject', function (editor) {
     var utilities = {
         isDataobject: function (node) {
-            return node.tagName == 'IMG' && editor.dom.getAttrib(node, 'data-object-id');
+            return node.tagName === 'IMG' && editor.dom.getAttrib(node, 'data-object-id');
         },
         createObject: function (dataId) {
             var node = editor.selection.getNode();

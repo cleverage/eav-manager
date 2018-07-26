@@ -148,8 +148,10 @@ class EAVReaderTask extends AbstractEAVQueryTask implements IterableTaskInterfac
 
     /**
      * @param \CleverAge\ProcessBundle\Model\ProcessState $state
-     * @return array
+     *
      * @throws \Symfony\Component\OptionsResolver\Exception\ExceptionInterface
+     *
+     * @return array
      */
     protected function getLogContext(ProcessState $state)
     {

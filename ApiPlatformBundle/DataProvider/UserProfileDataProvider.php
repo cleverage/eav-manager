@@ -53,6 +53,12 @@ class UserProfileDataProvider implements ItemDataProviderInterface
 
         $token = $this->tokenStorage->getToken();
 
-        return $token->getUser();
+        /** @var UserInterface|null $user */
+        $user = null;
+        if ($token) {
+            $user = $token->getUser();
+        }
+
+        return $user;
     }
 }

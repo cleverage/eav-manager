@@ -108,10 +108,10 @@ class AssetSubscriber implements EventSubscriber
         /** @var $data DataInterface */
         $family = $data->getFamily();
 
-        if ($family->getCode() === 'Image') {
+        if ('Image' === $family->getCode()) {
             /** @var Image $data */
             $resource = $data->getImageFile();
-        } elseif ($family->getCode() === 'Document') {
+        } elseif ('Document' === $family->getCode()) {
             /** @var Document $data */
             $resource = $data->getDocumentFile();
         } else {

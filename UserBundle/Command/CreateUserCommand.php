@@ -54,13 +54,7 @@ class CreateUserCommand extends ContainerAwareCommand
      * @param InputInterface  $input
      * @param OutputInterface $output
      *
-     * @throws InvalidArgumentException
-     * @throws \LogicException
-     * @throws ServiceNotFoundException
-     * @throws ServiceCircularReferenceException
-     * @throws \InvalidArgumentException
-     * @throws ORMInvalidArgumentException
-     * @throws UsernameNotFoundException
+     * @throws \Exception
      *
      * @return int|null
      */

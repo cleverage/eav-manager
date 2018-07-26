@@ -1,7 +1,7 @@
 tinymce.PluginManager.add('datamedia', function (editor) {
     var utilities = {
         isDatamedia: function (node) {
-            return node.tagName == 'IMG' && editor.dom.getAttrib(node, 'data-media-id');
+            return node.tagName === 'IMG' && editor.dom.getAttrib(node, 'data-media-id');
         },
         createMedia: function (dataId, filter, isResponsive) {
             var node = editor.selection.getNode();

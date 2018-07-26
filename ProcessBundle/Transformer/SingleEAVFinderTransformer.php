@@ -145,19 +145,17 @@ class SingleEAVFinderTransformer implements ConfigurableTransformerInterface
         foreach ($value as $attributeCode => $attributeValue) {
             if (\is_array($attributeValue)) {
                 $queryParts[] = $eavQb->a($attributeCode)->in($attributeValue);
+            } elseif (null !== $attributeValue
+                && $attributeValue === $family->getAttribute($attributeCode)->getDefault()
+            ) {
+                $queryParts[] = $eavQb->getOr(
+                    [
+                        $eavQb->a($attributeCode)->equals($attributeValue),
+                        $eavQb->a($attributeCode)->isNull(), // Handles default values not persisted to database
+                    ]
+                );
             } else {
-                if (null !== $attributeValue
-                    && $attributeValue === $family->getAttribute($attributeCode)->getDefault()
-                ) {
-                    $queryParts[] = $eavQb->getOr(
-                        [
-                            $eavQb->a($attributeCode)->equals($attributeValue),
-                            $eavQb->a($attributeCode)->isNull(), // Handles default values not persisted to database
-                        ]
-                    );
-                } else {
-                    $queryParts[] = $eavQb->a($attributeCode)->equals($attributeValue);
-                }
+                $queryParts[] = $eavQb->a($attributeCode)->equals($attributeValue);
             }
         }
 

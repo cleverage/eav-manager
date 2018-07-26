@@ -15,6 +15,7 @@ use CleverAge\EAVManager\UserBundle\Entity\User;
 use CleverAge\EAVManager\UserBundle\Exception\BadUsernameException;
 use CleverAge\EAVManager\UserBundle\Mailer\UserMailer;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\OptimisticLockException;
@@ -41,7 +42,7 @@ class UserManager implements UserManagerInterface
     /** @var UserPasswordEncoderInterface */
     protected $passwordEncoder;
 
-    /** @var EntityManagerInterface */
+    /** @var EntityManagerInterface|EntityManager */
     protected $entityManager;
 
     /** @var ValidatorInterface */

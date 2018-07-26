@@ -69,7 +69,7 @@ class MediaExtension extends Twig_Extension
         $height = $image->getHeight();
         if (isset($config['filters']['thumbnail'])) {
             list($width, $height) = $config['filters']['thumbnail']['size'];
-            if ($config['filters']['thumbnail']['mode'] === 'inset') {
+            if ('inset' === $config['filters']['thumbnail']['mode']) {
                 if ($image->getWidth() >= $image->getHeight()) {
                     $height = floor($width / $image->getWidth() * $image->getHeight());
                 }

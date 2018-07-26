@@ -10,13 +10,11 @@
 
 namespace CleverAge\EAVManager\ProcessBundle\Transformer;
 
-use CleverAge\ProcessBundle\Transformer\ConfigurableTransformerInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\EntityManagerInterface;
+
 use Sidus\EAVModelBundle\Entity\DataRepository;
 use Sidus\EAVModelBundle\Model\AttributeInterface;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
-use Sidus\EAVModelBundle\Registry\FamilyRegistry;
+
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

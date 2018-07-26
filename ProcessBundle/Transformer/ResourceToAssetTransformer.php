@@ -85,10 +85,10 @@ class ResourceToAssetTransformer extends UniqueEAVFinderTransformer
                     return $family->getAttribute($value);
                 }
 
-                if ($family->getCode() === 'Image') {
+                if ('Image' === $family->getCode()) {
                     return 'imageFile';
                 }
-                if ($family->getCode() === 'Document') {
+                if ('Document' === $family->getCode()) {
                     return 'documentFile';
                 }
 

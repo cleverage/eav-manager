@@ -49,8 +49,7 @@ class EAVDataController extends AbstractAdminController
      *
      * @return Response
      */
-    public function indexAction(
-        /** @noinspection PhpUnusedParameterInspection */
+    public function indexAction(/** @noinspection PhpUnusedParameterInspection */
         Request $request
     ) {
         /** @var array $families */
@@ -88,7 +87,7 @@ class EAVDataController extends AbstractAdminController
         $form = $dataGrid->getForm();
         if ($form->isSubmitted() && $form->isValid()) {
             $button = $form->getClickedButton();
-            if ($button && $button->getName() === 'export') {
+            if ($button && 'export' === $button->getName()) {
                 return $this->redirectToExport($dataGrid, $request->getSession());
             }
         }

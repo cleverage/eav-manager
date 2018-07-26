@@ -77,11 +77,12 @@
 {% block breadcrumb_index %}
     {% if admin.hasAction('index') %}
         <li>
-            <a href="{{ admin_path(admin, 'index') }}">
-                {{ tryTrans([
-                    'admin.' ~ admin.code ~ 'index.title',
-                    'admin.index.title'
-                ], [], admin.code|humanize) }}
+            {% set title = tryTrans([
+                'admin.' ~ admin.code ~ 'index.title',
+                'admin.index.title'
+            ], [], admin.code|humanize) %}
+            <a href="{{ admin_path(admin, 'index') }}" title="{{ title }}">
+                {{ title }}
             </a>
         </li>
     {% endif %}
@@ -90,11 +91,12 @@
 {% block breadcrumb_list %}
     {% if admin.hasAction('list') %}
         <li>
-            <a href="{{ listPath is defined and listPath ? listPath : admin_path(admin, 'list') }}">
-                {{ tryTrans([
-                    'admin.' ~ admin.code ~ 'list.title',
-                    'admin.list.title'
-                ], [], 'List') }}
+            {% set title = tryTrans([
+                'admin.' ~ admin.code ~ 'list.title',
+                'admin.list.title'
+            ], [], 'List') %}
+            <a href="{{ listPath is defined and listPath ? listPath : admin_path(admin, 'list') }}" title="{{ title }}">
+                {{ title }}
             </a>
         </li>
     {% endif %}
@@ -103,19 +105,21 @@
 {% block breadcrumb_data %}
     {% if admin.hasAction('edit') and admin.currentAction != 'create' and data is defined and data.id %}
         <li class="shrink">
-            <a href="{{ admin_entity_path(admin, data, 'edit') }}">
-                {{ render_value(data) }}
+            {% set title = render_value(data) %}
+            <a href="{{ admin_entity_path(admin, data, 'edit') }}" title="{{ title }}">
+                {{ title }}
             </a>
         </li>
     {% endif %}
 {% endblock %}
 
 {% block breadcrumb_action %}
-    <li class="active">
-        {{ tryTrans([
-            admin_trans_key ~ '.title',
-            'admin.action.' ~ admin.currentAction.code ~ '.title'
-        ], [], admin.currentAction.code|humanize) }}
+    {% set title = tryTrans([
+        admin_trans_key ~ '.title',
+        'admin.action.' ~ admin.currentAction.code ~ '.title'
+    ], [], admin.currentAction.code|humanize) %}
+    <li class="active" title="{{ title }}">
+        {{ title }}
     </li>
 {% endblock %}
 

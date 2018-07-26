@@ -1,52 +1,41 @@
 services:
-    eavmanager_api_platform.filter.abstract_eav:
+    CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\AbstractEAVFilter:
         abstract: true
-        class: CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\AbstractEAVFilter
-        arguments:
-            - '@request_stack'
-            - '@Sidus\EAVModelBundle\Registry\FamilyRegistry'
-            - '@CleverAge\EAVManager\EAVModelBundle\Resolver\FamilyResolver'
-            - '@Sidus\EAVFilterBundle\Filter\EAVFilterHelper'
+        autowire: true
 
-    eavmanager_api_platform.filter.search:
-        abstract: true
-        class: CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\SearchFilter
+    CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\SearchFilter:
         parent: eavmanager_api_platform.filter.abstract_eav
+        abstract: true
         arguments:
             - [string]
 
-    eavmanager_api_platform.filter.boolean:
-        abstract: true
-        class: CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\BooleanFilter
+    CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\BooleanFilter:
         parent: eavmanager_api_platform.filter.abstract_eav
+        abstract: true
         arguments:
             - [bool]
 
-    eavmanager_api_platform.filter.date:
-        abstract: true
-        class: CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\DateFilter
+    CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\DateFilter:
         parent: eavmanager_api_platform.filter.abstract_eav
+        abstract: true
         arguments:
             - [DateTimeInterface]
 
-    eavmanager_api_platform.filter.numeric:
-        abstract: true
-        class: CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\NumericFilter
+    CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\NumericFilter:
         parent: eavmanager_api_platform.filter.abstract_eav
+        abstract: true
         arguments:
             - [float]
 
-    eavmanager_api_platform.filter.order:
-        abstract: true
-        class: CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\OrderFilter
+    CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\OrderFilter:
         parent: eavmanager_api_platform.filter.abstract_eav
+        abstract: true
         arguments:
             - [int, bool, DateTimeInterface, float, string]
 
-    eavmanager_api_platform.filter.range:
-        abstract: true
-        class: CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\RangeFilter
+    CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\RangeFilter:
         parent: eavmanager_api_platform.filter.abstract_eav
+        abstract: true
         arguments:
             - [int, DateTimeInterface, float]
 

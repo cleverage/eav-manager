@@ -50,7 +50,7 @@ class PromoteUserCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $username = $input->getArgument('username');
-        $userManager = $this->getContainer()->get('eavmanager_user.user.manager');
+        $userManager = $this->getContainer()->get('CleverAge\EAVManager\UserBundle\Domain\Manager\UserManagerInterface');
         $user = null;
         try {
             $user = $userManager->loadUserByUsername($username);

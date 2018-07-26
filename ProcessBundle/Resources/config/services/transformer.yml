@@ -1,17 +1,7 @@
 services:
-    CleverAge\EAVManager\ProcessBundle\Transformer\UniqueEAVFinderTransformer:
+    CleverAge\EAVManager\ProcessBundle\Transformer\:
+        resource: '../../../Transformer/*'
         autowire: true
-        tags:
-            - { name: cleverage.transformer }
-
-    CleverAge\EAVManager\ProcessBundle\Transformer\SingleEAVFinderTransformer:
-        arguments:
-            - '@sidus_eav_model.entity_manager'
-            - '@Sidus\EAVModelBundle\Registry\FamilyRegistry'
-        tags:
-            - { name: cleverage.transformer }
-
-    CleverAge\EAVManager\ProcessBundle\Transformer\ResourceToAssetTransformer:
-        autowire: true
+        public: true
         tags:
             - { name: cleverage.transformer }

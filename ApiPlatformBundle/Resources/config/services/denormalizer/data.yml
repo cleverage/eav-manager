@@ -1,6 +1,5 @@
 services:
     Sidus\EAVModelBundle\Serializer\Denormalizer\EAVDataDenormalizer:
-        class: Sidus\EAVModelBundle\Serializer\Denormalizer\EAVDataDenormalizer
         parent: serializer.normalizer.object
         arguments:
             - '@Sidus\EAVModelBundle\Registry\FamilyRegistry'

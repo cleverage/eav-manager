@@ -86,7 +86,7 @@ class SecurityController extends Controller
 
         $error = null;
         if ($form->isSubmitted() && $form->isValid()) {
-            $userManager = $this->get('eavmanager_user.user.manager');
+            $userManager = $this->get('CleverAge\EAVManager\UserBundle\Domain\Manager\UserManagerInterface');
             $user = null;
             try {
                 $user = $userManager->loadUserByUsername($form->get('username')->getData());
@@ -133,7 +133,7 @@ class SecurityController extends Controller
             return $this->redirectToRoute('lost_password');
         }
 
-        $userManager = $this->get('eavmanager_user.user.manager');
+        $userManager = $this->get('CleverAge\EAVManager\UserBundle\Domain\Manager\UserManagerInterface');
         $user = $userManager->loadUserByToken($token);
         if (!$user) {
             $this->addFlash(

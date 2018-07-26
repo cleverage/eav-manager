@@ -1,17 +1,13 @@
 services:
-    eavmanager_api_platform.family_data_provider:
-        class: CleverAge\EAVManager\ApiPlatformBundle\DataProvider\FamilyDataProvider
+    CleverAge\EAVManager\ApiPlatformBundle\DataProvider\FamilyDataProvider:
         public: false
-        arguments:
-            - '@Sidus\EAVModelBundle\Registry\FamilyRegistry'
+        autowire: true
         tags:
             -  { name: api_platform.collection_data_provider, priority: 2 }
             -  { name: api_platform.item_data_provider, priority: 2 }
 
-    eavmanager_api_platform.user_data_provider:
-        class: CleverAge\EAVManager\ApiPlatformBundle\DataProvider\UserProfileDataProvider
+    CleverAge\EAVManager\ApiPlatformBundle\DataProvider\UserProfileDataProvider:
         public: false
-        arguments:
-            - '@security.token_storage'
+        autowire: true
         tags:
             -  { name: api_platform.item_data_provider, priority: 2 }

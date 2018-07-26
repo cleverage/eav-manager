@@ -53,7 +53,7 @@ class UserProfileController extends Controller
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('eavmanager_user.user.manager')->save($user);
+            $this->get('CleverAge\EAVManager\UserBundle\Domain\Manager\UserManagerInterface')->save($user);
 
             $this->addFlash('success', 'eavmanager.flash.edit.success');
 

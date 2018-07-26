@@ -44,7 +44,7 @@ class UserController extends GenericAdminController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('eavmanager_user.user.manager')->requestNewPassword($user);
+            $this->get('CleverAge\EAVManager\UserBundle\Domain\Manager\UserManagerInterface')->requestNewPassword($user);
             $this->saveEntity($user);
 
             if ($request->isXmlHttpRequest()) {
@@ -102,7 +102,7 @@ class UserController extends GenericAdminController
             return;
         }
 
-        $this->get('eavmanager_user.user.manager')->save($user);
+        $this->get('CleverAge\EAVManager\UserBundle\Domain\Manager\UserManagerInterface')->save($user);
 
         $action = $this->admin->getCurrentAction();
         $this->addFlash('success', "eavmanager.flash.{$action->getCode()}.success");

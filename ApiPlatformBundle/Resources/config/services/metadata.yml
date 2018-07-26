@@ -1,14 +1,12 @@
 services:
-    eavmanager_api_platform.metadata.property.name_collection_factory:
-        class: CleverAge\EAVManager\ApiPlatformBundle\Metadata\Property\Factory\EAVPropertyNameCollectionFactory
+    CleverAge\EAVManager\ApiPlatformBundle\Metadata\Property\Factory\EAVPropertyNameCollectionFactory:
         decorates: api_platform.metadata.property.name_collection_factory
         arguments:
-            - '@eavmanager_api_platform.metadata.property.name_collection_factory.inner'
+            - '@CleverAge\EAVManager\ApiPlatformBundle\Metadata\Property\Factory\EAVPropertyNameCollectionFactory.inner'
             - '@Sidus\EAVModelBundle\Registry\FamilyRegistry'
             - '%sidus_eav_model.normalizer.data.ignored_attributes%'
 
-    eavmanager_api_platform.metadata.property.metadata_factory:
-        class: CleverAge\EAVManager\ApiPlatformBundle\Metadata\Property\Factory\FamilyPropertyMetadataFactory
+    CleverAge\EAVManager\ApiPlatformBundle\Metadata\Property\Factory\FamilyPropertyMetadataFactory:
         decorates: api_platform.metadata.property.metadata_factory
         arguments:
-            - '@eavmanager_api_platform.metadata.property.metadata_factory.inner'
+            - '@CleverAge\EAVManager\ApiPlatformBundle\Metadata\Property\Factory\FamilyPropertyMetadataFactory.inner'

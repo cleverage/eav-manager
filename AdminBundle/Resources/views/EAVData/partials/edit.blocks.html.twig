@@ -2,7 +2,8 @@
     {% if family is defined and family %}
         {% if admin.hasAction('list') %}
             <li>
-                <a href="{{ listPath is defined and listPath ? listPath : admin_path(admin, 'list', {familyCode: family.code}) }}">
+                <a href="{{ listPath is defined and listPath ? listPath : admin_path(admin, 'list', {familyCode: family.code}) }}"
+                   title="{{ family }}">
                     {{ family }}
                 </a>
             </li>

@@ -18,8 +18,7 @@ services:
         tags:
             - { name: serializer.normalizer }
 
-    eavmanager_user.normalizer.user.flat:
-        class: Sidus\EAVModelBundle\Serializer\Normalizer\Flat\FlatNormalizer
+    Sidus\EAVModelBundle\Serializer\Normalizer\Flat\FlatNormalizer:
         arguments:
             - '@CleverAge\EAVManager\UserBundle\Serializer\Normalizer\UserNormalizer'
             - [csv]

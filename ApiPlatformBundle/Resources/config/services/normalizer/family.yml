@@ -1,6 +1,5 @@
 services:
-    eavmanager_api_platform.normalizer.base.family:
-        class: CleverAge\EAVManager\ApiPlatformBundle\Serializer\Normalizer\BaseApiNormalizer
+    CleverAge\EAVManager\ApiPlatformBundle\Serializer\Normalizer\BaseApiNormalizer:
         parent: api_platform.serializer.normalizer.item
         calls:
             - [setNormalizer, ['@Sidus\EAVModelBundle\Serializer\Normalizer\FamilyNormalizer']]
@@ -8,8 +7,7 @@ services:
             - { name: serializer.normalizer, priority: 1 }
 
     # JsonLD Support
-    eavmanager_api_platform.normalizer.json_ld.family:
-        class: CleverAge\EAVManager\ApiPlatformBundle\Serializer\Normalizer\JsonLdApiNormalizer
+    CleverAge\EAVManager\ApiPlatformBundle\Serializer\Normalizer\JsonLdApiNormalizer:
         parent: api_platform.jsonld.normalizer.item
         calls:
             - [setNormalizer, ['@Sidus\EAVModelBundle\Serializer\Normalizer\FamilyNormalizer']]

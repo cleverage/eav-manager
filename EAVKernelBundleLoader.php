@@ -60,8 +60,7 @@ class EAVKernelBundleLoader
             new \FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             // Automatic image resizing
             new \Liip\ImagineBundle\LiipImagineBundle(),
-            // Clean HTML input (or during import)
-            new \Exercise\HTMLPurifierBundle\ExerciseHTMLPurifierBundle(),
+            // Default cache system
             new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
 
             // Clever Process Bundle

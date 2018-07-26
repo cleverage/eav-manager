@@ -64,25 +64,6 @@ NEVER points to this layout directly !
                                     {% endif %}
                                 {% endif %}
                             {% endblock %}
-                            {% block process_menu %}
-                                {% if is_granted('ROLE_PROCESS_MANAGER') %}
-                                    {% set admin = admin('process') %}
-                                    <a class="admin-nav" data-toggle="collapse" href="#admin_process">
-                                        <h5>
-                                            <i class="fa fa-tasks"></i>
-                                            {{ 'admin.process.title'|trans }}
-                                            <span class="pull-right"><span class="caret"></span></span>
-                                        </h5>
-                                    </a>
-                                    <div id="admin_process"
-                                         class="collapse{% if admin.hasRoute(app.request.attributes.get('_route')) %} in{% endif %}">
-                                        <ul class="nav nav-pills nav-stacked">
-                                            {{ utilities.admin_menu_icon_link('process', null, 'process', 'list') }}
-                                            {{ utilities.admin_menu_icon_link('task', null, 'task', 'list') }}
-                                        </ul>
-                                    </div>
-                                {% endif %}
-                            {% endblock %}
                             {% block user_manager_menu %}
                                 {% if is_granted('ROLE_USER_MANAGER') %}
                                     {% set admin = admin('user') %}

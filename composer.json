@@ -22,6 +22,12 @@
             "email": "vclavreul@clever-age.com",
             "homepage": "https://github.com/shavounet",
             "role": "Developer"
+        },
+        {
+            "name": "Madeline Veyrenc",
+            "email": "mveyrenc@clever-age.com",
+            "homepage": "https://github.com/mveyrenc",
+            "role": "Developer"
         }
     ],
     "autoload": {
@@ -31,9 +37,8 @@
     },
     "require": {
         "php": ">=7.1",
-        "symfony/symfony": "~3.0|~4.0",
+        "symfony/symfony": "~3.3|~4.0",
         "liip/imagine-bundle": "~1.7",
-        "exercise/htmlpurifier-bundle": "~0.2.0",
         "thomaspark/bootswatch": "~3.3.7",
         "friendsofsymfony/jsrouting-bundle": "~1.6",
         "sidus/eav-model-bundle": "dev-v1.2-dev",

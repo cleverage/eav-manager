@@ -1,9 +1,9 @@
 {% extends '@CleverAgeEAVManagerUser/base.html.twig' %}
 
 {% block content %}
-    <div class="panel panel-default">
+    <div class="panel panel-default" style="background-color:#ffffffe0;margin-top:30vh;transform:translateY(-30%);">
         <div class="panel-heading">
-            <h3 class="panel-title">{{ 'login.title'|trans({}, 'security') }}</h3>
+            <h3 class="panel-title">{{ 'login.title'|trans({'%title%': block('title')}, 'security') }}</h3>
         </div>
         <div class="panel-body">
             <form action="{{ path('login') }}" method="post" accept-charset="UTF-8" role="form">
@@ -22,18 +22,10 @@
                     {% endif %}
                 </fieldset>
                 <fieldset>
-                    <div class="row">
-                        <div class="checkbox col-md-6">
-                            <label>
-                                <input name="_remember_me" type="checkbox"
-                                       value="on"> {{ 'login.remember_me'|trans({}, 'security') }}
-                            </label>
-                        </div>
-                        <div class="col-md-6 text-right" style="margin-top:10px;">
-                            <a href="{{ path('lost_password') }}">{{ 'login.lost_password'|trans({}, 'security') }}</a>
-                        </div>
-                    </div>
-                    <input class="btn btn-lg btn-success btn-block" type="submit" id="_submit" name="_submit"
+                    <p class="text-right">
+                        <a href="{{ path('lost_password') }}">{{ 'login.lost_password'|trans({}, 'security') }}</a>
+                    </p>
+                    <input class="btn btn-success btn-block" type="submit" id="_submit" name="_submit"
                            value="{{ 'login.submit'|trans({}, 'security') }}">
                 </fieldset>
             </form>
@@ -42,5 +34,27 @@
 {% endblock %}
 
 {# Best practise: avoid any third-party code on login pages #}
-{% block javascripts %}{% endblock %}
+{% block javascripts %}
+    <script>
+        {#
+        Load random image background from unsplash (this is safe)
+        set the loginSplashUrl global variable in twig to override the default pattern
+        #}
+        document.addEventListener("DOMContentLoaded", function () {
+            var imgSrc = '{{ loginSplashUrl|default('https://source.unsplash.com/random/%width%x%height%') }}';
+            var img = new Image();
+            img.src = imgSrc.replace('%width%', window.innerWidth).replace('%height%', window.innerHeight);
+            img.style.position = 'fixed';
+            img.style.zIndex = -1000;
+            img.style.transition = 'opacity 2s ease-in-out';
+            img.style.opacity = 0;
+            img.onload = function () {
+                document.body.insertBefore(img, document.body.firstChild);
+                window.setTimeout(function () {
+                    img.style.opacity = 1;
+                }, 0);
+            }
+        });
+    </script>
+{% endblock %}
 {% block additionnal_javascript %}{% endblock %}

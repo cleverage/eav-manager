@@ -1,10 +1,13 @@
 login:
-    title: Connexion
+    title: Connexion à %title%
     username: Utilisateur
     password: Mot de passe
     submit: Connexion
     remember_me: Se souvenir de moi
     lost_password: Mot de passe oublié ?
+
+logout:
+    label: Déconnexion
 
 lost_password:
     title: Demande de réinitialisation de mot de passe
@@ -22,4 +25,3 @@ reset_password:
 user:
     account_creation: Création
     reset_password: Réinitialiser votre mot de passe
-

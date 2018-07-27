@@ -6,7 +6,7 @@ images_dir = common_dir + "public/img"
 css_dir = common_dir + "public/css"
 generated_images_dir = common_dir + "public/img"
 
-output_style = :production
+output_style = :compressed
 relative_assets = true
 line_comments = false
 

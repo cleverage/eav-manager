@@ -1,10 +1,13 @@
 login:
-    title: Sign in
+    title: Sign in to %title%
     username: Username
     password: Password
     submit: Login
     remember_me: Remember me
     lost_password: Lost password ?
+
+logout:
+    label: Logout
 
 lost_password:
     title: Request new password

@@ -64,11 +64,11 @@ Changes the current active datagrid row
 {% macro triggerDataEvent(admin, data, id, success, target) %}
     <script>
         {% set parameters = {
-            dataId: id,
-            dataLabel: render_value(data),
-            admin: admin.code,
-            action: admin.currentAction.code,
-            success: success,
+        dataId: id,
+        dataLabel: render_value(data),
+        admin: admin.code,
+        action: admin.currentAction.code,
+        success: success,
         } %}
         var event;
         if (typeof CustomEvent === 'function') {
@@ -112,11 +112,9 @@ Used to generate a menu for the given families
 {% macro family_menu(admin, families, activeFamily) %}
     {% import _self as current %}
     {% if families is defined and families | length > 0 %}
-        <ul class="nav nav-pills nav-stacked">
-            {% for f in families %}
-                {{ current.family_menu_link(admin, f, activeFamily) }}
-            {% endfor %}
-        </ul>
+        {% for family in families %}
+            {{ current.family_menu_link(admin, family, activeFamily) }}
+        {% endfor %}
     {% endif %}
 {% endmacro %}
 
@@ -126,9 +124,13 @@ Used to generate a single menu item for a family
 {% macro family_menu_link(admin, family, activeFamily) %}
     {% set family = family.code is defined ? family : get_family(family) %}
     {% if admin.hasAction('list') and is_granted('list', family) %}
-        <li {% if activeFamily and activeFamily.code == family.code %}class="active"{% endif %}>
-            <a href="{{ admin_path(admin, 'list', {familyCode: family.code}) }}">{{ family }}</a>
-            {#{{ current.family_menu(admin, f.children, activeFamily) }}#}
+        <li class="nav-item{% if activeFamily and activeFamily.code == family.code %} active{% endif %}">
+            <a class="nav-link" href="{{ admin_path(admin, 'list', {familyCode: family.code}) }}">
+                {% if family.option('icon') %}
+                    <i class="fa fa-{{ family.option('icon') }}"></i>
+                {% endif %}
+                {{ family }}
+            </a>
         </li>
     {% endif %}
 {% endmacro %}
@@ -162,9 +164,9 @@ Displays a link button to an entity, checking permissions and with configurable 
             {% set title = options.title %}
         {% else %}
             {% set title = tryTrans([
-                'admin.family.'~entity.family.code~'.'~actionName~'.label',
-                'admin.'~admin.code~'.'~actionName~'.label',
-                'admin.action.'~actionName~'.label',
+            'admin.family.'~entity.family.code~'.'~actionName~'.label',
+            'admin.'~admin.code~'.'~actionName~'.label',
+            'admin.action.'~actionName~'.label',
             ], {}, actionName) %}
         {% endif %}
         <a href="{{ admin_entity_path(admin, entity, actionName) }}" title="{{ title }}"
@@ -195,8 +197,8 @@ Displays a link button to an entity with configurable title, class, target and i
             {% set title = options.title %}
         {% else %}
             {% set title = tryTrans([
-                'admin.'~admin.code~actionName~'.label',
-                'admin.action.'~actionName~'.label',
+            'admin.'~admin.code~actionName~'.label',
+            'admin.action.'~actionName~'.label',
             ], {}, actionName) %}
         {% endif %}
         <a href="{{ admin_entity_path(admin, entity, actionName) }}" title="{{ title }}"
@@ -211,23 +213,31 @@ Displays a link button to an entity with configurable title, class, target and i
 Render title nav
 #}
 {% macro admin_title_nav(admin) %}
-    <a class="admin-nav" data-toggle="collapse" href="#admin_{{ admin.code }}">
-        <h5>
+    <a class="nav-link nav-dropdown-toggle" href="#">
+        {% if admin.option('icon') %}
             <i class="fa fa-{{ admin.option('icon') }}"></i>
-            {{ tryTrans(['admin.'~admin.code~'.title'], [], admin.code|humanize) }}
-            <span class="pull-right"><span class="caret"></span></span>
-        </h5>
+        {% endif %}
+        {{ tryTrans(['admin.'~admin.code~'.title'], [], admin.code|humanize) }}
     </a>
 {% endmacro %}
 
 {#
 Render left nav for families
 #}
-{% macro admin_family_nav(admin, family) %}
+{% macro admin_family_nav(admin, activeFamily) %}
     {% import _self as current %}
-    {{ current.admin_title_nav(admin) }}
-    <div id="admin_{{ admin.code }}"
-         class="collapse{% if admin.hasRoute(app.request.attributes.get('_route')) %} in{% endif %}">
-        {{ current.family_menu(admin, admin.option('families', [])|keys, family) }}
-    </div>
+    {#class="collapse{% if admin.hasRoute(app.request.attributes.get('_route')) %} in{% endif %}">#}
+
+    {# @var admin \Sidus\AdminBundle\Admin\Admin #}
+    {% set subMenu %}
+        {{ current.family_menu(admin, admin.option('families', [])|keys, activeFamily) }}
+    {% endset %}
+    {% if subMenu|trim %}
+        <li class="nav-item nav-dropdown">
+            {{ current.admin_title_nav(admin) }}
+            <ul class="nav-dropdown-items">
+                {{ subMenu }}
+            </ul>
+        </li>
+    {% endif %}
 {% endmacro %}

@@ -25,3 +25,21 @@ services:
             - Sidus\EAVModelBundle\Form\Type\SimpleDataSelectorType
         tags:
             - { name: form.type_extension, extended_type: Sidus\EAVModelBundle\Form\Type\SimpleDataSelectorType }
+
+    Sidus\EAVFilterBundle\Filter\Type\DateRangeFilterType:
+        public: false
+        arguments:
+            - date_range
+            - Sidus\EAVBootstrapBundle\Form\Type\DateRangeType
+        calls:
+            - [setFallbackFilterType, ['@Sidus\FilterBundle\Filter\Type\Doctrine\DateRangeFilterType']]
+        tags:
+            - { name: sidus.filter_type }
+
+    Sidus\FilterBundle\Filter\Type\Doctrine\DateRangeFilterType:
+        public: false
+        arguments:
+            - date_range
+            - Sidus\EAVBootstrapBundle\Form\Type\DateRangeType
+        tags:
+            - { name: sidus.filter_type }

@@ -3,30 +3,38 @@
 {% block content %}
     <div class="panel panel-default" style="background-color:#ffffffe0;margin-top:30vh;transform:translateY(-30%);">
         <div class="panel-heading">
-            <h3 class="panel-title">{{ 'login.title'|trans({'%title%': block('title')}, 'security') }}</h3>
+            {% block login_title %}
+                <h3 class="panel-title">{{ 'login.title'|trans({'%title%': block('title')}, 'security') }}</h3>
+            {% endblock %}
         </div>
         <div class="panel-body">
             <form action="{{ path('login') }}" method="post" accept-charset="UTF-8" role="form">
                 <fieldset {% if error %}class="has-error"{% endif %}>
-                    <div class="form-group">
-                        <input class="form-control" placeholder="{{ 'login.username'|trans({}, 'security') }}"
-                               name="_username" type="text" value="{{ last_username }}" required="required">
-                    </div>
-                    <div class="form-group">
-                        <input class="form-control" placeholder="{{ 'login.password'|trans({}, 'security') }}"
-                               name="_password" type="password" value="" required="required">
-                    </div>
-                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                    {% if error %}
-                        <div class="text-danger text-center">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                    {% endif %}
+                    {% block login_form_fields %}
+                        <div class="form-group">
+                            <input class="form-control" placeholder="{{ 'login.username'|trans({}, 'security') }}"
+                                   name="_username" type="text" value="{{ last_username }}" required="required">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" placeholder="{{ 'login.password'|trans({}, 'security') }}"
+                                   name="_password" type="password" value="" required="required">
+                        </div>
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                    {% endblock %}
+                    {% block login_errors %}
+                        {% if error %}
+                            <div class="text-danger text-center">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                        {% endif %}
+                    {% endblock %}
                 </fieldset>
                 <fieldset>
-                    <p class="text-right">
-                        <a href="{{ path('lost_password') }}">{{ 'login.lost_password'|trans({}, 'security') }}</a>
-                    </p>
-                    <input class="btn btn-success btn-block" type="submit" id="_submit" name="_submit"
-                           value="{{ 'login.submit'|trans({}, 'security') }}">
+                    {% block login_actions %}
+                        <p class="text-right">
+                            <a href="{{ path('lost_password') }}">{{ 'login.lost_password'|trans({}, 'security') }}</a>
+                        </p>
+                        <input class="btn btn-success btn-block" type="submit" id="_submit" name="_submit"
+                               value="{{ 'login.submit'|trans({}, 'security') }}">
+                    {% endblock %}
                 </fieldset>
             </form>
         </div>

@@ -5,10 +5,6 @@
 
 // Fixing theme strange issue @todo do a better fix !
 .table {
-  & > thead > tr > th .btn {
-    line-height: 1em;
-    padding: 1px 4px;
-  }
   & > tbody > tr > td {
     vertical-align: middle;
   }

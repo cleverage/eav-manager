@@ -46,7 +46,7 @@ Only the checked entries are completed.
  - [ ] [EAV bootstrap extension](https://github.com/VincentChalnot/SidusEAVBootstrapBundle)
  - [x] [Admin configuration](https://github.com/VincentChalnot/SidusAdminBundle)
  - [ ] [Datagrid configuration](https://github.com/VincentChalnot/SidusDataGridBundle)
- - [ ] [Filter configuration](https://github.com/VincentChalnot/SidusFilterBundle)
+ - [x] [Filter configuration](https://github.com/VincentChalnot/SidusFilterBundle)
  - [x] [EAV Filter configuration](https://github.com/VincentChalnot/SidusEAVFilterBundle)
  - [x] [File upload configuration](https://github.com/VincentChalnot/SidusFileUploadBundle)
  - [x] [Base Bundle](https://github.com/VincentChalnot/SidusBaseBundle)

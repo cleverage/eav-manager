@@ -26,6 +26,13 @@ services:
         tags:
             - { name: form.type_extension, extended_type: Sidus\EAVModelBundle\Form\Type\SimpleDataSelectorType }
 
+    CleverAge\EAVManager\AdminBundle\Form\Extension\LinkTypeExtension:
+        public: false
+        arguments:
+            - Sidus\DataGridBundle\Form\Type\LinkType
+        tags:
+            - { name: form.type_extension, extended_type: Sidus\DataGridBundle\Form\Type\LinkType }
+
     Sidus\EAVFilterBundle\Filter\Type\DateRangeFilterType:
         public: false
         arguments:

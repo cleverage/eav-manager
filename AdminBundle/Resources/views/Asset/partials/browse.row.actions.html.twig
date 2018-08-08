@@ -2,7 +2,6 @@
 
 {% use '@CleverAgeEAVManagerAdmin/Asset/partials/media.preview.html.twig' %}
 {% spaceless %}
-    {% set admin = viewParameters.admin %}
     {# @var admin \Sidus\AdminBundle\Admin\Admin #}
     <div class="btn-group btn-group-sm">
         {% if admin.hasAction('edit') and is_granted('edit', result) %}

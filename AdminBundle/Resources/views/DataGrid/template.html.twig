@@ -1,13 +1,12 @@
 {# @var datagrid \Sidus\DataGridBundle\Model\DataGrid #}
-{# @var viewParameters array #}
-{% extends '@SidusDataGrid/DataGrid/template.html.twig' %}
+{% extends '@SidusDataGrid/DataGrid/bootstrap3.html.twig' %}
 
 {% block filters %}
     <div class="actions-sticky">
         <div class="actions-flex">
             <div class="breadcrumb-wrapper">
                 <h4>
-                    {{ viewParameters.title is defined ? viewParameters.title : 'List' }}
+                    {{ title is defined ? title : 'List' }}
                 </h4>
             </div>
             <div class="actions-wrapper">

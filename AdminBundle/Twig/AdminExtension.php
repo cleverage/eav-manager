@@ -10,6 +10,7 @@
 
 namespace CleverAge\EAVManager\AdminBundle\Twig;
 
+use Sidus\DataGridBundle\Renderer\ColumnValueRendererInterface;
 use Sidus\EAVModelBundle\Entity\DataInterface;
 
 /**
@@ -17,6 +18,17 @@ use Sidus\EAVModelBundle\Entity\DataInterface;
  */
 class AdminExtension extends \Twig_Extension
 {
+    /** @var ColumnValueRendererInterface */
+    protected $valueRenderer;
+
+    /**
+     * @param ColumnValueRendererInterface $valueRenderer
+     */
+    public function __construct(ColumnValueRendererInterface $valueRenderer)
+    {
+        $this->valueRenderer = $valueRenderer;
+    }
+
     /**
      * @return array
      */
@@ -26,6 +38,17 @@ class AdminExtension extends \Twig_Extension
             new \Twig_SimpleFilter('typeof', [$this, 'getTypeOf']),
         ];
     }
+
+    /**
+     * @return array|\Twig_Function[]
+     */
+    public function getFunctions()
+    {
+        return [
+            new \Twig_SimpleFunction('render_value', [$this->valueRenderer, 'renderValue']),
+        ];
+    }
+
 
     /**
      * @param object $entity

@@ -1,8 +1,7 @@
 {% import "CleverAgeEAVManagerLayoutBundle:Macros:utilities.html.twig" as utilities %}
 
-{% set admin = viewParameters.admin %}
 {% set buttonOptions = buttonOptions|default({
-    content: column.render(result),
+    content: column.renderValue(result),
     target: '#tg_right',
     no_icon: true,
     class: '',
@@ -12,5 +11,5 @@
 {% elseif admin.hasAction('read') and is_granted('read', result) %}
     {{ utilities.eav_action_button(admin, result, 'read', buttonOptions) }}
 {% else %}
-    {{ column.render(result) }}
+    {{ column.renderValue(result) }}
 {% endif %}

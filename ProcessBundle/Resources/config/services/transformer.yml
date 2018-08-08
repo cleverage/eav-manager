@@ -2,6 +2,6 @@ services:
     CleverAge\EAVManager\ProcessBundle\Transformer\:
         resource: '../../../Transformer/*'
         autowire: true
-        public: true
+        public: true # Set to false
         tags:
             - { name: cleverage.transformer }

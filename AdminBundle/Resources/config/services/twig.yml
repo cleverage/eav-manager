@@ -1,5 +1,6 @@
 services:
     CleverAge\EAVManager\AdminBundle\Twig\AdminExtension:
         public: false
+        autowire: true
         tags:
             - { name: twig.extension }

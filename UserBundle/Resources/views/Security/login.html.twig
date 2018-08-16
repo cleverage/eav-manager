@@ -43,26 +43,29 @@
 
 {# Best practise: avoid any third-party code on login pages #}
 {% block javascripts %}
-    <script>
-        {#
-        Load random image background from unsplash (this is safe)
-        set the loginSplashUrl global variable in twig to override the default pattern
-        #}
-        document.addEventListener("DOMContentLoaded", function () {
-            var imgSrc = '{{ loginSplashUrl|default('https://source.unsplash.com/random/%width%x%height%') }}';
-            var img = new Image();
-            img.src = imgSrc.replace('%width%', window.innerWidth).replace('%height%', window.innerHeight);
-            img.style.position = 'fixed';
-            img.style.zIndex = -1000;
-            img.style.transition = 'opacity 2s ease-in-out';
-            img.style.opacity = 0;
-            img.onload = function () {
-                document.body.insertBefore(img, document.body.firstChild);
-                window.setTimeout(function () {
-                    img.style.opacity = 1;
-                }, 0);
-            }
-        });
-    </script>
+    {% set loginSplashUrl = loginSplashUrl is defined ? loginSplashUrl : 'https://source.unsplash.com/collection/2517821/%width%x%height%' %}
+    {% if loginSplashUrl %}
+        <script>
+            {#
+            Load random image background from unsplash (this is safe)
+            set the loginSplashUrl global variable in twig to override the default pattern
+            #}
+            document.addEventListener("DOMContentLoaded", function () {
+                var imgSrc = '{{ loginSplashUrl }}';
+                var img = new Image();
+                img.src = imgSrc.replace('%width%', window.innerWidth).replace('%height%', window.innerHeight);
+                img.style.position = 'fixed';
+                img.style.zIndex = -1000;
+                img.style.transition = 'opacity 2s ease-in-out';
+                img.style.opacity = 0;
+                img.onload = function () {
+                    document.body.insertBefore(img, document.body.firstChild);
+                    window.setTimeout(function () {
+                        img.style.opacity = 1;
+                    }, 0);
+                }
+            });
+        </script>
+    {% endif %}
 {% endblock %}
 {% block additionnal_javascript %}{% endblock %}

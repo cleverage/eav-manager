@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 uglifyjs --compress --mangle -o vendor/cleverage/eav-manager/LayoutBundle/Resources/public/js/build-$(date +"%Y%m%d").js \
 vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.js \

@@ -41,13 +41,13 @@
         "liip/imagine-bundle": "~1.7",
         "thomaspark/bootswatch": "~3.3.7",
         "friendsofsymfony/jsrouting-bundle": "~1.6",
+        "cleverage/process-bundle": "dev-v2.0-dev",
+        "sidus/eav-bootstrap-bundle": "dev-v2.0-dev",
+        "sidus/filter-bundle": "dev-v2.0-dev",
+        "sidus/eav-filter-bundle": "dev-v2.0-dev",
+        "sidus/datagrid-bundle": "dev-v2.0-dev",
+        "sidus/admin-bundle": "dev-v2.0-dev",
         "sidus/eav-model-bundle": "dev-v1.2-dev",
-        "sidus/eav-bootstrap-bundle": "dev-v1.3-dev",
-        "sidus/filter-bundle": "dev-v1.4-dev",
-        "sidus/eav-filter-bundle": "dev-v1.4-dev",
-        "sidus/datagrid-bundle": "dev-v1.4-dev",
-        "sidus/file-upload-bundle": "dev-v1.2.x-dev",
-        "sidus/admin-bundle": "dev-v1.3-dev",
-        "cleverage/process-bundle": "dev-v1.2-dev"
+        "sidus/file-upload-bundle": "dev-v1.2.x-dev"
     }
 }

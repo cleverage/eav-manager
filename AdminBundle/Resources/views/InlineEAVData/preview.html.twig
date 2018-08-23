@@ -4,10 +4,6 @@
 
 {% set admin_trans_key = 'admin.' ~ admin.code ~ '.' ~ admin.currentAction.code ~ '.' %}
 
-{% if isAjax and form is defined %}
-    {% form_theme form 'CleverAgeEAVManagerLayoutBundle:Form:ajax_theme.html.twig' %}
-{% endif %}
-
 {% block tg_center %}
     <div class="well form form-read-only">
         <h6>{{ data.family }}</h6>

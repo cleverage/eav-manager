@@ -156,55 +156,49 @@ Displays the global context switcher
 Displays a link button to an entity, checking permissions and with configurable title, class, target and icon
 #}
 {% macro eav_action_button(admin, entity, actionName, options) %}
-    {# @var admin \Sidus\AdminBundle\Admin\Admin #}
-    {% if admin.hasAction(actionName) and is_granted(actionName, entity) %}
-        {% if options.title is defined %}
-            {% set title = options.title %}
-        {% else %}
-            {% set title = tryTrans([
-                'admin.family.'~entity.family.code~'.'~actionName~'.label',
-                'admin.'~admin.code~'.'~actionName~'.label',
-                'admin.action.'~actionName~'.label',
-            ], {}, actionName) %}
-        {% endif %}
-        <a href="{{ admin_entity_path(admin, entity, actionName) }}" title="{{ title }}"
-           class="{{ options.class is defined ? options.class : 'btn btn-default' }}"
-                {% if options.target is defined and options.target %}
-            data-target-element="{{ options.target }}"
-                {% endif %}>
-            {% if not options.no_icon|default(false) %}
-                <i class="fa fa-{{ options.icon is defined ? options.icon : actionName }}"></i>
-            {% endif %}
-            {% if options.title_as_content|default() %}
-                {{ title }}
-            {% else %}
-                {{ options.content|default()|raw }}
-            {% endif %}
-        </a>
-    {% endif %}
+    {% import _self as current %}
+    {{ current.action_button(admin, entity, actionName, options) }}
 {% endmacro %}
-
 
 {#
 Displays a link button to an entity with configurable title, class, target and icon
 #}
 {% macro action_button(admin, entity, actionName, options) %}
-    {# @var admin \Sidus\AdminBundle\Admin\Admin #}
-    {% if admin.hasAction(actionName) %}
-        {% if options.title is defined %}
-            {% set title = options.title %}
-        {% else %}
-            {% set title = tryTrans([
-                'admin.'~admin.code~actionName~'.label',
-                'admin.action.'~actionName~'.label',
-            ], {}, actionName) %}
+    {% spaceless %}
+        {# @var admin \Sidus\AdminBundle\Admin\Admin #}
+        {% if admin.hasAction(actionName) and is_granted(actionName, entity) %}
+            {# Compute title #}
+            {% if options.title is defined %}
+                {% set title = options.title %}
+            {% elseif entity|instanceof('Sidus\EAVModelBundle\Entity\DataInterface') %}
+                {% set title = tryTrans([
+                    'admin.family.'~entity.familyCode~'.'~actionName~'.label',
+                    'admin.'~admin.code~'.'~actionName~'.label',
+                    'admin.action.'~actionName~'.label',
+                ], {}, actionName) %}
+            {% else %}
+                {% set title = tryTrans([
+                    'admin.'~admin.code~actionName~'.label',
+                    'admin.action.'~actionName~'.label',
+                ], {}, actionName) %}
+            {% endif %}
+
+            <a href="{{ admin_entity_path(admin, entity, actionName) }}" title="{{ title }}"
+               class="{{ options.class is defined ? options.class : 'btn btn-default' }}"
+                {% if options.target is defined and options.target %}
+                    data-target-element="{{ options.target }}"
+                {% endif %}>
+                {% if not options.no_icon|default(false) %}
+                    <i class="fa fa-{{ options.icon is defined ? options.icon : actionName }}"></i>
+                {% endif %}
+                {% if options.title_as_content|default(false) %}
+                    {{ title }}
+                {% else %}
+                    {{ options.content|default('')|raw }}
+                {% endif %}
+            </a>
         {% endif %}
-        <a href="{{ admin_entity_path(admin, entity, actionName) }}" title="{{ title }}"
-           class="{{ options.class|default('btn btn-default') }}"
-           data-target-element="{{ options.target|default('#tg_right') }}">
-            <i class="fa fa-{{ options.icon is defined ? options.icon : actionName }}"></i>
-        </a>
-    {% endif %}
+    {% endspaceless %}
 {% endmacro %}
 
 {#

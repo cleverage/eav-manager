@@ -19,8 +19,10 @@ sidus_data_grid:
             columns:
                 id:
                     label: '#'
-                username: ~
-                email: ~
+                username:
+                    template: '%clickable.template%'
+                email:
+                    template: '%clickable.template%'
                 lastName:
                     property_path: data.lastName
                 firstName:
@@ -28,13 +30,6 @@ sidus_data_grid:
                 printableRoles: ~
                 createdAt: ~
                 actions:
-                    template: CleverAgeEAVManagerAdminBundle:User:partials/list.row.actions.html.twig
+                    template: '@CleverAgeEAVManagerAdmin/User/partials/list.row.actions.html.twig'
             actions:
-                create:
-                    form_type: CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink
-                    label: admin.action.create.label
-                    action: create
-                    icon: plus
-                    attr:
-                        class: btn-primary
-                        data-target-element: "#tg_right"
+                create: '%create.button%'

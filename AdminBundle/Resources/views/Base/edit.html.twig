@@ -6,10 +6,6 @@
 
 {% set admin_trans_key = 'admin.' ~ admin.code ~ '.' ~ admin.currentAction.code ~ '.' %}
 
-{% if isAjax and form is defined and form %}
-    {% form_theme form 'CleverAgeEAVManagerLayoutBundle:Form:ajax_theme.html.twig' %}
-{% endif %}
-
 {% block flash_messages %}{% endblock %}
 
 {% block tg_center %}

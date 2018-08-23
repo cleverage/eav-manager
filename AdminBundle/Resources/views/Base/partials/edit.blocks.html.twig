@@ -126,15 +126,18 @@
 {% block back_button %}
     {% if listPath is defined and listPath %}
         <a href="{{ listPath }}" class="btn btn-default"
-           {% if not backAction %}data-close-target="{{ target }}"{% elseif isModal %}
-            data-target-element="{{ target }}"{% endif %}>
-            {% if backAction %}
+           {% if not backAction and target != '#tg_center' %}
+                data-close-target="{{ target }}"
+            {% elseif isModal or target == '#tg_center' %}
+                data-target-element="{{ target }}"
+            {% endif %}>
+            {% if backAction or target == '#tg_center' %}
                 <i class="fa fa-arrow-left"></i> {{ tryTrans([admin_trans_key ~ 'back.label', 'admin.action.back.label'], [], 'Back') }}
             {% else %}
                 <i class="fa fa-close"></i> {{ tryTrans([admin_trans_key ~ 'close.label', 'admin.action.close.label'], [], 'Close') }}
             {% endif %}
         </a>
-    {% elseif isAjax %}
+    {% elseif isAjax and target != '#tg_center' %}
         <a href="#" data-close-target="{{ target }}" class="btn btn-default">
             <i class="fa fa-close"></i> {{ tryTrans([admin_trans_key ~ 'close.label', 'admin.action.close.label'], [], 'Close') }}
         </a>

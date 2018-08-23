@@ -5,3 +5,11 @@ services:
         public: true # Set to false
         tags:
             - { name: cleverage.transformer }
+
+    CleverAge\EAVManager\ProcessBundle\Transformer\ResourceToAssetTransformer:
+        autowire: true
+        public: true
+        calls:
+            - [setFamilyMap, ['%eavmanager.asset.family_map%']]
+        tags:
+            - { name: cleverage.transformer }

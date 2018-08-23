@@ -36,6 +36,7 @@ class AdminExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFilter('typeof', [$this, 'getTypeOf']),
+            new \Twig_SimpleFilter('instanceof', [$this, 'isInstanceOf']),
         ];
     }
 
@@ -58,7 +59,7 @@ class AdminExtension extends \Twig_Extension
      *
      * @return string
      */
-    public function getTypeOf($entity, $full = false)
+    public function getTypeOf($entity, $full = false): string
     {
         if ($entity instanceof DataInterface) {
             if ($full) {
@@ -74,5 +75,16 @@ class AdminExtension extends \Twig_Extension
         }
 
         return $refl->getShortName();
+    }
+
+    /**
+     * @param mixed  $object
+     * @param string $class
+     *
+     * @return bool
+     */
+    public function isInstanceOf($object, string $class): bool
+    {
+        return is_a($object, $class);
     }
 }

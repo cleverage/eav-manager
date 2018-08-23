@@ -10,6 +10,7 @@
 
 namespace CleverAge\EAVManager\AssetBundle\Event;
 
+use CleverAge\EAVManager\AssetBundle\Entity\Document;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
@@ -17,8 +18,6 @@ use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMInvalidArgumentException;
-use Sidus\EAV\Document;
-use Sidus\EAV\Image;
 use Sidus\EAVModelBundle\Entity\DataInterface;
 use Sidus\EAVModelBundle\Entity\ValueInterface;
 
@@ -29,18 +28,18 @@ use Sidus\EAVModelBundle\Entity\ValueInterface;
  */
 class AssetSubscriber implements EventSubscriber
 {
-    /** @var string */
-    protected $dataClass;
+    /** @var array */
+    protected $familyMap;
 
     /** @var ValueInterface[] */
     protected $valuesToPersist = [];
 
     /**
-     * @param string $dataClass
+     * @param array $familyMap
      */
-    public function __construct($dataClass)
+    public function __construct(array $familyMap)
     {
-        $this->dataClass = $dataClass;
+        $this->familyMap = $familyMap;
     }
 
     /**
@@ -102,22 +101,16 @@ class AssetSubscriber implements EventSubscriber
      */
     protected function updateEntity($data)
     {
-        if (!is_a($data, $this->dataClass)) {
+        if (!$data instanceof DataInterface) {
             return;
         }
-        /** @var $data DataInterface */
         $family = $data->getFamily();
 
-        if ('Image' === $family->getCode()) {
-            /** @var Image $data */
-            $resource = $data->getImageFile();
-        } elseif ('Document' === $family->getCode()) {
-            /** @var Document $data */
-            $resource = $data->getDocumentFile();
-        } else {
+        if (!array_key_exists($data->getFamilyCode(), $this->familyMap)) {
             return;
         }
-        if (!$resource) {
+        $resource = $data->get($this->familyMap[$data->getFamilyCode()]);
+        if (!$resource instanceof Document) {
             // Maybe we should reset the values to null
             return;
         }

@@ -1,0 +1,20 @@
+services:
+    CleverAge\EAVManager\AdminBundle\Form\AdminFormHelper:
+        public: false
+        autowire: true
+
+    CleverAge\EAVManager\AdminBundle\Form\EAVAdminFormHelper:
+        public: false
+        autowire: true
+
+    CleverAge\EAVManager\AdminBundle\Templating\AdminTemplatingHelper:
+        public: false
+        autowire: true
+
+    CleverAge\EAVManager\AdminBundle\Templating\EAVAdminTemplatingHelper:
+        public: false
+        autowire: true
+
+    CleverAge\EAVManager\AdminBundle\DataGrid\DataGridHelper:
+        public: false
+        autowire: true

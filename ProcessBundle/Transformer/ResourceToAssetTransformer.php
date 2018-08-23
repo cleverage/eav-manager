@@ -24,6 +24,20 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ResourceToAssetTransformer extends UniqueEAVFinderTransformer
 {
+    /** @var array */
+    protected $familyMap = [
+        'Image' => 'imageFile',
+        'Document' => 'documentFile',
+    ];
+
+    /**
+     * @param array $familyMap
+     */
+    public function setFamilyMap(array $familyMap): void
+    {
+        $this->familyMap = $familyMap;
+    }
+
     /**
      * Must return the transformed $value
      *
@@ -85,16 +99,13 @@ class ResourceToAssetTransformer extends UniqueEAVFinderTransformer
                     return $family->getAttribute($value);
                 }
 
-                if ('Image' === $family->getCode()) {
-                    return 'imageFile';
-                }
-                if ('Document' === $family->getCode()) {
-                    return 'documentFile';
+                if (!array_key_exists($family->getCode(), $this->familyMap)) {
+                    throw new \UnexpectedValueException(
+                        'Unknown asset family detected, please specify the attribute for resource storage'
+                    );
                 }
 
-                throw new \UnexpectedValueException(
-                    'Unknown asset family detected, please specify the attribute for resource storage'
-                );
+                return $this->familyMap[$family->getCode()];
             }
         );
     }

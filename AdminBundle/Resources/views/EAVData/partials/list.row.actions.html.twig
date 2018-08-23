@@ -1,27 +1,2 @@
-{% spaceless %}
-    {% import "CleverAgeEAVManagerLayoutBundle:Macros:utilities.html.twig" as utilities %}
-    <div class="btn-group btn-group-xs btn-group-nowrap">
-        {% block list_row_actions %}
-            {% if admin.hasAction('edit') and is_granted('edit', result) %}
-                {{ utilities.eav_action_button(admin, result, 'edit', {
-                    class: 'btn btn-primary',
-                    target: '#tg_right',
-                }) }}
-            {% elseif admin.hasAction('read') and is_granted('read', result) %}
-                {{ utilities.eav_action_button(admin, result, 'read', {
-                    class: 'btn btn-primary',
-                    target: '#tg_right',
-                    icon: 'eye',
-                }) }}
-            {% endif %}
-            {{ utilities.eav_action_button(admin, result, 'clone', {
-                target: '#tg_right',
-            }) }}
-            {{ utilities.eav_action_button(admin, result, 'delete', {
-                class: 'btn btn-danger',
-                target: '#tg_right',
-                icon: 'remove',
-            }) }}
-        {% endblock %}
-    </div>
-{% endspaceless %}
+{# @deprecated #}
+{% extends '@CleverAgeEAVManagerAdmin/Base/partials/list.row.actions.html.twig' %}

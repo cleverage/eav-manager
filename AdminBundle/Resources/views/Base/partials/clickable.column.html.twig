@@ -2,14 +2,22 @@
 
 {% set buttonOptions = buttonOptions|default({
     content: column.renderValue(result),
-    target: '#tg_right',
+    target: button_target|default('#tg_right'),
     no_icon: true,
     class: '',
 }) %}
 {% if admin.hasAction('edit') and is_granted('edit', result) %}
-    {{ utilities.eav_action_button(admin, result, 'edit', buttonOptions) }}
+    {% if result.family is defined %}
+        {{ utilities.eav_action_button(admin, result, 'edit', buttonOptions) }}
+    {% else %}
+        {{ utilities.action_button(admin, result, 'edit', buttonOptions) }}
+    {% endif %}
 {% elseif admin.hasAction('read') and is_granted('read', result) %}
-    {{ utilities.eav_action_button(admin, result, 'read', buttonOptions) }}
+    {% if result.family is defined %}
+        {{ utilities.eav_action_button(admin, result, 'read', buttonOptions) }}
+    {% else %}
+        {{ utilities.action_button(admin, result, 'read', buttonOptions) }}
+    {% endif %}
 {% else %}
     {{ column.renderValue(result) }}
 {% endif %}

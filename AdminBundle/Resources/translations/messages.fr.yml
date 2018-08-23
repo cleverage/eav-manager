@@ -12,6 +12,9 @@ admin:
         edit:
             label: Modifier
             title: Modification
+        clone:
+            label: Clone
+            title: Clone
         back:
             label: Retour
         close:
@@ -24,6 +27,12 @@ admin:
         resetPassword:
             label: Réinitialiser le mot de passe
             title: Réinitialisation du mot de passe
+        export:
+            label: Export
+            title: Export
+
+    user_groups:
+        title: Utilisateurs & Groupes
 
     user:
         tab:
@@ -40,9 +49,6 @@ admin:
                 label: Annuler
             submit:
                 label: Supprimer
-
-        menu:
-            title: Utilisateurs et groupes
 
         form:
             username:
@@ -95,6 +101,9 @@ admin:
             success: Élément mis à jour avec succès
         delete:
             success: Élément supprimé avec succès
+
+    change_context:
+        label: 'Changer le context'
 
 form:
     delete:

@@ -4,7 +4,7 @@
     {% import '@CleverAgeEAVManagerLayout/Macros/utilities.html.twig' as utilities %}
     {% if is_granted('ROLE_ADMIN') %}
         {{ utilities.action_button(admin, result, 'resetPassword', {
-            target: '#tg_right',
+            target: button_target|default('#tg_right'),
             class: 'btn btn-warning',
             icon: 'unlock',
         }) }}

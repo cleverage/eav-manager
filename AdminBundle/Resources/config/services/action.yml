@@ -1,0 +1,5 @@
+services:
+    CleverAge\EAVManager\AdminBundle\Action\:
+        resource: '../../../Action/*'
+        autowire: true
+        public: true

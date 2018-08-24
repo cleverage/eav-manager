@@ -13,6 +13,7 @@ namespace CleverAge\EAVManager\SecurityBundle\Voter;
 use Doctrine\Common\Collections\Collection;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\RoleHierarchyVoter;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use CleverAge\EAVManager\SecurityBundle\Entity\FamilyPermission;
 use CleverAge\EAVManager\UserBundle\Entity\User;
@@ -24,13 +25,13 @@ use CleverAge\EAVManager\UserBundle\Entity\User;
  */
 class FamilyVoter implements VoterInterface
 {
-    /** @var VoterInterface */
+    /** @var RoleHierarchyVoter */
     protected $roleHierarchyVoter;
 
     /**
-     * @param VoterInterface $roleHierarchyVoter
+     * @param RoleHierarchyVoter $roleHierarchyVoter
      */
-    public function __construct(VoterInterface $roleHierarchyVoter)
+    public function __construct(RoleHierarchyVoter $roleHierarchyVoter)
     {
         $this->roleHierarchyVoter = $roleHierarchyVoter;
     }
@@ -53,6 +54,9 @@ class FamilyVoter implements VoterInterface
         $result = VoterInterface::ACCESS_ABSTAIN;
         if (!$object instanceof FamilyInterface) {
             return $result;
+        }
+        if (VoterInterface::ACCESS_DENIED === $this->roleHierarchyVoter->vote($token, null, ['ROLE_DATA_MANAGER'])) {
+            return VoterInterface::ACCESS_DENIED;
         }
         if (VoterInterface::ACCESS_GRANTED === $this->roleHierarchyVoter->vote($token, null, ['ROLE_DATA_ADMIN'])) {
             return VoterInterface::ACCESS_GRANTED;

@@ -1,12 +1,17 @@
 services:
     CleverAge\EAVManager\SecurityBundle\Voter\FamilyVoter:
         public: false
-        arguments:
-            - '@security.access.role_hierarchy_voter'
+        autowire: true
         tags:
             - { name: security.voter }
 
     CleverAge\EAVManager\SecurityBundle\Voter\EAVDataVoter:
+        public: false
+        autowire: true
+        tags:
+            - { name: security.voter }
+
+    CleverAge\EAVManager\SecurityBundle\Voter\UserVoter:
         public: false
         autowire: true
         tags:

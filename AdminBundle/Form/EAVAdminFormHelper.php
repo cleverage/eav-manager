@@ -5,8 +5,9 @@ namespace CleverAge\EAVManager\AdminBundle\Form;
 use Sidus\AdminBundle\Admin\Action;
 use Sidus\BaseBundle\Translator\TranslatableTrait;
 use Sidus\EAVModelBundle\Entity\DataInterface;
-use Sidus\EAVModelBundle\Model\FamilyInterface;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -23,14 +24,22 @@ class EAVAdminFormHelper
     /** @var FormHelper */
     protected $baseFormHelper;
 
+    /** @var FormFactoryInterface */
+    protected $formFactory;
+
     /**
-     * @param TranslatorInterface $translator
-     * @param FormHelper          $baseFormHelper
+     * @param TranslatorInterface  $translator
+     * @param FormHelper           $baseFormHelper
+     * @param FormFactoryInterface $formFactory
      */
-    public function __construct(TranslatorInterface $translator, FormHelper $baseFormHelper)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        FormHelper $baseFormHelper,
+        FormFactoryInterface $formFactory
+    ) {
         $this->translator = $translator;
         $this->baseFormHelper = $baseFormHelper;
+        $this->formFactory = $formFactory;
     }
 
     /**
@@ -47,9 +56,32 @@ class EAVAdminFormHelper
         DataInterface $data,
         array $options = []
     ): FormInterface {
-        $defaultOptions = $this->getDefaultFormOptions($action, $request, $data->getFamily(), $data->getId());
+        $defaultOptions = $this->getDefaultFormOptions($action, $request, $data);
 
         return $this->getFormBuilder($action, $data, array_merge($defaultOptions, $options))->getForm();
+    }
+
+    /**
+     * @param Action        $action
+     * @param Request       $request
+     * @param DataInterface $data
+     *
+     * @return FormInterface
+     */
+    public function getEmptyForm(
+        Action $action,
+        Request $request,
+        DataInterface $data
+    ): FormInterface {
+        $formOptions = $this->getDefaultFormOptions($action, $request, $data);
+        unset($formOptions['family']);
+
+        return $this->formFactory->createNamedBuilder(
+            "form_{$action->getAdmin()->getCode()}_{$action->getCode()}",
+            FormType::class,
+            null,
+            $formOptions
+        )->getForm();
     }
 
     /**
@@ -68,24 +100,22 @@ class EAVAdminFormHelper
     }
 
     /**
-     * @param Action          $action
-     * @param Request         $request
-     * @param FamilyInterface $family
-     * @param string          $dataId
+     * @param Action        $action
+     * @param Request       $request
+     * @param DataInterface $data
      *
      * @return array
      */
     public function getDefaultFormOptions(
         Action $action,
         Request $request,
-        FamilyInterface $family,
-        $dataId = null
+        DataInterface $data
     ): array {
-        $formOptions = $this->baseFormHelper->getDefaultFormOptions($action, $request, $dataId);
-        $formOptions['family'] = $family;
+        $formOptions = $this->baseFormHelper->getDefaultFormOptions($action, $request, $data->getId());
+        $formOptions['family'] = $data->getFamily();
         $formOptions['label'] = $this->tryTranslate(
             [
-                "admin.family.{$family->getCode()}.{$action->getCode()}.title",
+                "admin.family.{$data->getFamilyCode()}.{$action->getCode()}.title",
                 "admin.{$action->getAdmin()->getCode()}.{$action->getCode()}.title",
                 "admin.action.{$action->getCode()}.title",
             ],

@@ -24,4 +24,4 @@ sidus_data_grid:
                 create: '%create.button%'
             reset_button:
                 attr:
-                    data-target-element: '#tg_center'
+                    data-target-element: '_CURRENT_TARGET'

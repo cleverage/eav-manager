@@ -41,7 +41,12 @@ function ajaxLoading($, el, e) {
         el = el[0];
     }
     var $el = $(el);
-    var $targets = $($el.data('target-element'));
+    var targetsRef = $el.data('target-element');
+    if ('_CURRENT_TARGET' === targetsRef) {
+        var $targets = $el.closest('[data-is-target]');
+    } else {
+        var $targets = $(targetsRef);
+    }
     if (0 === $targets.length) {
         return;
     }

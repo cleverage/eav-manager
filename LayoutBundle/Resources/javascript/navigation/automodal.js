@@ -9,7 +9,8 @@
         var modal = $('<div/>', {
             'class': 'modal fade with-loader autoload',
             'id': target,
-            'role': 'dialog'
+            'role': 'dialog',
+            'data-is-target': null,
         });
         $(document.body).append(modal);
     });

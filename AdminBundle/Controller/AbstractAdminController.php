@@ -34,7 +34,7 @@ abstract class AbstractAdminController extends BaseAdminController
     use TranslatableTrait;
 
     /** @var string */
-    protected $defaultTarget = '#tg_center';
+    protected $defaultTarget = '_CURRENT_TARGET';
 
     /**
      * @param ContainerInterface|null $container

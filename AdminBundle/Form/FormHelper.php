@@ -31,7 +31,7 @@ class FormHelper extends \Sidus\AdminBundle\Form\FormHelper
         RoutingHelper $routingHelper,
         FormFactoryInterface $formFactory,
         TranslatorInterface $translator,
-        string $defaultTarget = '#tg_right'
+        string $defaultTarget = '_CURRENT_TARGET'
     ) {
         parent::__construct($routingHelper, $formFactory);
         $this->translator = $translator;

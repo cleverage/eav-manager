@@ -31,7 +31,7 @@ class DataGridHelper extends \Sidus\AdminBundle\DataGrid\DataGridHelper
         RoutingHelper $routingHelper,
         FormFactoryInterface $formFactory,
         string $method = 'GET',
-        string $defaultTarget = '#tg_center'
+        string $defaultTarget = '_CURRENT_TARGET'
     ) {
         parent::__construct($dataGridRegistry, $routingHelper, $formFactory, $method);
         $this->defaultTarget = $defaultTarget;

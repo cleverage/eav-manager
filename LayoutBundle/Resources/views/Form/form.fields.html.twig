@@ -183,7 +183,8 @@
         <div class="{{ class }}" id="{{ autoloadTargetId }}"
              data-target-element="#{{ autoloadTargetId }}"
              data-href="{{ admin_entity_path(admin, data, 'preview', {inputId: id, disabled: disabled}) }}"
-             data-autoload="1">
+             data-autoload="1"
+             data-is-target>
             {{ data }}
             <div class="tg-loading">&nbsp;</div>
         </div>
@@ -191,7 +192,8 @@
         <div class="{{ class }}" id="{{ autoloadTargetId }}"
              data-target-element="#{{ autoloadTargetId }}"
              data-autoload-url="{{ admin_path(admin, 'preview', {id: '__ID__', inputId: id}) }}"
-             data-autoload="__PLACEHOLDER__">
+             data-autoload="__PLACEHOLDER__"
+             data-is-target>
             <div class="dropdown input-group">
                 <button type="button" class="btn btn-success" data-toggle="dropdown">
                     <i class="fa fa-plus"></i> {{ 'admin.action.create.label'|trans }}

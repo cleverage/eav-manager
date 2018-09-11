@@ -3,24 +3,24 @@
 namespace CleverAge\EAVManager\AdminBundle\Templating;
 
 use Sidus\AdminBundle\Admin\Action;
+use Sidus\AdminBundle\Templating\TemplatingHelper as BaseAdminTemplatingHelper;
 use Sidus\DataGridBundle\Model\DataGrid;
-use Sidus\EAVModelBundle\Model\FamilyInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * EAV extension to CDM admin templating helper
+ * Clever Data Manager extension to base admin templating helper
  */
-class EAVAdminTemplatingHelper
+class TemplatingHelper
 {
-    /** @var AdminTemplatingHelper */
+    /** @var BaseAdminTemplatingHelper */
     protected $baseTemplatingHelper;
 
     /**
-     * @param AdminTemplatingHelper $baseTemplatingHelper
+     * @param BaseAdminTemplatingHelper $baseTemplatingHelper
      */
-    public function __construct(AdminTemplatingHelper $baseTemplatingHelper)
+    public function __construct(BaseAdminTemplatingHelper $baseTemplatingHelper)
     {
         $this->baseTemplatingHelper = $baseTemplatingHelper;
     }
@@ -37,23 +37,21 @@ class EAVAdminTemplatingHelper
     }
 
     /**
-     * @param Action          $action
-     * @param Request         $request
-     * @param FamilyInterface $family
-     * @param DataGrid        $dataGrid
-     * @param array           $viewParameters
+     * @param Action   $action
+     * @param Request  $request
+     * @param DataGrid $dataGrid
+     * @param array    $viewParameters
      *
      * @return Response
      */
     public function renderListAction(
         Action $action,
         Request $request,
-        FamilyInterface $family,
         DataGrid $dataGrid,
         array $viewParameters = []
     ): Response {
         $viewParameters = array_merge(
-            $this->getViewParameters($action, $request, $family),
+            $this->getViewParameters($action, $request),
             ['datagrid' => $dataGrid],
             $viewParameters
         );
@@ -62,59 +60,50 @@ class EAVAdminTemplatingHelper
     }
 
     /**
-     * @param Action          $action
-     * @param Request         $request
-     * @param FamilyInterface $family
-     * @param FormInterface   $form
-     * @param null            $data
-     * @param array           $viewParameters
+     * @param Action        $action
+     * @param Request       $request
+     * @param FormInterface $form
+     * @param null          $data
+     * @param array         $viewParameters
      *
      * @return Response
      */
     public function renderFormAction(
         Action $action,
         Request $request,
-        FamilyInterface $family,
         FormInterface $form,
         $data = null,
         array $viewParameters = []
     ): Response {
-        $viewParameters = array_merge(
-            $this->getViewParameters($action, $request, $family, $form, $data),
-            $viewParameters
-        );
+        $viewParameters = array_merge($this->getViewParameters($action, $request, $form, $data), $viewParameters);
 
         return $this->renderAction($action, $viewParameters);
     }
 
     /**
-     * @param Action          $action
-     * @param Request         $request
-     * @param FamilyInterface $family
-     * @param FormInterface   $form
-     * @param mixed           $data
-     * @param array           $listRouteParameters
+     * @param Action        $action
+     * @param Request       $request
+     * @param FormInterface $form
+     * @param mixed         $data
+     * @param array         $listRouteParameters
      *
      * @return array
      */
     public function getViewParameters(
         Action $action,
         Request $request,
-        FamilyInterface $family,
         FormInterface $form = null,
         $data = null,
         array $listRouteParameters = []
     ): array {
-        $listRouteParameters['familyCode'] = $family->getCode();
-        $parameters = $this->baseTemplatingHelper->getViewParameters(
-            $action,
-            $request,
-            $form,
-            $data,
-            $listRouteParameters
-        );
-        $parameters['family'] = $family;
+        $baseParameters = $this->baseTemplatingHelper->getViewParameters($action, $form, $data, $listRouteParameters);
+        $parameters = [
+            'isAjax' => $request->isXmlHttpRequest(),
+            'target' => $request->get('target'),
+            'success' => $request->get('success'),
+            'isModal' => $request->isXmlHttpRequest() && $request->get('modal'),
+        ];
 
-        return $parameters;
+        return array_merge($baseParameters, $parameters);
     }
 }

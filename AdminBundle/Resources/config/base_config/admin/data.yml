@@ -1,29 +1,29 @@
 sidus_admin:
     configurations:
         _data:
-            controller: CleverAgeEAVManagerAdminBundle:InlineEAVData
             entity: '%sidus_data_class%'
+            controller_pattern:
+                - 'CleverAge\EAVManager\AdminBundle\Action\EAV\{{Action}}Action'
+                - 'CleverAge\EAVManager\AdminBundle\Action\{{Action}}Action'
+            template_pattern:
+                - '@CleverAgeEAVManagerAdmin/EAVData/{{action}}.{{format}}.twig'
+                - '@CleverAgeEAVManagerAdmin/Base/{{action}}.{{format}}.twig'
+            form_type: '%eav_form.type%'
             prefix: /_data
             actions:
                 create:
-                    path:     /{familyCode}/create
-                    form_type: '%eav_form.type%'
+                    path: /create/{familyCode}
                 read:
-                    path:     /{familyCode}/read/{id}
-                    form_type: '%eav_form.type%'
+                    path: /read/{id}
                 edit:
-                    path:     /{familyCode}/edit/{id}
-                    form_type: '%eav_form.type%'
+                    path: /edit/{id}
                 delete:
-                    path:     /{familyCode}/delete/{id}
-                editInline:
-                    path:     /edit/{id}
-                    form_type: '%eav_form.type%'
+                    path: /delete/{id}
                 preview:
-                    path:     /preview/{id}
-                    form_type: '%eav_form.type%'
+                    path: /preview/{id}
+                    defaults:
+                        _controller: CleverAge\EAVManager\AdminBundle\Action\EAV\ReadAction
                     form_options:
-                        disabled: true
-                        show_legend: false
+                        layout: horizontal
             options:
                 hidden: true

@@ -17,7 +17,7 @@ use Symfony\Component\Translation\TranslatorInterface;
  *
  * {@inheritdoc}
  */
-class EAVAdminFormHelper
+class EAVFormHelper
 {
     use TranslatableTrait;
 
@@ -74,7 +74,7 @@ class EAVAdminFormHelper
         DataInterface $data
     ): FormInterface {
         $formOptions = $this->getDefaultFormOptions($action, $request, $data);
-        unset($formOptions['family']);
+        unset($formOptions['family'], $formOptions['fieldset_options']);
 
         return $this->formFactory->createNamedBuilder(
             "form_{$action->getAdmin()->getCode()}_{$action->getCode()}",
@@ -123,6 +123,6 @@ class EAVAdminFormHelper
             ucfirst($action->getCode())
         );
 
-        return $formOptions;
+        return array_merge($formOptions, $data->getFamily()->getFormOptions());
     }
 }

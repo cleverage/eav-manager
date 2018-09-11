@@ -11,7 +11,7 @@
 namespace CleverAge\EAVManager\AdminBundle\Listener\Routing;
 
 use Psr\Log\LoggerInterface;
-use Sidus\AdminBundle\Configuration\AdminConfigurationHandler;
+use Sidus\AdminBundle\Configuration\AdminRegistry;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\OptionsResolver\Exception\AccessException;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
@@ -22,25 +22,25 @@ use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Add no-cache header to all Http Reponses from the admin.
+ * Add no-cache header to all Http Responses from the admin.
  *
  * @author Vincent Chalnot <vchalnot@clever-age.com>
  */
 class CacheListener
 {
-    /** @var AdminConfigurationHandler */
-    protected $adminConfigurationHandler;
+    /** @var AdminRegistry */
+    protected $adminRegistry;
 
     /** @var LoggerInterface */
     protected $logger;
 
     /**
-     * @param AdminConfigurationHandler $adminConfigurationHandler
-     * @param LoggerInterface           $logger
+     * @param AdminRegistry   $adminRegistry
+     * @param LoggerInterface $logger
      */
-    public function __construct(AdminConfigurationHandler $adminConfigurationHandler, LoggerInterface $logger)
+    public function __construct(AdminRegistry $adminRegistry, LoggerInterface $logger)
     {
-        $this->adminConfigurationHandler = $adminConfigurationHandler;
+        $this->adminRegistry = $adminRegistry;
         $this->logger = $logger;
     }
 
@@ -64,13 +64,13 @@ class CacheListener
 
         $adminCode = $event->getRequest()->attributes->get('_admin');
 
-        if (!$this->adminConfigurationHandler->hasAdmin($adminCode)) {
+        if (!$this->adminRegistry->hasAdmin($adminCode)) {
             $this->logger->error("Missing admin with code: '{$adminCode}'");
 
             return;
         }
 
-        $admin = $this->adminConfigurationHandler->getAdmin($adminCode);
+        $admin = $this->adminRegistry->getAdmin($adminCode);
 
         $resolver = new OptionsResolver();
         $resolver->setDefaults(

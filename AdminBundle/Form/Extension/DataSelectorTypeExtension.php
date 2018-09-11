@@ -60,7 +60,7 @@ class DataSelectorTypeExtension extends AbstractTypeExtension
                 'allow_add' => false,
                 'allow_edit' => false,
                 'admin' => '_data',
-                'edit_action' => 'editInline',
+                'edit_action' => 'edit',
                 'create_action' => 'create',
                 'target' => null,
             ]

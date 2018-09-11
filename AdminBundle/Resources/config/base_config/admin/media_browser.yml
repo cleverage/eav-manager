@@ -1,24 +1,27 @@
 sidus_admin:
     configurations:
         media_browser:
-            controller: CleverAgeEAVManagerAdminBundle:EAVData # Absolute reference in case it's overriden in the app
             entity: '%sidus_data_class%'
+            controller_pattern:
+                - 'CleverAge\EAVManager\AdminBundle\Action\EAV\{{Action}}Action'
+                - 'CleverAge\EAVManager\AdminBundle\Action\{{Action}}Action'
+            template_pattern:
+                - '@CleverAgeEAVManagerAdmin/Asset/{{action}}.{{format}}.twig'
+                - '@CleverAgeEAVManagerAdmin/EAVData/{{action}}.{{format}}.twig'
+                - '@CleverAgeEAVManagerAdmin/Base/{{action}}.{{format}}.twig'
+            form_type: '%eav_form.type%'
             prefix: /medias_browser
             actions:
                 list:
-                    path:     /{familyCode}/list
+                    path: /{familyCode}/list
                 create:
-                    path:     /{familyCode}/create
-                    form_type: '%eav_form.type%'
+                    path: /{familyCode}/create
                 read:
-                    path:     /{familyCode}/read/{id}
-                    form_type: '%eav_form.type%'
+                    path: /{familyCode}/read/{id}
                 edit:
-                    path:     /{familyCode}/edit/{id}
-                    form_type: '%eav_form.type%'
-                    template: '@CleverAgeEAVManagerAdmin/Asset/edit.html.twig'
+                    path: /{familyCode}/edit/{id}
                 delete:
-                    path:     /{familyCode}/delete/{id}
+                    path: /{familyCode}/delete/{id}
             options:
                 hidden: true
                 allow_back: true

@@ -23,6 +23,8 @@ use Symfony\Component\HttpFoundation\Response;
 class InlineEAVDataController extends EAVDataController
 {
     /**
+     * @deprecated
+     *
      * @param Request       $request
      * @param DataInterface $data
      *

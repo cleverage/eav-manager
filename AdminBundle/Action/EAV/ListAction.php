@@ -2,25 +2,25 @@
 
 namespace CleverAge\EAVManager\AdminBundle\Action\EAV;
 
-use CleverAge\EAVManager\AdminBundle\Templating\EAVAdminTemplatingHelper;
+use CleverAge\EAVManager\AdminBundle\Templating\EAVTemplatingHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sidus\AdminBundle\Action\ActionInjectableInterface;
 use Sidus\AdminBundle\Admin\Action;
-use CleverAge\EAVManager\AdminBundle\DataGrid\DataGridHelper;
+use CleverAge\EAVManager\AdminBundle\DataGrid\EAVDataGridHelper;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
- * @Security("is_granted('ROLE_DATA_MANAGER')")
+ * @Security("is_granted('list', family)")
  */
 class ListAction implements ActionInjectableInterface
 {
-    /** @var DataGridHelper */
+    /** @var EAVDataGridHelper */
     protected $dataGridHelper;
 
-    /** @var EAVAdminTemplatingHelper */
+    /** @var EAVTemplatingHelper */
     protected $templatingHelper;
 
     /** @var RouterInterface */
@@ -30,13 +30,13 @@ class ListAction implements ActionInjectableInterface
     protected $action;
 
     /**
-     * @param DataGridHelper           $dataGridHelper
-     * @param EAVAdminTemplatingHelper $templatingHelper
-     * @param RouterInterface          $router
+     * @param EAVDataGridHelper   $dataGridHelper
+     * @param EAVTemplatingHelper $templatingHelper
+     * @param RouterInterface     $router
      */
     public function __construct(
-        DataGridHelper $dataGridHelper,
-        EAVAdminTemplatingHelper $templatingHelper,
+        EAVDataGridHelper $dataGridHelper,
+        EAVTemplatingHelper $templatingHelper,
         RouterInterface $router
     ) {
         $this->dataGridHelper = $dataGridHelper;
@@ -55,7 +55,7 @@ class ListAction implements ActionInjectableInterface
     public function __invoke(Request $request, FamilyInterface $family)
     {
         $this->router->getContext()->setParameter('familyCode', $family->getCode());
-        $dataGrid = $this->dataGridHelper->bindDataGridRequest($this->action, $request);
+        $dataGrid = $this->dataGridHelper->bindDataGridRequest($this->action, $request, $family);
 
         return $this->templatingHelper->renderListAction($this->action, $request, $family, $dataGrid);
     }

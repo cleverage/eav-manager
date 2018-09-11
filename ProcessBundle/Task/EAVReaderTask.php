@@ -33,8 +33,6 @@ class EAVReaderTask extends AbstractEAVQueryTask implements IterableTaskInterfac
     protected $closed = false;
 
     /**
-     * EAVReaderTask constructor.
-     *
      * @param LoggerInterface        $logger
      * @param EntityManagerInterface $entityManager
      * @param FamilyRegistry         $familyRegistry

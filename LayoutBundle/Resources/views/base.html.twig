@@ -18,7 +18,7 @@ NEVER points to this layout directly !
     {% endblock %}
     <title>{% block title %}CleverAge/EAVManager{{ title is defined ? ' - ' ~ title }}{% endblock %}</title>
     {% block stylesheets %}
-        <link href="{{ asset('bundles/cleverageeavmanagerlayout/css/layout-20180806.css') }}" type="text/css"
+        <link href="{{ asset('bundles/cleverageeavmanagerlayout/css/layout-20180911.css') }}" type="text/css"
               rel="stylesheet" media="screen"/>
     {% endblock %}
 </head>
@@ -109,7 +109,7 @@ NEVER points to this layout directly !
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.min.js"></script>
-    <script src="{{ asset('bundles/cleverageeavmanagerlayout/js/build-20180907.js') }}"></script>
+    <script src="{{ asset('bundles/cleverageeavmanagerlayout/js/build-20180911.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
     {{ tinymce_init() }}
 {% endblock %}

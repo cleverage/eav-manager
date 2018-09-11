@@ -1,17 +1,15 @@
 <?php
 
-namespace CleverAge\EAVManager\AdminBundle\Action\EAV;
+namespace CleverAge\EAVManager\AdminBundle\Action;
 
-use CleverAge\EAVManager\AdminBundle\Templating\EAVTemplatingHelper;
+use CleverAge\EAVManager\AdminBundle\Templating\TemplatingHelper;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sidus\AdminBundle\Action\ActionInjectableInterface;
 use Sidus\AdminBundle\Admin\Action;
 use Sidus\AdminBundle\Doctrine\DoctrineHelper;
-use CleverAge\EAVManager\AdminBundle\Form\EAVFormHelper;
+use CleverAge\EAVManager\AdminBundle\Form\FormHelper;
 use Sidus\AdminBundle\Routing\RoutingHelper;
-use Sidus\EAVModelBundle\Entity\DataInterface;
-use Sidus\EAVModelBundle\Exception\WrongFamilyException;
-use Sidus\EAVModelBundle\Model\FamilyInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -20,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class EditAction implements ActionInjectableInterface
 {
-    /** @var EAVFormHelper */
+    /** @var FormHelper */
     protected $formHelper;
 
     /** @var DoctrineHelper */
@@ -29,23 +27,23 @@ class EditAction implements ActionInjectableInterface
     /** @var RoutingHelper */
     protected $routingHelper;
 
-    /** @var EAVTemplatingHelper */
+    /** @var TemplatingHelper */
     protected $templatingHelper;
 
     /** @var Action */
     protected $action;
 
     /**
-     * @param EAVFormHelper       $formHelper
-     * @param DoctrineHelper      $doctrineHelper
-     * @param RoutingHelper       $routingHelper
-     * @param EAVTemplatingHelper $templatingHelper
+     * @param FormHelper       $formHelper
+     * @param DoctrineHelper   $doctrineHelper
+     * @param RoutingHelper    $routingHelper
+     * @param TemplatingHelper $templatingHelper
      */
     public function __construct(
-        EAVFormHelper $formHelper,
+        FormHelper $formHelper,
         DoctrineHelper $doctrineHelper,
         RoutingHelper $routingHelper,
-        EAVTemplatingHelper $templatingHelper
+        TemplatingHelper $templatingHelper
     ) {
         $this->formHelper = $formHelper;
         $this->doctrineHelper = $doctrineHelper;
@@ -54,21 +52,17 @@ class EditAction implements ActionInjectableInterface
     }
 
     /**
-     * @param Request         $request
-     * @param DataInterface   $data
-     * @param FamilyInterface $family
+     * @ParamConverter(name="data", converter="sidus_admin.entity")
+     *
+     * @param Request $request
+     * @param mixed   $data
      *
      * @throws \Exception
      *
      * @return Response
      */
-    public function __invoke(Request $request, DataInterface $data, FamilyInterface $family = null): Response
+    public function __invoke(Request $request, $data): Response
     {
-        if ($family) {
-            WrongFamilyException::assertFamily($data, $family->getCode());
-        } else {
-            $family = $data->getFamily();
-        }
         $form = $this->formHelper->getForm($this->action, $request, $data);
 
         $form->handleRequest($request);
@@ -81,7 +75,7 @@ class EditAction implements ActionInjectableInterface
             return $this->routingHelper->redirectToEntity($this->action, $data, $parameters);
         }
 
-        return $this->templatingHelper->renderFormAction($this->action, $request, $family, $form, $data);
+        return $this->templatingHelper->renderFormAction($this->action, $request, $form, $data);
     }
 
     /**

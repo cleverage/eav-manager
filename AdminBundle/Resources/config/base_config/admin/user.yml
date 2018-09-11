@@ -1,21 +1,24 @@
 sidus_admin:
     configurations:
         user:
-            controller: CleverAgeEAVManagerAdminBundle:User
             entity: CleverAge\EAVManager\UserBundle\Entity\User
+            controller_pattern:
+                - CleverAge\EAVManager\AdminBundle\Action\User\{{Action}}Action
+                - CleverAge\EAVManager\AdminBundle\Action\{{Action}}Action
+            template_pattern:
+                - CleverAgeEAVManagerAdminBundle:User:{{action}}.html.twig
+                - CleverAgeEAVManagerAdminBundle:Base:{{action}}.html.twig
+            form_type: CleverAge\EAVManager\UserBundle\Form\Type\UserType
             prefix: /users
             actions:
                 list:
                     path:     /
                 create:
                     path:     /create
-                    form_type: CleverAge\EAVManager\UserBundle\Form\Type\UserType
                 read:
                     path:     /read/{id}
-                    form_type: CleverAge\EAVManager\UserBundle\Form\Type\UserType
                 edit:
                     path:     /edit/{id}
-                    form_type: CleverAge\EAVManager\UserBundle\Form\Type\UserType
                 delete:
                     path:     /delete/{id}
                 resetPassword:

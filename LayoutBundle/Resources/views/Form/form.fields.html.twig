@@ -182,7 +182,7 @@
     {% if data %}
         <div class="{{ class }}" id="{{ autoloadTargetId }}"
              data-target-element="#{{ autoloadTargetId }}"
-             data-href="{{ admin_entity_path(admin, data, 'preview', {inputId: id, disabled: disabled}) }}"
+             data-href="{{ admin_entity_path(admin, data, 'preview', disabled ? {} : {inputId: id}) }}"
              data-autoload="1"
              data-is-target>
             {{ data }}

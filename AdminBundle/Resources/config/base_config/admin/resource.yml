@@ -1,8 +1,11 @@
 sidus_admin:
     configurations:
         resource:
-            controller: CleverAgeEAVManagerAdminBundle:GenericAdmin
             entity: CleverAge\EAVManager\AssetBundle\Entity\Document
+            controller_pattern:
+                - 'CleverAge\EAVManager\AdminBundle\Action\{{Action}}Action'
+            template_pattern:
+                - '@CleverAgeEAVManagerAdmin/Base/{{action}}.{{format}}.twig'
             prefix: /resources
             actions:
                 list:

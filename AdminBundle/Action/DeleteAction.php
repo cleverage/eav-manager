@@ -1,18 +1,16 @@
 <?php
 
-namespace CleverAge\EAVManager\AdminBundle\Action\EAV;
+namespace CleverAge\EAVManager\AdminBundle\Action;
 
-use CleverAge\EAVManager\AdminBundle\Templating\EAVTemplatingHelper;
+use CleverAge\EAVManager\AdminBundle\Templating\TemplatingHelper;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sidus\AdminBundle\Action\ActionInjectableInterface;
 use Sidus\AdminBundle\Admin\Action;
 use Sidus\AdminBundle\Doctrine\DoctrineHelper;
-use CleverAge\EAVManager\AdminBundle\Form\EAVFormHelper;
+use CleverAge\EAVManager\AdminBundle\Form\FormHelper;
 use Sidus\AdminBundle\Routing\RoutingHelper;
 use Sidus\EAVModelBundle\Doctrine\IntegrityConstraintManager;
-use Sidus\EAVModelBundle\Entity\DataInterface;
-use Sidus\EAVModelBundle\Exception\WrongFamilyException;
-use Sidus\EAVModelBundle\Model\FamilyInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -21,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class DeleteAction implements ActionInjectableInterface
 {
-    /** @var EAVFormHelper */
+    /** @var FormHelper */
     protected $formHelper;
 
     /** @var DoctrineHelper */
@@ -30,7 +28,7 @@ class DeleteAction implements ActionInjectableInterface
     /** @var RoutingHelper */
     protected $routingHelper;
 
-    /** @var EAVTemplatingHelper */
+    /** @var TemplatingHelper */
     protected $templatingHelper;
 
     /** @var IntegrityConstraintManager */
@@ -40,17 +38,17 @@ class DeleteAction implements ActionInjectableInterface
     protected $action;
 
     /**
-     * @param EAVFormHelper              $formHelper
+     * @param FormHelper                 $formHelper
      * @param DoctrineHelper             $doctrineHelper
      * @param RoutingHelper              $routingHelper
-     * @param EAVTemplatingHelper        $templatingHelper
+     * @param TemplatingHelper           $templatingHelper
      * @param IntegrityConstraintManager $integrityConstraintManager
      */
     public function __construct(
-        EAVFormHelper $formHelper,
+        FormHelper $formHelper,
         DoctrineHelper $doctrineHelper,
         RoutingHelper $routingHelper,
-        EAVTemplatingHelper $templatingHelper,
+        TemplatingHelper $templatingHelper,
         IntegrityConstraintManager $integrityConstraintManager
     ) {
         $this->formHelper = $formHelper;
@@ -61,21 +59,17 @@ class DeleteAction implements ActionInjectableInterface
     }
 
     /**
-     * @param Request         $request
-     * @param DataInterface   $data
-     * @param FamilyInterface $family
+     * @ParamConverter(name="data", converter="sidus_admin.entity")
+     *
+     * @param Request $request
+     * @param mixed   $data
      *
      * @throws \Exception
      *
      * @return Response
      */
-    public function __invoke(Request $request, DataInterface $data, FamilyInterface $family = null): Response
+    public function __invoke(Request $request, $data): Response
     {
-        if ($family) {
-            WrongFamilyException::assertFamily($data, $family->getCode());
-        } else {
-            $family = $data->getFamily();
-        }
         $constrainedEntities = $this->integrityConstraintManager->getEntityConstraints($data);
 
         $dataId = $data->getId();
@@ -90,7 +84,7 @@ class DeleteAction implements ActionInjectableInterface
                     return $this->templatingHelper->renderAction(
                         $this->action,
                         array_merge(
-                            $this->templatingHelper->getViewParameters($this->action, $request, $family),
+                            $this->templatingHelper->getViewParameters($this->action, $request),
                             [
                                 'dataId' => $dataId,
                                 'success' => 1,
@@ -110,7 +104,6 @@ class DeleteAction implements ActionInjectableInterface
         return $this->templatingHelper->renderFormAction(
             $this->action,
             $request,
-            $family,
             $form,
             $data,
             [

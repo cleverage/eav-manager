@@ -1,23 +1,26 @@
 sidus_admin:
     configurations:
         media:
-            controller: '%eav.controller%'
             entity: '%sidus_data_class%'
+            controller_pattern:
+                - 'CleverAge\EAVManager\AdminBundle\Action\EAV\{{Action}}Action'
+                - 'CleverAge\EAVManager\AdminBundle\Action\{{Action}}Action'
+            template_pattern:
+                - '@CleverAgeEAVManagerAdmin/EAVData/{{action}}.{{format}}.twig'
+                - '@CleverAgeEAVManagerAdmin/Base/{{action}}.{{format}}.twig'
+            form_type: '%eav_form.type%'
             prefix: /medias
             actions:
                 list:
-                    path:     /{familyCode}/list
+                    path: /{familyCode}/list
                 create:
-                    path:     /{familyCode}/create
-                    form_type: '%eav_form.type%'
+                    path: /{familyCode}/create
                 read:
-                    path:     /{familyCode}/read/{id}
-                    form_type: '%eav_form.type%'
+                    path: /{familyCode}/read/{id}
                 edit:
-                    path:     /{familyCode}/edit/{id}
-                    form_type: '%eav_form.type%'
+                    path: /{familyCode}/edit/{id}
                 delete:
-                    path:     /{familyCode}/delete/{id}
+                    path: /{familyCode}/delete/{id}
             options:
                 hidden: true
                 icon: image

@@ -1,0 +1,33 @@
+{% set baseTemplate = baseTemplate|default(admin.baseTemplate) %}
+{% extends isAjax ? 'CleverAgeEAVManagerLayoutBundle::empty_layout.html.twig'
+    : baseTemplate|default('CleverAgeEAVManagerAdminBundle:Base:list.html.twig') %}
+
+{% set admin_trans_key = 'admin.' ~ admin.code ~ '.' ~ admin.currentAction.code ~ '.' %}
+
+{% block tg_center %}
+    <div class="well form form-read-only form-horizontal">
+        <h6>{{ data.family }}</h6>
+        {{ form_widget(form) }}
+        {% set inputId = app.request.get('inputId') %}
+        {% if inputId %}
+            {% set target = inputId ~ '_modal' %}
+            <div class="clear pull-right">
+                <a href="{{ admin_entity_path(admin, data, 'edit') }}" class="btn btn-primary"
+                   data-target-element="#{{ target }}"
+                   data-auto-modal="{{ target }}"
+                   data-input-id="{{ inputId }}">
+                    <i class="fa fa-edit"></i> {{ 'admin.action.edit.label'|trans }}
+                </a>
+                <a href="{{ admin_entity_path(admin, data, 'delete') }}" class="btn btn-danger"
+                   data-target-element="#{{ target }}"
+                   data-auto-modal="{{ target }}"
+                   data-input-id="{{ inputId }}">
+                    <i class="fa fa-trash"></i> {{ 'admin.action.delete.label'|trans }}
+                </a>
+            </div>
+            <div class="clear"></div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block additionnal_javascript %}{% endblock %}

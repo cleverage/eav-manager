@@ -186,7 +186,7 @@ class EAVDataController extends AbstractAdminController
     public function editAction(Request $request, DataInterface $data, FamilyInterface $family = null)
     {
         $this->initDataFamily($data, $family);
-        $form = $this->getForm($request, $data);
+        $form = $this->getForm($request, $data, $family->getFormOptions());
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -236,7 +236,7 @@ class EAVDataController extends AbstractAdminController
         $constrainedEntities = $this->get(IntegrityConstraintManager::class)->getEntityConstraints($data);
 
         $formOptions = $this->getDefaultFormOptions($request, $data->getId());
-        unset($formOptions['family']);
+        unset($formOptions['family'], $formOptions['fieldset_options']);
         $builder = $this->createFormBuilder(null, $formOptions);
         $form = $builder->getForm();
         $dataId = $data->getId();

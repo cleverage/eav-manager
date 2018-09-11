@@ -31,7 +31,7 @@ class AdminEntityMatcher extends BaseAdminEntityMatcher
     public function getAdminForEntity($entity)
     {
         $default = null;
-        foreach ($this->adminConfigurationHandler->getAdmins() as $admin) {
+        foreach ($this->adminRegistry->getAdmins() as $admin) {
             if (is_a($entity, $admin->getEntity())) {
                 if ($entity instanceof DataInterface) {
                     $default = $default ?: $admin;

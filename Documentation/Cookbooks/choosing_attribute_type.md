@@ -155,7 +155,7 @@ using the [autocomplete_data_selector](#autocomplete-data-selector-autocomplete_
         allow_add: true
         allow_edit: true
         admin: mycustomadmin # Default: _data
-        edit_action: customEdit # Default: editInline
+        edit_action: customEdit # Default: edit
         create_action: customCreate # Default: create
         target: my-custom-target # Default: null
 ````

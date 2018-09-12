@@ -8,26 +8,30 @@ use Sidus\AdminBundle\Action\ActionInjectableInterface;
 use Sidus\AdminBundle\Admin\Action;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
- * @todo is_granted('create', entityClass)
- *
- * @Security("is_granted('read', data)")
+ * @Security("(is_granted('read', data) and is_granted('create', _admin.getEntity()))")
  */
 class CloneAction implements ActionInjectableInterface
 {
     /** @var EditAction */
     protected $editAction;
 
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
+
     /** @var Action */
     protected $action;
 
     /**
-     * @param EditAction $editAction
+     * @param EditAction                    $editAction
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
-    public function __construct(EditAction $editAction)
+    public function __construct(EditAction $editAction, AuthorizationCheckerInterface $authorizationChecker)
     {
         $this->editAction = $editAction;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -43,6 +47,15 @@ class CloneAction implements ActionInjectableInterface
     public function __invoke(Request $request, $data): Response
     {
         $this->editAction->setAction($this->action);
+        $admin = $this->action->getAdmin();
+        $class = $admin->getEntity();
+
+        foreach (['edit', 'read'] as $actionCode) {
+            if ($admin->hasAction($actionCode) && $this->authorizationChecker->isGranted($actionCode, $class)) {
+                $this->editAction->setRedirectAction($admin->getAction($actionCode));
+                break;
+            }
+        }
 
         return ($this->editAction)($request, clone $data);
     }

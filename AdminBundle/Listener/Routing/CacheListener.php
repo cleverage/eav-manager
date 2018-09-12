@@ -10,8 +10,7 @@
 
 namespace CleverAge\EAVManager\AdminBundle\Listener\Routing;
 
-use Psr\Log\LoggerInterface;
-use Sidus\AdminBundle\Configuration\AdminRegistry;
+use Sidus\AdminBundle\Admin\Admin;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\OptionsResolver\Exception\AccessException;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
@@ -28,22 +27,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class CacheListener
 {
-    /** @var AdminRegistry */
-    protected $adminRegistry;
-
-    /** @var LoggerInterface */
-    protected $logger;
-
-    /**
-     * @param AdminRegistry   $adminRegistry
-     * @param LoggerInterface $logger
-     */
-    public function __construct(AdminRegistry $adminRegistry, LoggerInterface $logger)
-    {
-        $this->adminRegistry = $adminRegistry;
-        $this->logger = $logger;
-    }
-
     /**
      * @param FilterResponseEvent $event
      *
@@ -62,15 +45,10 @@ class CacheListener
             return;
         }
 
-        $adminCode = $event->getRequest()->attributes->get('_admin');
-
-        if (!$this->adminRegistry->hasAdmin($adminCode)) {
-            $this->logger->error("Missing admin with code: '{$adminCode}'");
-
-            return;
+        $admin = $event->getRequest()->attributes->get('_admin');
+        if (!$admin instanceof Admin) {
+            throw new \UnexpectedValueException('_admin request attribute is not an Admin object');
         }
-
-        $admin = $this->adminRegistry->getAdmin($adminCode);
 
         $resolver = new OptionsResolver();
         $resolver->setDefaults(

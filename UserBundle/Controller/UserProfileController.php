@@ -16,6 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use CleverAge\EAVManager\UserBundle\Domain\Manager\UserManagerInterface;
 
 /**
  * Profile edition.
@@ -53,7 +54,7 @@ class UserProfileController extends Controller
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('CleverAge\EAVManager\UserBundle\Domain\Manager\UserManagerInterface')->save($user);
+            $this->get(UserManagerInterface::class)->save($user);
 
             $this->addFlash('success', 'eavmanager.flash.edit.success');
 

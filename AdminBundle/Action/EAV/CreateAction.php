@@ -8,6 +8,7 @@ use Sidus\AdminBundle\Admin\Action;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * @Security("is_granted('create', family)")
@@ -17,15 +18,20 @@ class CreateAction implements ActionInjectableInterface
     /** @var EditAction */
     protected $editAction;
 
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
+
     /** @var Action */
     protected $action;
 
     /**
-     * @param EditAction $editAction
+     * @param EditAction                    $editAction
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
-    public function __construct(EditAction $editAction)
+    public function __construct(EditAction $editAction, AuthorizationCheckerInterface $authorizationChecker)
     {
         $this->editAction = $editAction;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -39,6 +45,14 @@ class CreateAction implements ActionInjectableInterface
     public function __invoke(Request $request, FamilyInterface $family): Response
     {
         $this->editAction->setAction($this->action);
+        $admin = $this->action->getAdmin();
+
+        foreach (['edit', 'read'] as $actionCode) {
+            if ($admin->hasAction($actionCode) && $this->authorizationChecker->isGranted($actionCode, $family)) {
+                $this->editAction->setRedirectAction($admin->getAction($actionCode));
+                break;
+            }
+        }
 
         return ($this->editAction)($request, $family->createData(), $family);
     }

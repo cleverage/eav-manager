@@ -16,6 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
+use CleverAge\EAVManager\UserBundle\Domain\Manager\UserManagerInterface;
 
 /**
  * Specific controller for user management
@@ -44,7 +45,7 @@ class UserController extends GenericAdminController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get('CleverAge\EAVManager\UserBundle\Domain\Manager\UserManagerInterface')->requestNewPassword($user);
+            $this->get(UserManagerInterface::class)->requestNewPassword($user);
             $this->saveEntity($user);
 
             if ($request->isXmlHttpRequest()) {
@@ -102,7 +103,7 @@ class UserController extends GenericAdminController
             return;
         }
 
-        $this->get('CleverAge\EAVManager\UserBundle\Domain\Manager\UserManagerInterface')->save($user);
+        $this->get(UserManagerInterface::class)->save($user);
 
         $action = $this->admin->getCurrentAction();
         $this->addFlash('success', "eavmanager.flash.{$action->getCode()}.success");

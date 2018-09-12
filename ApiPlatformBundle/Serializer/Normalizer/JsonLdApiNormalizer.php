@@ -33,7 +33,7 @@ class JsonLdApiNormalizer extends BaseApiNormalizer
     use ContextTrait;
     use JsonLdContextTrait;
 
-    const FORMAT = 'jsonld';
+    public const FORMAT = 'jsonld';
 
     /** @var ResourceMetadataFactoryInterface */
     protected $resourceMetadataFactory;

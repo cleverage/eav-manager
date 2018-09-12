@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use CleverAge\EAVManager\UserBundle\Configuration\Configuration;
+use CleverAge\EAVManager\UserBundle\Domain\Manager\UserManagerInterface;
 
 /**
  * Handles authentication and lost password as well as password creation
@@ -86,7 +87,7 @@ class SecurityController extends Controller
 
         $error = null;
         if ($form->isSubmitted() && $form->isValid()) {
-            $userManager = $this->get('CleverAge\EAVManager\UserBundle\Domain\Manager\UserManagerInterface');
+            $userManager = $this->get(UserManagerInterface::class);
             $user = null;
             try {
                 $user = $userManager->loadUserByUsername($form->get('username')->getData());
@@ -133,7 +134,7 @@ class SecurityController extends Controller
             return $this->redirectToRoute('lost_password');
         }
 
-        $userManager = $this->get('CleverAge\EAVManager\UserBundle\Domain\Manager\UserManagerInterface');
+        $userManager = $this->get(UserManagerInterface::class);
         $user = $userManager->loadUserByToken($token);
         if (!$user) {
             $this->addFlash(

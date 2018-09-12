@@ -86,11 +86,11 @@ class DeleteAction implements ActionInjectableInterface
             if ($form->isSubmitted() && $form->isValid()) {
                 $this->doctrineHelper->deleteEntity($this->action, $data, $request->getSession());
 
-                if ($request->isXmlHttpRequest()) {
+                if ($request->isXmlHttpRequest() && $this->formHelper->getTarget($request) !== '#tg_center') {
                     return $this->templatingHelper->renderAction(
                         $this->action,
                         array_merge(
-                            $this->templatingHelper->getViewParameters($this->action, $request, $family),
+                            $this->templatingHelper->getViewParameters($this->action, $request, $family, $form),
                             [
                                 'dataId' => $dataId,
                                 'success' => 1,
@@ -102,7 +102,8 @@ class DeleteAction implements ActionInjectableInterface
                 return $this->routingHelper->redirectToAction(
                     $this->action->getAdmin()->getAction(
                         $this->action->getOption('redirect_action', 'list')
-                    )
+                    ),
+                    ['familyCode' => $family->getCode()]
                 );
             }
         }

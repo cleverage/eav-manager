@@ -125,4 +125,14 @@ class EAVFormHelper
 
         return array_merge($formOptions, $data->getFamily()->getFormOptions());
     }
+
+    /**
+     * @param Request $request
+     *
+     * @return string|null
+     */
+    public function getTarget(Request $request): ?string
+    {
+        return $this->baseFormHelper->getTarget($request);
+    }
 }

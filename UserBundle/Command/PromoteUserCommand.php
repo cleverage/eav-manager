@@ -17,6 +17,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use CleverAge\EAVManager\UserBundle\Domain\Manager\UserManagerInterface;
 
 /**
  * Promote users or remove their super admin role
@@ -50,7 +51,7 @@ class PromoteUserCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $username = $input->getArgument('username');
-        $userManager = $this->getContainer()->get('CleverAge\EAVManager\UserBundle\Domain\Manager\UserManagerInterface');
+        $userManager = $this->getContainer()->get(UserManagerInterface::class);
         $user = null;
         try {
             $user = $userManager->loadUserByUsername($username);

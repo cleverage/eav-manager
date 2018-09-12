@@ -33,6 +33,9 @@ class EditAction implements ActionInjectableInterface
     /** @var Action */
     protected $action;
 
+    /** @var Action */
+    protected $redirectAction;
+
     /**
      * @param FormHelper       $formHelper
      * @param DoctrineHelper   $doctrineHelper
@@ -72,7 +75,7 @@ class EditAction implements ActionInjectableInterface
             $parameters = $request->query->all();
             $parameters['success'] = 1;
 
-            return $this->routingHelper->redirectToEntity($this->action, $data, $parameters);
+            return $this->routingHelper->redirectToEntity($this->redirectAction, $data, $parameters);
         }
 
         return $this->templatingHelper->renderFormAction($this->action, $request, $form, $data);
@@ -81,8 +84,17 @@ class EditAction implements ActionInjectableInterface
     /**
      * @param Action $action
      */
+    public function setRedirectAction(Action $action): void
+    {
+        $this->redirectAction = $action;
+    }
+
+    /**
+     * @param Action $action
+     */
     public function setAction(Action $action): void
     {
         $this->action = $action;
+        $this->redirectAction = $action;
     }
 }

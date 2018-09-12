@@ -28,7 +28,7 @@ class AdminEntityMatcher extends BaseAdminEntityMatcher
      *
      * @throws \UnexpectedValueException
      */
-    public function getAdminForEntity($entity)
+    public function getAdminForEntity($entity): Admin
     {
         $default = null;
         foreach ($this->adminRegistry->getAdmins() as $admin) {

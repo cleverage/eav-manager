@@ -3,6 +3,7 @@
 namespace CleverAge\EAVManager\AdminBundle\Action;
 
 use CleverAge\EAVManager\AdminBundle\Templating\TemplatingHelper;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sidus\AdminBundle\Action\ActionInjectableInterface;
 use Sidus\AdminBundle\Admin\Action;
 use CleverAge\EAVManager\AdminBundle\DataGrid\DataGridHelper;
@@ -11,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
- * @todo Security("is_granted('list', dataClass)")
+ * @Security("is_granted('list', _admin.getEntity())")
  */
 class ListAction implements ActionInjectableInterface
 {

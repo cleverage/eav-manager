@@ -35,7 +35,7 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
  */
 class ResourceNormalizer extends ObjectNormalizer
 {
-    const OPTION_KEY = 'resource_options';
+    public const OPTION_KEY = 'resource_options';
 
     /** @var ResourceManagerInterface */
     protected $resourceManager;
@@ -103,7 +103,7 @@ class ResourceNormalizer extends ObjectNormalizer
             $normalizedData = [
                 'identifier' => $object->getIdentifier(),
                 'originalFileName' => $object->getOriginalFileName(),
-                'type' => $object->getType(),
+                'type' => $object::getType(),
             ];
         } else {
             $normalizedData = parent::normalize($object, $format, $context);

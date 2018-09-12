@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
 /*
  * This file is part of the CleverAge/EAVManager package.
  *

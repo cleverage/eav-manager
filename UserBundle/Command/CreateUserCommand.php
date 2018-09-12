@@ -11,16 +11,13 @@
 namespace CleverAge\EAVManager\UserBundle\Command;
 
 use CleverAge\EAVManager\UserBundle\Exception\BadUsernameException;
-use Doctrine\ORM\ORMInvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
-use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use CleverAge\EAVManager\UserBundle\Domain\Manager\UserManagerInterface;
 
 /**
  * Use this command to create users
@@ -61,7 +58,7 @@ class CreateUserCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $username = $input->getArgument('username');
-        $userManager = $this->getContainer()->get('CleverAge\EAVManager\UserBundle\Domain\Manager\UserManagerInterface');
+        $userManager = $this->getContainer()->get(UserManagerInterface::class);
         if ($input->getOption('if-not-exists')) {
             try {
                 $user = $userManager->loadUserByUsername($username);

@@ -26,8 +26,8 @@ use Sidus\EAVModelBundle\Entity\DataInterface;
  */
 class User implements UserInterface, \Serializable
 {
-    const ROLE_DEFAULT = 'ROLE_USER';
-    const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
+    public const ROLE_DEFAULT = 'ROLE_USER';
+    public const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
 
     /**
      * @ORM\Id

@@ -66,6 +66,9 @@ class EAVKernelBundleLoader
             // Clever Process Bundle
             new \CleverAge\ProcessBundle\CleverAgeProcessBundle(),
 
+            // Simple permission management
+            new \CleverAge\PermissionBundle\CleverAgePermissionBundle(),
+
             // CleverAge EAVManager
             new \CleverAge\EAVManager\EAVModelBundle\CleverAgeEAVManagerEAVModelBundle(),
             new \CleverAge\EAVManager\LayoutBundle\CleverAgeEAVManagerLayoutBundle(),

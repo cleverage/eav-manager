@@ -42,7 +42,7 @@ class UserProfileController extends Controller
             UserProfileType::class,
             $user,
             [
-                'label' => 'eavmanager.user.profile.title',
+                'label' => 'user.profile.title',
                 'action' => $this->getCurrentUri($request),
                 'attr' => [
                     'novalidate' => 'novalidate',

@@ -2,6 +2,7 @@ user:
     profile:
         menu:
             title: Profil Utilisateur
+        title: Mon profil utilisateur
 
 admin:
     list_of: Liste des %family%

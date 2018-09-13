@@ -11,13 +11,13 @@
 namespace CleverAge\EAVManager\AdminBundle\Model;
 
 use Sidus\EAVModelBundle\Model\AttributeInterface;
-use Sidus\EAVModelBundle\Model\EAVRelationAttributeType;
+use Sidus\EAVModelBundle\Model\EAVEmbedAttributeType;
 use CleverAge\EAVManager\AdminBundle\Form\Type\EmbedMultiFamilyCollectionType;
 
 /**
  * Force collection type and inject the attribute into the collection
  */
-class EmbedMultiFamilyAttributeType extends EAVRelationAttributeType
+class EmbedMultiFamilyAttributeType extends EAVEmbedAttributeType
 {
     /**
      * @param AttributeInterface $attribute

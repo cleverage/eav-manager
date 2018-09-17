@@ -1,0 +1,4 @@
+services:
+    Sidus\BaseBundle\Doctrine\RepositoryFinder:
+        autowire: true
+        public: false

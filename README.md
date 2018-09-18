@@ -45,7 +45,7 @@ Only the checked entries are completed.
  - [x] [Process bundle documentation](https://github.com/cleverage/process-bundle)
  - [ ] [EAV bootstrap extension](https://github.com/VincentChalnot/SidusEAVBootstrapBundle)
  - [x] [Admin configuration](https://github.com/VincentChalnot/SidusAdminBundle)
- - [ ] [Datagrid configuration](https://github.com/VincentChalnot/SidusDataGridBundle)
+ - [x] [Datagrid configuration](https://github.com/VincentChalnot/SidusDataGridBundle)
  - [x] [Filter configuration](https://github.com/VincentChalnot/SidusFilterBundle)
  - [x] [EAV Filter configuration](https://github.com/VincentChalnot/SidusEAVFilterBundle)
  - [x] [File upload configuration](https://github.com/VincentChalnot/SidusFileUploadBundle)

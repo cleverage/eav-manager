@@ -28,7 +28,7 @@ If you want you app to be available in multiple langagues, you'll have to use Sy
 
 ## Translating family name
 
-Here is an example of a simple family translation
+Here is an example of a simple family translation. Let's say our app manages cars. We declare the `Car` family in `app/config/app/model/car.yml`. We only have three attributes : Name, Description and Color. 
 
 ```yaml
 sidus_eav_model:
@@ -43,7 +43,7 @@ sidus_eav_model:
         [...]            
 ```
 
- In the `messages.fr.yml` translation file, this results in
+ In the `messages.fr.yml` translation file, this results in the following :
  
  ```yaml
  eav:
@@ -88,7 +88,7 @@ In the `messages.fr.yml` translation file, this results in
 
 # Translating attributes
 
-You can always choose to translate attributes on a global level. In the `messages.fr.yml`, add an `attributes` key.
+You can always choose to translate attributes on a global level. In the `messages.fr.yml`, add an `attribute` key.
 
 > Translating attributes alsow impact filters in the datagrid
 
@@ -105,7 +105,7 @@ eav:
             label: Couleur    
 ```
 
-Doing so result in translating all attributes named `descritpion` or `color` on the whole project, whatever family they are in.
+Doing so result in translating all attributes named `description` or `color` on the whole project, whatever family they are in.
 
 > Note : family translation overrides global translation.
 
@@ -134,6 +134,44 @@ Base attributes, such as `CreatedAt` or `UpdatedAt` can also be translated. In y
 "Created at": "Créé le"
 "Updated at": "Mis à jour le"
 ```
+
+## Translating datagrids
+
+Non-EAV attribures in datagrids car be translated using the following structure in your translation file :
+
+```yaml
+eav:
+    datagrid:
+        {datagrid.code}:
+            {column.code}: Column label
+```
+
+For instance, we want custom column names on the datagrid, we can add the foloowing to our translation file :
+
+```yaml
+eav:
+    columns:
+        description:
+            label: Desc.
+        color:
+            label: Couleur
+```
+
+> Note : column translation overrides default attributes translation
+
+For instance, a configuration like this
+
+```yaml
+eav:
+    attribute:
+        description:
+            label: Description
+    columns:
+        description:
+            label: Desc.
+```
+
+**Description** will be used as `description` translation everywhere except for datagrid columns, where it will be translated as  **Desc**
 
 ## Translating navigation bar menu
 

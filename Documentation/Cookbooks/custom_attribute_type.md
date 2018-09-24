@@ -64,7 +64,6 @@ Finaly, we need to specify the path to our Form Type Class where we can delare t
 According your service declaration, we now need to create a Form Type Class named `MyNamespace\MyBundle\Form\Type\SizeType.php`. This class is a based on the Symfony Form Type class, so please refer to [the official Symfony Documentation](https://symfony.com/doc/3.4/form/create_custom_field_type.html)
 
 ```php
-
 /**
  * You can inherit from other forms types, depending on your needs. In most cases, use the AbstractType
  */
@@ -95,7 +94,7 @@ class SizeType extends AbstractType
     }
     
     /**
-     * Use to name your form
+     * Use to declare the form parent
      */
     public function getParent()
     {
@@ -109,7 +108,6 @@ class SizeType extends AbstractType
     {
         return 'size';
     }
-
 }
 ```
 

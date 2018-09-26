@@ -5,7 +5,9 @@
     target: button_target|default('#tg_right'),
     no_icon: true,
     class: '',
+    automodal: automodal|default(null),
 }) %}
+{% set admin = admin|default(entity_admin(result)) %}
 {% if admin.hasAction('edit') and is_granted('edit', result) %}
     {% if result.family is defined %}
         {{ utilities.eav_action_button(admin, result, 'edit', buttonOptions) }}

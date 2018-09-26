@@ -77,13 +77,23 @@ class EAVDataGridHelper
      */
     public function getDataGridConfigCode(Action $action, FamilyInterface $family): string
     {
+        // Check if datagrid code is set in options
+        $dataGridCode = $action->getOption(
+            'datagrid',
+            $action->getAdmin()->getOption('datagrid')
+        );
+        if (null !== $dataGridCode) {
+            return $dataGridCode;
+        }
+
+        // Check if a datagrid corresponding to the current family exists
         foreach ([$family->getCode(), strtolower($family->getCode())] as $dataGridCode) {
             if ($this->dataGridRegistry->hasDataGrid($dataGridCode)) {
                 return $dataGridCode;
             }
         }
 
-        return $this->baseDataGridHelper->getDataGridConfigCode($action);
+        return $action->getAdmin()->getCode(); // Fallback to admin code
     }
 
     /**

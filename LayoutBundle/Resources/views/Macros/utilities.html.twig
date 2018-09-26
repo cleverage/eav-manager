@@ -185,6 +185,9 @@ Displays a link button to an entity with configurable title, class, target and i
 
             <a href="{{ admin_entity_path(admin, entity, actionName) }}" title="{{ title }}"
                class="{{ options.class is defined ? options.class : 'btn btn-default' }}"
+                {% if options.automodal is defined and options.automodal %}
+                    data-auto-modal="{{ options.automodal }}"
+                {% endif %}
                 {% if options.target is defined and options.target %}
                     data-target-element="{{ options.target }}"
                 {% endif %}>

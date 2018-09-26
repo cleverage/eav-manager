@@ -1,7 +1,6 @@
 #!/usr/bin/env sh
 
-uglifyjs --compress --mangle -o vendor/cleverage/eav-manager/LayoutBundle/Resources/public/js/build-$(date +"%Y%m%d").js \
-vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.js \
+FILES="vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.js \
 vendor/twbs/bootstrap-sass/assets/javascripts/bootstrap.js \
 vendor/mopa/bootstrap-bundle/Mopa/Bundle/BootstrapBundle/Resources/public/js/mopabootstrap-subnav.js \
 vendor/moment/moment/min/moment.min.js \
@@ -37,4 +36,11 @@ vendor/cleverage/eav-manager/LayoutBundle/Resources/javascript/forms/better.tabs
 vendor/cleverage/eav-manager/LayoutBundle/Resources/javascript/forms/input.picker.js \
 vendor/cleverage/eav-manager/LayoutBundle/Resources/javascript/forms/media.browser.js \
 vendor/cleverage/eav-manager/LayoutBundle/Resources/javascript/datagrid/datagrid.updater.js \
-vendor/cleverage/eav-manager/LayoutBundle/Resources/javascript/lib/ajax.navigation.js
+vendor/cleverage/eav-manager/LayoutBundle/Resources/javascript/lib/ajax.navigation.js"
+
+# Dev output
+uglifyjs -o vendor/cleverage/eav-manager/LayoutBundle/Resources/public/js/build-$(date +"%Y%m%d").js ${FILES}
+
+# Production output
+uglifyjs --compress --mangle -o vendor/cleverage/eav-manager/LayoutBundle/Resources/public/js/build-$(date +"%Y%m%d").min.js ${FILES}
+

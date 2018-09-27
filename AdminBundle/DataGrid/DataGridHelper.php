@@ -38,9 +38,14 @@ class DataGridHelper extends \Sidus\AdminBundle\DataGrid\DataGridHelper
     }
 
     /**
-     * {@inheritdoc}
+     * @param Action        $action
+     * @param Request       $request
+     * @param DataGrid|null $dataGrid
+     * @param array         $formOptions
+     *
+     * @return DataGrid
      */
-    public function bindDataGridRequest(
+    public function buildDataGridForm(
         Action $action,
         Request $request,
         DataGrid $dataGrid = null,
@@ -52,7 +57,7 @@ class DataGridHelper extends \Sidus\AdminBundle\DataGrid\DataGridHelper
         }
         $formOptions['attr']['data-admin-code'] = $action->getAdmin()->getCode();
 
-        return parent::bindDataGridRequest($action, $request, $dataGrid, $formOptions);
+        return parent::buildDataGridForm($action, $request, $dataGrid, $formOptions);
     }
 
     /**

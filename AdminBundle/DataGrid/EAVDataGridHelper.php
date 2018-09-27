@@ -60,6 +60,34 @@ class EAVDataGridHelper
     }
 
     /**
+     * @param Action          $action
+     * @param Request         $request
+     * @param FamilyInterface $family
+     * @param DataGrid|null   $dataGrid
+     * @param array           $formOptions
+     *
+     * @return DataGrid
+     */
+    public function buildDataGridForm(
+        Action $action,
+        Request $request,
+        FamilyInterface $family,
+        DataGrid $dataGrid = null,
+        array $formOptions = []
+    ): DataGrid {
+        if (null === $dataGrid) {
+            $dataGrid = $this->getDataGrid($action, $family);
+        }
+
+        return $this->baseDataGridHelper->buildDataGridForm(
+            $action,
+            $request,
+            $dataGrid,
+            $formOptions
+        );
+    }
+
+    /**
      * @param Request $request
      *
      * @return null|string

@@ -58,7 +58,7 @@ Only the checked entries are completed.
 ### Basics
 
  - [ ] [Project setup](Documentation/Cookbooks/project_setup.md)
- - [ ] [Choosing an attribute type](Documentation/Cookbooks/choosing_attribute_type.md)
+ - [x] [Choosing an attribute type](Documentation/Cookbooks/choosing_attribute_type.md)
  - [ ] [Context setup](Documentation/Cookbooks/context_setup.md)
 
 ### Data management
@@ -70,7 +70,7 @@ Only the checked entries are completed.
 
 ### Internationalization
 
- - [ ] [Translations](Documentation/Cookbooks/translations.md)
+ - [x] [Translations](Documentation/Cookbooks/translations.md)
  - [ ] [EAV translations](Documentation/Cookbooks/eav_translations.md)
  - [ ] [Model translations](Documentation/Cookbooks/model_translations.md)
 
@@ -81,7 +81,7 @@ Only the checked entries are completed.
 ### Customizing
 
  - [ ] [Custom actions](Documentation/Cookbooks/custom_actions.md)
- - [ ] [Custom attribute type](Documentation/Cookbooks/custom_attribute_type.md)
+ - [x] [Custom attribute type](Documentation/Cookbooks/custom_attribute_type.md)
  - [ ] [Custom autocomplete](Documentation/Cookbooks/custom_autocomplete.md)
  - [ ] [Custom datagrid](Documentation/Cookbooks/custom_datagrid.md)
  - [ ] [Custom datagrid filters](Documentation/Cookbooks/custom_datagrid_filters.md)

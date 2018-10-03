@@ -39,8 +39,7 @@ vendor/cleverage/eav-manager/LayoutBundle/Resources/javascript/datagrid/datagrid
 vendor/cleverage/eav-manager/LayoutBundle/Resources/javascript/lib/ajax.navigation.js"
 
 # Dev output
-uglifyjs -o vendor/cleverage/eav-manager/LayoutBundle/Resources/public/js/build-$(date +"%Y%m%d").js ${FILES}
+cat ${FILES} > vendor/cleverage/eav-manager/LayoutBundle/Resources/public/js/build-$(date +"%Y%m%d").js
 
 # Production output
 uglifyjs --compress --mangle -o vendor/cleverage/eav-manager/LayoutBundle/Resources/public/js/build-$(date +"%Y%m%d").min.js ${FILES}
-

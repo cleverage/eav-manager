@@ -193,7 +193,7 @@ window.onpopstate = function () {
 !function ($) {
     "use strict"; // jshint ;_;
 
-    $(document).on('click', '[data-target-element]:not(form)', function (e) {
+    $(document).on('click', '[data-target-element]:not(form):not([data-is-target])', function (e) {
         ajaxLoading($, $(this), e);
     });
 

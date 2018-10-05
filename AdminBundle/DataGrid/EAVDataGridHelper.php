@@ -105,6 +105,11 @@ class EAVDataGridHelper
      */
     public function getDataGridConfigCode(Action $action, FamilyInterface $family): string
     {
+        $familiesOptions = $action->getAdmin()->getOption('families', []);
+        if (isset($familiesOptions[$family->getCode()]['datagrid'])) {
+            return $familiesOptions[$family->getCode()]['datagrid'];
+        }
+
         // Check if datagrid code is set in options
         $dataGridCode = $action->getOption(
             'datagrid',

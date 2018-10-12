@@ -49,7 +49,7 @@ class UserVoter implements VoterInterface
     public function vote(TokenInterface $token, $object, array $attributes)
     {
         $result = VoterInterface::ACCESS_ABSTAIN;
-        if (!is_a($object, User::class, true)) {
+        if (!$this->supportsClass($object)) {
             return $result;
         }
         if (VoterInterface::ACCESS_GRANTED === $this->roleHierarchyVoter->vote($token, null, ['ROLE_USER_MANAGER'])) {

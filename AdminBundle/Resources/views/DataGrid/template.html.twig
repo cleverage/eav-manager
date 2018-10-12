@@ -4,25 +4,27 @@
 {% block filters %}
     <div class="actions-sticky">
         <div class="actions-flex">
-            <div class="breadcrumb-wrapper">
-                <h4>
-                    {{ title is defined ? title : 'List' }}
-                </h4>
-            </div>
-            <div class="actions-wrapper">
-                <div>
-                    <div class="btn-group pull-right">
-                        {% block sticky_filters_actions %}
-                            {% if datagrid.formView.filterResetButton is defined %}
-                                {{ form_widget(datagrid.formView.filterResetButton) }}
-                            {% endif %}
-                            {% if datagrid.formView.filterSubmitButton is defined %}
-                                {{ form_widget(datagrid.formView.filterSubmitButton) }}
-                            {% endif %}
-                        {% endblock %}
+            {% block sticky_actions %}
+                <div class="breadcrumb-wrapper">
+                    <h4>
+                        {{ title is defined ? title : 'List' }}
+                    </h4>
+                </div>
+                <div class="actions-wrapper">
+                    <div>
+                        <div class="btn-group pull-right">
+                            {% block sticky_filters_actions %}
+                                {% if datagrid.formView.filterResetButton is defined %}
+                                    {{ form_widget(datagrid.formView.filterResetButton) }}
+                                {% endif %}
+                                {% if datagrid.formView.filterSubmitButton is defined %}
+                                    {{ form_widget(datagrid.formView.filterSubmitButton) }}
+                                {% endif %}
+                            {% endblock %}
+                        </div>
                     </div>
                 </div>
-            </div>
+            {% endblock %}
         </div>
     </div>
     {{ parent() }}

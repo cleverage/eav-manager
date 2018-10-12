@@ -1,3 +1,5 @@
+{% use '@CleverAgeEAVManagerAdmin/Base/partials/edit.blocks.html.twig' %}
+
 {% block breadcrumb_list %}
     {% if family is defined and family %}
         {% if listPath is defined and listPath %}
@@ -10,7 +12,6 @@
             <li>{{ family }}</li>
         {% endif %}
     {% else %}
-        {% use '@CleverAgeEAVManagerAdmin/Base/partials/edit.blocks.html.twig' with breadcrumb_list as parent_breadcrumb_list %}
-        {{ block('parent_breadcrumb_list') }}
+        {{ parent() }}
     {% endif %}
 {% endblock %}

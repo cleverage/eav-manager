@@ -1,18 +1,3 @@
 {% extends 'CleverAgeEAVManagerAdminBundle:Base:edit.html.twig' %}
 
-{% block tg_center %}
-    {% if form is defined %}
-        {% use '@CleverAgeEAVManagerAdmin/Base/partials/edit.blocks.html.twig' %}
-        {% use '@CleverAgeEAVManagerAdmin/Base/partials/delete.blocks.html.twig' %}
-        {% if isModal %}
-            {{ block('edit_modal') }}
-        {% else %}
-            {{ block('edit_standard') }}
-        {% endif %}
-    {% endif %}
-{% endblock %}
-
-{% block additionnal_javascript %}
-    {% import "CleverAgeEAVManagerLayoutBundle:Macros:utilities.html.twig" as utilities %}
-    {{ utilities.triggerDataEvent(admin, data is defined ? data, dataId, success, target) }}
-{% endblock %}
+{% use '@CleverAgeEAVManagerAdmin/Base/partials/delete.blocks.html.twig' %}

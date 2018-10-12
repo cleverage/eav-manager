@@ -1,5 +1,17 @@
 {# @var admin \Sidus\AdminBundle\Admin\Admin #}
 
+{% block tg_center %}
+    {% if form is defined %}
+        {% if isModal %}
+            {{ block('edit_modal') }}
+        {% else %}
+            {{ block('edit_standard') }}
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block flash_messages %}{% endblock %}
+
 {% block edit_form_class %}{% endblock %}
 
 {% block form_actions %}

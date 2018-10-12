@@ -4,11 +4,4 @@
 
 {% set admin_trans_key = 'admin.' ~ admin.code ~ '.' ~ admin.currentAction.code ~ '.' %}
 
-{% block tg_center %}
-    {% use '@CleverAgeEAVManagerAdmin/Base/partials/list.blocks.html.twig' %}
-    {% if isModal %}
-        {{ block('list_modal') }}
-    {% else %}
-        {{ block('datagrid') }}
-    {% endif %}
-{% endblock %}
+{% use '@CleverAgeEAVManagerAdmin/Base/partials/list.blocks.html.twig' %}

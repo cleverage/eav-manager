@@ -16,3 +16,9 @@ services:
         autowire: true
         tags:
             - { name: security.voter }
+
+    CleverAge\EAVManager\SecurityBundle\Voter\GroupVoter:
+        public: false
+        autowire: true
+        tags:
+        - { name: security.voter }

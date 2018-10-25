@@ -1,3 +1,11 @@
+{% block tg_center %}
+    {% if isModal %}
+        {{ block('list_modal') }}
+    {% else %}
+        {{ block('datagrid') }}
+    {% endif %}
+{% endblock %}
+
 {% block list_modal %}
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">

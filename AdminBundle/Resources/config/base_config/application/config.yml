@@ -8,6 +8,11 @@ mopa_bootstrap:
         layout: false
         render_required_asterisk: true
         render_optional_text: false
+        help_label:
+            tooltip:
+                icon: info-circle
+            popover:
+                icon: info-circle
 
 sidus_admin:
     fallback_template_directory: CleverAgeEAVManagerAdminBundle:Base

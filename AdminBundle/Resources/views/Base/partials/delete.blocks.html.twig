@@ -1,4 +1,5 @@
 {# @var admin \Sidus\AdminBundle\Admin\Admin #}
+{% use '@CleverAgeEAVManagerAdmin/Base/partials/edit.blocks.html.twig' %}
 
 {% block edit_flash_messages %}
     {% import '@CleverAgeEAVManagerLayout/Macros/utilities.html.twig' as utilities %}
@@ -58,4 +59,9 @@
     {% else %}
         <p>{{ ('form.' ~ admin.currentAction.code ~ '.confirmation')|trans({'%entity%': render_value(data|default()) }) }}</p>
     {% endif %}
+{% endblock %}
+
+{% block additionnal_javascript %}
+    {% import "CleverAgeEAVManagerLayoutBundle:Macros:utilities.html.twig" as utilities %}
+    {{ utilities.triggerDataEvent(admin, data is defined ? data, dataId, success, target) }}
 {% endblock %}

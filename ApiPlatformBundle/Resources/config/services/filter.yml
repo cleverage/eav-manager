@@ -1,40 +1,44 @@
 services:
     CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\AbstractEAVFilter:
         abstract: true
-        autowire: true
+        arguments:
+            - '@request_stack'
+            - '@Sidus\EAVModelBundle\Registry\FamilyRegistry'
+            - '@CleverAge\EAVManager\EAVModelBundle\Resolver\FamilyResolver'
+            - '@Sidus\EAVFilterBundle\Filter\EAVFilterHelper'
 
     CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\SearchFilter:
-        parent: eavmanager_api_platform.filter.abstract_eav
+        parent: CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\AbstractEAVFilter
         abstract: true
         arguments:
             - [string]
 
     CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\BooleanFilter:
-        parent: eavmanager_api_platform.filter.abstract_eav
+        parent: CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\AbstractEAVFilter
         abstract: true
         arguments:
             - [bool]
 
     CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\DateFilter:
-        parent: eavmanager_api_platform.filter.abstract_eav
+        parent: CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\AbstractEAVFilter
         abstract: true
         arguments:
             - [DateTimeInterface]
 
     CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\NumericFilter:
-        parent: eavmanager_api_platform.filter.abstract_eav
+        parent: CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\AbstractEAVFilter
         abstract: true
         arguments:
             - [float]
 
     CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\OrderFilter:
-        parent: eavmanager_api_platform.filter.abstract_eav
+        parent: CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\AbstractEAVFilter
         abstract: true
         arguments:
             - [int, bool, DateTimeInterface, float, string]
 
     CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\RangeFilter:
-        parent: eavmanager_api_platform.filter.abstract_eav
+        parent: CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\AbstractEAVFilter
         abstract: true
         arguments:
             - [int, DateTimeInterface, float]

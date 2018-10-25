@@ -77,6 +77,7 @@ abstract class AbstractEAVFilter implements FilterInterface
     ) {
         $this->requestStack = $requestStack;
         $this->familyRegistry = $familyRegistry;
+        $this->familyResolver = $familyResolver;
         $this->eavFilterHelper = $eavFilterHelper;
         $this->supportedTypes = $supportedTypes;
         $this->properties = $properties;

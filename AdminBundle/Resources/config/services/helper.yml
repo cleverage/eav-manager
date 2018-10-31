@@ -1,5 +1,5 @@
 services:
-    CleverAge\EAVManager\AdminBundle\Form\AdminFormHelper:
+    CleverAge\EAVManager\AdminBundle\Form\FormHelper:
         public: false
         autowire: true
 
@@ -7,7 +7,7 @@ services:
         public: false
         autowire: true
 
-    CleverAge\EAVManager\AdminBundle\Templating\AdminTemplatingHelper:
+    CleverAge\EAVManager\AdminBundle\Templating\TemplatingHelper:
         public: false
         autowire: true
 

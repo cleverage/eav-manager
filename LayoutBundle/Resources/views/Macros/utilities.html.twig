@@ -40,10 +40,12 @@ Displays an admin menu link
 #}
 {% macro admin_menu_link(title, admin, action, parameters) %}
     {% set admin = admin(admin) %}
-    {% set title = title ?: tryTrans(['admin.'~admin.code~'.title'], [], admin.code|humanize) %}
-    <li {% if admin.hasRoute(app.request.attributes.get('_route')) %}class="active"{% endif %}>
-        <a href="{{ admin_path(admin, action, parameters|default({})) }}">{{ title|raw }}</a>
-    </li>
+    {% if is_granted(action, admin.entity) %}
+        {% set title = title ?: tryTrans(['admin.'~admin.code~'.title'], [], admin.code|humanize) %}
+        <li {% if admin.hasRoute(app.request.attributes.get('_route')) %}class="active"{% endif %}>
+            <a href="{{ admin_path(admin, action, parameters|default({})) }}">{{ title|raw }}</a>
+        </li>
+    {% endif %}
 {% endmacro %}
 
 {#
@@ -185,12 +187,12 @@ Displays a link button to an entity with configurable title, class, target and i
 
             <a href="{{ admin_entity_path(admin, entity, actionName) }}" title="{{ title }}"
                class="{{ options.class is defined ? options.class : 'btn btn-default' }}"
-                {% if options.automodal is defined and options.automodal %}
-                    data-auto-modal="{{ options.automodal }}"
-                {% endif %}
-                {% if options.target is defined and options.target %}
-                    data-target-element="{{ options.target }}"
-                {% endif %}>
+                    {% if options.automodal is defined and options.automodal %}
+                        data-auto-modal="{{ options.automodal }}"
+                    {% endif %}
+                    {% if options.target is defined and options.target %}
+                data-target-element="{{ options.target }}"
+                    {% endif %}>
                 {% if not options.no_icon|default(false) %}
                     <i class="fa fa-{{ options.icon is defined ? options.icon : actionName }}"></i>
                 {% endif %}

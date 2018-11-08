@@ -25,3 +25,11 @@ reset_password:
 user:
     account_creation: Création
     reset_password: Réinitialiser votre mot de passe
+    already_exists: L'utilisateur '%username%' existe déjà
+    created_success: L'utilisateur '%username%' a été créé avec succès
+    does_not_exists: User '%username%' does not exists
+    blank_password_info: Laissez le mot de passe vide pour générer une demande de nouveau mot de passe
+    password_changed_success: Le mot de passe de l'utilisateur '%username%' a bien été modifié
+    password_request_sent: Une demande de changement de mot de passe a été envoyée pour l'utilisateur '%username%'
+    promoted: L'utilisateur '%username%' a été promus super-administrateur
+    demoted: L'utilisateur '%username%' n'est plus super-admin et a été relégué en utilisateur standard

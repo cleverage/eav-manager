@@ -1,0 +1,6 @@
+services:
+    CleverAge\EAVManager\UserBundle\Command\:
+        resource: '../../../Command/*'
+        autowire: true
+        autoconfigure: true
+        public: false

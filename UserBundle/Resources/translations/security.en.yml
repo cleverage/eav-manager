@@ -25,3 +25,11 @@ reset_password:
 user:
     account_creation: Account creation
     reset_password: Reset your password
+    already_exists: User '%username%' already exists
+    created_success: User '%username%' was successfuly created
+    does_not_exists: User '%username%' does not exists
+    blank_password_info: Leave password blank to generate a new password request
+    password_changed_success: Password updated for user '%username%'
+    password_request_sent: Password request sent for user '%username%'
+    promoted: User '%username%' has been promoted to super-admin
+    demoted: User '%username%' has been demoted from super-admin and is now a regular user

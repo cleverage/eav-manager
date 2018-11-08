@@ -10,31 +10,27 @@
 
 namespace CleverAge\EAVManager\UserBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
-use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\Question;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
-use CleverAge\EAVManager\UserBundle\Domain\Manager\UserManagerInterface;
 
 /**
  * Use this command to change a user password
  */
-class ChangeUserPasswordCommand extends ContainerAwareCommand
+class ChangeUserPasswordCommand extends AbstractUserManagementCommand
 {
     /**
      * @throws InvalidArgumentException
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
-            ->setName('eavmanager:change-user-password')
+            ->setName('cleverage:eav-manager:change-user-password')
+            ->setAliases(['eavmanager:change-user-password'])
             ->setDescription('Change the password of a user')
-            ->addArgument('username', InputArgument::REQUIRED, 'The username of the user')
+            ->addArgument('username', InputArgument::OPTIONAL, 'The username of the user')
             ->addOption('password', 'p', InputOption::VALUE_REQUIRED, 'The new password of the user');
     }
 
@@ -46,32 +42,36 @@ class ChangeUserPasswordCommand extends ContainerAwareCommand
      *
      * @return int|null
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
-        $username = $input->getArgument('username');
-        $userManager = $this->getContainer()->get(UserManagerInterface::class);
-        $user = null;
-        try {
-            $user = $userManager->loadUserByUsername($username);
-        } catch (UsernameNotFoundException $e) {
-            $output->writeln("<error>The user doesn't exists : {$username}</error>");
-
+        $username = $this->getUsername($input, $output);
+        $user = $this->findUser($output, $username);
+        if (null === $user) {
             return 1;
         }
 
-        $password = $input->getOption('password');
-        if (null === $password && $input->isInteractive()) {
-            /** @var QuestionHelper $questionHelper */
-            $questionHelper = $this->getHelper('question');
-            $question = new Question('<info>Password: </info>');
-            $question->setHidden(true);
-            $password = $questionHelper->ask($input, $output, $question);
+        $password = $this->getPassword($input, $output);
+        if ($password) {
+            $this->userManager->setPlainTextPassword($user, $password);
+        } else {
+            $this->userManager->requestNewPassword($user);
         }
+        $this->userManager->save($user);
 
-        $userManager->setPlainTextPassword($user, $password);
-        $userManager->save($user);
-
-        $output->writeln("<info>Password updated for user '{$username}'</info>");
+        if ($password) {
+            $message = $this->translator->trans(
+                'user.password_changed_success',
+                ['%username%' => $username],
+                'security'
+            );
+        } else {
+            $message = $this->translator->trans(
+                'user.password_request_sent',
+                ['%username%' => $username],
+                'security'
+            );
+        }
+        $output->writeln("<info>{$message}</info>");
 
         return 0;
     }

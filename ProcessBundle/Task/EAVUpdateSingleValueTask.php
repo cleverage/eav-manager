@@ -38,18 +38,12 @@ class EAVUpdateSingleValueTask extends AbstractDoctrineTask
     {
         $entity = $state->getInput();
         if (!$entity instanceof DataInterface) {
-            $state->setException(new \UnexpectedValueException('Expecting a DataInterface as input'));
-            $state->setError($entity);
-
-            return;
+            throw new \UnexpectedValueException('Expecting a DataInterface as input');
         }
         $family = $entity->getFamily();
         $options = $this->getOptions($state);
         if (!$family->hasAttribute($options['attribute'])) {
-            $state->setException(new MissingAttributeException($options['attribute']));
-            $state->setError($entity);
-
-            return;
+            throw new MissingAttributeException($options['attribute']);
         }
 
         /** @var EntityManager $em */

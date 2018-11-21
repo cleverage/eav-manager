@@ -57,7 +57,7 @@ Only the checked entries are completed.
 
 ### Basics
 
- - [ ] [Project setup](Documentation/Cookbooks/project_setup.md)
+ - [x] [Project setup](Documentation/Cookbooks/project_setup.md)
  - [x] [Choosing an attribute type](Documentation/Cookbooks/choosing_attribute_type.md)
  - [ ] [Context setup](Documentation/Cookbooks/context_setup.md)
 
@@ -65,7 +65,7 @@ Only the checked entries are completed.
 
  - [ ] [Data import](Documentation/Cookbooks/data_import.md)
  - [ ] [Data export](Documentation/Cookbooks/data_export.md)
- - [ ] [API Platform](Documentation/Cookbooks/api_platform.md)
+ - [x] [API Platform](Documentation/Cookbooks/api_platform.md)
  - [ ] [Doctrine events](Documentation/Cookbooks/doctrine_events.md)
 
 ### Internationalization

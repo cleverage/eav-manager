@@ -58,7 +58,11 @@ class CreateUserCommand extends AbstractUserManagementCommand
     {
         $username = $this->getUsername($input, $output);
         if ($input->getOption('if-not-exists')) {
-            $user = $this->userManager->loadUserByUsername($username);
+            try {
+                $user = $this->userManager->loadUserByUsername($username);
+            } catch (\Exception $e) {
+                $user = null;
+            }
             if ($user) {
                 $message = $this->translator->trans(
                     'user.already_exists',

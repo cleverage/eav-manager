@@ -207,9 +207,6 @@ class UserType extends AbstractType
                 $form = $event->getForm();
                 /** @var User $user */
                 $user = $event->getData();
-                if (!$user->getId()) {
-                    return;
-                }
 
                 $dataOptions = [
                     'label' => false,
@@ -218,7 +215,7 @@ class UserType extends AbstractType
                     'family' => 'User',
                 ];
 
-                if ($user && !$user->getData()) {
+                if (!$user->getData()) {
                     $dataOptions['data'] = $this->familyRegistry->getFamily('User')->createData();
                 }
                 /** @var FormBuilderInterface $infoTab */

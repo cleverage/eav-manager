@@ -175,11 +175,26 @@
 {% endblock %}
 
 {% block secondary_actions %}
+    {{ block('edit_link') }}
     {{ block('delete_link') }}
 {% endblock %}
 
+{% block edit_link %}
+    {% if admin.currentAction.code != 'edit' and admin.hasAction('edit') and data is defined and data.id and is_granted('edit', data) %}
+        {% import '@CleverAgeEAVManagerLayout/Macros/utilities.html.twig' as utilities %}
+        <li>
+            {{ utilities.eav_action_button(admin, data, 'edit', {
+                title_as_content: true,
+                target: target,
+                class: '',
+                icon: 'pencil',
+            }) }}
+        </li>
+    {% endif %}
+{% endblock %}
+
 {% block delete_link %}
-    {% if admin.hasAction('delete') and data is defined and data.id and is_granted('delete', data) %}
+    {% if admin.currentAction.code != 'delete' and admin.hasAction('delete') and data is defined and data.id and is_granted('delete', data) %}
         {% import '@CleverAgeEAVManagerLayout/Macros/utilities.html.twig' as utilities %}
         <li class="bg-danger">
             {{ utilities.eav_action_button(admin, data, 'delete', {

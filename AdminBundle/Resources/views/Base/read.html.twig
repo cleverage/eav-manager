@@ -1,5 +1,3 @@
-{% extends 'CleverAgeEAVManagerAdminBundle:Base:edit.html.twig' %}
+{% extends '@CleverAgeEAVManagerAdmin/Base/edit.html.twig' %}
 
-{% block submit_button %}{% endblock %}
-
-{% block edit_form_class %}form-read-only{% endblock %}
+{% use '@CleverAgeEAVManagerAdmin/Base/partials/read.blocks.html.twig' %}

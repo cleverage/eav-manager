@@ -224,6 +224,11 @@
 {% endblock %}
 
 {% block admin_link_widget %}
+    {% if icon %}
+        {% set prefix %}
+            <i class="fa fa-{{ icon }}"></i>
+        {% endset %}
+    {% endif %}
     {#{% if is_granted(action.code, admin.entity) %} #}{# @todo fixme for EAV data: find family #}
     {{ block('sidus_link_widget') }}
     {#{% endif %}#}

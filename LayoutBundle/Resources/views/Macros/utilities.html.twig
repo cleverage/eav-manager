@@ -157,15 +157,15 @@ Displays the global context switcher
 {#
 Displays a link button to an entity, checking permissions and with configurable title, class, target and icon
 #}
-{% macro eav_action_button(admin, entity, actionName, options) %}
+{% macro eav_action_button(admin, entity, actionName, options, routeParameters) %}
     {% import _self as current %}
-    {{ current.action_button(admin, entity, actionName, options) }}
+    {{ current.action_button(admin, entity, actionName, options, routeParameters) }}
 {% endmacro %}
 
 {#
 Displays a link button to an entity with configurable title, class, target and icon
 #}
-{% macro action_button(admin, entity, actionName, options) %}
+{% macro action_button(admin, entity, actionName, options, routeParameters) %}
     {% spaceless %}
         {# @var admin \Sidus\AdminBundle\Admin\Admin #}
         {% if admin.hasAction(actionName) and is_granted(actionName, entity) %}
@@ -185,7 +185,7 @@ Displays a link button to an entity with configurable title, class, target and i
                 ], {}, actionName) %}
             {% endif %}
 
-            <a href="{{ admin_entity_path(admin, entity, actionName) }}" title="{{ title }}"
+            <a href="{{ admin_entity_path(admin, entity, actionName, routeParameters|default([])) }}" title="{{ title }}"
                class="{{ options.class is defined ? options.class : 'btn btn-default' }}"
                     {% if options.automodal is defined and options.automodal %}
                         data-auto-modal="{{ options.automodal }}"

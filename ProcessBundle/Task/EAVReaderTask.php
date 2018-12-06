@@ -89,6 +89,7 @@ class EAVReaderTask extends AbstractEAVQueryTask implements IterableTaskInterfac
 
         // Handle empty results
         if (0 === $this->iterator->count()) {
+            $logContext = $this->getLogContext($state);
             $this->logger->log($options['empty_log_level'], 'Empty resultset for query', $logContext);
             $state->setSkipped(true);
 

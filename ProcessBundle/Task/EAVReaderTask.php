@@ -14,6 +14,7 @@ use CleverAge\ProcessBundle\Model\IterableTaskInterface;
 use CleverAge\ProcessBundle\Model\ProcessState;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 use Sidus\EAVModelBundle\Doctrine\EAVFinder;
 use Sidus\EAVModelBundle\Registry\FamilyRegistry;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -70,10 +71,7 @@ class EAVReaderTask extends AbstractEAVQueryTask implements IterableTaskInterfac
                 $this->iterator = null;
                 $this->logger->error('Reader was closed previously, restarting it', $logContext);
             } else {
-                $this->logger->error('Reader was closed previously, stopping the process', $logContext);
-                $state->setStopped(true);
-
-                return;
+                throw new \RuntimeException('Reader was closed previously, stopping the process');
             }
         }
 
@@ -91,11 +89,8 @@ class EAVReaderTask extends AbstractEAVQueryTask implements IterableTaskInterfac
 
         // Handle empty results
         if (0 === $this->iterator->count()) {
-            if ($this->getOption($state, 'log_count')) {
-                $logContext = $this->getLogContext($state);
-                $this->logger->notice('Empty resultset for query, stopping the process', $logContext);
-            }
-            $state->setStopped(true);
+            $this->logger->log($options['empty_log_level'], 'Empty resultset for query', $logContext);
+            $state->setSkipped(true);
 
             return;
         }
@@ -140,6 +135,20 @@ class EAVReaderTask extends AbstractEAVQueryTask implements IterableTaskInterfac
             [
                 'allow_reset' => false,   // Allow the reader to reset it's iterator
                 'log_count' => false,   // Log in state history the result count
+                'empty_log_level' => LogLevel::WARNING,
+            ]
+        );
+        $resolver->setAllowedValues(
+            'empty_log_level',
+            [
+                LogLevel::ALERT,
+                LogLevel::CRITICAL,
+                LogLevel::DEBUG,
+                LogLevel::EMERGENCY,
+                LogLevel::ERROR,
+                LogLevel::INFO,
+                LogLevel::NOTICE,
+                LogLevel::WARNING,
             ]
         );
     }

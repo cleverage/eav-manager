@@ -38,7 +38,7 @@
     "require": {
         "php": ">=7.1",
         "symfony/symfony": "~3.3|~4.0",
-        "liip/imagine-bundle": "~1.7",
+        "liip/imagine-bundle": "~1.7|~2.0",
         "thomaspark/bootswatch": "~3.3.7",
         "friendsofsymfony/jsrouting-bundle": "~1.6",
         "cleverage/permission-bundle": "1.0.*",

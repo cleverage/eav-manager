@@ -56,17 +56,10 @@ admin:
                 label: Nom d'utilisateur
             email:
                 label: Adresse e-mail
-                blank: Veuillez saisir votre adresse email
-                invalid: Veuillez saisir une adresse valide
-                already_used: Cette adresse email est déjà utilisée
             password:
                 label: Mot de passe
-                blank: Veuillez saisir un mot de passe
-                pattern: Le mot de passe est invalide, il doit contenir au moins 8 caractères et avoir au moins un chiffre et une lettre.
             repeat_password:
                 label: Vérification
-                blank: Veuillez saisir de nouveau votre mot de passe
-                mismatch: Les deux mots de passes doivent être identiques
             enabled:
                 label: Activé
             roles:
@@ -119,9 +112,6 @@ form:
 warning:
     missing:
         asset: Fichier manquant
-
-eav.attribute.validation:
-    required: Cette valeur ne doit pas être vide.
 
 error:
     template:

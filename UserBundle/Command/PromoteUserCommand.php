@@ -10,34 +10,30 @@
 
 namespace CleverAge\EAVManager\UserBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
-use CleverAge\EAVManager\UserBundle\Domain\Manager\UserManagerInterface;
 
 /**
  * Promote users or remove their super admin role
  *
  * @author Vincent Chalnot <vchalnot@clever-age.com>
  */
-class PromoteUserCommand extends ContainerAwareCommand
+class PromoteUserCommand extends AbstractUserManagementCommand
 {
     /**
-     * Configuration de la commande.
-     *
      * @throws InvalidArgumentException
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
-            ->setName('eavmanager:promote-user')
+            ->setName('cleverage:eav-manager:promote-user')
+            ->setAliases(['eavmanager:promote-user'])
             ->setDescription('Promote a user to the super admin role')
-            ->addArgument('username', InputArgument::REQUIRED, 'The username of the user')
-            ->addOption('downgrade', 'd', InputOption::VALUE_NONE, 'Disable the super admin role');
+            ->addArgument('username', InputArgument::OPTIONAL, 'The username of the user')
+            ->addOption('demote', 'd', InputOption::VALUE_NONE, 'Disable the super admin role');
     }
 
     /**
@@ -48,27 +44,31 @@ class PromoteUserCommand extends ContainerAwareCommand
      *
      * @return int|null
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
-        $username = $input->getArgument('username');
-        $userManager = $this->getContainer()->get(UserManagerInterface::class);
-        $user = null;
-        try {
-            $user = $userManager->loadUserByUsername($username);
-        } catch (UsernameNotFoundException $e) {
-            $output->writeln("<error>The user doesn't exists : {$username}</error>");
-
+        $username = $this->getUsername($input, $output);
+        $user = $this->findUser($output, $username);
+        if (null === $user) {
             return 1;
         }
 
-        $user->setSuperAdmin(!$input->getOption('downgrade'));
-        $userManager->save($user);
+        $user->setSuperAdmin(!$input->getOption('demote'));
+        $this->userManager->save($user);
 
         if ($user->isSuperAdmin()) {
-            $output->writeln("<info>The user '{$username}' is now a super-admin</info>");
+            $message = $this->translator->trans(
+                'user.promoted',
+                ['%username%' => $username],
+                'security'
+            );
         } else {
-            $output->writeln("<info>The user '{$username}' is not a super-admin anymore</info>");
+            $message = $this->translator->trans(
+                'user.demoted',
+                ['%username%' => $username],
+                'security'
+            );
         }
+        $output->writeln("<info>{$message}</info>");
 
         return 0;
     }

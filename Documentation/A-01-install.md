@@ -188,7 +188,7 @@ In the twig section of your config.yml append the following configuration:
 ```yaml
 twig:
     form_themes:
-        - SidusDataGridBundle:Form:fields.html.twig
+        - SidusDataGridBundle:Form:bootstrap3.html.twig # Also exists in Bootstrap4 variant
         - CleverAgeEAVManagerLayoutBundle:Form:form.fields.html.twig
 ```
 

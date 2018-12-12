@@ -32,7 +32,7 @@ sidus_file_upload:
     resource: '@SidusFileUploadBundle/Resources/config/routing.yml'
 
 _liip_imagine:
-    resource: '@LiipImagineBundle/Resources/config/routing.xml'
+    resource: '@LiipImagineBundle/Resources/config/routing.yaml'
 
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"

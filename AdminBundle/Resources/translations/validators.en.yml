@@ -1,0 +1,18 @@
+admin:
+    user:
+        form:
+            username:
+                already_used: This username is already in use
+            email:
+                blank: Please fill your email
+                invalid: Not a valid email address
+                already_used: This email is already in use
+            password:
+                blank: Please fill your password
+                short: Password must be at least 8 characters
+            repeat_password:
+                blank: Please type your password again
+                mismatch: Both passwords must be identicals
+
+eav.attribute.validation:
+    required: This value must not be blank

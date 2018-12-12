@@ -1,9 +1,9 @@
 {% spaceless %}
     {% import "CleverAgeEAVManagerLayoutBundle:Macros:utilities.html.twig" as utilities %}
-    {% set admin = admin|default(entity_admin(result)) %}
+    {% set admin = admin(admin)|default(entity_admin(result)) %}
     <div class="btn-group btn-group-xs btn-group-nowrap">
         {% block list_row_actions %}
-            {% if admin.hasAction('edit') and is_granted('edit', result) %}
+            {% if admin.hasAction('edit') and is_granted('edit', result) and not disabled|default(false) %}
                 {{ utilities.action_button(admin, result, 'edit', {
                     class: 'btn btn-primary',
                     target: button_target|default('#tg_right'),
@@ -17,16 +17,18 @@
                     icon: 'eye',
                 }) }}
             {% endif %}
-            {{ utilities.action_button(admin, result, 'clone', {
-                target: button_target|default('#tg_right'),
-                automodal: automodal|default(null),
-            }) }}
-            {{ utilities.action_button(admin, result, 'delete', {
-                class: 'btn btn-danger',
-                target: button_target|default('#tg_right'),
-                automodal: automodal|default(null),
-                icon: 'remove',
-            }) }}
+            {% if not disabled|default(false) %}
+                {{ utilities.action_button(admin, result, 'clone', {
+                    target: button_target|default('#tg_right'),
+                    automodal: automodal|default(null),
+                }) }}
+                {{ utilities.action_button(admin, result, 'delete', {
+                    class: 'btn btn-danger',
+                    target: button_target|default('#tg_right'),
+                    automodal: automodal|default(null),
+                    icon: 'remove',
+                }) }}
+            {% endif %}
         {% endblock %}
     </div>
 {% endspaceless %}

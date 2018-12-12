@@ -57,17 +57,10 @@ admin:
                 label: Username
             email:
                 label: Email
-                blank: Please fill your email
-                invalid: Not a valid email address
-                already_used: This email is already in use
             password:
                 label: Password
-                blank: Please fill your password
-                short: Password must be at least 8 characters
             repeat_password:
                 label: Repeat password
-                blank: Please type your password again
-                mismatch: Both passwords must be identicals
             enabled:
                 label: Enabled
             roles:
@@ -119,9 +112,6 @@ form:
 warning:
     missing:
         asset: Missing file
-
-eav.attribute.validation:
-    required: This value must not be blank
 
 error:
     template:

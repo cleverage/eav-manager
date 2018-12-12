@@ -101,6 +101,6 @@ class EditAction implements ActionInjectableInterface
     public function setAction(Action $action): void
     {
         $this->action = $action;
-        $this->redirectAction = $action;
+        $this->setRedirectAction($action);
     }
 }

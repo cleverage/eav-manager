@@ -11,32 +11,31 @@
 namespace CleverAge\EAVManager\UserBundle\Command;
 
 use CleverAge\EAVManager\UserBundle\Exception\BadUsernameException;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use CleverAge\EAVManager\UserBundle\Domain\Manager\UserManagerInterface;
 
 /**
  * Use this command to create users
  *
  * @author Vincent Chalnot <vchalnot@clever-age.com>
  */
-class CreateUserCommand extends ContainerAwareCommand
+class CreateUserCommand extends AbstractUserManagementCommand
 {
     /**
-     * Configuration de la commande.
+     * Command configuration
      *
      * @throws InvalidArgumentException
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
-            ->setName('eavmanager:create-user')
+            ->setName('cleverage:eav-manager:create-user')
+            ->setAliases(['eavmanager:create-user'])
             ->setDescription('Create users in the database')
-            ->addArgument('username', InputArgument::REQUIRED, 'The username which is also the email')
+            ->addArgument('username', InputArgument::OPTIONAL, 'The username which is also the email')
             ->addOption(
                 'password',
                 'p',
@@ -55,38 +54,46 @@ class CreateUserCommand extends ContainerAwareCommand
      *
      * @return int|null
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
-        $username = $input->getArgument('username');
-        $userManager = $this->getContainer()->get(UserManagerInterface::class);
+        $username = $this->getUsername($input, $output);
         if ($input->getOption('if-not-exists')) {
             try {
-                $user = $userManager->loadUserByUsername($username);
-                if ($user) {
-                    $output->writeln("L'utilisateur existe déjà");
-
-                    return 0;
-                }
+                $user = $this->userManager->loadUserByUsername($username);
             } catch (\Exception $e) {
+                $user = null;
+            }
+            if ($user) {
+                $message = $this->translator->trans(
+                    'user.already_exists',
+                    [
+                        '%username%' => $username,
+                    ],
+                    'security'
+                );
+                $output->writeln("<comment>{$message}</comment>");
+
+                return 0;
             }
         }
 
         try {
-            $user = $userManager->createUser($username);
+            $user = $this->userManager->createUser($username);
         } catch (BadUsernameException $e) {
-            $output->writeln("<error>Nom d'utilisateur incorrect :\n{$e->getMessage()}</error>");
+            $output->writeln("<error>{$e->getMessage()}</error>");
 
             return 1;
         }
 
         $user->setSuperAdmin($input->getOption('admin'));
-        $password = $input->getOption('password');
+        $password = $this->getPassword($input, $output);
         if ($password) {
-            $userManager->setPlainTextPassword($user, $password);
+            $this->userManager->setPlainTextPassword($user, $password);
         }
-        $userManager->save($user);
+        $this->userManager->save($user);
 
-        $output->writeln("<info>L'utilisateur '{$username}' a été créé avec succès</info>");
+        $message = $this->translator->trans('user.created_success', ['%username%' => $username], 'security');
+        $output->writeln("<info>{$message}</info>");
 
         return 0;
     }

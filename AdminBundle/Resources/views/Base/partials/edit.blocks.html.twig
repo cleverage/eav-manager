@@ -30,6 +30,7 @@
         {{ form_start(form) }}
         {{ block('sticky_actions') }}
         <div class="clear"></div>
+        {{ block('introduction_content') }}
         {{ form_widget(form) }}
         {{ block('form_message') }}
         {{ form_end(form) }}
@@ -67,6 +68,7 @@
             <div class="modal-body no-padding-top">
                 {{ block('sticky_actions') }}
                 <div class="edit-form {{ block('edit_form_class') }}">
+                    {{ block('introduction_content') }}
                     {{ form_widget(form) }}
                     {{ block('form_message') }}
                 </div>
@@ -147,21 +149,25 @@
             data-target-element="{{ target }}"
                 {% endif %}>
             {% if backAction or target == '#tg_center' %}
-                <i class="fa fa-arrow-left"></i> {{ tryTrans([admin_trans_key ~ 'back.label', 'admin.action.back.label'], [], 'Back') }}
+                <i class="fa fa-{{ tryTrans([admin_trans_key ~ 'back.icon', 'admin.action.back.icon'], [], 'arrow-left') }}"></i>
+                {{ tryTrans([admin_trans_key ~ 'back.label', 'admin.action.back.label'], [], 'Back') }}
             {% else %}
-                <i class="fa fa-close"></i> {{ tryTrans([admin_trans_key ~ 'close.label', 'admin.action.close.label'], [], 'Close') }}
+                <i class="fa fa-{{ tryTrans([admin_trans_key ~ 'close.icon', 'admin.action.close.icon'], [], 'close') }}"></i>
+                {{ tryTrans([admin_trans_key ~ 'close.label', 'admin.action.close.label'], [], 'Close') }}
             {% endif %}
         </a>
     {% elseif isAjax and target != '#tg_center' %}
         <a href="#" data-close-target="{{ target }}" class="btn btn-default">
-            <i class="fa fa-close"></i> {{ tryTrans([admin_trans_key ~ 'close.label', 'admin.action.close.label'], [], 'Close') }}
+            <i class="fa fa-{{ tryTrans([admin_trans_key ~ 'close.icon', 'admin.action.close.icon'], [], 'close') }}"></i>
+            {{ tryTrans([admin_trans_key ~ 'close.label', 'admin.action.close.label'], [], 'Close') }}
         </a>
     {% endif %}
 {% endblock %}
 
 {% block submit_button %}
     <button type="submit" class="btn btn-primary">
-        <i class="fa fa-save"></i> {{ tryTrans([admin_trans_key ~ 'submit.label', 'admin.action.submit.label'], [], 'Submit') }}
+        <i class="fa fa-{{ tryTrans([admin_trans_key ~ 'submit.icon', 'admin.action.submit.icon'], [], 'save') }}"></i>
+        {{ tryTrans([admin_trans_key ~ 'submit.label', 'admin.action.submit.label'], [], 'Submit') }}
     </button>
 {% endblock %}
 
@@ -175,11 +181,26 @@
 {% endblock %}
 
 {% block secondary_actions %}
+    {{ block('edit_link') }}
     {{ block('delete_link') }}
 {% endblock %}
 
+{% block edit_link %}
+    {% if admin.currentAction.code != 'edit' and admin.hasAction('edit') and data is defined and data.id and is_granted('edit', data) %}
+        {% import '@CleverAgeEAVManagerLayout/Macros/utilities.html.twig' as utilities %}
+        <li>
+            {{ utilities.eav_action_button(admin, data, 'edit', {
+                title_as_content: true,
+                target: target,
+                class: '',
+                icon: 'pencil',
+            }) }}
+        </li>
+    {% endif %}
+{% endblock %}
+
 {% block delete_link %}
-    {% if admin.hasAction('delete') and data is defined and data.id and is_granted('delete', data) %}
+    {% if admin.currentAction.code != 'delete' and admin.hasAction('delete') and data is defined and data.id and is_granted('delete', data) %}
         {% import '@CleverAgeEAVManagerLayout/Macros/utilities.html.twig' as utilities %}
         <li class="bg-danger">
             {{ utilities.eav_action_button(admin, data, 'delete', {
@@ -191,6 +212,8 @@
         </li>
     {% endif %}
 {% endblock %}
+
+{% block introduction_content %}{% endblock %}
 
 {% block additional_content %}
     <hr/>

@@ -115,7 +115,8 @@
         </li>
     {% else %}
         {% set title = tryTrans(['admin.' ~ admin.code ~ 'list.title']) %}
-        {% if title %}<li>{{ title }}</li>{% endif %}
+        {% if title %}
+            <li>{{ title }}</li>{% endif %}
     {% endif %}
 {% endblock %}
 
@@ -148,32 +149,36 @@
         {% elseif isModal or target == '#tg_center' %}
             data-target-element="{{ target }}"
                 {% endif %}>
-            {% if backAction or target == '#tg_center' %}
-                <i class="fa fa-{{ tryTrans([admin_trans_key ~ 'back.icon', 'admin.action.back.icon'], [], 'arrow-left') }}"></i>
-                {{ tryTrans([admin_trans_key ~ 'back.label', 'admin.action.back.label'], [], 'Back') }}
-            {% else %}
-                <i class="fa fa-{{ tryTrans([admin_trans_key ~ 'close.icon', 'admin.action.close.icon'], [], 'close') }}"></i>
-                {{ tryTrans([admin_trans_key ~ 'close.label', 'admin.action.close.label'], [], 'Close') }}
-            {% endif %}
+            {%- if backAction or target == '#tg_center' -%}
+                {{ icon(tryTrans([admin_trans_key ~ 'back.icon', 'admin.action.back.icon'], [], 'arrow-left')) }}
+                &nbsp;{{ tryTrans([admin_trans_key ~ 'back.label', 'admin.action.back.label'], [], 'Back') }}
+            {%- else -%}
+                {{ icon(tryTrans([admin_trans_key ~ 'close.icon', 'admin.action.close.icon'], [], 'close')) }}
+                &nbsp;{{ tryTrans([admin_trans_key ~ 'close.label', 'admin.action.close.label'], [], 'Close') }}
+            {%- endif -%}
         </a>
     {% elseif isAjax and target != '#tg_center' %}
         <a href="#" data-close-target="{{ target }}" class="btn btn-default">
-            <i class="fa fa-{{ tryTrans([admin_trans_key ~ 'close.icon', 'admin.action.close.icon'], [], 'close') }}"></i>
-            {{ tryTrans([admin_trans_key ~ 'close.label', 'admin.action.close.label'], [], 'Close') }}
+            {% spaceless %}
+                {{ icon(tryTrans([admin_trans_key ~ 'close.icon', 'admin.action.close.icon'], [], 'close')) }}
+                &nbsp;{{ tryTrans([admin_trans_key ~ 'close.label', 'admin.action.close.label'], [], 'Close') }}
+            {% endspaceless %}
         </a>
     {% endif %}
 {% endblock %}
 
 {% block submit_button %}
     <button type="submit" class="btn btn-primary">
-        <i class="fa fa-{{ tryTrans([admin_trans_key ~ 'submit.icon', 'admin.action.submit.icon'], [], 'save') }}"></i>
-        {{ tryTrans([admin_trans_key ~ 'submit.label', 'admin.action.submit.label'], [], 'Submit') }}
+        {% spaceless %}
+            {{ icon(tryTrans([admin_trans_key ~ 'submit.icon', 'admin.action.submit.icon'], [], 'save')) }}
+            &nbsp;{{ tryTrans([admin_trans_key ~ 'submit.label', 'admin.action.submit.label'], [], 'Submit') }}
+        {% endspaceless %}
     </button>
 {% endblock %}
 
 {% block secondary_actions_button %}
     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-        <i class="fa fa-wrench"></i> <span class="caret"></span>
+        {{ icon('wrench') }}&nbsp;<span class="caret"></span>
     </button>
     <ul class="dropdown-menu">
         {{ block('secondary_actions') }}

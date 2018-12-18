@@ -38,12 +38,12 @@ NEVER points to this layout directly !
                                 <ul class="nav">
                                     <li class="{% if app.request.attributes.get('_route') == 'eavmanager_user.profile.edit' %} active{% endif %}">
                                         <a href="{{ path('eavmanager_user.profile.edit') }}">
-                                            <i class="fa fa-user"></i> {{ app.user }}
+                                            {{ icon('user') }}&nbsp;{{ app.user }}
                                         </a>
                                     </li>
                                     <li>
                                         <a href="{{ path('logout') }}" title="logout">
-                                            <i class="fa fa-power-off"></i> {{ 'logout.label'|trans({}, 'security') }}
+                                            {{ icon('power-off') }}&nbsp;{{ 'logout.label'|trans({}, 'security') }}
                                         </a>
                                     </li>
                                 </ul>
@@ -69,8 +69,7 @@ NEVER points to this layout directly !
                                     {% set admin = admin('user') %}
                                     <a class="admin-nav" data-toggle="collapse" href="#admin_users">
                                         <h5>
-                                            <i class="fa fa-expeditedssl"></i>
-                                            {{ 'admin.user_groups.title'|trans }}
+                                            {{ icon('expeditedssl') }}&nbsp;{{ 'admin.user_groups.title'|trans }}
                                             <span class="pull-right"><span class="caret"></span></span>
                                         </h5>
                                     </a>
@@ -128,7 +127,7 @@ NEVER points to this layout directly !
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <h4 class="modal-title text-danger">
-                        <i class="fa fa-exclamation-triangle"></i> {{ 'error.template.header'|trans }}
+                        {{ icon('exclamation-triangle') }}&nbsp;{{ 'error.template.header'|trans }}
                     </h4>
                 </div>
                 <div class="modal-body">

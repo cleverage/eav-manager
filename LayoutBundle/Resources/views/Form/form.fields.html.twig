@@ -64,7 +64,7 @@
             <div class="pull-left btn-group-vertical">
                 <span class="btn btn-default disabled"
                       title="{{ 'admin.media.select.disabled' | trans | escape('html_attr') }}">
-                    <i class="fa fa-image"></i> {{ 'admin.media.select.disabled' | trans }}
+                    {{ icon('image') }}&nbsp;{{ 'admin.media.select.disabled' | trans }}
                 </span>
             </div>
         {% else %}
@@ -76,11 +76,11 @@
                        data-auto-modal="{{ target }}"
                        data-media-input-id="{{ id }}"
                        data-target-element="#{{ target }}">
-                        <i class="fa fa-image"></i> {{ title }}
+                        {{ icon('image') }}&nbsp;{{ title }}
                     </a>
                 {% endfor %}
                 <a href="javascript:void(0)" class="btn btn-warning media-detach">
-                    <i class="fa fa-close"></i> {{ 'admin.media.detach.label' | trans }}
+                    {{ icon('close') }}&nbsp;{{ 'admin.media.detach.label' | trans }}
                 </a>
             </div>
         {% endif %}
@@ -147,7 +147,7 @@
                    data-auto-modal="{{ target }}"
                    data-input-id="{{ id }}"
                    data-edit-in-place="{{ admin }}">
-                    <i class="fa fa-edit"></i> {{ 'admin.action.edit.label'|trans }}
+                    {{ icon('edit') }}&nbsp;{{ 'admin.action.edit.label'|trans }}
                 </a>
             {% endif %}
             {% if allow_add %}
@@ -158,12 +158,12 @@
                        data-target-element="#{{ target }}"
                        data-auto-modal="{{ target }}"
                        data-input-id="{{ id }}">
-                        <i class="fa fa-plus"></i> Create
+                        {{ icon('plus') }}&nbsp;Create
                     </a>
                 {% else %}
                     <div class="dropdown input-group-addon">
                         <button type="button" class="btn" data-toggle="dropdown">
-                            <i class="fa fa-plus"></i> {{ 'admin.action.create.label'|trans }}
+                            {{ icon('plus') }}&nbsp;{{ 'admin.action.create.label'|trans }}
                         </button>
                         {{ block('family_selector') }}
                     </div>
@@ -196,10 +196,10 @@
              data-is-target>
             <div class="dropdown input-group">
                 <button type="button" class="btn btn-success" data-toggle="dropdown">
-                    <i class="fa fa-plus"></i> {{ 'admin.action.create.label'|trans }}
+                    {{ icon('plus') }}&nbsp;{{ 'admin.action.create.label'|trans }}
                 </button>
                 <button type="button" class="btn btn-success" data-toggle="dropdown">
-                    <i class="fa fa-caret-down"></i>
+                    {{ icon('caret-down') }}
                 </button>
                 {{ block('family_selector') }}
             </div>
@@ -208,10 +208,10 @@
     {% else %}
         <div class="dropdown input-group">
             <button type="button" class="btn btn-default" data-toggle="dropdown" disabled="disabled">
-                <i class="fa fa-plus"></i> {{ 'admin.action.create.label'|trans }}
+                {{ icon('plus') }}&nbsp;{{ 'admin.action.create.label'|trans }}
             </button>
             <button type="button" class="btn btn-default" data-toggle="dropdown" disabled="disabled">
-                <i class="fa fa-caret-down"></i>
+                {{ icon('caret-down') }}
             </button>
         </div>
     {% endif %}
@@ -226,7 +226,7 @@
 {% block admin_link_widget %}
     {% if icon %}
         {% set prefix %}
-            <i class="fa fa-{{ icon }}"></i>
+            {{ icon(icon) }}
         {% endset %}
     {% endif %}
     {#{% if is_granted(action.code, admin.entity) %} #}{# @todo fixme for EAV data: find family #}

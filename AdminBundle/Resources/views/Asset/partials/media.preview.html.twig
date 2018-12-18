@@ -12,7 +12,7 @@
         {% set document = result.documentFile %}
         <a href="{{ path('sidus_file_upload.file.download', {type: document.type, identifier: document.identifier}) }}"
            target="_blank" class="btn btn-default" title="{{ document.originalFileName }}">
-            <i class="fa fa-download"></i> {{ result ?: document.originalFileName }}
+            {{ icon('download') }}&nbsp;{{ result ?: document.originalFileName }}
         </a>
     {% else %}
         <span class="text-muted">{{ 'warning.missing.asset'|trans }}</span>

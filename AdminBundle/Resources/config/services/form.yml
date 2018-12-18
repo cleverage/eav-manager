@@ -14,7 +14,7 @@ services:
     CleverAge\EAVManager\AdminBundle\Form\Type\EmbedMultiFamilyEntryType:
         public: false
         arguments:
-            - '@sidus_eav_model.entity_manager'
+            - '@Sidus\BaseBundle\Doctrine\RepositoryFinder'
             - '%sidus_eav_model.entity.data.class%'
         tags:
             - { name: form.type }

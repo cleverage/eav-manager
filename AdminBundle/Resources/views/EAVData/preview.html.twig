@@ -16,13 +16,13 @@
                    data-target-element="#{{ target }}"
                    data-auto-modal="{{ target }}"
                    data-input-id="{{ inputId }}">
-                    <i class="fa fa-edit"></i> {{ 'admin.action.edit.label'|trans }}
+                    {{ icon('edit') }}&nbsp;{{ 'admin.action.edit.label'|trans }}
                 </a>
                 <a href="{{ admin_entity_path(admin, data, 'delete') }}" class="btn btn-danger"
                    data-target-element="#{{ target }}"
                    data-auto-modal="{{ target }}"
                    data-input-id="{{ inputId }}">
-                    <i class="fa fa-trash"></i> {{ 'admin.action.delete.label'|trans }}
+                    {{ icon('trash') }}&nbsp;{{ 'admin.action.delete.label'|trans }}
                 </a>
             </div>
             <div class="clear"></div>

@@ -9,7 +9,7 @@
         <a href="#" class="btn btn-info media-select" data-media-id="{{ result.id }}"
            data-media-preview="{{ block('media_preview')|escape('html_attr') }}"
            title="{{ 'admin.media.select.title'|trans }}">
-            <i class="fa fa-thumb-tack"></i> {{ 'admin.media.select.label'|trans }}
+            {{ icon('thumb-tack') }}&nbsp;{{ 'admin.media.select.label'|trans }}
         </a>
     {% endif %}
 {% endblock %}

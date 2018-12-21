@@ -39,3 +39,13 @@ services:
             - CleverAge\EAVManager\AdminBundle\Form\Type\EmbedMultiFamilyEntryType
         tags:
             - { name: sidus.attribute_type }
+
+    eavmanager_admin.attribute_type.datagrid:
+        class: Sidus\EAVModelBundle\Model\EAVEmbedAttributeType
+        public: false
+        arguments:
+            - datagrid
+            - dataValue
+            - CleverAge\EAVManager\AdminBundle\Form\Type\DataGridColumnType
+        tags:
+            - { name: sidus.attribute_type }

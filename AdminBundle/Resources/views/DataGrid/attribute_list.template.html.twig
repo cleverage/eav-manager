@@ -1,0 +1,27 @@
+{# @var datagrid \Sidus\DataGridBundle\Model\DataGrid #}
+{# @var pager \Pagerfanta\Pagerfanta #}
+{% set pager = datagrid.queryHandler.pager %}
+
+{% block datagrid_table %}
+    {{ block('datagrid_table', '@CleverAgeEAVManagerAdmin/DataGrid/template.html.twig') }}
+{% endblock %}
+
+{% block datagrid_actions %}
+    <div class="datagrid-actions">
+        {% if pager.nbPages > 1 %}
+            <div class="pull-right">
+                {{ pagerfanta(pager, 'twitter_bootstrap3', {
+                    routeName: 'sidus_admin.'~admin.code~'.'~action,
+                    routeParams: {
+                        fileConfiguration: parent_data.id,
+                    }
+                }) }}
+            </div>
+        {% endif %}
+        <div class="btn-group">
+            {% for action in datagrid.formView.actions %}
+                {{ form_widget(action, {parent_data: parent_data}) }}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

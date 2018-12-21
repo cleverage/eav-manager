@@ -7,7 +7,7 @@ parameters:
 
     # Admin buttons
     create.button:
-        form_type: CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink
+        form_type: CleverAge\EAVManager\AdminBundle\Form\Type\AdminLinkType
         label: admin.action.create.label
         action: create
         icon: plus

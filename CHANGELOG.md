@@ -65,7 +65,7 @@ CleverAge/EAVManager Changelog
 | ---------- | :--------: | :-----------: |
 | 2018-03-14 | yes        | yes           |
 
-### Datagrids
+### DataGrids
  - Changing datagrid rendering method, now using render_datagrid() twig function
  
 ## v1.3.3
@@ -113,14 +113,14 @@ CleverAge/EAVManager Changelog
 
 ## v1.3.0
 
-*SUMMARY*: PHP7.1 and new Datagrid system with optional Elastic Search support
+*SUMMARY*: PHP7.1 and new DataGrid system with optional Elastic Search support
 
 | Date       | BC Breaks? | Deprecations? |
 | ---------- | :--------: | :-----------: |
 | 2018-01-09 | yes        | yes           |
 
 ### Back compatibility breaks
- - Datagrid (and filters) configurations now follows a slightly different convention, see Sidus/FilterBundle for more
+ - DataGrid (and filters) configurations now follows a slightly different convention, see Sidus/FilterBundle for more
  information
  - Requires PHP 7.1
 
@@ -128,7 +128,7 @@ CleverAge/EAVManager Changelog
  - Assetic is not a required dependency anymore (but can still be used in final project)
  - Dependency to Sidus/PublishingBundle is now removed because it's not compatible anymore with Symfony's Serializer
  
-### Datagrid / Filters
+### DataGrid / Filters
  - Major update to Sidus/FilterBundle v1.3 with better abstraction support
  - Configuration update
 
@@ -172,7 +172,7 @@ CleverAge/EAVManager Changelog
 ### UI
  - Minor templating enhancements and bugfixes
  
-### Datagrid
+### DataGrid
  - Filters refactoring and optimizations
 
 

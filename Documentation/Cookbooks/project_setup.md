@@ -60,7 +60,7 @@ Take a look at what's inside ````app/config/model````, this will give you a roug
 configuration looks like.
 The full documentation of the [EAVModelBundle can be found here](https://vincentchalnot.github.io/SidusEAVModelBundle)
 
-Inside the ````app/config/datagrid```` you will find the Datagrid configuration corresponding to each family of your
+Inside the ````app/config/datagrid```` you will find the data grid configuration corresponding to each family of your
 model. If you want to use the automatic datagrid configuration resolving for your primary datagrid, you need to define
 your datagrid configuration with the same code as your EAV Family but you can also create as many secondary datagrid
 configurations as you need and specify the datagrid code in your list action.

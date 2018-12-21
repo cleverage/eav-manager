@@ -10,7 +10,7 @@ imports:
     # Application
     - { resource: base_config/application/* }
 
-    # Datagrid
+    # DataGrid
     - { resource: base_config/datagrid/* }
 
     # Model

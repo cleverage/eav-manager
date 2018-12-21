@@ -24,5 +24,7 @@ sidus_admin:
                         _controller: CleverAge\EAVManager\AdminBundle\Action\EAV\ReadAction
                     form_options:
                         layout: horizontal
+                attributeDataGrid:
+                    path: /
             options:
                 hidden: true

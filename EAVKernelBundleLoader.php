@@ -46,7 +46,7 @@ class EAVKernelBundleLoader
             new \Sidus\EAVFilterBundle\SidusEAVFilterBundle(),
             // Bootstrap integration + additional EAV components
             new \Sidus\EAVBootstrapBundle\SidusEAVBootstrapBundle(),
-            // Datagrid made easy
+            // DataGrid made easy
             new \Sidus\DataGridBundle\SidusDataGridBundle(),
             // Easily attach file to doctrine's entities
             new \Sidus\FileUploadBundle\SidusFileUploadBundle(),

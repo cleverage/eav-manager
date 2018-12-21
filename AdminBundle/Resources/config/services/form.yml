@@ -1,9 +1,15 @@
 services:
-    CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink:
+    CleverAge\EAVManager\AdminBundle\Form\Type\AdminLinkType:
         public: false
         autowire: true
         tags:
           - { name: form.type }
+
+    CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink:
+        public: false
+        autowire: true
+        tags:
+            - { name: form.type }
 
     CleverAge\EAVManager\AdminBundle\Form\Type\ImageType:
         public: false
@@ -16,6 +22,20 @@ services:
         arguments:
             - '@Sidus\BaseBundle\Doctrine\RepositoryFinder'
             - '%sidus_eav_model.entity.data.class%'
+        tags:
+            - { name: form.type }
+
+    CleverAge\EAVManager\AdminBundle\Form\Type\DataGridColumnType:
+        public: false
+        arguments:
+            - '@Sidus\EAVModelBundle\Form\AllowedFamiliesOptionsConfigurator'
+        tags:
+            - { name: form.type }
+
+    CleverAge\EAVManager\AdminBundle\Form\Type\DataGridType:
+        public: false
+        arguments:
+            - '@Sidus\DataGridBundle\Registry\DataGridRegistry'
         tags:
             - { name: form.type }
 
@@ -32,21 +52,3 @@ services:
             - Sidus\DataGridBundle\Form\Type\LinkType
         tags:
             - { name: form.type_extension, extended_type: Sidus\DataGridBundle\Form\Type\LinkType }
-
-    Sidus\EAVFilterBundle\Filter\Type\DateRangeFilterType:
-        public: false
-        arguments:
-            - date_range
-            - Sidus\EAVBootstrapBundle\Form\Type\DateRangeType
-        calls:
-            - [setFallbackFilterType, ['@Sidus\FilterBundle\Filter\Type\Doctrine\DateRangeFilterType']]
-        tags:
-            - { name: sidus.filter_type }
-
-    Sidus\FilterBundle\Filter\Type\Doctrine\DateRangeFilterType:
-        public: false
-        arguments:
-            - date_range
-            - Sidus\EAVBootstrapBundle\Form\Type\DateRangeType
-        tags:
-            - { name: sidus.filter_type }

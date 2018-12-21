@@ -25,7 +25,7 @@ sidus_data_grid:
                     template: '%datagrid.actions%'
             actions:
                 create:
-                    form_type: CleverAge\EAVManager\AdminBundle\Form\Type\AdminLink
+                    form_type: CleverAge\EAVManager\AdminBundle\Form\Type\AdminLinkType
                     label: admin.action.create.label
                     action: create
                     icon: plus

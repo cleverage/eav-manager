@@ -13,7 +13,7 @@
                 {{ pagerfanta(pager, 'twitter_bootstrap3', {
                     routeName: 'sidus_admin.'~admin.code~'.'~action,
                     routeParams: {
-                        fileConfiguration: parent_data.id,
+                        parentData: parent_data.id,
                     }
                 }) }}
             </div>

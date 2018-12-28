@@ -22,3 +22,7 @@ services:
     CleverAge\EAVManager\AdminBundle\DataGrid\EAVDataGridHelper:
         public: false
         autowire: true
+
+    CleverAge\EAVManager\AdminBundle\DataGrid\AttributeDataGridHelper:
+        public: false
+        autowire: true

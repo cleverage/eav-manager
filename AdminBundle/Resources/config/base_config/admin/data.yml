@@ -25,6 +25,6 @@ sidus_admin:
                     form_options:
                         layout: horizontal
                 attributeDataGrid:
-                    path: /
+                    path: /datagrid/{id}/attribute/{attributeCode}/{dataGrid}
             options:
                 hidden: true

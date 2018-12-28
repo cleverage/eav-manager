@@ -27,15 +27,13 @@ services:
 
     CleverAge\EAVManager\AdminBundle\Form\Type\DataGridColumnType:
         public: false
-        arguments:
-            - '@Sidus\EAVModelBundle\Form\AllowedFamiliesOptionsConfigurator'
+        autowire: true
         tags:
             - { name: form.type }
 
     CleverAge\EAVManager\AdminBundle\Form\Type\DataGridType:
         public: false
-        arguments:
-            - '@Sidus\DataGridBundle\Registry\DataGridRegistry'
+        autowire: true
         tags:
             - { name: form.type }
 

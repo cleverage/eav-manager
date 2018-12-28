@@ -1,0 +1,9 @@
+{% extends '@CleverAgeEAVManagerAdmin/Base/list.html.twig' %}
+
+{% block datagrid %}
+    {{ render_datagrid(datagrid, {
+        admin: admin,
+        title: block('list_title'),
+        parent_data: parent_data,
+    }) }}
+{% endblock %}

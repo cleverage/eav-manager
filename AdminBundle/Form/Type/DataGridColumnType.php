@@ -10,8 +10,10 @@
 
 namespace CleverAge\EAVManager\AdminBundle\Form\Type;
 
+use CleverAge\EAVManager\AdminBundle\DataGrid\AttributeDataGridHelper;
 use Sidus\AdminBundle\Admin\Admin;
 use Sidus\DataGridBundle\Model\DataGrid;
+use Sidus\DataGridBundle\Registry\DataGridRegistry;
 use Sidus\EAVModelBundle\Entity\DataInterface;
 use Sidus\EAVModelBundle\Form\AllowedFamiliesOptionsConfigurator;
 use Sidus\EAVModelBundle\Model\AttributeInterface;
@@ -21,6 +23,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -31,12 +34,25 @@ class DataGridColumnType extends AbstractType
     /** @var AllowedFamiliesOptionsConfigurator */
     protected $allowedFamiliesOptionsConfigurator;
 
+    /** @var DataGridRegistry */
+    protected $dataGridRegistry;
+
+    /** @var AttributeDataGridHelper */
+    protected $attributeDataGridHelper;
+
     /**
      * @param AllowedFamiliesOptionsConfigurator $allowedFamiliesOptionsConfigurator
+     * @param DataGridRegistry                   $dataGridRegistry
+     * @param AttributeDataGridHelper            $attributeDataGridHelper
      */
-    public function __construct(AllowedFamiliesOptionsConfigurator $allowedFamiliesOptionsConfigurator)
-    {
+    public function __construct(
+        AllowedFamiliesOptionsConfigurator $allowedFamiliesOptionsConfigurator,
+        DataGridRegistry $dataGridRegistry,
+        AttributeDataGridHelper $attributeDataGridHelper
+    ) {
         $this->allowedFamiliesOptionsConfigurator = $allowedFamiliesOptionsConfigurator;
+        $this->dataGridRegistry = $dataGridRegistry;
+        $this->attributeDataGridHelper = $attributeDataGridHelper;
     }
 
     /**
@@ -51,12 +67,16 @@ class DataGridColumnType extends AbstractType
                 $form = $event->getForm();
                 $data = $event->getData();
 
+                /** @var DataGrid $dataGrid */
+                $dataGrid = $options['datagrid'];
+                $this->attributeDataGridHelper->buildAttributeDataGrid($dataGrid, $data, $options['attribute']);
+
                 $form->add(
                     $form->getName(),
                     DataGridType::class,
                     [
                         'disabled' => $options['disabled'],
-                        'datagrid' => $options['datagrid'],
+                        'datagrid' => $dataGrid,
                         'admin' => $options['admin'],
                         'action' => $options['action'],
                         'parent_data' => $data,
@@ -97,7 +117,7 @@ class DataGridColumnType extends AbstractType
                     return [
                         'id' => $data->getId(),
                         'attributeCode' => $options['attribute']->getCode(),
-                        'datagrid' => $options['datagrid'],
+                        'dataGrid' => $options['datagrid']->getCode(),
                     ];
                 },
             ]
@@ -112,5 +132,18 @@ class DataGridColumnType extends AbstractType
         $resolver->setAllowedTypes('datagrid', ['string', DataGrid::class]);
         $resolver->setAllowedTypes('admin', ['string', Admin::class]);
         $resolver->setAllowedTypes('attribute', [AttributeInterface::class]);
+        $resolver->setNormalizer(
+            'datagrid',
+            function (/** @noinspection PhpUnusedParameterInspection */
+                Options $options,
+                $dataGrid
+            ) {
+                if (!$dataGrid instanceof DataGrid) {
+                    $dataGrid = $this->dataGridRegistry->getDataGrid($dataGrid);
+                }
+
+                return $dataGrid;
+            }
+        );
     }
 }

@@ -10,13 +10,12 @@
 
 namespace CleverAge\EAVManager\AdminBundle\Action\EAV;
 
-use CleverAge\EAVManager\AdminBundle\DataGrid\DataGridHelper;
+use CleverAge\EAVManager\AdminBundle\DataGrid\AttributeDataGridHelper;
 use CleverAge\EAVManager\AdminBundle\Templating\TemplatingHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sidus\AdminBundle\Action\ActionInjectableInterface;
 use Sidus\AdminBundle\Admin\Action;
 use Sidus\DataGridBundle\Model\DataGrid;
-use Sidus\DataGridBundle\Registry\DataGridRegistry;
 use Sidus\EAVModelBundle\Entity\DataInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,11 +28,8 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class AttributeDataGridAction implements ActionInjectableInterface
 {
-    /** @var DataGridRegistry */
-    protected $dataGridRegistry;
-
-    /** @var DataGridHelper */
-    protected $dataGridHelper;
+    /** @var AttributeDataGridHelper */
+    protected $attributeDataGridHelper;
 
     /** @var TemplatingHelper */
     protected $templatingHelper;
@@ -45,19 +41,16 @@ class AttributeDataGridAction implements ActionInjectableInterface
     protected $action;
 
     /**
-     * @param DataGridRegistry $dataGridRegistry
-     * @param DataGridHelper   $dataGridHelper
-     * @param TemplatingHelper $templatingHelper
-     * @param RouterInterface  $router
+     * @param AttributeDataGridHelper $attributeDataGridHelper
+     * @param TemplatingHelper        $templatingHelper
+     * @param RouterInterface         $router
      */
     public function __construct(
-        DataGridRegistry $dataGridRegistry,
-        DataGridHelper $dataGridHelper,
+        AttributeDataGridHelper $attributeDataGridHelper,
         TemplatingHelper $templatingHelper,
         RouterInterface $router
     ) {
-        $this->dataGridRegistry = $dataGridRegistry;
-        $this->dataGridHelper = $dataGridHelper;
+        $this->attributeDataGridHelper = $attributeDataGridHelper;
         $this->templatingHelper = $templatingHelper;
         $this->router = $router;
     }
@@ -77,20 +70,14 @@ class AttributeDataGridAction implements ActionInjectableInterface
         string $attributeCode
     ) {
         $attribute = $data->getFamily()->getAttribute($attributeCode);
-        if (!$attribute->getType()->isRelation()) {
-            throw new \UnexpectedValueException(
-                "Attribute {$data->getFamilyCode()}.{$attributeCode} is not a relation"
-            );
-        }
-
-        $this->dataGridHelper->buildDataGridForm($this->action, $request, $dataGrid);
+        $this->attributeDataGridHelper->buildAttributeDataGrid($dataGrid, $data, $attribute);
 
         return $this->templatingHelper->renderListAction(
             $this->action,
             $request,
             $dataGrid,
             [
-                'data' => $data,
+                'parent_data' => $data,
             ]
         );
     }

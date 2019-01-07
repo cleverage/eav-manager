@@ -240,3 +240,8 @@
         {{ render_datagrid(datagrid, datagrid_vars) }}
     </div>
 {% endblock %}
+
+{% block attribute_datagrid_link_widget %}
+    {% set uri = admin_path(admin, action.code, {parentData: parent_data.id, parentAttributeCode: parent_attribute.code}) %}
+    {{ block('admin_link_widget') }}
+{% endblock %}

@@ -77,6 +77,7 @@ class AttributeDataGridAction implements ActionInjectableInterface
             $request,
             $dataGrid,
             [
+                'parent_attribute' => $attribute,
                 'parent_data' => $data,
             ]
         );

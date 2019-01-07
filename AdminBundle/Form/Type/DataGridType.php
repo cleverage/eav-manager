@@ -10,11 +10,11 @@
 
 namespace CleverAge\EAVManager\AdminBundle\Form\Type;
 
-use Sidus\AdminBundle\Admin\Action;
 use Sidus\AdminBundle\Admin\Admin;
 use Sidus\DataGridBundle\Model\DataGrid;
 use Sidus\DataGridBundle\Registry\DataGridRegistry;
 use Sidus\EAVModelBundle\Entity\DataInterface;
+use Sidus\EAVModelBundle\Model\AttributeInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -49,7 +49,10 @@ class DataGridType extends AbstractType
         $view->vars['datagrid'] = $options['datagrid'];
         $view->vars['datagrid_vars'] = array_merge(
             $options['datagrid_vars'],
-            ['parent_data' => $options['parent_data']]
+            [
+                'parent_data' => $options['parent_data'],
+                'parent_attribute' => $options['parent_attribute'],
+            ]
         );
         $view->vars['admin'] = $options['admin'];
         $view->vars['route_parameters'] = $options['route_parameters'];
@@ -77,6 +80,7 @@ class DataGridType extends AbstractType
         $resolver->setRequired(
             [
                 'parent_data',
+                'parent_attribute',
                 'datagrid',
             ]
         );
@@ -89,6 +93,7 @@ class DataGridType extends AbstractType
             ]
         );
         $resolver->setAllowedTypes('parent_data', [DataInterface::class]);
+        $resolver->setAllowedTypes('parent_attribute', [AttributeInterface::class]);
         $resolver->setAllowedTypes('datagrid', ['string', DataGrid::class]);
         $resolver->setAllowedTypes('request_data', ['NULL', 'array']);
         $resolver->setAllowedTypes('admin', ['NULL', 'string', Admin::class]);

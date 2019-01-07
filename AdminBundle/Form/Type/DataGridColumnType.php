@@ -69,7 +69,9 @@ class DataGridColumnType extends AbstractType
 
                 /** @var DataGrid $dataGrid */
                 $dataGrid = $options['datagrid'];
-                $this->attributeDataGridHelper->buildAttributeDataGrid($dataGrid, $data, $options['attribute']);
+                /** @var AttributeInterface $attribute */
+                $attribute = $options['attribute'];
+                $this->attributeDataGridHelper->buildAttributeDataGrid($dataGrid, $data, $attribute);
 
                 $form->add(
                     $form->getName(),
@@ -80,6 +82,7 @@ class DataGridColumnType extends AbstractType
                         'admin' => $options['admin'],
                         'action' => $options['action'],
                         'parent_data' => $data,
+                        'parent_attribute' => $attribute,
                         'route_parameters' => $options['route_parameters_callback']($form, $data, $options),
                     ]
                 );

@@ -208,7 +208,7 @@ class ResourceNormalizer extends ObjectNormalizer
         }
         if ($options['path']) {
             $file = $this->resourceManager->getFile($resource);
-            $normalizedData['path'] = $file->getPath();
+            $normalizedData['path'] = $file ? $file->getPath() : false;
         }
 
         return $normalizedData;

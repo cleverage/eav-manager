@@ -1,28 +1,27 @@
 {% use 'SidusEAVBootstrapBundle:Form:fields.html.twig' %}
 
 {% block eavmanager_image_widget %}
-    {# @var image \CleverAge\EAVManager\AssetBundle\Entity\Image #}
-    {% if data %}
-        {% set image = data %}
-        <a href="{{ image.path | imagine_filter('large') }}" target="_blank" data-toggle="lightbox"
-           title="{{ image }}"
-           data-original-uri="{{ path('sidus_file_upload.file.download', {type: image.type, identifier: image.identifier}) }}">
-            <img src="{{ image.path | imagine_filter('thumbnail') }}"
-                 class="pull-right img-thumbnail" {{ image_size_attrs(image, 'thumbnail') }}>
-        </a>
-    {% endif %}
-    <div class="well well-sm pull-left">
+    <div class="well well-sm">
+        {# @var data \CleverAge\EAVManager\AssetBundle\Entity\Image #}
         {{ block('sidus_resource_widget') }}
-        {% if image is defined and image %}
+        {% if data %}
             <hr class="hr-sm">
-            <dl class="no-margin-bottom">
-                <dt>Dernière modification :</dt>
-                <dd>{{ image.fileModifiedAt|date() }}</dd>
-                <dt>Taille du fichier :</dt>
-                <dd>{{ image.fileSize|file_size }}</dd>
-                <dt>Type de fichier :</dt>
-                <dd>{{ image.mimeType }}</dd>
-            </dl>
+            <div>
+                <a href="{{ data.path | imagine_filter('large') }}" target="_blank" data-toggle="lightbox"
+                   title="{{ data }}"
+                   data-original-uri="{{ path('sidus_file_upload.file.download', {type: data.type, identifier: data.identifier}) }}">
+                    <img src="{{ data.path | imagine_filter('thumbnail') }}" alt="{{ data.identifier }}"
+                         class="pull-right img-thumbnail" {{ image_size_attrs(data, 'thumbnail') }}>
+                </a>
+                <dl class="no-margin-bottom">
+                    <dt>Dernière modification :</dt>
+                    <dd>{{ data.fileModifiedAt|date() }}</dd>
+                    <dt>Taille du fichier :</dt>
+                    <dd>{{ data.fileSize|file_size }}</dd>
+                    <dt>Type de fichier :</dt>
+                    <dd>{{ data.mimeType }}</dd>
+                </dl>
+            </div>
         {% endif %}
     </div>
 {% endblock %}

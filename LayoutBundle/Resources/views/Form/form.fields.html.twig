@@ -229,6 +229,7 @@
         {% endset %}
     {% endif %}
     {#{% if is_granted(action.code, admin.entity) %} #}{# @todo fixme for EAV data: find family #}
+    {% use '@SidusDataGrid/Form/bootstrap3.html.twig' %}
     {{ block('sidus_link_widget') }}
     {#{% endif %}#}
 {% endblock %}

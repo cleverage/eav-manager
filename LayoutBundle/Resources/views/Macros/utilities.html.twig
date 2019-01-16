@@ -194,9 +194,11 @@ Displays a link button to an entity with configurable title, class, target and i
                     {% endif %}{#
             #}>
                 {%- spaceless -%}
-                    {%- if not options.no_icon|default(false) -%}
-                        {{ icon(options.icon is defined ? options.icon : actionName) }}
-                    {%- endif -%}
+                    {%- set icon -%}
+                        {%- if not options.no_icon|default(false) -%}
+                            {{ icon(options.icon is defined ? options.icon : actionName) }}
+                        {%- endif -%}
+                    {%- endset -%}
                     {%- set finalTitle -%}
                         {% if options.title_as_content|default(false) %}
                             {{ title }}
@@ -204,7 +206,7 @@ Displays a link button to an entity with configurable title, class, target and i
                             {{ options.content|default('')|raw }}
                         {% endif %}
                     {%- endset -%}
-                    {{ finalTitle|trim ? ('&nbsp;' ~ finalTitle)|raw  }}
+                    {{ icon }}{{ finalTitle|trim ? ((icon|trim ? '&nbsp;') ~ finalTitle)|raw }}
                 {%- endspaceless -%}
             </a>
         {% endif %}

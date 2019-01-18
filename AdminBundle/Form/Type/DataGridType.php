@@ -10,7 +10,9 @@
 
 namespace CleverAge\EAVManager\AdminBundle\Form\Type;
 
+use Sidus\AdminBundle\Admin\Action;
 use Sidus\AdminBundle\Admin\Admin;
+use Sidus\AdminBundle\Configuration\AdminRegistry;
 use Sidus\DataGridBundle\Model\DataGrid;
 use Sidus\DataGridBundle\Registry\DataGridRegistry;
 use Sidus\EAVModelBundle\Entity\DataInterface;
@@ -31,12 +33,17 @@ class DataGridType extends AbstractType
     /** @var DataGridRegistry */
     protected $dataGridRegistry;
 
+    /** @var AdminRegistry */
+    protected $adminRegistry;
+
     /**
      * @param DataGridRegistry $dataGridRegistry
+     * @param AdminRegistry    $adminRegistry
      */
-    public function __construct(DataGridRegistry $dataGridRegistry)
+    public function __construct(DataGridRegistry $dataGridRegistry, AdminRegistry $adminRegistry)
     {
         $this->dataGridRegistry = $dataGridRegistry;
+        $this->adminRegistry = $adminRegistry;
     }
 
     /**
@@ -52,9 +59,12 @@ class DataGridType extends AbstractType
             [
                 'parent_data' => $options['parent_data'],
                 'parent_attribute' => $options['parent_attribute'],
+                'action' => $options['action'],
+                'route_parameters' => $options['route_parameters'],
             ]
         );
         $view->vars['admin'] = $options['admin'];
+        $view->vars['action'] = $options['action'];
         $view->vars['route_parameters'] = $options['route_parameters'];
     }
 
@@ -82,6 +92,7 @@ class DataGridType extends AbstractType
                 'parent_data',
                 'parent_attribute',
                 'datagrid',
+                'action',
             ]
         );
         $resolver->setDefaults(
@@ -97,6 +108,7 @@ class DataGridType extends AbstractType
         $resolver->setAllowedTypes('datagrid', ['string', DataGrid::class]);
         $resolver->setAllowedTypes('request_data', ['NULL', 'array']);
         $resolver->setAllowedTypes('admin', ['NULL', 'string', Admin::class]);
+        $resolver->setAllowedTypes('action', ['string', Action::class]);
         $resolver->setAllowedTypes('route_parameters', ['array']);
         $resolver->setNormalizer(
             'datagrid',
@@ -109,6 +121,26 @@ class DataGridType extends AbstractType
                 }
 
                 return $dataGrid;
+            }
+        );
+        $resolver->setNormalizer(
+            'action',
+            function (
+                Options $options,
+                $action
+            ) {
+                if ($action instanceof Action) {
+                    return $action;
+                }
+                $admin = $options['admin'];
+                if (null === $admin) {
+                    throw new \UnexpectedValueException('Missing admin option when passing action as string');
+                }
+                if (!$admin instanceof Admin) {
+                    $admin = $this->adminRegistry->getAdmin($admin);
+                }
+
+                return $admin->getAction($action);
             }
         );
     }

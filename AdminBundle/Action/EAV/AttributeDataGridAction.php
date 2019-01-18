@@ -71,6 +71,7 @@ class AttributeDataGridAction implements ActionInjectableInterface
     ) {
         $attribute = $data->getFamily()->getAttribute($attributeCode);
         $this->attributeDataGridHelper->buildAttributeDataGrid($dataGrid, $data, $attribute);
+        $dataGrid->handleRequest($request);
 
         return $this->templatingHelper->renderListAction(
             $this->action,
@@ -79,6 +80,7 @@ class AttributeDataGridAction implements ActionInjectableInterface
             [
                 'parent_attribute' => $attribute,
                 'parent_data' => $data,
+                'action' => $this->action,
             ]
         );
     }

@@ -11,7 +11,9 @@
 namespace CleverAge\EAVManager\AdminBundle\Form\Type;
 
 use CleverAge\EAVManager\AdminBundle\DataGrid\AttributeDataGridHelper;
+use Sidus\AdminBundle\Admin\Action;
 use Sidus\AdminBundle\Admin\Admin;
+use Sidus\AdminBundle\Configuration\AdminRegistry;
 use Sidus\DataGridBundle\Model\DataGrid;
 use Sidus\DataGridBundle\Registry\DataGridRegistry;
 use Sidus\EAVModelBundle\Entity\DataInterface;
@@ -40,19 +42,25 @@ class DataGridColumnType extends AbstractType
     /** @var AttributeDataGridHelper */
     protected $attributeDataGridHelper;
 
+    /** @var AdminRegistry */
+    protected $adminRegistry;
+
     /**
      * @param AllowedFamiliesOptionsConfigurator $allowedFamiliesOptionsConfigurator
      * @param DataGridRegistry                   $dataGridRegistry
      * @param AttributeDataGridHelper            $attributeDataGridHelper
+     * @param AdminRegistry                      $adminRegistry
      */
     public function __construct(
         AllowedFamiliesOptionsConfigurator $allowedFamiliesOptionsConfigurator,
         DataGridRegistry $dataGridRegistry,
-        AttributeDataGridHelper $attributeDataGridHelper
+        AttributeDataGridHelper $attributeDataGridHelper,
+        AdminRegistry $adminRegistry
     ) {
         $this->allowedFamiliesOptionsConfigurator = $allowedFamiliesOptionsConfigurator;
         $this->dataGridRegistry = $dataGridRegistry;
         $this->attributeDataGridHelper = $attributeDataGridHelper;
+        $this->adminRegistry = $adminRegistry;
     }
 
     /**
@@ -146,6 +154,26 @@ class DataGridColumnType extends AbstractType
                 }
 
                 return $dataGrid;
+            }
+        );
+        $resolver->setNormalizer(
+            'action',
+            function (
+                Options $options,
+                $action
+            ) {
+                if ($action instanceof Action) {
+                    return $action;
+                }
+                $admin = $options['admin'];
+                if (null === $admin) {
+                    throw new \UnexpectedValueException('Missing admin option when passing action as string');
+                }
+                if (!$admin instanceof Admin) {
+                    $admin = $this->adminRegistry->getAdmin($admin);
+                }
+
+                return $admin->getAction($action);
             }
         );
     }

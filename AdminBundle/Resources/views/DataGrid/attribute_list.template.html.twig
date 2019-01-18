@@ -1,5 +1,6 @@
 {# @var datagrid \Sidus\DataGridBundle\Model\DataGrid #}
 {# @var pager \Pagerfanta\Pagerfanta #}
+{# @var action \Sidus\AdminBundle\Admin\Action #}
 {% set pager = datagrid.queryHandler.pager %}
 
 {% block datagrid_table %}
@@ -10,12 +11,14 @@
     <div class="datagrid-actions">
         {% if pager.nbPages > 1 %}
             <div class="pull-right">
-                {{ pagerfanta(pager, 'twitter_bootstrap3', {
-                    routeName: 'sidus_admin.'~admin.code~'.'~action,
-                    routeParams: {
-                        parentData: parent_data.id,
-                    }
-                }) }}
+                {% if route_parameters is defined %}
+                    {{ pagerfanta(pager, 'twitter_bootstrap3', {
+                        routeName: action.routeName,
+                        routeParams: route_parameters
+                    }) }}
+                {% else %}
+                    {{ pagerfanta(pager, 'twitter_bootstrap3') }}
+                {% endif %}
             </div>
         {% endif %}
         <div class="btn-group">

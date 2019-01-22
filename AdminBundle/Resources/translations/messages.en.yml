@@ -118,3 +118,7 @@ error:
         header: Internal server error
         title: Congratulations! You've found a bug in our app.
         message: We are currently dispatching our best experts to deal with this situation,<br>hang tight.
+
+datagrid:
+    filters:
+        toggle: Toggle filters

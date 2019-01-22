@@ -59,14 +59,7 @@ function ajaxLoading($, el, e) {
     e.stopPropagation();
 
     var response;
-    var url = $el.data('href'); // Test data-href
-
-    if ($el.is('a') && !url) {
-        url = $el.attr('href'); // Fallback to href
-    }
-    if ($el.is('form') && !url) {
-        url = $el.attr('action'); // Fallback to action
-    }
+    var url = resolveUrl($el);
     if (!url) {
         return; // If no URL found, we do nothing
     }
@@ -179,6 +172,25 @@ function ajaxLoading($, el, e) {
             $(target).trigger(event);
         });
     });
+}
+
+/**
+ * Resolve target url
+ *
+ * @param $el
+ * @returns {*}
+ */
+function resolveUrl($el) {
+    var url = $el.data('href'); // Test data-href
+
+    if ($el.is('a') && !url) {
+        url = $el.attr('href'); // Fallback to href
+    }
+    if ($el.is('form') && !url) {
+        url = $el.attr('action'); // Fallback to action
+    }
+
+    return url;
 }
 
 var alreadyReloaded = false;

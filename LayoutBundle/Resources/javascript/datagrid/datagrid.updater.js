@@ -7,7 +7,7 @@
     $(document).on('clever_admindata', function (e) {
         var formRef = 'form[data-admin-code="' + e.detail.admin + '"]';
         var $formRef = $(formRef);
-        if (e.detail.success) {
+        if ($formRef.length && e.detail.success) {
             $formRef.trigger('submit');
         } else {
             var rowRef = '.datagrid-row[data-entity-id="' + e.detail.dataId + '"]';

@@ -118,3 +118,7 @@ error:
         header: Erreur serveur interne
         title: Félicitations ! Vous venez de trouver un bug dans notre appli.
         message: Nous venons de déployer nos meilleurs experts pour gérer cette situation,<br>accrochez-vous.
+
+datagrid:
+    filters:
+        toggle: Afficher/masquer les filtres

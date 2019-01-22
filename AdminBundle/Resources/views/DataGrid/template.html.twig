@@ -27,7 +27,36 @@
             {% endblock %}
         </div>
     </div>
-    {{ parent() }}
+    {% if form.filters|length > 0 %}
+        <div class="datagrid-filters">
+            <div class="row">
+                {% for subForm in form.filters|slice(0, 3) %}
+                    <div class="col-md-4">
+                        {{ form_row(subForm) }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% if form.filters|length > 3 %}
+            <div class="datagrid-filters collapse" id="{{ datagrid.code }}_filters">
+                <div class="row">
+                    {% for subForm in form.filters|slice(3) %}
+                    <div class="col-md-4">
+                        {{ form_row(subForm) }}
+                    </div>
+                    {% if loop.index % 3 == 0 %}
+                </div>
+                <div class="row">
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <hr class="clear">
+            </div>
+            <p class="text-center">
+                <a href="#{{ datagrid.code }}_filters"
+                   class="text-muted" role="button" data-toggle="collapse" aria-expanded="false"
+                   aria-controls="{{ datagrid.code }}_filters">{{ icon('filter') }}{{ 'datagrid.filters.toggle'|trans }}</a>
+            </p>
+        {% endif %}
+    {% endif %}
 {% endblock %}
-
-{% block filters_actions %}{% endblock %}

@@ -77,9 +77,7 @@ class DataGridType extends AbstractType
         /** @var DataGrid $dataGrid */
         $dataGrid = $options['datagrid'];
         $dataGrid->buildForm($builder->create('filter', FormType::class));
-        if (null !== $options['request_data']) {
-            $dataGrid->handleArray($options['request_data']);
-        }
+        $dataGrid->handleArray($options['request_data']);
     }
 
     /**
@@ -97,7 +95,7 @@ class DataGridType extends AbstractType
         );
         $resolver->setDefaults(
             [
-                'request_data' => null,
+                'request_data' => [],
                 'datagrid_vars' => [],
                 'admin' => null,
                 'route_parameters' => [],
@@ -106,7 +104,7 @@ class DataGridType extends AbstractType
         $resolver->setAllowedTypes('parent_data', [DataInterface::class]);
         $resolver->setAllowedTypes('parent_attribute', [AttributeInterface::class]);
         $resolver->setAllowedTypes('datagrid', ['string', DataGrid::class]);
-        $resolver->setAllowedTypes('request_data', ['NULL', 'array']);
+        $resolver->setAllowedTypes('request_data', ['array']);
         $resolver->setAllowedTypes('admin', ['NULL', 'string', Admin::class]);
         $resolver->setAllowedTypes('action', ['string', Action::class]);
         $resolver->setAllowedTypes('route_parameters', ['array']);

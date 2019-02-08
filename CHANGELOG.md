@@ -1,6 +1,218 @@
 CleverAge/EAVManager Changelog
 ==============================
 
+## v2.1.1
+
+| Date       | BC Breaks? | Deprecations? |
+| ---------- | :--------: | :-----------: |
+| 2019-02-08 | no         | no            |
+
+Fixing dependency issue.
+
+## v2.1.0
+
+| Date       | BC Breaks? | Deprecations? |
+| ---------- | :--------: | :-----------: |
+| 2019-02-08 | minor      | no            |
+
+### Templating
+- Fixing missing dependency in form rendering
+
+### UI
+- Minor esthetic fix in links without icons
+- Datagrid filters now collapse if more than 3
+- Improving left menu rendering when an admin has only one family
+
+### Model
+- Fixing datagrid attributes with paging
+
+## v2.0.5
+
+| Date       | BC Breaks? | Deprecations? |
+| ---------- | :--------: | :-----------: |
+| 2019-01-09 | no         | no            |
+
+### API
+- Fixing resource normalizer when associated file is missing
+
+## v2.0.4
+
+| Date       | BC Breaks? | Deprecations? |
+| ---------- | :--------: | :-----------: |
+| 2019-01-09 | no         | yes           |
+
+### Doctrine
+- Deprecating EntityManager and DataRepository as services
+
+### Model
+- New datagrid attribute type: still needs some work
+
+### UI
+- Minor improvements in Fileupload widget
+
+### API
+- Fixing bad ApiPlatform normalizer configuration since 2.0 refactoring
+
+## v2.0.3
+
+| Date       | BC Breaks? | Deprecations? |
+| ---------- | :--------: | :-----------: |
+| 2018-12-12 | no         | no            |
+
+### Documentation
+- Improving installation documentation
+
+### UI
+- Better permissions checking in menus and navigation
+
+### Users
+- Refactoring and fixing user management commands
+- Fixing user management actions
+- User infos in EAV are now available at user creation
+
+### Actions
+- New actions to edit singleton families
+
+### Admin
+- Fixing admin resolution in datagrid templates
+
+### Templating
+- Improving template reusability
+- Adding support for disabled datagrids
+
+### Process
+- Fixing tasks exceptions handling conventions
+- Fixing empty resultsets error logging
+- Fixing missing log context
+
+### Translations
+- Fixing translation domains issues
+
+### Assets
+- Updating LiipImagineBundle to v2.0
+
+## v2.0.2
+
+| Date       | BC Breaks? | Deprecations? |
+| ---------- | :--------: | :-----------: |
+| 2018-10-25 | minor      | no            |
+
+### Documentation
+- How to kickstart your project
+
+### Datagrids
+- Fixing columns rendering when no action is allowed
+
+### Templating
+- Major refactoring for better reusability: could induce BC breaks
+- Switching to FontAwesome only for icons rendering in Mopa
+
+### Admin
+- Fixing default admin configurations
+
+### API
+- Fixing API platform support
+
+### Users
+- Adding missing group voter
+
+## v2.0.1
+
+| Date       | BC Breaks? | Deprecations? |
+| ---------- | :--------: | :-----------: |
+| 2018-10-05 | no         | no            |
+
+### Datagrids
+- Fixing configuration code
+
+## v2.0.0 New Major release
+
+| Date       | BC Breaks? | Deprecations? |
+| ---------- | :--------: | :-----------: |
+| 2018-10-04 | yes        | yes           |
+
+### Documentation
+- How to choose an attribute type cookbook
+- How to translate attributes and families cookbook
+- How to translate validation messages
+- Adding a custom attribute type cookbook
+- Global update
+
+### Process
+- Migration to v2.0, lots of deprecation and BC breaks
+- New EAVUpdateSingleValueTask
+
+### Assets
+- Image preview in lightbox
+
+### Configuration
+- Fixing minor configuration issues
+
+### UI
+- Better layout for datagrids and modals
+- Fixing Datepickers: switching to new library
+- Nicer login screen using Unsplash
+- Fixing missing translations
+- Adding automodal option in datagrid clickable template and actions
+
+### Datagrids
+- Migrating to new dependency version with lots of new features
+
+### Controllers & actions
+- Deprecating usage of all controllers, switching to actions: Huge refactoring
+- All default configuration now uses actions instead of controllers
+- Lots of new helpers used in actions and reusable for custom actions
+
+### JS
+- New data-target-element="_CURRENT_TARGET" that can be used in many places to keep the current target
+- Minor update in Ajax navigation lib
+- New script to update JS build
+- Fixing some coding style
+- Fixed problem with delete action in #tg_center
+
+### Security
+- Better custom permissions supportn now using the cleverage/permission-bundle
+- Fixing HTML attributes escaping
+- New voter for users: now supporting permissions checks
+
+### Model
+- Fixing embed multi attribute types
+
+### Doctrine
+- New RepositoryFinder as a service
+
+## v1.3.11
+
+| Date       | BC Breaks? | Deprecations? |
+| ---------- | :--------: | :-----------: |
+| 2018-06-24 | no         | no            |
+
+### Dependency
+- Adding missing BaseBundle dependency in Kernel loader
+
+## v1.3.10
+
+| Date       | BC Breaks? | Deprecations? |
+| ---------- | :--------: | :-----------: |
+| 2018-05-30 | yes        | yes           |
+
+### Documentation
+- Custom EAV Queries cookbook
+- Global documentation update
+
+### Regressions
+- Fixing BC break induced by Twig update in the TemplateGuesser
+
+### Migration
+- Massive migration to Symfony 3.4 configuration style: deprecating all definitions with possible BC breaks
+- Switching to ProcessBundle v1.1
+
+### Assets
+- Resource manager override is now handled in a different service
+
+### Doctrine
+- Refactoring dependencies to always inject the proper EntityManager in case of multiple managers.
+
 ## v1.3.9
 
 | Date       | BC Breaks? | Deprecations? |

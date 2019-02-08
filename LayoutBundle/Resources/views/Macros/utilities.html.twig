@@ -231,9 +231,27 @@ Render left nav for families
 #}
 {% macro admin_family_nav(admin, family) %}
     {% import _self as current %}
-    {{ current.admin_title_nav(admin) }}
-    <div id="admin_{{ admin.code }}"
-         class="collapse{% if admin.hasRoute(app.request.attributes.get('_route')) %} in{% endif %}">
-        {{ current.family_menu(admin, admin.option('families', [])|keys, family) }}
-    </div>
+    {% set familyCodes = admin.option('families', [])|keys %}
+    {% if familyCodes|length > 1 %}
+        {{ current.admin_title_nav(admin) }}
+        <div id="admin_{{ admin.code }}"
+             class="collapse{% if admin.hasRoute(app.request.attributes.get('_route')) %} in{% endif %}">
+            {{ current.family_menu(admin, familyCodes, family) }}
+        </div>
+    {% elseif familyCodes|length == 1 %}
+        {{ current.admin_single_family_nav(admin, familyCodes|first, family) }}
+    {% endif %}
+{% endmacro %}
+
+{% macro admin_single_family_nav(admin, family, activeFamily) %}
+    {% set family = family.code is defined ? family : get_family(family) %}
+    {% if admin.hasAction('list') and is_granted('list', family) %}
+        <a class="admin-nav {{ activeFamily and activeFamily.code == family.code ? 'active' }}"
+           href="{{ admin_path(admin, 'list', {familyCode: family.code}) }}">
+            <h5>
+                {{ icon(admin.option('icon')) }}&nbsp;{#
+                    #}{{ tryTrans(['admin.'~admin.code~'.title'], [], admin.code|humanize)|trim }}
+            </h5>
+        </a>
+    {% endif %}
 {% endmacro %}

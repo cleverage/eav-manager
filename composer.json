@@ -44,7 +44,7 @@
         "cleverage/permission-bundle": "~1.0.1",
         "cleverage/process-bundle": "~2.0.5",
         "sidus/eav-bootstrap-bundle": "~2.1.0",
-        "sidus/eav-filter-bundle": "~2.0.1",
+        "sidus/eav-filter-bundle": "~2.1.0",
         "sidus/admin-bundle": "~2.0.1",
         "sidus/eav-model-bundle": "~1.3.0",
         "sidus/file-upload-bundle": "~1.2.0"

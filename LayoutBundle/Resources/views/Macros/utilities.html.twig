@@ -243,11 +243,12 @@ Render left nav for families
     {% endif %}
 {% endmacro %}
 
-{% macro admin_single_family_nav(admin, family, activeFamily) %}
+{% macro admin_single_family_nav(admin, family, activeFamily, action) %}
+    {% set action = action|default('list') %}
     {% set family = family.code is defined ? family : get_family(family) %}
-    {% if admin.hasAction('list') and is_granted('list', family) %}
+    {% if admin.hasAction(action) and is_granted(action, family) %}
         <a class="admin-nav {{ activeFamily and activeFamily.code == family.code ? 'active' }}"
-           href="{{ admin_path(admin, 'list', {familyCode: family.code}) }}">
+           href="{{ admin_path(admin, action, {familyCode: family.code}) }}">
             <h5>
                 {{ icon(admin.option('icon')) }}&nbsp;{#
                     #}{{ tryTrans(['admin.'~admin.code~'.title'], [], admin.code|humanize)|trim }}

@@ -1,4 +1,7 @@
 services:
+    Symfony\Component\Security\Core\Authorization\Voter\RoleHierarchyVoter:
+        alias: security.access.role_hierarchy_voter
+
     CleverAge\EAVManager\SecurityBundle\Voter\FamilyVoter:
         public: false
         autowire: true

@@ -88,7 +88,7 @@ class DataGridColumnType extends AbstractType
                         'disabled' => $options['disabled'],
                         'datagrid' => $dataGrid,
                         'admin' => $options['admin'],
-                        'action' => $options['action'],
+                        'admin_action' => $options['admin_action'],
                         'parent_data' => $data,
                         'parent_attribute' => $attribute,
                         'route_parameters' => $options['route_parameters_callback']($form, $data, $options),
@@ -122,7 +122,7 @@ class DataGridColumnType extends AbstractType
                     'class' => 'mapping',
                 ],
                 'admin' => '_data',
-                'action' => 'attributeDataGrid',
+                'admin_action' => 'attributeDataGrid',
                 'target' => null,
                 'route_parameters_callback' => function (FormInterface $form, DataInterface $data, array $options) {
                     return [
@@ -157,7 +157,7 @@ class DataGridColumnType extends AbstractType
             }
         );
         $resolver->setNormalizer(
-            'action',
+            'admin_action',
             function (
                 Options $options,
                 $action

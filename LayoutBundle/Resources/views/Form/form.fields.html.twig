@@ -237,12 +237,12 @@
 {% block data_grid_widget %}
     <div id="{{ id }}" class="autoload no-navigation with-loader" data-is-target="1"
          data-target-element="_CURRENT_TARGET" style="position:relative"
-         {% if action %}data-href="{{ admin_path(action.admin, action.code, route_parameters) }}"{% endif %}>
+         {% if action %}data-href="{{ admin_path(admin_action.admin, admin_action.code, route_parameters) }}"{% endif %}>
         {{ render_datagrid(datagrid, datagrid_vars) }}
     </div>
 {% endblock %}
 
 {% block attribute_datagrid_link_widget %}
-    {% set uri = admin_path(admin, action.code, {parentData: parent_data.id, parentAttributeCode: parent_attribute.code}) %}
+    {% set uri = admin_path(admin, admin_action.code, {parentData: parent_data.id, parentAttributeCode: parent_attribute.code}) %}
     {{ block('admin_link_widget') }}
 {% endblock %}

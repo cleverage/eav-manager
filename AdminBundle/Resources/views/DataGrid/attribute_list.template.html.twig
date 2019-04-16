@@ -13,7 +13,7 @@
             <div class="pull-right">
                 {% if route_parameters is defined %}
                     {{ pagerfanta(pager, 'twitter_bootstrap3', {
-                        routeName: action.routeName,
+                        routeName: admin_action.routeName,
                         routeParams: route_parameters
                     }) }}
                 {% else %}

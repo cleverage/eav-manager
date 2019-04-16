@@ -16,7 +16,7 @@ use Sidus\DataGridBundle\Registry\DataGridRegistry;
 use Sidus\EAVModelBundle\Entity\DataInterface;
 use Sidus\EAVModelBundle\Model\AttributeInterface;
 use Sidus\FilterBundle\Query\Handler\Doctrine\DoctrineQueryHandlerInterface;
-use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormFactoryInterface;
 
 /**
  * Helper for attribute's datagrid
@@ -28,14 +28,14 @@ class AttributeDataGridHelper
     /** @var DataGridRegistry */
     protected $dataGridRegistry;
 
-    /** @var FormFactory */
+    /** @var FormFactoryInterface */
     protected $formFactory;
 
     /**
-     * @param DataGridRegistry $dataGridRegistry
-     * @param FormFactory      $formFactory
+     * @param DataGridRegistry     $dataGridRegistry
+     * @param FormFactoryInterface $formFactory
      */
-    public function __construct(DataGridRegistry $dataGridRegistry, FormFactory $formFactory)
+    public function __construct(DataGridRegistry $dataGridRegistry, FormFactoryInterface $formFactory)
     {
         $this->dataGridRegistry = $dataGridRegistry;
         $this->formFactory = $formFactory;

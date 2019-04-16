@@ -52,7 +52,7 @@ class AdminLinkType extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['admin'] = $options['admin'];
-        $view->vars['action'] = $options['action'];
+        $view->vars['admin_action'] = $options['admin_action'];
     }
 
     /**
@@ -64,10 +64,10 @@ class AdminLinkType extends AbstractType
     {
         $resolver->setRequired(
             [
-                'action',
+                'admin_action',
             ]
         );
-        $resolver->setAllowedTypes('action', ['string', Action::class]);
+        $resolver->setAllowedTypes('admin_action', ['string', Action::class]);
         $resolver->setDefaults(
             [
                 'admin' => null,
@@ -88,7 +88,7 @@ class AdminLinkType extends AbstractType
             }
         );
         $resolver->setNormalizer(
-            'action',
+            'admin_action',
             function (Options $options, $value) {
                 /** @var Admin $admin */
                 $admin = $options['admin'];
@@ -112,7 +112,7 @@ class AdminLinkType extends AbstractType
                 if (null === $value) {
                     return $this->adminRouter->generateAdminPath(
                         $options['admin'],
-                        $options['action']->getCode(),
+                        $options['admin_action']->getCode(),
                         $options['route_parameters']
                     );
                 }

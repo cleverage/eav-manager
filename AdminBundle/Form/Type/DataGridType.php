@@ -59,12 +59,12 @@ class DataGridType extends AbstractType
             [
                 'parent_data' => $options['parent_data'],
                 'parent_attribute' => $options['parent_attribute'],
-                'action' => $options['action'],
+                'admin_action' => $options['admin_action'],
                 'route_parameters' => $options['route_parameters'],
             ]
         );
         $view->vars['admin'] = $options['admin'];
-        $view->vars['action'] = $options['action'];
+        $view->vars['admin_action'] = $options['admin_action'];
         $view->vars['route_parameters'] = $options['route_parameters'];
     }
 
@@ -90,7 +90,7 @@ class DataGridType extends AbstractType
                 'parent_data',
                 'parent_attribute',
                 'datagrid',
-                'action',
+                'admin_action',
             ]
         );
         $resolver->setDefaults(
@@ -106,7 +106,7 @@ class DataGridType extends AbstractType
         $resolver->setAllowedTypes('datagrid', ['string', DataGrid::class]);
         $resolver->setAllowedTypes('request_data', ['array']);
         $resolver->setAllowedTypes('admin', ['NULL', 'string', Admin::class]);
-        $resolver->setAllowedTypes('action', ['string', Action::class]);
+        $resolver->setAllowedTypes('admin_action', ['string', Action::class]);
         $resolver->setAllowedTypes('route_parameters', ['array']);
         $resolver->setNormalizer(
             'datagrid',
@@ -122,7 +122,7 @@ class DataGridType extends AbstractType
             }
         );
         $resolver->setNormalizer(
-            'action',
+            'admin_action',
             function (
                 Options $options,
                 $action

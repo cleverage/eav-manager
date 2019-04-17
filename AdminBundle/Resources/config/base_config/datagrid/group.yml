@@ -27,7 +27,7 @@ sidus_data_grid:
                 create:
                     form_type: CleverAge\EAVManager\AdminBundle\Form\Type\AdminLinkType
                     label: admin.action.create.label
-                    action: create
+                    admin_action: create
                     icon: plus
                     attr:
                         class: btn-primary

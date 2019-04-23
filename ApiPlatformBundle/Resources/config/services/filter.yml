@@ -43,6 +43,9 @@ services:
         arguments:
             - [int, DateTimeInterface, float]
 
-    # Overriding stuff because FUCK YOU
-    api_platform.doctrine.orm.query_extension.filter_eager_loading:
-        abstract: true
+    # This extension breaks the original query by trying to optimize stuff we don't need
+    # Seriously API Platform ?
+    CleverAge\EAVManager\ApiPlatformBundle\Extension\ContextualFilterEagerLoadingExtension:
+        decorates: api_platform.doctrine.orm.query_extension.filter_eager_loading
+        arguments:
+            - '@CleverAge\EAVManager\ApiPlatformBundle\Extension\ContextualFilterEagerLoadingExtension.inner'

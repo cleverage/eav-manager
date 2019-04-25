@@ -45,7 +45,6 @@ abstract class AbstractEAVQueryTask extends AbstractEAVTask
 
     /**
      * {@inheritDoc}
-     * @throws \Sidus\EAVModelBundle\Exception\MissingFamilyException
      */
     protected function configureOptions(OptionsResolver $resolver)
     {

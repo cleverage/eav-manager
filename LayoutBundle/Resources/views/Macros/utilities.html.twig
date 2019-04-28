@@ -126,10 +126,13 @@ Used to generate a menu for the given families
 Used to generate a single menu item for a family
 #}
 {% macro family_menu_link(admin, family, activeFamily) %}
+    {# @var \Sidus\AdminBundle\Admin\Admin admin #}
+    {# @var \Sidus\EAVModelBundle\Model\FamilyInterface family #}
     {% set family = family.code is defined ? family : get_family(family) %}
-    {% if admin.hasAction('list') and is_granted('list', family) %}
+    {% set defaultAction = admin.option('default_action', 'list') %}
+    {% if admin.hasAction(defaultAction) and is_granted(defaultAction, family) %}
         <li {% if activeFamily and activeFamily.code == family.code %}class="active"{% endif %}>
-            <a href="{{ admin_path(admin, 'list', {familyCode: family.code}) }}">{{ family }}</a>
+            <a href="{{ admin_path(admin, defaultAction, {familyCode: family.code}) }}">{{ family }}</a>
             {#{{ current.family_menu(admin, f.children, activeFamily) }}#}
         </li>
     {% endif %}
@@ -244,7 +247,8 @@ Render left nav for families
 {% endmacro %}
 
 {% macro admin_single_family_nav(admin, family, activeFamily, action) %}
-    {% set action = action|default('list') %}
+    {# @var \Sidus\AdminBundle\Admin\Admin admin #}
+    {% set action = action|default(admin.option('default_action', 'list')) %}
     {% set family = family.code is defined ? family : get_family(family) %}
     {% if admin.hasAction(action) and is_granted(action, family) %}
         <a class="admin-nav {{ activeFamily and activeFamily.code == family.code ? 'active' }}"

@@ -1,8 +1,8 @@
 liip_imagine:
     resolvers:
-       default:
-          web_path:
-            cache_prefix: "images/cache"
+        default:
+            web_path:
+                cache_prefix: "images/cache"
 
     loaders:
         images:

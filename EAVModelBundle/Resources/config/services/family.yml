@@ -1,4 +1,0 @@
-services:
-    CleverAge\EAVManager\EAVModelBundle\Resolver\FamilyResolver:
-        autowire: true
-        public: false

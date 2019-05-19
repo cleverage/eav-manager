@@ -55,6 +55,6 @@ resources:
 ### Filtering
 
 @todo Document usage of ApiPlatform/EAV/Filters.
-See CleverAge\EAVManager\ApiPlatformBundle\EAV\Filter\* classes.
+See CleverAge\EAVApiPlatformBundle\Filter\* classes.
 
 Everything else is completely standard ApiPlatform configuration, there is nothing specific to the EAV model.

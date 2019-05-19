@@ -42,7 +42,6 @@
         "thomaspark/bootswatch": "~3.3.7",
         "friendsofsymfony/jsrouting-bundle": "~1.6",
         "cleverage/permission-bundle": "1.0.*",
-        "cleverage/process-bundle": "dev-v2.0-dev",
         "sidus/eav-bootstrap-bundle": "dev-v2.1-dev",
         "sidus/eav-filter-bundle": "dev-v2.1-dev",
         "sidus/admin-bundle": "dev-v2.0-dev",

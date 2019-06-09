@@ -10,7 +10,7 @@
 
             return;
         }
-        if ($el.is('form')) {
+        if ($target.is('form')) {
             $target.attr('action', url);
         }
     }

@@ -53,6 +53,7 @@ class DataGridType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
+        $view->vars['target_admin_code'] = $options['target_admin_code'];
         $view->vars['datagrid'] = $options['datagrid'];
         $view->vars['datagrid_vars'] = array_merge(
             $options['datagrid_vars'],
@@ -95,12 +96,14 @@ class DataGridType extends AbstractType
         );
         $resolver->setDefaults(
             [
+                'target_admin_code' => null,
                 'request_data' => [],
                 'datagrid_vars' => [],
                 'admin' => null,
                 'route_parameters' => [],
             ]
         );
+        $resolver->setAllowedTypes('target_admin_code', ['NULL', 'string']);
         $resolver->setAllowedTypes('parent_data', [DataInterface::class]);
         $resolver->setAllowedTypes('parent_attribute', [AttributeInterface::class]);
         $resolver->setAllowedTypes('datagrid', ['string', DataGrid::class]);

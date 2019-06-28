@@ -56,12 +56,15 @@ class DataGridType extends AbstractType
         $view->vars['target_admin_code'] = $options['target_admin_code'];
         $view->vars['datagrid'] = $options['datagrid'];
         $view->vars['datagrid_vars'] = array_merge(
+            [
+                'disabled' => $options['disabled'],
+                'route_parameters' => $options['route_parameters'],
+            ],
             $options['datagrid_vars'],
             [
                 'parent_data' => $options['parent_data'],
                 'parent_attribute' => $options['parent_attribute'],
                 'admin_action' => $options['admin_action'],
-                'route_parameters' => $options['route_parameters'],
             ]
         );
         $view->vars['admin'] = $options['admin'];

@@ -15,3 +15,7 @@
         {{ parent() }}
     {% endif %}
 {% endblock %}
+
+{% block introduction_content %}
+    {{ family.getOption('introduction_content')|raw }}
+{% endblock %}

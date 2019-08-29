@@ -16,3 +16,21 @@ services:
             - Sidus\EAVBootstrapBundle\Form\Type\DateRangeType
         tags:
             - { name: sidus.filter_type }
+
+    Sidus\FilterBundle\Filter\Type\Doctrine\NotNullFilterType:
+        public: false
+        arguments:
+            - not_null
+            - Sidus\EAVBootstrapBundle\Form\Type\SwitchType
+        tags:
+            - { name: sidus.filter_type }
+
+    Sidus\EAVFilterBundle\Filter\Type\NotNullFilterType:
+        public: false
+        arguments:
+            - not_null
+            - Sidus\EAVBootstrapBundle\Form\Type\SwitchType
+        calls:
+            - [setFallbackFilterType, ['@Sidus\FilterBundle\Filter\Type\Doctrine\NotNullFilterType']]
+        tags:
+            - { name: sidus.filter_type }

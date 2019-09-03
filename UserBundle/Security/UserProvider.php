@@ -89,6 +89,10 @@ class UserProvider implements UserProviderInterface
      */
     public function refreshUser(UserInterface $user)
     {
+        if (!$this->supportsClass(get_class($user))) {
+            throw new UnsupportedUserException('Unsupported user');
+        }
+
         return $this->loadUserByUsername($user->getUsername());
     }
 

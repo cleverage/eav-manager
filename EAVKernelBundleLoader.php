@@ -38,6 +38,8 @@ class EAVKernelBundleLoader
             // Sidus bundles
             // Base bundle containing many dependencies
             new \Sidus\BaseBundle\SidusBaseBundle(),
+            // Base bundle for serializer
+            new \Sidus\BaseSerializerBundle\SidusBaseSerializerBundle(),
             // Base bundle for EAV model
             new \Sidus\EAVModelBundle\SidusEAVModelBundle(),
             // Data filtering based on user input

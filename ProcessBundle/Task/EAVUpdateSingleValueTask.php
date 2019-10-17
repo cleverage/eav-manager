@@ -11,7 +11,7 @@
 namespace CleverAge\EAVManager\ProcessBundle\Task;
 
 use CleverAge\ProcessBundle\Model\ProcessState;
-use CleverAge\ProcessBundle\Task\Doctrine\AbstractDoctrineTask;
+use CleverAge\DoctrineProcessBundle\Task\EntityManager\AbstractDoctrineTask;
 use Doctrine\ORM\EntityManager;
 use Sidus\EAVModelBundle\Entity\DataInterface;
 use Sidus\EAVModelBundle\Exception\MissingAttributeException;

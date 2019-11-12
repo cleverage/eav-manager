@@ -7,18 +7,6 @@ sidus_admin:
     resource: .
     type: sidus_admin
 
-eavmanager_admin.wysiwyg.data_selector.media:
-    path: /wysiwyg/data-selector/datamedia
-    defaults: { _controller: CleverAgeEAVManagerAdminBundle:Wysiwyg:selectMedia }
-    options:
-        expose: true
-
-eavmanager_admin.wysiwyg.data_selector:
-    path: /wysiwyg/data-selector/{configName}
-    defaults: { _controller: CleverAgeEAVManagerAdminBundle:Wysiwyg:selectData }
-    options:
-        expose: true
-
 eavmanager_user:
     resource: '@CleverAgeEAVManagerUserBundle/Resources/config/routing.yml'
 
@@ -33,6 +21,3 @@ sidus_file_upload:
 
 _liip_imagine:
     resource: '@LiipImagineBundle/Resources/config/routing.yaml'
-
-fos_js_routing:
-    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"

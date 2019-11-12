@@ -58,8 +58,6 @@ class EAVKernelBundleLoader
             // Additionnal Bundles
             // TinyMCE WYSIWYG integration
             new \Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle(),
-            // JS routing needed for TinyMCE extensions
-            new \FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             // Automatic image resizing
             new \Liip\ImagineBundle\LiipImagineBundle(),
             // Default cache system

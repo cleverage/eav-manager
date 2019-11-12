@@ -1,7 +1,6 @@
 #!/usr/bin/env sh
 
-FILES="vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.js \
-vendor/twbs/bootstrap-sass/assets/javascripts/bootstrap.js \
+FILES="vendor/twbs/bootstrap-sass/assets/javascripts/bootstrap.js \
 vendor/mopa/bootstrap-bundle/Mopa/Bundle/BootstrapBundle/Resources/public/js/mopabootstrap-subnav.js \
 vendor/moment/moment/min/moment.min.js \
 vendor/moment/moment/locale/fr.js \

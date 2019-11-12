@@ -113,7 +113,6 @@ NEVER points to this layout directly !
     {% else %}
     <script src="{{ asset('bundles/cleverageeavmanagerlayout/js/build-20190621.min.js') }}"></script>
     {% endif %}
-    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
     {{ tinymce_init() }}
 {% endblock %}
 {% block additionnal_javascript %}{% endblock %}

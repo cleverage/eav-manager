@@ -40,7 +40,6 @@
         "symfony/symfony": "~3.3|~4.0",
         "liip/imagine-bundle": "~1.7|~2.0",
         "thomaspark/bootswatch": "~3.3.7",
-        "friendsofsymfony/jsrouting-bundle": "~1.6",
         "cleverage/permission-bundle": "1.0.*",
         "sidus/base-serializer-bundle": "1.0.*",
         "sidus/eav-bootstrap-bundle": "dev-v2.1-dev",

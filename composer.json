@@ -41,11 +41,12 @@
         "liip/imagine-bundle": "~1.7|~2.0",
         "thomaspark/bootswatch": "~3.3.7",
         "cleverage/permission-bundle": "1.0.*",
-        "sidus/base-serializer-bundle": "1.0.*",
-        "sidus/eav-bootstrap-bundle": "dev-v2.1-dev",
-        "sidus/eav-filter-bundle": "dev-v2.1-dev",
-        "sidus/admin-bundle": "dev-v2.0-dev",
-        "sidus/eav-model-bundle": "dev-v1.3-dev",
-        "sidus/file-upload-bundle": "dev-v1.2-dev"
+        "symfony/webpack-encore-bundle": "^1.7",
+        "sidus/base-serializer-bundle": "^1.0",
+        "sidus/eav-bootstrap-bundle": "^2.1",
+        "sidus/eav-filter-bundle": "^2.1",
+        "sidus/admin-bundle": "^2.0",
+        "sidus/eav-model-bundle": "^1.3",
+        "sidus/file-upload-bundle": "^1.2"
     }
 }

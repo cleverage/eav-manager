@@ -2,3 +2,6 @@
 Gemfile.lock
 .bundle/*
 !.bundle/config
+vendor
+composer.lock
+components

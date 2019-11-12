@@ -97,3 +97,12 @@ Only the checked entries are completed.
  - [ ] [Form templating](Documentation/Cookbooks/form_templating.md)
  - [ ] [Model permissions](Documentation/Cookbooks/model_permissions.md)
  - [ ] [Publication workflow](Documentation/Cookbooks/publication_workflow.md)
+
+
+        "sidus/base-serializer-bundle": "1.0.*",
+        "sidus/eav-bootstrap-bundle": "dev-v2.1-dev",
+        "sidus/eav-filter-bundle": "dev-v2.1-dev",
+        
+        "sidus/admin-bundle": "dev-v2.0-dev",
+        "sidus/eav-model-bundle": "dev-v1.3-dev",
+        "sidus/file-upload-bundle": "dev-v1.2-dev"

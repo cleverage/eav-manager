@@ -13,3 +13,6 @@ mopa_bootstrap:
                 icon: info-circle
             popover:
                 icon: info-circle
+
+sidus_admin:
+    base_template: '@CleverAgeEAVManagerLayout/layout.html.twig'

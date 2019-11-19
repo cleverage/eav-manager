@@ -13,6 +13,3 @@ mopa_bootstrap:
                 icon: info-circle
             popover:
                 icon: info-circle
-
-sidus_admin:
-    fallback_template_directory: CleverAgeEAVManagerAdminBundle:Base

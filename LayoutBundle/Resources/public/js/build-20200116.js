@@ -8126,7 +8126,10 @@ function sortableCollections(el) {
         if (e.target !== this) { // Prevent event bubbling
             return;
         }
-        $(e.target).modal('show');
+        $(e.target).modal({
+            backdrop: 'static',
+            keyboard: false
+        });
     });
 
     /**

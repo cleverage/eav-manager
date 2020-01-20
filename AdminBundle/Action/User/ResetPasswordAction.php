@@ -46,17 +46,20 @@ class ResetPasswordAction implements ActionInjectableInterface
     protected $action;
 
     /**
-     * @param FormHelper       $formHelper
-     * @param DoctrineHelper   $doctrineHelper
-     * @param RoutingHelper    $routingHelper
-     * @param TemplatingHelper $templatingHelper
+     * @param UserManagerInterface $userManager
+     * @param FormHelper           $formHelper
+     * @param DoctrineHelper       $doctrineHelper
+     * @param RoutingHelper        $routingHelper
+     * @param TemplatingHelper     $templatingHelper
      */
     public function __construct(
+        UserManagerInterface $userManager,
         FormHelper $formHelper,
         DoctrineHelper $doctrineHelper,
         RoutingHelper $routingHelper,
         TemplatingHelper $templatingHelper
     ) {
+        $this->userManager = $userManager;
         $this->formHelper = $formHelper;
         $this->doctrineHelper = $doctrineHelper;
         $this->routingHelper = $routingHelper;

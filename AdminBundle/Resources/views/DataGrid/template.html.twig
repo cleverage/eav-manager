@@ -7,7 +7,7 @@
             {% block sticky_actions %}
                 <div class="breadcrumb-wrapper">
                     <h4>
-                        {{ title is defined ? title : 'List' }}
+                        {{ title is defined ? title|raw : 'List' }}
                     </h4>
                 </div>
                 <div class="actions-wrapper">

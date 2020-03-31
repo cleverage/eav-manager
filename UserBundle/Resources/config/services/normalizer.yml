@@ -16,11 +16,11 @@ services:
         calls:
             - [setIgnoredAttributes, ['%eavmanager_user.normalizer.user.ignored_attributes%']]
         tags:
-            - { name: serializer.normalizer }
+            - { name: serializer.normalizer, priority: 10 }
 
     Sidus\EAVModelBundle\Serializer\Normalizer\Flat\FlatNormalizer:
         arguments:
             - '@CleverAge\EAVManager\UserBundle\Serializer\Normalizer\UserNormalizer'
             - [csv]
         tags:
-            - { name: serializer.normalizer, priority: 1 }
+            - { name: serializer.normalizer, priority: 11 }

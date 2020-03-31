@@ -27,6 +27,7 @@ oneup_flysystem:
             adapter: resources
 
 sidus_file_upload:
+    enable_serializer: true
     configurations:
         image: # must match oneup_uploader mapping key
             entity: CleverAge\EAVManager\AssetBundle\Entity\Image

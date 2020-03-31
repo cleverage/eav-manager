@@ -5,19 +5,30 @@
      * Listens to edition, creation or deletion events to update concerned datagrids
      */
     $(document).on('clever_admindata', function (e) {
-        var formRef = 'form[data-admin-code="' + e.detail.admin + '"]';
-        var $formRef = $(formRef);
-        if ($formRef.length && e.detail.success) {
-            $formRef.trigger('submit');
-        } else {
-            var rowRef = '.datagrid-row[data-entity-id="' + e.detail.dataId + '"]';
-            var $row = $(rowRef);
-            if (document.activeDataGridRowRef) {
-                $(document.activeDataGridRowRef).removeClass('info');
+        if (e.detail.success) {
+            var formRef = 'form[data-admin-code="' + e.detail.admin + '"]';
+            var $formRef = $(formRef);
+            if ($formRef.length && e.detail.success) {
+                $formRef.trigger('submit');
+            } else {
+                var $row = $('[data-admin-code="' + e.detail.admin + '"][data-is-target]');
+                $row.each(function () {
+                    var $t = $(this);
+                    if (!$t.data('href')) {
+                        return;
+                    }
+                    ajaxLoading($, $t[0], new Event('autoload'));
+                });
             }
-            $row.addClass('info');
-            document.activeDataGridRowRef = rowRef;
         }
+
+        var rowRef = '.datagrid-row[data-entity-id="' + e.detail.dataId + '"]';
+        var $row = $(rowRef);
+        if (document.activeDataGridRowRef) {
+            $(document.activeDataGridRowRef).removeClass('info');
+        }
+        $row.addClass('info');
+        document.activeDataGridRowRef = rowRef;
     });
 
     /**

@@ -87,6 +87,7 @@ class DataGridColumnType extends AbstractType
                     [
                         'disabled' => $options['disabled'],
                         'datagrid' => $dataGrid,
+                        'target_admin_code' => $options['target_admin_code'],
                         'admin' => $options['admin'],
                         'admin_action' => $options['admin_action'],
                         'parent_data' => $data,
@@ -117,6 +118,7 @@ class DataGridColumnType extends AbstractType
     {
         $resolver->setDefaults(
             [
+                'target_admin_code' => null,
                 'inherit_data' => true,
                 'attr' => [
                     'class' => 'mapping',
@@ -140,6 +142,7 @@ class DataGridColumnType extends AbstractType
                 'attribute',
             ]
         );
+        $resolver->setAllowedTypes('target_admin_code', ['NULL', 'string']);
         $resolver->setAllowedTypes('datagrid', ['string', DataGrid::class]);
         $resolver->setAllowedTypes('admin', ['string', Admin::class]);
         $resolver->setAllowedTypes('attribute', [AttributeInterface::class]);

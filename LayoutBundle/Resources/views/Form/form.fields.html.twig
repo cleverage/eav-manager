@@ -238,6 +238,9 @@
     <div id="{{ id }}" class="autoload no-navigation with-loader" data-is-target="1"
          data-target-element="_CURRENT_TARGET" style="position:relative"
         {% if admin_action %}
+            {% if target_admin_code %}
+                data-admin-code="{{ target_admin_code }}"
+            {% endif %}
             data-href="{{ admin_path(admin_action.admin, admin_action.code, route_parameters) }}"
         {% endif %}>
         {{ render_datagrid(datagrid, datagrid_vars) }}

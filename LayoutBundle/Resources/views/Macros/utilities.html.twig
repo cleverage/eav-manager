@@ -133,9 +133,9 @@ Used to generate a single menu item for a family
     {% if admin.hasAction(defaultAction) and is_granted(defaultAction, family) %}
         <li {% if activeFamily and activeFamily.code == family.code %}class="active"{% endif %}>
             {% set title = tryTrans([
-                'admin.family.'~family.code~'.'~actionName~'.label',
-                'admin.'~admin.code~'.'~actionName~'.label',
-                'admin.action.'~actionName~'.label',
+                'admin.family.'~family.code~'.'~defaultAction~'.label',
+                'admin.'~admin.code~'.'~defaultAction~'.label',
+                'admin.action.'~defaultAction~'.label',
             ], {}, family) %}
             <a href="{{ admin_path(admin, defaultAction, {familyCode: family.code}) }}">{{ title }}</a>
             {#{{ current.family_menu(admin, f.children, activeFamily) }}#}

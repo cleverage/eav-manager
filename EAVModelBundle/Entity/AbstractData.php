@@ -77,4 +77,17 @@ abstract class AbstractData extends AbstractBaseData implements AuthorableInterf
 
         return $this;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function __clone()
+    {
+        $this->createdAt = new \DateTime();
+        $this->createdBy = null;
+        $this->updatedAt = new \DateTime();
+        $this->updatedBy = null;
+
+        parent::__clone();
+    }
 }

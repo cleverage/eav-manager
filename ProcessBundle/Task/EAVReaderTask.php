@@ -163,7 +163,7 @@ class EAVReaderTask extends AbstractEAVQueryTask implements IterableTaskInterfac
      */
     protected function getLogContext(ProcessState $state)
     {
-        $logContext = $state->getLogContext();
+        $logContext = [];
         $options = $this->getOptions($state);
         if (array_key_exists('family', $options)) {
             $options['family'] = $options['family']->getCode();

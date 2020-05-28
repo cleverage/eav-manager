@@ -114,11 +114,16 @@ Used to generate a menu for the given families
 {% macro family_menu(admin, families, activeFamily) %}
     {% import _self as current %}
     {% if families is defined and families | length > 0 %}
-        <ul class="nav nav-pills nav-stacked">
+        {% set families_nav %}
             {% for f in families %}
-                {{ current.family_menu_link(admin, f, activeFamily) }}
+                {{ current.family_menu_link(admin, f, activeFamily)|spaceless }}
             {% endfor %}
-        </ul>
+        {% endset %}
+        {% if families_nav|trim %}
+            <ul class="nav nav-pills nav-stacked">
+                {{ families_nav|raw }}
+            </ul>
+        {% endif %}
     {% endif %}
 {% endmacro %}
 
@@ -241,13 +246,16 @@ Render left nav for families
     {% import _self as current %}
     {% set familyCodes = admin.option('families', [])|keys %}
     {% if familyCodes|length > 1 %}
-        {{ current.admin_title_nav(admin) }}
-        <div id="admin_{{ admin.code }}"
-             class="collapse{% if admin.hasRoute(app.request.attributes.get('_route')) %} in{% endif %}">
-            {{ current.family_menu(admin, familyCodes, family) }}
-        </div>
+        {% set family_nav = current.family_menu(admin, familyCodes, family)|spaceless %}
+        {% if family_nav|trim %}
+            {{ current.admin_title_nav(admin) }}
+            <div id="admin_{{ admin.code }}"
+                 class="collapse{% if admin.hasRoute(app.request.attributes.get('_route')) %} in{% endif %}">
+                {{ family_nav|raw }}
+            </div>
+        {% endif %}
     {% elseif familyCodes|length == 1 %}
-        {{ current.admin_single_family_nav(admin, familyCodes|first, family) }}
+        {{ current.admin_single_family_nav(admin, familyCodes|first, family)|spaceless }}
     {% endif %}
 {% endmacro %}
 

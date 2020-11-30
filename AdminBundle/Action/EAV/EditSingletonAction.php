@@ -13,6 +13,7 @@ namespace CleverAge\EAVManager\AdminBundle\Action\EAV;
 use CleverAge\EAVManager\EAVModelBundle\Entity\DataRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sidus\AdminBundle\Action\ActionInjectableInterface;
+use Sidus\AdminBundle\Action\RedirectableInterface;
 use Sidus\AdminBundle\Admin\Action;
 use Sidus\BaseBundle\Doctrine\RepositoryFinder;
 use Sidus\EAVModelBundle\Model\FamilyInterface;
@@ -22,7 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @Security("is_granted('edit', family)")
  */
-class EditSingletonAction implements ActionInjectableInterface
+class EditSingletonAction implements ActionInjectableInterface, RedirectableInterface
 {
     /** @var EditAction */
     protected $editAction;

@@ -14,6 +14,7 @@ use CleverAge\EAVManager\AdminBundle\Templating\TemplatingHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sidus\AdminBundle\Action\ActionInjectableInterface;
+use Sidus\AdminBundle\Action\RedirectableInterface;
 use Sidus\AdminBundle\Admin\Action;
 use Sidus\AdminBundle\Doctrine\DoctrineHelper;
 use CleverAge\EAVManager\AdminBundle\Form\FormHelper;
@@ -24,7 +25,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @Security("is_granted('edit', data)")
  */
-class EditAction implements ActionInjectableInterface
+class EditAction implements ActionInjectableInterface, RedirectableInterface
 {
     /** @var FormHelper */
     protected $formHelper;

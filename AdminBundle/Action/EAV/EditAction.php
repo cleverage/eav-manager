@@ -13,6 +13,7 @@ namespace CleverAge\EAVManager\AdminBundle\Action\EAV;
 use CleverAge\EAVManager\AdminBundle\Templating\EAVTemplatingHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sidus\AdminBundle\Action\ActionInjectableInterface;
+use Sidus\AdminBundle\Action\RedirectableInterface;
 use Sidus\AdminBundle\Admin\Action;
 use Sidus\AdminBundle\Doctrine\DoctrineHelper;
 use CleverAge\EAVManager\AdminBundle\Form\EAVFormHelper;
@@ -26,7 +27,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @Security("is_granted('edit', data)")
  */
-class EditAction implements ActionInjectableInterface
+class EditAction implements ActionInjectableInterface, RedirectableInterface
 {
     /** @var EAVFormHelper */
     protected $formHelper;

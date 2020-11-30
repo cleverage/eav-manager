@@ -16,6 +16,7 @@ use CleverAge\EAVManager\UserBundle\Domain\Manager\UserManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sidus\AdminBundle\Action\ActionInjectableInterface;
+use Sidus\AdminBundle\Action\RedirectableInterface;
 use Sidus\AdminBundle\Admin\Action;
 use Sidus\AdminBundle\Routing\RoutingHelper;
 use Sidus\BaseBundle\Translator\TranslatableTrait;
@@ -28,7 +29,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 /**
  * @Security("is_granted('edit', data)")
  */
-class EditAction implements ActionInjectableInterface
+class EditAction implements ActionInjectableInterface, RedirectableInterface
 {
     use TranslatableTrait;
 

@@ -3,11 +3,6 @@ stfalcon_tinymce:
     tinymce_jquery: false
     use_callback_tinymce_init: true
     language: '%locale%'
-    external_plugins:
-        datalink:
-            url: 'asset[bundles/cleverageeavmanagerlayout/js/tinymce/plugins/datalink/plugin.js]'
-        datamedia:
-            url: 'asset[bundles/cleverageeavmanagerlayout/js/tinymce/plugins/datamedia/plugin.js]'
     theme:
         simple:
             menubar: false

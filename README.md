@@ -1,6 +1,8 @@
 CleverAge/EAVManager
 ====================
 
+![CDM logo](Documentation/assets/cdm.png)
+
 | Help needed |
 | ----------- |
 | This documentation is a work in progress, we need help to write guides and cookbooks |
